@@ -124,7 +124,7 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 	public boolean putSubject(Subject subject) {
 		boolean success = true;
 		 try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SubjectUi" 
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Subject" 
 			        		+"(Uuid, subjectcode, subjectname, subjectcategory) VALUES (?,?,?,?);");
         		){
 			   

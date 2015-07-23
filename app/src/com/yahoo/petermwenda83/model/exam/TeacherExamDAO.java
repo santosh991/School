@@ -55,59 +55,59 @@ public CatResults getCatResults(String uuid);
 	  * @return
 	  */
 	 
-	public Exam putExamType(String uuid);
+	public boolean putExamType(ExamType examType);
 	/**
 	 * 
 	 * @param exam
 	 * @param uuid
 	 * @return
 	 */
-	public Exam putExamMarks(Exam exam,String uuid);
+	public boolean putExamMarks(Exam exam);
 	/**
 	 * 
 	 * @param exam
 	 * @param uuid
 	 * @return
 	 */
-	public Exam putExamResults(Exam exam,String uuid);
+	public boolean putExamResults(Exam exam);
 	  /**
 	   * 
 	   * @param exam
 	   * @param uuid
 	   * @return
 	   */
-	public Exam editExamType(String uuid);
+	public boolean editExamType(ExamType type,String uuid);
 	/**
 	 * 
 	 * @param exam
 	 * @param uuid
 	 * @return
 	 */
-	public Exam editExamMarks(Exam exam,String uuid);
+	public boolean editExamMarks(Exam exam,String uuid);
 	/**
 	 * 
 	 * @param exam
 	 * @param uuid
 	 * @return
 	 */
-	public Exam editExamResults(Exam exam,String uuid);
+	public boolean editExamResults(Exam exam,String uuid);
 	    /**
 	     * 
 	     * @param uuid
 	     * @return
 	     */
-	public boolean deleteExamType(String uuid);
+	public boolean deleteExamType(ExamType type,String uuid);
 	/**
 	 * 
 	 * @param uuid
 	 * @return
 	 */
-	public boolean deleteExamMarks(String uuid);
+	public boolean deleteExamMarks(Exam exam,String uuid);
 	/**
 	 * 
 	 * @param uuid
 	 * @return
 	 */
-	public boolean deleteExamResults(String uuid);
+	public boolean deleteExamResults(Exam exam,String uuid);
 	
 }
