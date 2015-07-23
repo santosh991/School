@@ -14,9 +14,12 @@ import org.junit.Test;
 
 import com.yahoo.petermwenda83.contoller.exam.CatMarks;
 import com.yahoo.petermwenda83.contoller.exam.CatResults;
+import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
+import com.yahoo.petermwenda83.contoller.student.Student;
+import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
  * @author peter
@@ -50,7 +53,7 @@ public class TestExamDAO {
     final String EXAM_MARKS_UUID = "71f243fb-3826-4911-b1cb-545d9a033578";
 	final String STU_UUID = "9771e08e-4e87-4fe4-9608-a31952ec10cd";//type uuid DAF7EC32-EA25-7D32-8708-2CC132446A2F
 	final String SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446A2E";//D0F7EC32-EA25-7D32-8708-2CC132446A2E
-	final double MARKS = 78, MARKS2 = 60;                                       
+	final double MARKS = 78, MARKS2 = 60,MARKS3 = 93;                                       
 	final Date EXAM_DATE = new Date(new Long("1417633242000"));
 	
 	final String RESULTS_UUID = "204916f3-346d-4297-bdfa-82215820fff5";
@@ -248,7 +251,7 @@ public class TestExamDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamType(java.lang.String)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testEditExamType() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -269,27 +272,37 @@ public class TestExamDAO {
 	@Test
 	public void testEditExamMarks() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		fail("Not yet implemented");
+		
+		Student student = new Student();
+		student.setUuid(STU_UUID); 
+		
+		Subject subject = new Subject();
+		subject.setUuid(SUB_UUID); 
+		
+		CatMarks catm = new CatMarks();
+		catm.setMarks(MARKS3);
+		catm.setSubmitdate(EXAM_DATE);
+		assertTrue(store.editExamMarks(catm, student, subject));
+		
+		MainMarks mainm = new MainMarks(); 
+		mainm.setMarks(MARKS3);
+		mainm.setSubmitdate(EXAM_DATE);
+		assertTrue(store.editExamMarks(mainm, student, subject));
+		
 	}
 
-	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamResults(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testEditExamResults() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		fail("Not yet implemented");
-	}
-
+	
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamType(java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testDeleteExamType() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		fail("Not yet implemented");
+		ExamType type = new ExamType();
+		String uuid = "28859dba-9e76-48d8-b49a-9a8d42575cc2";
+		type.setUuid(uuid);
+		assertTrue(store.deleteExamType(type));
 	}
 
 	/**

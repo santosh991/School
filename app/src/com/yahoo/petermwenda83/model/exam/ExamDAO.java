@@ -19,6 +19,8 @@ import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
+import com.yahoo.petermwenda83.contoller.student.Student;
+import com.yahoo.petermwenda83.contoller.student.Subject;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 
 /**
@@ -180,7 +182,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 	
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#getCatResults(java.lang.String)
+	 */
 	public CatResults getCatResults(String uuid) {
 		CatResults catResults = null;
         ResultSet rset = null;
@@ -207,7 +212,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		return catResults; 
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#putExamType(com.yahoo.petermwenda83.contoller.exam.ExamType)
+	 */
 	public boolean putExamType(ExamType examType) {
 		  boolean success = true; 
 		  
@@ -235,7 +243,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		 
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#putExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam)
+	 */
 	public boolean putExamMarks(Exam exam) {
 		boolean success = true;
 		MainMarks mainm = new MainMarks();
@@ -275,7 +286,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		return success;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#putExamResults(com.yahoo.petermwenda83.contoller.exam.Exam)
+	 */
 	public boolean putExamResults(Exam exam) {
 		boolean success = true;
 		MainResults mainr = new MainResults();
@@ -321,13 +335,16 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		return success;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#editExamType(com.yahoo.petermwenda83.contoller.exam.ExamType, java.lang.String)
+	 */
 	public boolean editExamType(ExamType type,String Uuid) {
 		  boolean success = true; 
 		  
 			 try(   Connection conn = dbutils.getConnection();
-					PreparedStatement pstmt = conn.prepareStatement("UPDATE exam_type SET" 
-				        		+"examtype =?, term =?, year =?,clasz =?,description =? WHERE Uuid = ? ;");
+		PreparedStatement pstmt = conn.prepareStatement("UPDATE exam_type SET examtype =?,"
+				+ " term =?, year =?,clasz =?,description =? WHERE Uuid = ? ;");
 	        		){
 		            pstmt.setString(1, type.getExamtype());
 		            pstmt.setString(2, type.getTerm());
@@ -347,39 +364,35 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 			return success;
 	}
 
-	@Override
-	public boolean editExamMarks(Exam exam, String Uuid) {
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#editExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Subject)
+	 */
+	public boolean editExamMarks(Exam exam,Student student,Subject subject) {
 		boolean success = true;
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE catmarks SET" 
-			        		+"studentuuid =?, examtypeuuid =?, subjectuuid =?"
-			        		+ ",marks =?,submitdate =? WHERE Uuid = ?;");
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE exam_marks SET" 
-		        		+"studentuuid =?, examtypeuuid =?, subjectuuid =?,"
-		        		+ "marks =?,submitdate =?  WHERE Uuid = ? ;");
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE catmarks SET marks =?, submitdate =?"
+						+ " WHERE Studentuuid = ? AND Subjectuuid = ?;");
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE exam_marks SET marks =?, submitdate =? "
+						+ " WHERE Studentuuid = ? AND Subjectuuid = ? ;");
         		){
 			  if(exam instanceof CatMarks ){
-	            pstmt.setString(1, exam.getStudentUuid());
-	            pstmt.setString(2, exam.getExamTypeUuid());
-	            pstmt.setString(3, exam.getSubjectUuid());
-	            pstmt.setDouble(4, exam.getMarks());
-	            pstmt.setTimestamp(5,  new Timestamp(exam.getSubmitdate().getTime()));
-	            pstmt.setString(6, Uuid);
+	            pstmt.setDouble(1, exam.getMarks());
+	            pstmt.setTimestamp(2, new Timestamp(exam.getSubmitdate().getTime()));
+	            pstmt.setString(3, student.getUuid());
+	            pstmt.setString(4, subject.getUuid());
 	            
 	            pstmt.executeUpdate();
 			  }else{         //Main marks
-				   
-		            pstmt2.setString(1, exam.getStudentUuid());
-		            pstmt2.setString(2, exam.getExamTypeUuid());
-		            pstmt2.setString(3, exam.getSubjectUuid());
-		            pstmt2.setDouble(4, exam.getMarks());
-		            pstmt2.setTimestamp(5,  new Timestamp(exam.getSubmitdate().getTime()));
-		            pstmt2.setString(6, Uuid);
+				    pstmt2.setDouble(1, exam.getMarks());
+		            pstmt2.setTimestamp(2, new Timestamp(exam.getSubmitdate().getTime()));
+		            pstmt2.setString(3, student.getUuid());
+		            pstmt2.setString(4, subject.getUuid());
 		            
 		            pstmt2.executeUpdate(); 
 			  }
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put: "+exam);
+			 logger.error("SQL Exception trying to update : "+subject+"for" +student);
              logger.error(ExceptionUtils.getStackTrace(e)); 
              success = false;
 		 }
@@ -388,60 +401,29 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		return success;
 	}
 
+	
 	@Override
-	public boolean editExamResults(Exam exam, String Uuid) {
-		boolean success = true;
-		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE cattotals SET" 
-			        		+"subjectuuid =?,studentuuid =?,total =?,points =?,"
-			        		+ "grade =?,position =?,remarks =?,submitdate =?  WHERE Uuid = ? ;");
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE exam_totals SET" 
-		        		+"subjectuuid =?,studentuuid =?,total =?,points =?,grade =?,"
-		        		+ "position =?,remarks =?,submitdate =?  WHERE Uuid = ? ;");
+	public boolean deleteExamType(ExamType type) {
+		
+		  boolean success = true; 
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM exam_type WHERE Uuid = ?;");       
+        		
         		){
-			  if(exam instanceof CatResults ){
-	            pstmt.setString(1, exam.getSubjectUuid());
-	            pstmt.setString(2, exam.getStudentUuid());
-	            pstmt.setDouble(3, exam.getTotal());
-	            pstmt.setDouble(4, exam.getPoints());
-	            pstmt.setString(5, exam.getGrade());
-	            pstmt.setInt(6, exam.getPosition()); 
-	            pstmt.setString(7, exam.getRemarks());
-	            pstmt.setTimestamp(8,  new Timestamp(exam.getSubmitdate().getTime()));
-	            pstmt.setString(9, Uuid);
-	            
-	            pstmt.executeUpdate();
-			  }else{         //MainResults
-				    
-				    pstmt2.setString(1, exam.getSubjectUuid());
-		            pstmt2.setString(2, exam.getStudentUuid());
-		            pstmt2.setDouble(3, exam.getTotal());
-		            pstmt2.setDouble(4, exam.getPoints());
-		            pstmt2.setString(5, exam.getGrade());
-		            pstmt2.setInt(6, exam.getPosition()); 
-		            pstmt2.setString(7, exam.getRemarks());
-		            pstmt2.setTimestamp(8,  new Timestamp(exam.getSubmitdate().getTime()));
-		            pstmt2.setString(9, Uuid);
-		            
-		            pstmt2.executeUpdate(); 
-			  }
-		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put: "+exam);
-             logger.error(ExceptionUtils.getStackTrace(e)); 
+        	
+        	 pstmt.setString(1, type.getUuid());
+	         pstmt.executeUpdate();
+	     
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when deletting : " +type);
+             logger.error(ExceptionUtils.getStackTrace(e));
              success = false;
-		 }
+             
+        }
+        
+		return success; 
 		
-		
-		return success;
-	}
-
-	
-	
-	
-	@Override
-	public boolean deleteExamType(ExamType type,String uuid) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

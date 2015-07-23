@@ -66,7 +66,7 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SubjectUi WHERE Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE Uuid = ?;");       
         		
         		){
         	
@@ -176,7 +176,7 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 	public boolean editSubject(Subject subject,String uuid) {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement("UPDATE SubjectUi SET subjectcode=?, "
+        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET subjectcode=?, "
         			+ "subjectname=?, subjectcategory=? WHERE Uuid = ?;");
         	) {
             
@@ -226,7 +226,7 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 		boolean success = true; 
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM SubjectUi WHERE Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE Uuid = ?;");       
         		
         		){
         	

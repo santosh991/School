@@ -9,6 +9,8 @@ import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
+import com.yahoo.petermwenda83.contoller.student.Student;
+import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
  * @author peter
@@ -83,20 +85,14 @@ public CatResults getCatResults(String uuid);
 	 * @param uuid
 	 * @return
 	 */
-	public boolean editExamMarks(Exam exam,String uuid);
-	/**
-	 * 
-	 * @param exam
-	 * @param uuid
-	 * @return
-	 */
-	public boolean editExamResults(Exam exam,String uuid);
+	public boolean editExamMarks(Exam exam,Student student,Subject subject);
+	
 	    /**
 	     * 
 	     * @param uuid
 	     * @return
 	     */
-	public boolean deleteExamType(ExamType type,String uuid);
+	public boolean deleteExamType(ExamType type);
 	/**
 	 * 
 	 * @param uuid
