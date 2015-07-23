@@ -1,5 +1,7 @@
 /**
- * 
+ * School Management System
+ * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
+ * copywrite peter&MigwiSoftwares.co.ltd
  */
 package com.yahoo.petermwenda83.model.exam;
 
@@ -23,6 +25,8 @@ import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
  * @author peter
+ * @author <h1>mwendapeter72@gmail.com </h1>
+ * @author <h1>migwindungu0@gmail.com </h1>
  *
  */
 public class TestExamDAO {
@@ -74,7 +78,7 @@ public class TestExamDAO {
 	
 	private ExamDAO store;
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getExamType(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getExamType(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -93,7 +97,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getMainMarks(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getMainMarks(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -111,7 +115,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getExamResults(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getExamResults(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -132,7 +136,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getCatMarks(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getCatMarks(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -149,7 +153,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getCatResults(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getCatResults(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -169,7 +173,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamType(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamType(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -190,7 +194,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -219,7 +223,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamResults(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamResults(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -249,7 +253,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamType(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamType(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -266,7 +270,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -293,7 +297,7 @@ public class TestExamDAO {
 
 	
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamType(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamType(java.lang.String)}.
 	 */
 	//@Ignore
 	@Test
@@ -306,7 +310,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamMarks(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamMarks(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -316,7 +320,7 @@ public class TestExamDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamResults(java.lang.String)}.
+	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamResults(java.lang.String)}.
 	 */
 	@Ignore
 	@Test

@@ -3,22 +3,19 @@
  */
 package com.yahoo.petermwenda83.contoller.student;
 
-import com.yahoo.petermwenda83.contoller.AllBean;
 
 /**
  * @author peter
  *
  */
-public class House extends AllBean  {
+public class House extends Student  {
 	
-	private String studentUuid;
 	private String housename;
 	/**
 	 * 
 	 */
 	public House() {
 		super();
-		studentUuid = "";
 		housename = "";
 	}
 	
@@ -27,7 +24,7 @@ public class House extends AllBean  {
 	 * @return the studentUuid
 	 */
 	public String getStudentUuid() {
-		return studentUuid;
+		return getStudentUuid();
 	}
 
 
@@ -35,7 +32,7 @@ public class House extends AllBean  {
 	 * @param studentUuid the studentUuid to set
 	 */
 	public void setStudentUuid(String studentUuid) {
-		this.studentUuid = studentUuid;
+		setStudentUuid(studentUuid);
 	}
 
 
@@ -60,8 +57,8 @@ public class House extends AllBean  {
 		builder.append("House");
 		builder.append("[ id =");
 		builder.append(getId()); 
-		builder.append(", studentUuid =");
-		builder.append("studentUuid");
+		builder.append(", getStudentUuid() =");
+		builder.append(getStudentUuid());
 		builder.append(", housename =");
 		builder.append("housename");
 		builder.append("]");

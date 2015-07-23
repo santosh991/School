@@ -1,5 +1,7 @@
 /**
- * 
+ * School Management System
+ * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
+ * copywrite peter&MigwiSoftwares.co.ltd
  */
 package com.yahoo.petermwenda83.model.curriculum;
 
@@ -12,6 +14,8 @@ import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
  * @author peter
+ * @author <h1>mwendapeter72@gmail.com </h1>
+ * @author <h1>migwindungu0@gmail.com </h1>
  *
  */
 public interface AssignSubjectDAO {

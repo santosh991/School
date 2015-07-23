@@ -3,23 +3,20 @@
  */
 package com.yahoo.petermwenda83.contoller.student;
 
-import com.yahoo.petermwenda83.contoller.AllBean;
 
 
 /**
  * @author peter
  *
  */
-public class Location extends AllBean {
-	
-	private String studentUuid;
+public class Location extends Student {
+
 	private String county;
 	private String location;
 	private String sublocation;
 	
 	public Location() {
 		super();
-		studentUuid = "";
 		county = "";
 		location = "";
 		sublocation = "";
@@ -30,7 +27,7 @@ public class Location extends AllBean {
 	 * @return the studentUuid
 	 */
 	public String getStudentUuid() {
-		return studentUuid;
+		return getStudentUuid();
 	}
 
 
@@ -38,7 +35,7 @@ public class Location extends AllBean {
 	 * @param studentUuid the studentUuid to set
 	 */
 	public void setStudentUuid(String studentUuid) {
-		this.studentUuid = studentUuid;
+		setStudentUuid(studentUuid);
 	}
 
 
@@ -95,8 +92,8 @@ public class Location extends AllBean {
 	builder.append("Location");
 	builder.append("[ id =");
 	builder.append(getId()); 
-	builder.append(", studentUuid =");
-	builder.append("studentUuid");
+	builder.append(", getStudentUuid() =");
+	builder.append(getStudentUuid());
 	builder.append(", county =");
 	builder.append("county");
 	builder.append(", location =");

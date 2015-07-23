@@ -12,7 +12,7 @@ import com.yahoo.petermwenda83.contoller.AllBean;
  */
 public class StudentSubject extends AllBean{
 	    private String subjectUuid;
-	    private String studentUuid;
+	  
 	   
 	    
 	/**
@@ -21,7 +21,7 @@ public class StudentSubject extends AllBean{
 	public StudentSubject() {
 		super();
 		subjectUuid = "";
-    	studentUuid = "";
+    	
 	
 	}
 
@@ -46,7 +46,7 @@ public class StudentSubject extends AllBean{
 	 * @return the studentUuid
 	 */
 	public String getStudentUuid() {
-		return studentUuid;
+		return getStudentUuid();
 	}
 
 
@@ -54,7 +54,7 @@ public class StudentSubject extends AllBean{
 	 * @param studentUuid the studentUuid to set
 	 */
 	public void setStudentUuid(String studentUuid) {
-		this.studentUuid = studentUuid;
+		setStudentUuid(studentUuid);
 	}
 
 
@@ -64,8 +64,8 @@ public class StudentSubject extends AllBean{
 	builder.append(getUuid());
 	builder.append(", subjectUuid =");
 	builder.append(subjectUuid);
-	builder.append(", studentUuid =");
-	builder.append(studentUuid);
+	builder.append(", getStudentUuid() =");
+	builder.append(getStudentUuid());
 	builder.append("]");
 	return builder.toString(); 
 	}

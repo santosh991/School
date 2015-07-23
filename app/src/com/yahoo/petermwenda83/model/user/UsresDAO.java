@@ -1,0 +1,118 @@
+/**
+ * 
+ */
+package com.yahoo.petermwenda83.model.user;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+
+import com.yahoo.petermwenda83.contoller.user.User;
+import com.yahoo.petermwenda83.model.DBConnectDAO;
+
+/**
+ * @author peter
+ *
+ */
+public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
+
+
+  private static UsresDAO usresDAO;
+	private Logger logger = Logger.getLogger(this.getClass());
+	private BeanProcessor beanProcessor = new BeanProcessor();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static UsresDAO getInstance(){
+		if(usresDAO == null){
+			usresDAO = new UsresDAO();		
+		}
+		return usresDAO;
+	}
+	
+	/**
+	 * 
+	 */
+	public UsresDAO() {
+		super();
+	}
+	 
+	public UsresDAO(String databaseName, String Host, String databaseUsername, String databasePassword, int databasePort) {
+		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getUser(java.lang.String)
+	 */
+	@Override
+	public User getUser(String Uuid) {
+		User user = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE Uuid = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, Uuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 user  = beanProcessor.toBean(rset,User.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting an users with uuid: " + Uuid);
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return user; 
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#editUser(com.yahoo.petermwenda83.contoller.user.User, java.lang.String)
+	 */
+	@Override
+	public boolean editUser(User user, String Uuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#putUser(com.yahoo.petermwenda83.contoller.user.User)
+	 */
+	@Override
+	public boolean putUser(User user) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#deleteUser(com.yahoo.petermwenda83.contoller.user.User)
+	 */
+	@Override
+	public boolean deleteUser(User user) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getAllUsers()
+	 */
+	@Override
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

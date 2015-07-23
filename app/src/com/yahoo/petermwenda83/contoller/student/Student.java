@@ -195,42 +195,4 @@ public class Student extends AllBean{
 	}
 
 
-	public String toString(){
-		StringBuilder builder = new StringBuilder();
-		builder.append("InfoBasic [getUuid()=");
-		builder.append(getUuid());
-		
-		builder.append(", firstname = ");
-		builder.append(firstname);
-		
-		builder.append(", lastname =");
-		builder.append(lastname);
-		
-		builder.append(", surname =");
-		builder.append(surname);
-		
-		builder.append(", admissiondate =");
-		builder.append(admissiondate);
-		
-		builder.append(", DOB =");
-		builder.append(DOB);
-		
-		builder.append(", admno =");
-		builder.append(admno);
-		
-		builder.append(", form =");
-		builder.append(form);
-		
-		builder.append(", clasz =");
-		builder.append(clasz);
-		
-		builder.append(", year =");
-		builder.append(year);
-		
-		builder.append("studentUuid=");
-		builder.append(studentUuid);
-		builder.append("]");
-		return builder.toString(); 
-		}
-
 } 
