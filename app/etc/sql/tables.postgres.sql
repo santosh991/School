@@ -233,12 +233,14 @@ CREATE TABLE  exam_type (
     term text,
     year text,
     clasz text,
-    description text
+    outof integer,
+    description text,
+    examno text UNIQUE NOT NULL
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY exam_type(uuid,examtype,term,year,clasz,description) FROM '/tmp/Exam_Type.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY exam_type(uuid,examtype,term,year,clasz,outof,description,examno) FROM '/tmp/Exam_Type.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE exam_type OWNER TO allamano;
 
 -- -------------------
@@ -487,10 +489,10 @@ CREATE TABLE  users (
     uuid text UNIQUE NOT NULL,
     userType text,
     username text NOT NULL,
-    passowrd text NOT NULL
+    password text NOT NULL
 
 );
-\COPY users(uuid,userType,username,passowrd) FROM '/tmp/Users.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY users(uuid,userType,username,password) FROM '/tmp/Users.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE users OWNER TO allamano;
 
 
