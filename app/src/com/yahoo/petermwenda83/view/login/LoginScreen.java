@@ -11,6 +11,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.yahoo.petermwenda83.contoller.users.User;
+import com.yahoo.petermwenda83.model.user.UsresDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
 
 /**
@@ -36,7 +40,9 @@ public class LoginScreen extends JFrame{
  private JButton btnLogin,  btnCancel;
  private JComboBox<String> box;
  Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-	
+ private static UsresDAO userDAO;
+ private static List<User> userList = new ArrayList<>();
+ 
 	/**
 	 * 
 	 */
@@ -47,6 +53,8 @@ public class LoginScreen extends JFrame{
         this.setResizable(false);
         this.setLocation((screen.width - 500) / 2, ((screen.height - 350) / 2));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        userDAO = UsresDAO.getInstance();
+       
         
 		txtUser = new JTextField();
 		txtUser.setBackground(Color.CYAN);
@@ -71,8 +79,8 @@ public class LoginScreen extends JFrame{
 		box.addItem("Secretary");
 		box.addItem("Teacher");
 		box.addItem("HOD");
-		box.addItem("Curriculum Master");
-		box.addItem("Account Clerk");
+		box.addItem("CM");
+		box.addItem("Clerk");
 		
 		    lblUsername.setFont(new Font("monospaced", Font.BOLD, 16));
 	        lblPasswd.setFont(new Font("monospaced", Font.BOLD, 16));
@@ -84,7 +92,9 @@ public class LoginScreen extends JFrame{
 	        ButtonListener listener = new ButtonListener();
 	        btnLogin.addActionListener(listener);
 	        btnCancel.addActionListener(listener);
-	
+
+			
+	        
 		
 	        this.add(lblUsername);
 	        this.add(lblPasswd);
@@ -95,18 +105,27 @@ public class LoginScreen extends JFrame{
 	        this.add(btnLogin);
 	        this.add(btnCancel);
 	       this.setVisible(true); 
+	      
+	     
+	   
+		
+	 
 	}
 	 
 	public void Login(){
-		 String username = txtUser.getText();
-		@SuppressWarnings("deprecation")
-		String password =  Passwd.getText();
-	    if(username.equalsIgnoreCase("admin")&& password.equalsIgnoreCase("admin")){
-	     
+		
+		  User use = new User();
+	      use.setUsername(txtUser.getText()); 
+	      String usertyp = (String) box.getSelectedItem();
+	      use.setUserType(usertyp); 
+	      use.setPassword(Passwd.getText()); 
+	      boolean recordfound = userDAO.getUserName(use) != null;
+	    	 if(recordfound){	     
 	    	 this.dispose();
 	    	 LoadMDIWindow(); 
 	    }else{
-	    	 System.exit(0);
+	    JOptionPane.showMessageDialog(null, "Wrong Credentials", "Error!!", JOptionPane.DEFAULT_OPTION);
+	    	// System.exit(0);
 	    }
 	    
 	}
@@ -121,7 +140,7 @@ public class LoginScreen extends JFrame{
         	new MainWindow().LoginTeacher();
         }else if(box.getSelectedItem().equals("HOD")){
         	new MainWindow().LoginHOD();
-        }else if(box.getSelectedItem().equals("Curriculum Master")){
+        }else if(box.getSelectedItem().equals("CM")){
         	new MainWindow().LoginCMaster(); 
         }else{
         	new MainWindow().LoginClerk();

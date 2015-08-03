@@ -14,7 +14,9 @@ public class ExamType extends Exam{
 	private String year ;
 	private String term ;
 	private String clasz ;
+	private int outof ;
 	private String description ; //CAT1,CAT2,CAT3 ,MAIN1,MOCK1 etc
+	private String examno;
 	/**
 	 * 
 	 */
@@ -25,7 +27,9 @@ public class ExamType extends Exam{
 		term = "";
 		year = "";
 		clasz = "";
+		outof = 0;
 		description = "";
+		examno = "";
 	}
 	
 	/**
@@ -85,6 +89,20 @@ public class ExamType extends Exam{
 	}
 
 	/**
+	 * @return the outof
+	 */
+	public int getOutof() {
+		return outof;
+	}
+
+	/**
+	 * @param outof the outof to set
+	 */
+	public void setOutof(int outof) {
+		this.outof = outof;
+	}
+
+	/**
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -97,6 +115,21 @@ public class ExamType extends Exam{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+
+	/**
+	 * @return the examno
+	 */
+	public String getExamno() {
+		return examno;
+	}
+
+	/**
+	 * @param examno the examno to set
+	 */
+	public void setExamno(String examno) {
+		this.examno = examno;
+	}
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
@@ -104,15 +137,19 @@ public class ExamType extends Exam{
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(", examtype =");
-		builder.append("examtype");
+		builder.append(examtype);
 		builder.append(", term =");
-		builder.append("term");
+		builder.append(term);
 		builder.append(", year =");
-		builder.append("year");
+		builder.append(year);
 		builder.append(", clasz =");
-		builder.append("clasz");
+		builder.append(clasz);
+		builder.append(", outof =");
+		builder.append(outof);
 		builder.append(", description =");
-		builder.append("description");
+		builder.append(description);
+		builder.append(", examno =");
+		builder.append(examno);
 		builder.append("]");
 		return builder.toString(); 
 		}

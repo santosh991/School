@@ -8,7 +8,7 @@ package com.yahoo.petermwenda83.contoller.student;
  * @author peter
  *
  */
-public class Activity extends Student {
+public class Activity extends StudentSuper {
 	private String  activity;
 	/**
 	 * 

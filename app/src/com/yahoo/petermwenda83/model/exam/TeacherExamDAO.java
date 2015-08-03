@@ -11,7 +11,7 @@ import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
-import com.yahoo.petermwenda83.contoller.student.Student;
+import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
@@ -28,6 +28,9 @@ public interface TeacherExamDAO {
 	 * @return
 	 */
 public ExamType getExamType(String uuid);
+
+
+public ExamType getExamTypes(String examno);
 /**
  * 
  * @param uuid
@@ -89,7 +92,7 @@ public CatResults getCatResults(String uuid);
 	 * @param uuid
 	 * @return
 	 */
-	public boolean editExamMarks(Exam exam,Student student,Subject subject);
+	public boolean editExamMarks(Exam exam,StudentSuper studentSuper,Subject subject);
 	
 	    /**
 	     * 

@@ -13,7 +13,7 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.contoller.user.User;
+import com.yahoo.petermwenda83.contoller.users.User;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 
 /**
@@ -23,7 +23,7 @@ import com.yahoo.petermwenda83.model.DBConnectDAO;
 public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 
 
-  private static UsresDAO usresDAO;
+   private static UsresDAO usresDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
@@ -111,8 +111,53 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 */
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User>  list = null;
+		
+		 try(   
+      		Connection conn = dbutils.getConnection();
+      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Users ;");   
+      		ResultSet rset = pstmt.executeQuery();
+  		) {
+      	
+          list = beanProcessor.toBeanList(rset, User.class);
+
+      } catch(SQLException e){
+      	logger.error("SQL Exception when getting all StudentSubject");
+          logger.error(ExceptionUtils.getStackTrace(e));
+      }
+    
+		
+		return list;
+	}
+
+	@Override
+	public User getUserName(User use) { 
+		User user = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE"
+           	      		+ " username =? AND Password =? AND userType =?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, use.getUsername());
+        	 pstmt.setString(2, use.getPassword());
+        	 pstmt.setString(3, use.getUserType());
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 user  = beanProcessor.toBean(rset,User.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting user with: " + use);
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return user; 
 	}
 
 }

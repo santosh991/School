@@ -64,7 +64,7 @@ final String uuid = "4a053537-b2cb-429a-a95b-fb529f692a2e";
 private SubjectDAO store;
 
 	/**
-	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getSubject(java.lang.String)}.
+	 * Subject method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getSubject(java.lang.String)}.
 	 */
      @Ignore
 	@Test
@@ -80,6 +80,27 @@ private SubjectDAO store;
 		assertEquals(subject.getSubjectcategory(),SUB_CAT);
 		
 	}
+     
+     /**
+     * Subject method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getSubjects(java.lang.String)}.
+	 *
+     */
+   // @Ignore
+ 	@Test
+     public void testGetSubjects() {
+ 		store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+ 		
+ 		Subject subject = new Subject();
+ 		
+ 		subject = store.getSubjects(SUB_CODE);
+ 		assertEquals(subject.getUuid(),SUB_UUID);
+ 		assertEquals(subject.getSubjectcode(),SUB_CODE);
+ 		assertEquals(subject.getSubjectname(),SUB_NAME);
+ 		assertEquals(subject.getSubjectcategory(),SUB_CAT);
+ 		
+ 	}
+     
+     
 
 	/**
 	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getStudentSubject(java.lang.String)}.
@@ -175,7 +196,7 @@ private SubjectDAO store;
 	/**
 	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getAllStudent()}.
 	 */
-	// @Ignore
+	 @Ignore
 	@Test
 	public void testGetAllStudent() {
 		 store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

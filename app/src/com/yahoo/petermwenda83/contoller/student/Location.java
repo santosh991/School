@@ -9,7 +9,7 @@ package com.yahoo.petermwenda83.contoller.student;
  * @author peter
  *
  */
-public class Location extends Student {
+public class Location extends StudentSuper {
 
 	private String county;
 	private String location;

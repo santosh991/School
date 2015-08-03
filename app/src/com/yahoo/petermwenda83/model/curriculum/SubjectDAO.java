@@ -292,4 +292,30 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 		return list;
 	}
 
+	@Override
+	public Subject getSubjects(String subjectcode) {
+		Subject Subject = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE Subjectcode = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, subjectcode);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	Subject  = beanProcessor.toBean(rset,Subject.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting an subject with subjectcode: " + subjectcode);
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return Subject; 
+	}
 }

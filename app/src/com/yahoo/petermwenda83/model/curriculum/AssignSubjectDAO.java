@@ -24,6 +24,8 @@ public interface AssignSubjectDAO {
 	 * @return
 	 */
 	public  Subject getSubject(String uuid);
+	
+	public  Subject getSubjects(String subjectcode);
 
 	/**
 	 * 

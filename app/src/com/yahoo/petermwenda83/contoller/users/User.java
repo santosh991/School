@@ -3,26 +3,26 @@
  */
 package com.yahoo.petermwenda83.contoller.users;
 
-import com.yahoo.petermwenda83.contoller.staff.Employees;
+import com.yahoo.petermwenda83.contoller.AllBean;
 
 /**
  * @author peter
  *
  */
-public class User extends Employees {
+public class User extends AllBean {
 	 private String uuid;
 	 private String userType;
 	 private String username;
-	 private String passowrd;
+	 private String password;
 	/**
 	 *  
 	 */
 	public User() {
 		super();
-		uuid = "";
+	    uuid = "";
 	    userType  = "";
 	    username  = "";
-	    passowrd  = "";
+	    password  = "";
 	}
 	
 	/**
@@ -67,33 +67,31 @@ public class User extends Employees {
 		this.username = username;
 	}
 
+
 	/**
-	 * @return the passowrd
+	 * @return the password
 	 */
-	public String getPassowrd() {
-		return passowrd;
+	public String getPassword() {
+		return password;
 	}
 
 	/**
-	 * @param passowrd the passowrd to set
+	 * @param password the password to set
 	 */
-	public void setPassowrd(String passowrd) {
-		this.passowrd = passowrd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Users");
-		builder.append("[ id =");
-		builder.append(getId()); 
-		builder.append(", uuid =");
-		builder.append("uuid");
+		builder.append("User [ getUuid() =");
+		builder.append(getUuid());
 		builder.append(", userType =");
-		builder.append("userType");
+		builder.append(userType);
 		builder.append(", username =");
-		builder.append("username");
-		builder.append(", passowrd =");
-		builder.append("passowrd");
+		builder.append(username);
+		builder.append(", password =");
+		builder.append(password);
 		builder.append("]");
 		return builder.toString(); 
 		}

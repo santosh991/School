@@ -5,7 +5,8 @@ package com.yahoo.petermwenda83.model.user;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.contoller.user.User;
+import com.yahoo.petermwenda83.contoller.users.User;
+
 
 /**
  * @author peter
@@ -18,6 +19,13 @@ public interface SystemUsersDAO {
 	 * @return
 	 */
 	public User getUser(String Uuid);
+	 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public User getUserName(User user); 
 	
 	/**
 	 * @param user

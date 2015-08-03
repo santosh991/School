@@ -5,13 +5,13 @@ package com.yahoo.petermwenda83.contoller.money;
 
 import java.util.Date;
 
-import com.yahoo.petermwenda83.contoller.student.Student;
+import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 
 /**
  * @author peter
  *
  */
-public class Deposit extends Student {
+public class Deposit extends StudentSuper {
 	 private String	uuid;
 	 private String studentUuid; 
      private double  ammount; 

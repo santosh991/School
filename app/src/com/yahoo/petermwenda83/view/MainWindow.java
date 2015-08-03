@@ -5,8 +5,8 @@
  */
 package com.yahoo.petermwenda83.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -25,7 +24,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+
+import com.yahoo.petermwenda83.view.exam.ExamView;
+import com.yahoo.petermwenda83.view.subject.SubjectView;
+
 /**
  * @author peter
  * @author <h1>mwendapeter72@gmail.com </h1>
@@ -38,14 +42,20 @@ public class MainWindow extends JFrame implements WindowListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -3543603760216095482L;
-	private JMenu mnuManage,mnuExamination;
+	private JMenu mnuUsers,mnuExamination,mnuStudents,mnuSubjects,mnuReports;
     private JMenuItem mnuUser,nmuTeacher,mnuNonTeaching,mnuExit;
-    private JMenuItem mnuExam; 
-    private JLabel welcome = new JLabel("Welcome:  Today is " + new java.util.Date() + "  Peter and Migwi S/W DEV ", JLabel.CENTER);
+    private JMenuItem mnuMain; 
+    private JMenuItem mnuStudent;
+    private JMenuItem mnuSubject;
+    private JMenuItem mnuReportForm,mnuMeritList;
+    private JPanel panel;
+    private JLabel welcome;
     public static JDesktopPane desktop;
     public JButton NewJButton;
-	
-	
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    
+    
+   
 	/**
 	 * 
 	 */
@@ -58,26 +68,57 @@ public class MainWindow extends JFrame implements WindowListener {
         this.setLocation(0, 0);
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         this.addWindowListener(this);
-
+     
+         
+          
+          
+        	 welcome  = new JLabel("Welcome Today is " + new java.util.Date(), JLabel.CENTER);
+        
+        
+        
+        panel = new JPanel();
+        panel.setLayout(null);
+       
+        panel.setSize((screen.width), 100); 
+        panel.setLocation(0, 600); 
+       
+        welcome.setBounds(0, 20,(screen.width), 30);
+        
+        panel.setBackground(Color.MAGENTA); 
+     
+        
         welcome.setFont(new Font("monospaced", Font.PLAIN, 12));
         welcome.setForeground(Color.blue);
+        
         desktop = new JDesktopPane();
-        desktop.setBorder(BorderFactory.createEmptyBorder());
+        desktop.setLayout(null);
+        desktop.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        desktop.setLocation((screen.width - 500) / 2, ((screen.height - 350) / 2));
+        desktop.setBackground(Color.CYAN); 
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-        getContentPane().add(welcome, BorderLayout.PAGE_END, JLabel.CENTER);
-        getContentPane().add(desktop, BorderLayout.CENTER);
+        
+        panel.add(welcome); 
+        
+        getContentPane().add(panel);
+      
+       // getContentPane().add(welcome);
+        
+        getContentPane().add(desktop);
+        
+       // getContentPane().add(welcome, BorderLayout.PAGE_END, JLabel.CENTER);
+       // getContentPane().add(desktop, BorderLayout.CENTER);
 
         setVisible(true);
 	}
 	
 	protected JMenuBar CreateJMenuBar() {
         JMenuBar menubar = new JMenuBar();
-        /**********CREATING Principal MENU***********************/
-        mnuManage = new JMenu("Principal");
-        mnuManage.setForeground((Color.blue));
-        mnuManage.setFont(new Font("monospaced", Font.PLAIN, 12));
-        mnuManage.setMnemonic('P');
-        mnuManage.setEnabled(false);
+        /**********CREATING Manage User MENU***********************/
+        mnuUsers = new JMenu("System Users");
+        mnuUsers.setForeground((Color.blue));
+        mnuUsers.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuUsers.setMnemonic('P');
+        mnuUsers.setEnabled(false);
 
         mnuUser = new JMenuItem("Manage Users");
         mnuUser.setForeground(Color.blue);
@@ -111,14 +152,14 @@ public class MainWindow extends JFrame implements WindowListener {
         mnuExit.setActionCommand("exit");
         mnuExit.addActionListener(menulistener);
         
-        mnuManage.add(mnuUser);
-        mnuManage.addSeparator();
-        mnuManage.add(nmuTeacher);
-        mnuManage.addSeparator();
-        mnuManage.add(mnuNonTeaching);
-        mnuManage.addSeparator();
-        mnuManage.add(mnuExit);
-        menubar.add(mnuManage);
+        mnuUsers.add(mnuUser);
+        mnuUsers.addSeparator();
+        mnuUsers.add(nmuTeacher);
+        mnuUsers.addSeparator();
+        mnuUsers.add(mnuNonTeaching);
+        mnuUsers.addSeparator();
+        mnuUsers.add(mnuExit);
+        menubar.add(mnuUsers);
         
         /**********CREATING Examination MENU***********************/
         mnuExamination = new JMenu("Examination");
@@ -126,19 +167,86 @@ public class MainWindow extends JFrame implements WindowListener {
         mnuExamination.setFont(new Font("monospaced", Font.PLAIN, 12));
         mnuExamination.setMnemonic('E');
         mnuExamination.setEnabled(false);
+       
+        mnuMain = new JMenuItem("Manage Main Exams");
+        mnuMain.setForeground(Color.blue);
+        mnuMain.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuMain.setMnemonic('M');
+        mnuMain.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
+        mnuMain.setActionCommand("mnuMain");
+        mnuMain.addActionListener(menulistener);
         
-        mnuExam = new JMenuItem("Manage Main Exams");
-        mnuExam.setForeground(Color.blue);
-        mnuExam.setFont(new Font("monospaced", Font.PLAIN, 12));
-        mnuExam.setMnemonic('I');
-        mnuExam.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
-        mnuExam.setActionCommand("newuser");
-        mnuExam.addActionListener(menulistener);
-        
-        mnuExamination.add(mnuExam);
+        mnuExamination.add(mnuMain);
         menubar.add(mnuExamination);
         
+       
+        /**********CREATING Students MENU***********************/
+        mnuStudents = new JMenu("Students");
+        mnuStudents.setForeground((Color.blue));
+        mnuStudents.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuStudents.setMnemonic('K');
+        mnuStudents.setEnabled(false);
         
+        
+        mnuStudent = new JMenuItem("Manage Students");
+        mnuStudent.setForeground(Color.blue);
+        mnuStudent.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuStudent.setMnemonic('S');
+        mnuStudent.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        mnuStudent.setActionCommand("mnuStudent");
+        mnuStudent.addActionListener(menulistener);
+        
+        mnuStudents.add(mnuStudent);
+        menubar.add(mnuStudents);
+        
+        /**********CREATING Subjects MENU***********************/
+        mnuSubjects = new JMenu("Subjects");
+        mnuSubjects.setForeground((Color.blue));
+        mnuSubjects.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuSubjects.setMnemonic('Z');
+        mnuSubjects.setEnabled(false);
+        
+        
+        mnuSubject = new JMenuItem("Manage Subjects");
+        mnuSubject.setForeground(Color.blue);
+        mnuSubject.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuSubject.setMnemonic('J');
+        mnuSubject.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, ActionEvent.CTRL_MASK));
+        mnuSubject.setActionCommand("mnuSubject");
+        mnuSubject.addActionListener(menulistener);
+        
+        mnuSubjects.add(mnuSubject);
+        menubar.add(mnuSubjects);
+        
+        /**********CREATING Reports MENU***********************/
+        mnuReports = new JMenu("Reports");
+        mnuReports.setForeground((Color.blue));
+        mnuReports.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuReports.setMnemonic('O');
+        mnuReports.setEnabled(false);
+        
+        //mnuReportForm,mnuMeritList;
+        mnuReportForm = new JMenuItem("Report Forms");
+        mnuReportForm.setForeground(Color.blue);
+        mnuReportForm.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuReportForm.setMnemonic('F');
+        mnuReportForm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        mnuReportForm.setActionCommand("mnuReportForm");
+        mnuReportForm.addActionListener(menulistener);
+        
+        
+        mnuMeritList = new JMenuItem("Merit Lists");
+        mnuMeritList.setForeground(Color.blue);
+        mnuMeritList.setFont(new Font("monospaced", Font.PLAIN, 12));
+        mnuMeritList.setMnemonic('L');
+        mnuMeritList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+        mnuMeritList.setActionCommand("mnuMeritList");
+        mnuMeritList.addActionListener(menulistener);
+        
+        mnuReports.add(mnuReportForm);
+        mnuReports.addSeparator();
+        mnuReports.add(mnuMeritList);
+        menubar.add(mnuReports);
         
 
         return menubar;
@@ -147,7 +255,15 @@ public class MainWindow extends JFrame implements WindowListener {
 		 public void actionPerformed(ActionEvent e) {
 			 String ActCmd = e.getActionCommand();
 			 if (ActCmd.equalsIgnoreCase("exit")) {
-	                ConfirmExit();
+	                ConfirmExit();//
+	            }  else if (ActCmd.equalsIgnoreCase("mnuSubject")) {
+	            	SubjectView frm = new SubjectView();
+	                desktop.add(frm);
+	                frm.setVisible(true);
+	            } else if (ActCmd.equalsIgnoreCase("mnuMain")) {
+	            	ExamView frm = new ExamView(); 
+	                desktop.add(frm);
+	                frm.setVisible(true);
 	            } 
 		 }
 	 };
@@ -244,42 +360,59 @@ public class MainWindow extends JFrame implements WindowListener {
         return false;
     }//isLoaded() closed
 	
-
 	public void LoginManager() {
-		mnuManage.setEnabled(true);
+		mnuUsers.setEnabled(true);
 		mnuExamination.setEnabled(true);
+		mnuStudents.setEnabled(true);
+		mnuSubjects.setEnabled(true);
+		mnuReports.setEnabled(true);
 	      
 		
 	}
 
 	@SuppressWarnings("deprecation")
 	public void LoginSecretary() {
-		mnuManage.hide();
+		mnuUsers.hide();
 		mnuExamination.hide(); 
+		mnuStudents.setEnabled(true);
+		mnuSubjects.hide(); 
+		mnuReports.hide(); 
 		
 	}
 	@SuppressWarnings("deprecation")
 	public void LoginTeacher() {
-		mnuManage.hide();
+		mnuUsers.hide();
 		mnuExamination.setEnabled(true); 
+		mnuStudents.hide();
+		mnuSubjects.hide();
+		mnuReports.setEnabled(true);
 		
 	}
 	@SuppressWarnings("deprecation")
 	public void LoginHOD() {
-		mnuManage.hide();
+		mnuUsers.hide();
 		mnuExamination.setEnabled(true);
+		mnuStudents.hide();
+		mnuSubjects.setEnabled(true);
+		mnuReports.setEnabled(true);
 		
 	}
 	@SuppressWarnings("deprecation")
 	public void LoginCMaster() {
-		mnuManage.hide();
+		mnuUsers.hide();
 		mnuExamination.setEnabled(true);
+		mnuStudents.hide();
+		mnuSubjects.setEnabled(true);
+		mnuReports.setEnabled(true);
 		
 	}
 	@SuppressWarnings("deprecation")
 	public void LoginClerk() {
-		mnuManage.hide();
+		mnuUsers.hide();
 		mnuExamination.hide(); 
+		mnuStudents.setEnabled(true);
+		mnuSubjects.hide(); 
+		mnuReports.hide(); 
 		
 	}
 
