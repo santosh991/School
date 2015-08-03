@@ -24,9 +24,12 @@ public class TestUsresDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 
-	final String  USER_UUID = "730d418c-a50c-4d4c-ac8b-0d58714a8065";
-	final String  USER_USERNAME = "karani";
-	final String  USER_PASS = "karani";
+	final String  USER_UUID = "730d418c-a50c-4d4c-ac8b-0d58714a8065",
+			      USER_UUID_NEW = "678d418c-a50c-4d4c-ac8b-0d58714a8095";
+	final String  USER_USERNAME = "karani",
+			      USER_USERNAME_NEW = "kewuser";
+	final String  USER_PASS = "karani",
+			      USER_PASS_NEW = "newpas";
 	final String  USER_PYPE  = "Principal";
 
 
@@ -51,10 +54,16 @@ public class TestUsresDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.user.UsresDAO#editUser(com.yahoo.petermwenda83.contoller.users.User, java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testEditUser() {
-		fail("Not yet implemented");
+		store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		User user = new User();
+		user.setUuid(USER_UUID);
+		user.setPassword(USER_PASS);
+		user.setUserType(USER_PYPE);
+		user.setUsername(USER_USERNAME); 
+		assertTrue(store.editUser(user, USER_UUID));
 	}
 
 	/**
@@ -63,7 +72,13 @@ public class TestUsresDAO {
 	@Ignore
 	@Test
 	public void testPutUser() {
-		fail("Not yet implemented");
+		store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		User user = new User();
+		user.setUuid(USER_UUID_NEW);
+		user.setPassword(USER_PASS_NEW);
+		user.setUserType(USER_PYPE);
+		user.setUsername(USER_USERNAME_NEW); 
+		assertTrue(store.putUser(user));
 	}
 
 	/**
@@ -96,7 +111,7 @@ public class TestUsresDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.user.UsresDAO#getUserName(com.yahoo.petermwenda83.contoller.users.User)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetUserName() {
 		store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

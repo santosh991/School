@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.contoller.users.User;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
+import com.yahoo.petermwenda83.util.SecurityUtil;
 
 /**
  * @author peter
@@ -84,8 +85,31 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 */
 	@Override
 	public boolean editUser(User user, String Uuid) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		
+		  try (  Connection conn = dbutils.getConnection();
+        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Users SET userType=?, "
+        			+ "username=?, password=? WHERE Uuid = ?;");
+        	) {
+                
+	            pstmt.setString(1, user.getUserType());
+	            pstmt.setString(2, user.getUsername());
+	            pstmt.setString(3, SecurityUtil.getMD5Hash(user.getPassword()));
+	            pstmt.setString(4, Uuid);
+	            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception when updating SubjectUi with uuid " + user);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            success = false;
+        } 
+        
+		 
+		
+		
+		
+		
+		return success;
 	}
 
 	/**
@@ -93,8 +117,28 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 */
 	@Override
 	public boolean putUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		
+		  try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Users" 
+			        		+"(Uuid, userType, username, password) VALUES (?,?,?,?);");
+        		){
+			   
+	            pstmt.setString(1, user.getUuid());
+	            pstmt.setString(2, user.getUserType());
+	            pstmt.setString(3, user.getUsername());
+	            pstmt.setString(4, SecurityUtil.getMD5Hash(user.getPassword()));
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to put: "+user);
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             success = false;
+		 }
+		 
+		
+		
+		return success;
 	}
 
 	/* (non-Javadoc)

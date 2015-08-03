@@ -11,8 +11,6 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,6 +22,7 @@ import javax.swing.JTextField;
 
 import com.yahoo.petermwenda83.contoller.users.User;
 import com.yahoo.petermwenda83.model.user.UsresDAO;
+import com.yahoo.petermwenda83.util.SecurityUtil;
 import com.yahoo.petermwenda83.view.MainWindow;
 
 /**
@@ -41,7 +40,7 @@ public class LoginScreen extends JFrame{
  private JComboBox<String> box;
  Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
  private static UsresDAO userDAO;
- private static List<User> userList = new ArrayList<>();
+ //private static List<User> userList = new ArrayList<>();
  
 	/**
 	 * 
@@ -112,20 +111,26 @@ public class LoginScreen extends JFrame{
 	 
 	}
 	 
+	@SuppressWarnings("deprecation")
 	public void Login(){
 		
 		  User use = new User();
+		  //StringUtils.equals(SecurityUtil.getMD5Hash(password), use)
 	      use.setUsername(txtUser.getText()); 
 	      String usertyp = (String) box.getSelectedItem();
 	      use.setUserType(usertyp); 
-	      use.setPassword(Passwd.getText()); 
+	      String pass =SecurityUtil.getMD5Hash(Passwd.getText());  
+	      use.setPassword(pass);  
+	     
 	      boolean recordfound = userDAO.getUserName(use) != null;
 	    	 if(recordfound){	     
 	    	 this.dispose();
 	    	 LoadMDIWindow(); 
+	    	 
 	    }else{
 	    JOptionPane.showMessageDialog(null, "Wrong Credentials", "Error!!", JOptionPane.DEFAULT_OPTION);
 	    	// System.exit(0);
+	    System.out.println(pass); 
 	    }
 	    
 	}
@@ -159,7 +164,7 @@ public class LoginScreen extends JFrame{
                     txtUser.requestFocus();
                     return;
                 }
-                if (Passwd.getText() == null || Passwd.getText().equals("")) {
+                if (SecurityUtil.getMD5Hash(Passwd.getText()) == null || SecurityUtil.getMD5Hash(Passwd.getText()).equals("")) {
                     JOptionPane.showMessageDialog(null, "Enter password", "Missing field", JOptionPane.DEFAULT_OPTION);
                     Passwd.requestFocus();
                     return;
