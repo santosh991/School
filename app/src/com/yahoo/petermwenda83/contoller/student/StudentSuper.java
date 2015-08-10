@@ -11,23 +11,32 @@ public class StudentSuper extends AllBean{
 		private String surname;
 		private String admno;
 		private String form;
-		private String clasz;
-		private int year;		
+		private String year;		
 		private String DOB;
 		private String bcertno;
 		private Date admissiondate;
+		private String clasz;
+		private String subjectUuid;
+		private String StudenttUuid;
+		private String subjectcode;
+		
+		
 	
 	public StudentSuper() {
-		firstname = "";;
+		firstname = "";
 		lastname = "";
 		surname = "";
 		admno = "";
 		form = "";
-		clasz = "";
-		year = 0;
+		year = "";
 		DOB = "";
 		bcertno = "";
 		admissiondate = new Date();
+		clasz = "";
+		subjectUuid = "";
+		StudenttUuid = "";
+		subjectcode = "";
+		
 		
 	}
 
@@ -101,31 +110,18 @@ public class StudentSuper extends AllBean{
 		this.form = form;
 	}
 
-	/**
-	 * @return the clasz
-	 */
-	public String getClasz() {
-		return clasz;
-	}
-
-	/**
-	 * @param clasz the clasz to set
-	 */
-	public void setClasz(String clasz) {
-		this.clasz = clasz;
-	}
 
 	/**
 	 * @return the year
 	 */
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 
 	/**
 	 * @param year the year to set
 	 */
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 
@@ -170,6 +166,63 @@ public class StudentSuper extends AllBean{
 	public void setAdmissiondate(Date admissiondate) {
 		this.admissiondate = admissiondate;
 	}
-	 
+
+	/**
+	 * @return the clasz
+	 */
+	public String getClasz() {
+		return clasz;
+	}
+
+	/**
+	 * @param clasz the clasz to set
+	 */
+	public void setClasz(String clasz) {
+		this.clasz = clasz;
+	}
+
+	/**
+	 * @return the subjectUuid
+	 */
+	public String getSubjectUuid() {
+		return subjectUuid;
+	}
+
+	/**
+	 * @param subjectUuid the subjectUuid to set
+	 */
+	public void setSubjectUuid(String subjectUuid) {
+		this.subjectUuid = subjectUuid;
+	}
+
+	/**
+	 * @return the studenttUuid
+	 */
+	public String getStudentUuid() {
+		return StudenttUuid;
+	}
+
+	/**
+	 * @param studenttUuid the studenttUuid to set
+	 */
+	public void setStudentUuid(String studenttUuid) {
+		StudenttUuid = studenttUuid;
+	}
+
+	/**
+	 * @return the subjectcode
+	 */
+	public String getSubjectcode() {
+		return subjectcode;
+	}
+
+	/**
+	 * @param subjectcode the subjectcode to set
+	 */
+	public void setSubjectcode(String subjectcode) {
+		this.subjectcode = subjectcode;
+	}
+
+	
 	
 } 

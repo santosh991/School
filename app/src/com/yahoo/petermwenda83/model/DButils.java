@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-
+/**
+ * 
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ *
+ */
 
 public class DButils {
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -26,6 +30,13 @@ public class DButils {
 		databasePort=5432;
 	}
 	
+	/**
+	 * @param databaseName
+	 * @param Host
+	 * @param databaseUsername
+	 * @param databasePassword
+	 * @param databasePort
+	 */
 	public DButils(String databaseName,String Host,String databaseUsername ,
 			String databasePassword,int databasePort){
 		this.databaseName = databaseName;
@@ -36,6 +47,10 @@ public class DButils {
 	}
 
 
+	/**
+	 * @return con
+	 * @throws SQLException
+	 */
 	public Connection getConnection() throws SQLException{
 		Connection con = null;
 		try{

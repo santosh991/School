@@ -10,6 +10,8 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.yahoo.petermwenda83.contoller.student.House;
+import com.yahoo.petermwenda83.contoller.student.Location;
 import com.yahoo.petermwenda83.contoller.student.Student;
 
 /**
@@ -17,6 +19,7 @@ import com.yahoo.petermwenda83.contoller.student.Student;
  *
  */
 public class TestRegistrationDAO {
+
 	final String databaseName = "allamanodb";
 	final String Host = "localhost";
 	final String databaseUsername = "allamano";
@@ -25,15 +28,15 @@ public class TestRegistrationDAO {
 	
 	
 	
-	private  RegistrationDAO store;
-
+	
+	private RegistrationDAO store;
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#getStudent(java.lang.String)}.
 	 */
 	@Ignore
 	@Test
 	public void testGetStudent() {
-	store = new RegistrationDAO	(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
@@ -43,6 +46,7 @@ public class TestRegistrationDAO {
 	@Ignore
 	@Test
 	public void testGetStudentsString() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
@@ -52,130 +56,144 @@ public class TestRegistrationDAO {
 	@Ignore
 	@Test
 	public void testGetStudentsStudent() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Activity)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Activity)}.
 	 */
 	@Ignore
 	@Test
-	public void testPutStudentStudentActivity() {
+	public void testPutStudentActivity() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.House)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.House)}.
 	 */
 	@Ignore
 	@Test
-	public void testPutStudentStudentHouse() {
+	public void testPutStudentHouse() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Location)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Location)}.
 	 */
 	@Ignore
 	@Test
-	public void testPutStudentStudentLocation() {
+	public void testPutStudentLocation() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
 	 */
 	@Ignore
 	@Test
-	public void testPutStudentStudentStudentSubject() {
+	public void testPutStudentStudentSubject() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Activity)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Activity)}.
 	 */
 	@Ignore
 	@Test
-	public void testEditStudentStudentActivity() {
+	public void testEditStudentActivity() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.House)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.House)}.
 	 */
 	@Ignore
 	@Test
-	public void testEditStudentStudentHouse() {
+	public void testEditStudentHouse() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Location)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Location)}.
 	 */
 	@Ignore
 	@Test
-	public void testEditStudentStudentLocation() {
+	public void testEditStudentLocation() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
 	 */
 	@Ignore
 	@Test
-	public void testEditStudentStudentStudentSubject() {
+	public void testEditStudentStudentSubject() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Activity)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Activity)}.
 	 */
 	@Ignore
 	@Test
-	public void testDeleteStudentStudentActivity() {
+	public void testDeleteStudentActivity() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.House)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.House)}.
 	 */
 	@Ignore
 	@Test
-	public void testDeleteStudentStudentHouse() {
+	public void testDeleteStudentHouse() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.Location)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Location)}.
 	 */
 	@Ignore
 	@Test
-	public void testDeleteStudentStudentLocation() {
+	public void testDeleteStudentLocation() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Student, com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
+	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
 	 */
 	@Ignore
 	@Test
-	public void testDeleteStudentStudentStudentSubject() {
+	public void testDeleteStudentStudentSubject() {
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#getAllStudents()}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAllStudents() {
-		store = new RegistrationDAO	(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Student> list = store.getAllStudents();
-		//assertEquals(list.size(), 6);
-		System.out.println(list);
-		for(Student s : list){
-			System.out.println(s);
-		}
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 List<Student> list = store.getAllStudents();	
+			//assertEquals(list.size(), 6); 
+			//System.out.println(list);
+			for (Student l : list) {
+				System.out.println(l);
+				
+			}
 	}
 
 	/**
@@ -184,16 +202,30 @@ public class TestRegistrationDAO {
 	@Ignore
 	@Test
 	public void testGetAllHouse() {
-		fail("Not yet implemented");
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 List<House> list = store.getAllHouse();	 
+			//assertEquals(list.size(), 6);
+			//System.out.println(list);
+			for (House l : list) {
+				System.out.println(l);
+				
+			}
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.registration.RegistrationDAO#getAllLocation()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllLocation() {
-		fail("Not yet implemented");
+		 store = new RegistrationDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 List<Location> list = store.getAllLocation();	 
+			//assertEquals(list.size(), 6);
+			//System.out.println(list);
+			for (Location l : list) {
+				System.out.println(l);
+				
+			}
 	}
 
 }

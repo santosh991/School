@@ -14,7 +14,7 @@ public class ExamType extends Exam{
 	private String year ;
 	private String term ;
 	private String clasz ;
-	private int outof ;
+	private String outof ;
 	private String description ; //CAT1,CAT2,CAT3 ,MAIN1,MOCK1 etc
 	private String examno;
 	/**
@@ -27,7 +27,7 @@ public class ExamType extends Exam{
 		term = "";
 		year = "";
 		clasz = "";
-		outof = 0;
+		outof = "";
 		description = "";
 		examno = "";
 	}
@@ -91,14 +91,14 @@ public class ExamType extends Exam{
 	/**
 	 * @return the outof
 	 */
-	public int getOutof() {
+	public String getOutof() {
 		return outof;
 	}
 
 	/**
 	 * @param outof the outof to set
 	 */
-	public void setOutof(int outof) {
+	public void setOutof(String outof) {
 		this.outof = outof;
 	}
 

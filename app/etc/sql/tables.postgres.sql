@@ -30,7 +30,7 @@ CREATE DATABASE allamanodb;
 CREATE TABLE subject (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    subjectcode text UNIQUE NOT NULL,
+    subjectcode text UNIQUE ,
     subjectname text,
     subjectcategory text
 );
@@ -52,19 +52,17 @@ ALTER TABLE subject OWNER TO allamano;
 CREATE TABLE student(
     id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    firstname text NOT NULL,
-    lastname text NOT NULL,
-    surname text NOT NULL,
-    admno text NOT NULL,
-    form text ,
-    class text ,
+    firstname text ,
+    lastname text ,
+    surname text ,
+    admno text ,
     year text ,
     dob text,
     bcertno text,
     admissiondate timestamp with time zone 
 );
 
-\COPY student(uuid, firstname, lastname,surname,admno,form,class,year,dob,bcertno,admissiondate) FROM '/tmp/Students.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY student(uuid, firstname, lastname,surname,admno,year,dob,bcertno,admissiondate) FROM '/tmp/Students.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student OWNER TO allamano;
 
 
@@ -76,10 +74,11 @@ CREATE TABLE student_subject (
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    subjectcode text  REFERENCES subject(subjectcode)
+    subjectcode text  REFERENCES subject(subjectcode),
+    clasz text 
 );
 
-\COPY student_subject(uuid,studentUuid,subjectUuid,subjectcode) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY student_subject(uuid,studentUuid,subjectUuid,subjectcode,clasz) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student_subject OWNER TO allamano;
 
 
@@ -121,16 +120,16 @@ CREATE TABLE student_parent (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
-    fatherName text NOT NULL,
-    fatherPhone text NOT NULL,
+    fatherName text ,
+    fatherPhone text ,
     fatherOccupation text,
-    fatherID Integer UNIQUE NOT NULL,
+    fatherID text UNIQUE ,
     fatherEmail text,
-    motherName text NOT NULL,
-    motherPhone text NOT NULL,
+    motherName text ,
+    motherPhone text ,
     motherOccupation text,
     motherEmail text,
-    motherID Integer UNIQUE NOT NULL,
+    motherID text UNIQUE,
     relationship text
 );
 \COPY student_parent(uuid,studentUuid,fatherName,fatherPhone,fatherOccupation,fatherID,fatherEmail,motherName,motherPhone,motherOccupation,motherEmail,motherID,relationship) FROM '/tmp/Student_Parent.csv' WITH DELIMITER AS '|' CSV HEADER
@@ -148,7 +147,7 @@ CREATE TABLE student_relative (
     studentUuid text REFERENCES student(uuid),
     relativeName text,
     relativePhone text,
-    nationalID Integer UNIQUE NOT NULL
+    nationalID text UNIQUE
 );
 \COPY student_relative(uuid,studentUuid,relativeName,relativePhone,nationalID) FROM '/tmp/Student_Relative.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student_relative OWNER TO allamano;
@@ -164,7 +163,7 @@ CREATE TABLE student_sponsor (
     studentUuid text REFERENCES student(uuid),
     sponsorName text,
     sponsorPhone text,
-    nationalID Integer UNIQUE NOT NULL,
+    nationalID text UNIQUE,
     sponsorOccupation text,
     sponsorCoutry text,
     sponsorCounty text
@@ -210,11 +209,14 @@ CREATE TABLE studentprimary (
     studentUuid text REFERENCES student(uuid),
     schoolname text,
     index text,
-    KcpeYear Integer NOT NULL,
+    KcpeYear text ,
     KcpeMarks text
 );
 \COPY studentprimary(uuid,studentUuid,schoolname,index,KcpeYear,KcpeMarks) FROM '/tmp/StudentPrimary.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE studentprimary OWNER TO allamano;
+
+
+
 
 
 -- ======================
@@ -233,9 +235,9 @@ CREATE TABLE  exam_type (
     term text,
     year text,
     clasz text,
-    outof integer,
+    outof text,
     description text,
-    examno text UNIQUE NOT NULL
+    examno text
    
 );
 
@@ -252,7 +254,7 @@ CREATE TABLE  exam_marks (
     studentUuid text REFERENCES student(uuid),
     examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    marks Float ,
+    marks text ,
     submitdate timestamp with time zone
    
    
@@ -270,10 +272,10 @@ ALTER TABLE exam_marks OWNER TO allamano;
     uuid text UNIQUE NOT NULL,
     subjectUuid text REFERENCES subject(uuid),
     studentUuid text REFERENCES student(uuid),
-    total Float  ,
-    points Float,
+    total text  ,
+    points text,
     grade text,
-    position integer,
+    position text,
     remarks text,
     submitdate timestamp with time zone
    
@@ -299,7 +301,7 @@ CREATE TABLE  catmarks (
     studentUuid text REFERENCES student(uuid),
     examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    marks Float,
+    marks text,
     submitdate timestamp with time zone
    
    
@@ -317,10 +319,10 @@ ALTER TABLE catmarks OWNER TO allamano;
     uuid text UNIQUE NOT NULL,
     subjectUuid text REFERENCES subject(uuid),
     studentUuid text REFERENCES student(uuid),
-    total Float,
-    points Float,
+    total text,
+    points text,
     grade text,
-    position integer,
+    position text,
     remarks text, 
     submitdate timestamp with time zone
    
@@ -359,7 +361,7 @@ CREATE TABLE teacher (
     nssfno text UNIQUE,
     phone text UNIQUE,
     dob text,
-    nationalID Integer UNIQUE NOT NULL,
+    nationalID text UNIQUE ,
     teacherNumber text UNIQUE,
     county text,
     location text
@@ -400,7 +402,7 @@ CREATE TABLE ntstaff (
     surname text,
     dob text,
     phone text,
-    nationalID Integer UNIQUE NOT NULL,
+    nationalID text UNIQUE ,
     county text,
     location text,
     sublocation text
@@ -451,7 +453,7 @@ CREATE TABLE money (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
-    ammount Float NOT NULL CHECK (ammount>=0),
+    ammount integer NOT NULL CHECK (ammount>=0),
     depositedate timestamp with time zone 
 
 );
@@ -466,7 +468,7 @@ CREATE TABLE  balance (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
-    balance Float NOT NULL CHECK (balance>=0),
+    balance integer NOT NULL CHECK (balance>=0),
     withdrawdate timestamp with time zone 
 
 );
@@ -488,8 +490,8 @@ CREATE TABLE  users (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     userType text,
-    username text NOT NULL,
-    password text NOT NULL
+    username text UNIQUE,
+    password text 
 
 );
 \COPY users(uuid,userType,username,password) FROM '/tmp/Users.csv' WITH DELIMITER AS '|' CSV HEADER

@@ -3,38 +3,26 @@
  */
 package com.yahoo.petermwenda83.contoller.student;
 
-import com.yahoo.petermwenda83.contoller.AllBean;
 
 
 /**
  * @author peter
  *
  */
-public class Subject extends AllBean{
-	private String subjectcode;
+public class Subject extends StudentSuper{
+	
 	private String subjectname;
 	private String subjectcategory;
 	
+	
     public Subject(){
     	super();
-    	subjectcode = "";
+    	
     	subjectname = "";
     	subjectcategory = "";
+    	
 	}
 
-	/**
-	 * @return the subjectcode
-	 */
-	public String getSubjectcode() {
-		return subjectcode;
-	}
-
-	/**
-	 * @param subjectcode the subjectcode to set
-	 */
-	public void setSubjectcode(String subjectcode) {
-		this.subjectcode = subjectcode;
-	}
 
 	/**
 	 * @return the subjectname
@@ -68,8 +56,8 @@ public class Subject extends AllBean{
 		StringBuilder builder = new StringBuilder();
 		builder.append("SubjectUi [ getUuid() =");
 		builder.append(getUuid());
-		builder.append("subjectcode=");
-		builder.append(subjectcode);
+		builder.append("getSubjectcode()=");
+		builder.append(getSubjectcode());
 		builder.append(", subjectname =");
 		builder.append(subjectname);
 		builder.append("subjectcategory=");

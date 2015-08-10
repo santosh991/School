@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import org.junit.Test;
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 

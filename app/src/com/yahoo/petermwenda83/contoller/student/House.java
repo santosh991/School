@@ -21,22 +21,6 @@ public class House extends StudentSuper  {
 	
 	
 	/**
-	 * @return the studentUuid
-	 */
-	public String getStudentUuid() {
-		return getStudentUuid();
-	}
-
-
-	/**
-	 * @param studentUuid the studentUuid to set
-	 */
-	public void setStudentUuid(String studentUuid) {
-		setStudentUuid(studentUuid);
-	}
-
-
-	/**
 	 * @return the housename
 	 */
 	public String getHousename() {
@@ -60,7 +44,7 @@ public class House extends StudentSuper  {
 		builder.append(", getStudentUuid() =");
 		builder.append(getStudentUuid());
 		builder.append(", housename =");
-		builder.append("housename");
+		builder.append(housename);
 		builder.append("]");
 		return builder.toString(); 
 		}

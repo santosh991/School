@@ -11,7 +11,6 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  */
 public class NTstaff extends Employees{
 	
-	private String NTstaffUuid;
 	
 	/**
 	 * 
@@ -19,7 +18,21 @@ public class NTstaff extends Employees{
 	public NTstaff() {
 		super();
 		
-		NTstaffUuid = "";
+		
+	}
+
+	/**
+	 * @return the nTstaffUuid
+	 */
+	public String getNTstaffUuid() {
+		return getEmployeeUuid();
+	}
+
+	/**
+	 * @param nTstaffUuid the nTstaffUuid to set
+	 */
+	public void setNTstaffUuid(String nTstaffUuid) {
+		setEmployeeUuid(nTstaffUuid);
 	}
 
 	public String toString() {
@@ -27,8 +40,8 @@ public class NTstaff extends Employees{
 		builder.append("Nonteaching staff");
 		builder.append("[ id =");
 		builder.append(getId()); 
-		builder.append(", NTstaffUuid =");
-		builder.append(NTstaffUuid);	
+		builder.append(",getNTstaffUuid() =");
+		builder.append(getNTstaffUuid());	
 		builder.append(", getFirstName() =");
 		builder.append(getFirstName());		
 		builder.append(", getLastName() =");
@@ -50,5 +63,6 @@ public class NTstaff extends Employees{
 		builder.append("]"); 
 		return builder.toString();
 	}
+
 
 }

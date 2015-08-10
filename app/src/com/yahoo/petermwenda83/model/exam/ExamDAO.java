@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -23,11 +24,10 @@ import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
 import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 import com.yahoo.petermwenda83.contoller.student.Subject;
+import com.yahoo.petermwenda83.contoller.users.User;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
@@ -37,7 +37,7 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
 	/**
-	 * @return 
+	 * @return examDAO
 	 * 
 	 */
 	public static ExamDAO getInstance() {
@@ -232,7 +232,7 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 	            pstmt.setString(3, examType.getTerm());
 	            pstmt.setString(4, examType.getYear());
 	            pstmt.setString(5, examType.getClasz());
-	            pstmt.setInt(6, examType.getOutof());
+	            pstmt.setString(6, examType.getOutof());
 	            pstmt.setString(7, examType.getDescription());
 	            pstmt.setString(8, examType.getExamno());
 	            pstmt.executeUpdate();
@@ -267,7 +267,7 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 	            pstmt.setString(2, exam.getStudentUuid());
 	            pstmt.setString(3, exam.getExamTypeUuid());
 	            pstmt.setString(4, exam.getSubjectUuid());
-	            pstmt.setDouble(5, exam.getMarks());
+	            pstmt.setString(5, exam.getMarks());
 	            pstmt.setTimestamp(6,  new Timestamp(exam.getSubmitdate().getTime()));
 	            
 	            pstmt.executeUpdate();
@@ -276,7 +276,7 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		            pstmt2.setString(2, exam.getStudentUuid());
 		            pstmt2.setString(3, exam.getExamTypeUuid());
 		            pstmt2.setString(4, exam.getSubjectUuid());
-		            pstmt2.setDouble(5, exam.getMarks());
+		            pstmt2.setString(5, exam.getMarks());
 		            pstmt2.setTimestamp(6,  new Timestamp(exam.getSubmitdate().getTime()));
 		            
 		            pstmt2.executeUpdate(); 
@@ -309,10 +309,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 	            pstmt.setString(1, catr.getUuid());
 	            pstmt.setString(2, exam.getSubjectUuid());
 	            pstmt.setString(3, exam.getStudentUuid());
-	            pstmt.setDouble(4, exam.getTotal());
-	            pstmt.setDouble(5, exam.getPoints());
+	            pstmt.setString(4, exam.getTotal());
+	            pstmt.setString(5, exam.getPoints());
 	            pstmt.setString(6, exam.getGrade());
-	            pstmt.setInt(7, exam.getPosition()); 
+	            pstmt.setString(7, exam.getPosition()); 
 	            pstmt.setString(8, exam.getRemarks());
 	            pstmt.setTimestamp(9,  new Timestamp(exam.getSubmitdate().getTime()));
 	            
@@ -321,10 +321,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 				    pstmt2.setString(1, mainr.getUuid());
 				    pstmt2.setString(2, exam.getSubjectUuid());
 		            pstmt2.setString(3, exam.getStudentUuid());
-		            pstmt2.setDouble(4, exam.getTotal());
-		            pstmt2.setDouble(5, exam.getPoints());
+		            pstmt2.setString(4, exam.getTotal());
+		            pstmt2.setString(5, exam.getPoints());
 		            pstmt2.setString(6, exam.getGrade());
-		            pstmt2.setInt(7, exam.getPosition()); 
+		            pstmt2.setString(7, exam.getPosition()); 
 		            pstmt2.setString(8, exam.getRemarks());
 		            pstmt2.setTimestamp(9,  new Timestamp(exam.getSubmitdate().getTime()));
 		            
@@ -355,7 +355,7 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		            pstmt.setString(2, type.getTerm());
 		            pstmt.setString(3, type.getYear());
 		            pstmt.setString(4, type.getClasz());
-		            pstmt.setInt(5, type.getOutof()); 
+		            pstmt.setString(5, type.getOutof()); 
 		            pstmt.setString(6, type.getDescription());
 		            pstmt.setString(7, type.getExamno());
 		            pstmt.setString(8, Uuid);
@@ -384,14 +384,14 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 						+ " WHERE Studentuuid = ? AND Subjectuuid = ? ;");
         		){
 			  if(exam instanceof CatMarks ){
-	            pstmt.setDouble(1, exam.getMarks());
+	            pstmt.setString(1, exam.getMarks());
 	            pstmt.setTimestamp(2, new Timestamp(exam.getSubmitdate().getTime()));
 	            pstmt.setString(3, studentSuper.getUuid());
 	            pstmt.setString(4, subject.getUuid());
 	            
 	            pstmt.executeUpdate();
 			  }else{         //Main marks
-				    pstmt2.setDouble(1, exam.getMarks());
+				    pstmt2.setString(1, exam.getMarks());
 		            pstmt2.setTimestamp(2, new Timestamp(exam.getSubmitdate().getTime()));
 		            pstmt2.setString(3, studentSuper.getUuid());
 		            pstmt2.setString(4, subject.getUuid());
@@ -409,7 +409,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 	}
 
 	
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#deleteExamType(com.yahoo.petermwenda83.contoller.exam.ExamType)
+	 */
 	public boolean deleteExamType(ExamType type) {
 		
 		  boolean success = true; 
@@ -445,7 +448,10 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
 		return false;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.TeacherExamDAO#getExamTypes(java.lang.String)
+	 */
 	public ExamType getExamTypes(String examno) {
 		 ExamType examType = null;
          ResultSet rset = null;
@@ -470,6 +476,56 @@ public class ExamDAO extends DBConnectDAO  implements TeacherExamDAO {
       }
 	return examType;
       
+	}
+
+	@Override
+	public ExamType get(String examtype, String clasz, String description) {
+		 ExamType examType = null;
+         ResultSet rset = null;
+      try(
+      		 Connection conn = dbutils.getConnection();
+         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM exam_type "
+         	      		+ "WHERE examtype = ? AND clasz =? AND description =? ;");       
+      		
+      		){
+      	
+      	 pstmt.setString(1, examtype);
+      	 pstmt.setString(2, clasz);
+      	 pstmt.setString(3, description);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 examType  = beanProcessor.toBean(rset,ExamType.class);
+	   }
+      	
+      	
+      	
+      }catch(SQLException e){
+      	 logger.error("SQL Exception when getting ExamType with: "+examtype+" and "+clasz+" and "+description);
+           logger.error(ExceptionUtils.getStackTrace(e));
+      }
+	return examType;
+	}
+
+	@Override
+	public List<ExamType> getAllExamtype() {
+		List<ExamType> list = null;
+		try(   
+	      		Connection conn = dbutils.getConnection();
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM exam_type ;");   
+	      		ResultSet rset = pstmt.executeQuery();
+	  		) {
+	      	
+	          list = beanProcessor.toBeanList(rset, ExamType.class);
+
+	      } catch(SQLException e){
+	      	logger.error("SQL Exception when getting all ExamType");
+	          logger.error(ExceptionUtils.getStackTrace(e));
+	      }
+	    
+			
+		
+		return list;
 	}
 	
 

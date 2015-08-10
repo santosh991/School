@@ -15,11 +15,13 @@ public class Employees extends AllBean{
 	private String lastName;
 	private String surname;
 	private String phone;
-	private int nationalID;
+	private String nationalID;
 	private String	county; 
 	private String nhifno;
 	private String  nssfno;
 	private String DOB;
+	
+	private String	EmployeeUuid ;
 	
 /**
  * 
@@ -30,11 +32,13 @@ public class Employees extends AllBean{
 		lastName = "";
 		surname = "";
 		phone = "";
-		nationalID = 0;
+		nationalID = "";
 		county = "";
 		nhifno = "";
 		nssfno  = "";
 		DOB = "";
+		
+		EmployeeUuid ="";
 		
 	}
 /**
@@ -88,13 +92,13 @@ public void setPhone(String phone) {
 /**
  * @return the nationalID
  */
-public int getNationalID() {
+public String getNationalID() {
 	return nationalID;
 }
 /**
  * @param nationalID the nationalID to set
  */
-public void setNationalID(int nationalID) {
+public void setNationalID(String nationalID) {
 	this.nationalID = nationalID;
 }
 /**
@@ -144,6 +148,18 @@ public String getNssfno() {
  */
 public void setNssfno(String nssfno) {
 	this.nssfno = nssfno;
+}
+/**
+ * @return the employeeUuid
+ */
+public String getEmployeeUuid() {
+	return EmployeeUuid;
+}
+/**
+ * @param employeeUuid the employeeUuid to set
+ */
+public void setEmployeeUuid(String employeeUuid) {
+	EmployeeUuid = employeeUuid;
 }
 
 

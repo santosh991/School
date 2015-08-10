@@ -11,26 +11,26 @@ import com.yahoo.petermwenda83.contoller.student.Student;
 import com.yahoo.petermwenda83.contoller.student.StudentSubject;
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public interface StudentRegistrationDAO {
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * @return Student
 	 */
 	public Student getStudent(String uuid);
 	/**
 	 * 
 	 * @param admno
-	 * @return
+	 * @return Student
 	 */
 	public Student getStudents(String admno);
 	/**
 	 * 
 	 * @param studentSuper
-	 * @return
+	 * @return Student
 	 */
 	
 	public boolean getStudents(Student student);
@@ -38,95 +38,95 @@ public interface StudentRegistrationDAO {
 	 * 
 	 * @param studentSuper
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean putStudent(Student student,Activity activity);
+	public boolean putStudent(Activity activity);
 	/**
 	 * 
 	 * @param studentSuper
 	 * @param house
-	 * @return
+	 * 
 	 */
-	public boolean putStudent(Student studentSuper,House house);
+	public boolean putStudent(House house);
 	  /**
 	   * 
 	   * @param studentSuper
 	   * @param location
-	   * @return
+	   * 
 	   */
 	
-	public boolean putStudent(Student studentSuper,Location location);
+	public boolean putStudent(Location location);
 	
 	/**
 	 * 
 	 * @param studentSuper
 	 * @param stusubject
-	 * @return
+	 * 
 	 */
-	public boolean putStudent(Student studentSuper,StudentSubject stusubject);
+	public boolean putStudent(StudentSubject stusubject);
 	/**
 	 * 
 	 * @param studentSuper
-	 * @return
+	 * 
 	 */
-	public boolean editStudent(Student studentSuper,Activity activity);
+	public boolean editStudent(Activity activity);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param house
-	  * @return
+	  * 
 	  */
-	public boolean editStudent(Student studentSuper,House house);
+	public boolean editStudent(House house);
 	   /**
 	    * 
 	    * @param studentSuper
 	    * @param location
-	    * @return
+	    * 
 	    */
-	public boolean editStudent(Student studentSuper,Location location);
+	public boolean editStudent(Location location);
 	
 	/**
 	 * 
 	 * @param studentSuper
 	 * @param stusubject
-	 * @return
+	 * 
 	 */
-	public boolean  editStudent(Student studentSuper,StudentSubject stusubject);
+	public boolean  editStudent(StudentSubject stusubject);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean deleteStudent(Student studentSuper,Activity activity);
+	public boolean deleteStudent(Activity activity);
 	  /**
 	   * 
 	   * @param studentSuper
 	   * @param house
-	   * @return
+	   * 
 	   */
-	public boolean deleteStudent(Student studentSuper,House house);
+	public boolean deleteStudent(House house);
 	   /**
 	    * 
 	    * @param studentSuper
 	    * @param location
-	    * @return
+	    * 
 	    */
-	public boolean deleteStudent(Student studentSuper,Location location);
+	public boolean deleteStudent(Location location);
 	
 	/**
 	 * 
 	 * @param studentSuper
 	 * @param stusubject
-	 * @return
+	 * 
 	 */
-	public boolean deleteStudent(Student studentSuper,StudentSubject stusubject);
+	public boolean deleteStudent(StudentSubject stusubject);
 	   /**
-	    * @return
+	    * @return AllStudents
 	    */
 	public List<Student> getAllStudents();
 	    /**
 	     * 
-	     * @return
+	     * @return AllHouses
 	     */
 	public List<House> getAllHouse();
 	/**

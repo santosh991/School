@@ -11,104 +11,104 @@ import com.yahoo.petermwenda83.contoller.guardian.StudentSponser;
 import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public interface StudentParentsDAO {
     /**
      * 
      * @param uuid
-     * @return
+     * @return StudentParent
      */
 	public StudentParent getStudentParent(String uuid);
 	 /**
 	  * 
 	  * @param uuid
-	  * @return
+	  * @return StudentRelative
 	  */
 	public StudentRelative getStudentRelative(String uuid);
 	 /**
 	  * 
 	  * @param uuid
-	  * @return
+	  * @return StudentSponser
 	  */
 	public StudentSponser getStudentSponser(String uuid);
 	    /**
 	     * 
 	     * @param studentSuper
 	     * @param parent
-	     * @return
+	     *
 	     */
 	public boolean putStudentParent(StudentSuper studentSuper,StudentParent parent);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param relative
-	  * @return
+	  * 
 	  */
 	public boolean putStudentRelative(StudentSuper studentSuper,StudentRelative relative);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param sponser
-	  * @return
+	  *
 	  */
 	public boolean putStudentSponser(StudentSuper studentSuper, StudentSponser sponser);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param parent
-	  * @return
+	  * 
 	  */
 	public boolean ediStudentParent(StudentSuper studentSuper,StudentParent parent);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param relative
-	  * @return
+	  * 
 	  */
 	public boolean editStudentRelative(StudentSuper studentSuper,StudentRelative relative);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param sponser
-	  * @return
+	  * 
 	  */
 	public boolean editStudentSponser(StudentSuper studentSuper, StudentSponser sponser);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param parent
-	  * @return
+	  * 
 	  */
 	public boolean deleteStudentParent(StudentSuper studentSuper,StudentParent parent);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param relative
-	  * @return
+	  * 
 	  */
 	public boolean deleteStudentRelative(StudentSuper studentSuper,StudentRelative relative);
 	 /**
 	  * 
 	  * @param studentSuper
 	  * @param sponser
-	  * @return
+	  * 
 	  */
 	public boolean deleteStudentSponser(StudentSuper studentSuper, StudentSponser sponser);
 	  /**
 	   * 
-	   * @return
+	   * @return AllStudentParent
 	   */
 	public List<StudentParent> getAllStudentParent();
 	 /**
 	  * 
-	  * @return
+	  * @return AllStudentRelative
 	  */
 	public List<StudentRelative> getAllStudentRelative();
 	 /**
 	  * 
-	  * @return
+	  * @return AllStudentSponser
 	  */
 	public List<StudentSponser> getAllStudentSponser();
 	

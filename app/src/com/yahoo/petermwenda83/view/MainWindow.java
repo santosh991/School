@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -27,7 +29,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import com.yahoo.petermwenda83.view.exam.ExamView;
+import com.sun.glass.ui.Pixels.Format;
+import com.yahoo.petermwenda83.view.exam.ExamTypeView;
+import com.yahoo.petermwenda83.view.exam.AddExamtype;
+import com.yahoo.petermwenda83.view.login.LoginScreen;
 import com.yahoo.petermwenda83.view.subject.SubjectView;
 
 /**
@@ -53,36 +58,39 @@ public class MainWindow extends JFrame implements WindowListener {
     public static JDesktopPane desktop;
     public JButton NewJButton;
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+   
     
+   
+   
     
    
 	/**
 	 * 
 	 */
-	public MainWindow() {
+	public MainWindow(String logname ) {
 		super("School Management System");
-
+        
         this.setJMenuBar(CreateJMenuBar());
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setLocation(0, 0);
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         this.addWindowListener(this);
-     
-         
-          
-          
-        	 welcome  = new JLabel("Welcome Today is " + new java.util.Date(), JLabel.CENTER);
         
-        
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM yyyy");
+        String today = formatter.format(new Date()); 
+          
+        	 welcome  = new JLabel("Hi "+logname+ ",Today is on ( " +today+")", JLabel.CENTER);
+        	
+        	 
         
         panel = new JPanel();
         panel.setLayout(null);
        
-        panel.setSize((screen.width), 100); 
-        panel.setLocation(0, 600); 
+        panel.setSize((screen.width), 50); 
+        panel.setLocation(0, 650); 
        
-        welcome.setBounds(0, 20,(screen.width), 30);
+        welcome.setBounds(0, 0,(screen.width), 30);
         
         panel.setBackground(Color.MAGENTA); 
      
@@ -261,9 +269,9 @@ public class MainWindow extends JFrame implements WindowListener {
 	                desktop.add(frm);
 	                frm.setVisible(true);
 	            } else if (ActCmd.equalsIgnoreCase("mnuMain")) {
-	            	ExamView frm = new ExamView(); 
-	                desktop.add(frm);
-	                frm.setVisible(true);
+	            	ExamTypeView epanel = new ExamTypeView();
+	                desktop.add(epanel);
+	                epanel.setVisible(true);
 	            } 
 		 }
 	 };

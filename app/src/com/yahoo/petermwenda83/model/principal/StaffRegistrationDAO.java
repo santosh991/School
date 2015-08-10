@@ -10,76 +10,85 @@ package com.yahoo.petermwenda83.model.principal;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.contoller.staff.nonteaching.NTPosition;
-import com.yahoo.petermwenda83.contoller.staff.nonteaching.NTstaff;
-import com.yahoo.petermwenda83.contoller.staff.teaching.Position;
+import com.yahoo.petermwenda83.contoller.staff.Employees;
 import com.yahoo.petermwenda83.contoller.staff.teaching.Teacher;
 
 /**
- * @author peter
- *@author mwendapeter@gmail.com 
+* @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  */
 public interface StaffRegistrationDAO {
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public Teacher getTeacher(Position position,String uuid);
+	public Employees getStaff(String uuid);
+	 /**
+	  * 
+	  * @param uuid
+	  * @return
+	  */
+	public Employees getNtStaff(String uuid);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public Teacher getNTstaff(NTPosition ntposition, String uuid);
+	public Employees getstaffPos(String uuid);
+	 /**
+	  * 
+	  * @param uuid
+	  * @return
+	  */
+	public Employees getNtstaffPos(String uuid);
 
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean putTeacher(Teacher teacher,Position position,String uuid);
+	public boolean putStaff(Employees emp);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean putNTstaff(NTstaff ntstaff,NTPosition ntposition,String uuid);
+	public boolean putstaffPOss(Employees emp);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean editTeacher(Teacher teacher,Position position,String uuid);
+	public boolean editStaff(Employees emp);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean editNTstaff(NTstaff ntstaff,NTPosition ntposition,String uuid);
+	public boolean editStaffPos(Employees emp);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean deleteTeacher(Teacher teacher,String uuid);
+	public boolean deleteStaf(Employees emp,String uuid);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
-	public boolean deleteNTstaff(NTstaff ntstaff, String uuid);
+	public boolean deleteStaffPOs(Employees emp, String uuid);
 	/**
 	 * 
-	 * @return
+	 * @return teaching staff
 	 */
-	public List<Teacher> getTeacher();
+	public List<Teacher> getAllTeacher();
 	
 	/**
 	 * 
-	 * @return
+	 * @return all not teaching staff
 	 */
-	public List<Teacher> getNTstaff();
+	public List<Teacher> getAllNTstaff();
 	
 	
 

@@ -10,35 +10,23 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  *
  */
 public class NTPosition  extends Employees {
-	private String	ntUuid ;
+	
 	private String position ;
 	private double salary ;
+	private String NTstaffUuid ;
+	
 	/**
 	 * 
 	 */
 	public NTPosition() {
 		super();
-		ntUuid = "";
 		position = "";
 		salary = 0.0;
+		NTstaffUuid = "";
 	}
 	
 	
-	/**
-	 * @return the ntUuid
-	 */
-	public String getNtUuid() {
-		return ntUuid;
-	}
-
-
-	/**
-	 * @param ntUuid the ntUuid to set
-	 */
-	public void setNtUuid(String ntUuid) {
-		this.ntUuid = ntUuid;
-	}
-
+	
 
 	/**
 	 * @return the position
@@ -70,6 +58,27 @@ public class NTPosition  extends Employees {
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}
+	
+
+
+	/**
+	 * @return the nTstaffUuid
+	 */
+	public String getNTstaffUuid() {
+		return NTstaffUuid;
+	}
+
+
+
+
+	/**
+	 * @param nTstaffUuid the nTstaffUuid to set
+	 */
+	public void setNTstaffUuid(String nTstaffUuid) {
+		NTstaffUuid = nTstaffUuid;
+	}
+
+
 
 
 	public String toString() {
@@ -77,8 +86,8 @@ public class NTPosition  extends Employees {
 		builder.append("Nonteachingstaff position");
 		builder.append("[ id =");
 		builder.append(getId()); 
-		builder.append(", ntUuid =");
-		builder.append(ntUuid);
+		builder.append(", NTstaffUuid =");
+		builder.append(NTstaffUuid);
 		builder.append(", position =");
 		builder.append(position);
 		builder.append(", salary =");

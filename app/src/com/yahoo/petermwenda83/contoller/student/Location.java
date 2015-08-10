@@ -23,21 +23,6 @@ public class Location extends StudentSuper {
 	}
 	
 	
-	/**
-	 * @return the studentUuid
-	 */
-	public String getStudentUuid() {
-		return getStudentUuid();
-	}
-
-
-	/**
-	 * @param studentUuid the studentUuid to set
-	 */
-	public void setStudentUuid(String studentUuid) {
-		setStudentUuid(studentUuid);
-	}
-
 
 	/**
 	 * @return the county
@@ -95,11 +80,11 @@ public class Location extends StudentSuper {
 	builder.append(", getStudentUuid() =");
 	builder.append(getStudentUuid());
 	builder.append(", county =");
-	builder.append("county");
+	builder.append(county);
 	builder.append(", location =");
-	builder.append("location");
+	builder.append(location);
 	builder.append(", sublocation =");
-	builder.append("sublocation");
+	builder.append(sublocation);
 	builder.append("]");
 	return builder.toString(); 
 	}

@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,11 +22,10 @@ import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
 import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 import com.yahoo.petermwenda83.contoller.student.Subject;
+import com.yahoo.petermwenda83.contoller.users.User;
 
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class TestExamDAO {
@@ -56,25 +56,25 @@ public class TestExamDAO {
     final String EXAM_MARKS_UUID = "71f243fb-3826-4911-b1cb-545d9a033578";
 	final String STU_UUID = "9771e08e-4e87-4fe4-9608-a31952ec10cd";//type uuid DAF7EC32-EA25-7D32-8708-2CC132446A2F
 	final String SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446A2E";//D0F7EC32-EA25-7D32-8708-2CC132446A2E
-	final double MARKS = 78, MARKS2 = 60,MARKS3 = 93;                                       
+	final String MARKS = "78", MARKS2 = "60",MARKS3 = "93";                                       
 	final Date EXAM_DATE = new Date(new Long("1417633242000"));
 	
 	final String RESULTS_UUID = "204916f3-346d-4297-bdfa-82215820fff5";
-	final double RESULTS_TOTALS = 877;
-	final double RESULTS_POINTS = 78;
+	final String RESULTS_TOTALS = "877";
+	final String RESULTS_POINTS = "78";
 	final String RESULTS_GRADE = "A-";
-	final Integer RESULTS_POSITION = 1;
+	final String RESULTS_POSITION = "1";
 	final String RESULTS_REMARKS = "Exellent";
 	final Date RESULTS_DATE = new Date(new Long("1417633242000"));
 	
 	final String CAT_UUID = "71f243fb-3826-4911-b1cb-545d9a033578";
 	
 	final String CAT_RESULTS = "a3c4dbbe-320c-464e-8b18-f6c90987e1d0";
-	final double CAT_TOTALS = 500;
-	final double CAT_POINTS = 60;
+	final String CAT_TOTALS ="500";
+	final String CAT_POINTS = "60";
 	final String CAT_GRADE = "C-";
 	final String CAT_REMARKS = "fair";
-	final int OUTOF = 30;
+	final String OUTOF = "30";
 	
 	final String CEXAMNO = "EN65116",CEXAMNO2 = "EN65773";
 	
@@ -122,6 +122,27 @@ public class TestExamDAO {
 		
 		
 	}
+	
+	/**
+	 * 
+	 */
+	@Ignore
+	@Test
+	public void testGeget() {
+		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		ExamType examType = new ExamType();
+		examType = store.get(EXAM_TYPE, EXAM_CLASS, EXAM_DESCRI);
+		assertEquals(examType.getUuid(),TYPE_UUID);
+		assertEquals(examType.getExamtype(),EXAM_TYPE);
+		assertEquals(examType.getTerm(),EXAM_TERM);
+		assertEquals(examType.getClasz(),EXAM_CLASS);
+		assertEquals(examType.getOutof(),OUTOF);
+		assertEquals(examType.getYear(),EXAM_YEAR);
+		assertEquals(examType.getDescription(),EXAM_DESCRI);
+		//assertEquals(examType.getExamno(),CEXAMNO);
+		
+		
+	}
 
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getMainMarks(java.lang.String)}.
@@ -136,7 +157,7 @@ public class TestExamDAO {
 		assertEquals(mainMarks.getStudentUuid(),STU_UUID);
 		assertEquals(mainMarks.getExamTypeUuid(),TYPE_UUID);
 		assertEquals(mainMarks.getSubjectUuid(),SUB_UUID);
-		assertEquals(mainMarks.getMarks(),MARKS,0);
+		assertEquals(mainMarks.getMarks(),MARKS);
 		//assertEquals(mainMarks.getSubmitdate(),EXAM_DATE);
 		
 	}
@@ -153,8 +174,8 @@ public class TestExamDAO {
 		assertEquals(mainResults.getUuid(),RESULTS_UUID);
 		assertEquals(mainResults.getSubjectUuid(),SUB_UUID);
 		assertEquals(mainResults.getStudentUuid(),STU_UUID);
-		assertEquals(mainResults.getTotal(),RESULTS_TOTALS,0);
-		assertEquals(mainResults.getPoints(),RESULTS_POINTS,0);
+		assertEquals(mainResults.getTotal(),RESULTS_TOTALS);
+		assertEquals(mainResults.getPoints(),RESULTS_POINTS);
 		assertEquals(mainResults.getGrade(),RESULTS_GRADE);
 		assertEquals(mainResults.getPosition(),1);
 		assertEquals(mainResults.getRemarks(),RESULTS_REMARKS);
@@ -175,7 +196,7 @@ public class TestExamDAO {
 		assertEquals(catMarks.getStudentUuid(),STU_UUID);
 		assertEquals(catMarks.getExamTypeUuid(),TYPE_UUID);
 		assertEquals(catMarks.getSubjectUuid(),SUB_UUID);
-		assertEquals(catMarks.getMarks(),MARKS,0);
+		assertEquals(catMarks.getMarks(),MARKS);
 		//assertEquals(catMarks.getSubmitdate(),RESULTS_DATE);
 	}
 
@@ -191,10 +212,10 @@ public class TestExamDAO {
 		assertEquals(catResults.getUuid(),CAT_RESULTS);
 		assertEquals(catResults.getStudentUuid(),STU_UUID);
 		assertEquals(catResults.getSubjectUuid(),SUB_UUID);
-		assertEquals(catResults.getTotal(),CAT_TOTALS,0);
-		assertEquals(catResults.getPoints(),CAT_POINTS,0);
+		assertEquals(catResults.getTotal(),CAT_TOTALS);
+		assertEquals(catResults.getPoints(),CAT_POINTS);
 		assertEquals(catResults.getGrade(),CAT_GRADE);
-		assertEquals(catResults.getPosition(),1);
+		assertEquals(catResults.getPosition(),"1");
 		assertEquals(catResults.getRemarks(),CAT_REMARKS);
 		//assertEquals(catResults.getSubmitdate(),RESULTS_DATE);
 	}
@@ -202,7 +223,7 @@ public class TestExamDAO {
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamType(java.lang.String)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testPutExamType() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -358,6 +379,20 @@ public class TestExamDAO {
 	public void testDeleteExamResults() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		fail("Not yet implemented");
+	}
+	
+	
+	//@Ignore
+	@Test
+	public void testGetAllExamtype() {
+		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 List<ExamType> list = store.getAllExamtype();	
+			//assertEquals(list.size(), 6);
+			//System.out.println(list);
+			for (ExamType l : list) {
+				System.out.println(l);
+				
+			}
 	}
 
 }

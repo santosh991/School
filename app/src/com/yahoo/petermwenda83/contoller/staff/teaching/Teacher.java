@@ -23,6 +23,34 @@ public class Teacher  extends Employees {
 		teacherUuid = "";
 	}
 	
+	/**
+	 * @return the teacherNumber
+	 */
+	public String getTeacherNumber() {
+		return teacherNumber;
+	}
+
+	/**
+	 * @param teacherNumber the teacherNumber to set
+	 */
+	public void setTeacherNumber(String teacherNumber) {
+		this.teacherNumber = teacherNumber;
+	}
+
+	/**
+	 * @return the teacherUuid
+	 */
+	public String getTeacherUuid() {
+		return teacherUuid;
+	}
+
+	/**
+	 * @param teacherUuid the teacherUuid to set
+	 */
+	public void setTeacherUuid(String teacherUuid) {
+		this.teacherUuid = teacherUuid;
+	}
+
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Teacher");

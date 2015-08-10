@@ -13,42 +13,44 @@ import com.yahoo.petermwenda83.contoller.student.Subject;
 
 
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public interface AssignSubjectDAO {
 	/**
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public  Subject getSubject(String uuid);
-	
+	  /**
+	   * 
+	   * @param subjectcode
+	   * 
+	   */
 	public  Subject getSubjects(String subjectcode);
 
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public  StudentSubject getStudentSubject(String uuid);
 	 /**
 	  * 
 	  * @param subject
-	  * @return
+	  * 
 	  */
 	public boolean putSubject(Subject subject);
 	/**
 	 * 
 	 * @param subject
-	 * @return
+	 * 
 	 */
 	public boolean putStudentSubject(StudentSubject suject);
 	/**
 	 * 
 	 * @param subject
-	 * @return
+	 * 
 	 */
 	public boolean editSubject(Subject subject,String uuid);
 	
@@ -56,32 +58,26 @@ public interface AssignSubjectDAO {
 	/**
 	 * 
 	 * @param subject
-	 * @return
+	 * 
 	 */
 	public boolean deleteSubject(StudentSubject suject);
 	
 	/**
 	 * 
 	 * @param subject
-	 * @return
+	 * 
 	 */
 	public boolean deleteStudent(Subject subject);
 	/**
 	 * 
-	 * @return
+	 * @return AllStudentSubject
 	 */
 	public List<StudentSubject> getAllStudentSubject();
 	/**
 	 * 
-	 * @return
+	 * @return AllSubjects
 	 */
 	public List<Subject> getAllSubjects();
-	
-	
-		
-	
-
-	
 	
 	
 	

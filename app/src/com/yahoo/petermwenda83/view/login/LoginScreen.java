@@ -41,7 +41,6 @@ public class LoginScreen extends JFrame{
  Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
  private static UsresDAO userDAO;
  //private static List<User> userList = new ArrayList<>();
- 
 	/**
 	 * 
 	 */
@@ -92,7 +91,7 @@ public class LoginScreen extends JFrame{
 	        btnLogin.addActionListener(listener);
 	        btnCancel.addActionListener(listener);
 
-			
+	       
 	        
 		
 	        this.add(lblUsername);
@@ -106,11 +105,13 @@ public class LoginScreen extends JFrame{
 	       this.setVisible(true); 
 	      
 	     
-	   
-		
-	 
+	      
+	    
 	}
 	 
+
+
+
 	@SuppressWarnings("deprecation")
 	public void Login(){
 		
@@ -121,34 +122,38 @@ public class LoginScreen extends JFrame{
 	      use.setUserType(usertyp); 
 	      String pass =SecurityUtil.getMD5Hash(Passwd.getText());  
 	      use.setPassword(pass);  
-	     
+	      
+	     //  String uname = txtUser.getText();
+	      
 	      boolean recordfound = userDAO.getUserName(use) != null;
 	    	 if(recordfound){	     
-	    	 this.dispose();
+	    	// this.dispose();
+	    	 this.setVisible(false);
 	    	 LoadMDIWindow(); 
 	    	 
 	    }else{
 	    JOptionPane.showMessageDialog(null, "Wrong Credentials", "Error!!", JOptionPane.DEFAULT_OPTION);
 	    	// System.exit(0);
-	    System.out.println(pass); 
+	   // System.out.println(pass); 
 	    }
-	    
+	    	// System.out.println(uname); 
 	}
 
 
 	private void LoadMDIWindow() {
+		 String  logname = txtUser.getText();
 		if (box.getSelectedItem().equals("Principal")) {
-            new MainWindow().LoginManager();            
+            new MainWindow(logname).LoginManager();             
         } else if(box.getSelectedItem().equals("Secretary")){
-        	new MainWindow().LoginSecretary();
+        	new MainWindow(logname).LoginSecretary();
         }else if(box.getSelectedItem().equals("Teacher")){
-        	new MainWindow().LoginTeacher();
+        	new MainWindow(logname).LoginTeacher();
         }else if(box.getSelectedItem().equals("HOD")){
-        	new MainWindow().LoginHOD();
+        	new MainWindow(logname).LoginHOD();
         }else if(box.getSelectedItem().equals("CM")){
-        	new MainWindow().LoginCMaster(); 
+        	new MainWindow(logname).LoginCMaster(); 
         }else{
-        	new MainWindow().LoginClerk();
+        	new MainWindow(logname).LoginClerk();
         }
 		
 	}

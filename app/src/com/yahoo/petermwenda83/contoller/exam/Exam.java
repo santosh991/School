@@ -16,11 +16,11 @@ public class Exam extends AllBean{
 	private String studentUuid ;
 	private String ExamTypeUuid ;
 	private String Subjectcode;
-	private double marks ;
-	private double total ;
-	private double points;
+	private String marks ;
+	private String total ;
+	private String points;
 	private String  grade ;
-	private int  position ;
+	private String  position ;
 	private String remarks ;
 	private Date submitdate ;
 	
@@ -36,11 +36,11 @@ public class Exam extends AllBean{
 		studentUuid = "";
 		ExamTypeUuid = "";
 		Subjectcode = "";
-		marks = 0.0;
-		total = 0.0;
-		points = 0.0;
+		marks = "";
+		total = "";
+		points = "";
 		grade = "";
-		position = 0;
+		position = "";
 		remarks = "";
 		submitdate = new Date();
 		
@@ -115,7 +115,7 @@ public class Exam extends AllBean{
 	/**
 	 * @return the marks
 	 */
-	public double getMarks() {
+	public String getMarks() {
 		return marks;
 	}
 
@@ -123,7 +123,7 @@ public class Exam extends AllBean{
 	/**
 	 * @param marks the marks to set
 	 */
-	public void setMarks(double marks) {
+	public void setMarks(String marks) {
 		this.marks = marks;
 	}
 
@@ -131,7 +131,7 @@ public class Exam extends AllBean{
 	/**
 	 * @return the total
 	 */
-	public double getTotal() {
+	public String getTotal() {
 		return total;
 	}
 
@@ -139,7 +139,7 @@ public class Exam extends AllBean{
 	/**
 	 * @param total the total to set
 	 */
-	public void setTotal(double total) {
+	public void setTotal(String total) {
 		this.total = total;
 	}
 
@@ -147,7 +147,7 @@ public class Exam extends AllBean{
 	/**
 	 * @return the points
 	 */
-	public double getPoints() {
+	public String getPoints() {
 		return points;
 	}
 
@@ -155,7 +155,7 @@ public class Exam extends AllBean{
 	/**
 	 * @param points the points to set
 	 */
-	public void setPoints(double points) {
+	public void setPoints(String points) {
 		this.points = points;
 	}
 
@@ -179,7 +179,7 @@ public class Exam extends AllBean{
 	/**
 	 * @return the position
 	 */
-	public int getPosition() {
+	public String getPosition() {
 		return position;
 	}
 
@@ -187,7 +187,7 @@ public class Exam extends AllBean{
 	/**
 	 * @param position the position to set
 	 */
-	public void setPosition(int position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
 

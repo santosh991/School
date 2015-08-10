@@ -10,7 +10,6 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  *
  */
 public class Position  extends Employees {
-	private String	teacherUuid ;
 	private String position ;
 	private double salary ;
 	/**
@@ -18,7 +17,6 @@ public class Position  extends Employees {
 	 */
 	public Position() {
 		super();
-		teacherUuid = "";
 		position = "";
 		salary = 0.0;
 	}
@@ -29,7 +27,7 @@ public class Position  extends Employees {
 	 * @return the teacherUuid
 	 */
 	public String getTeacherUuid() {
-		return teacherUuid;
+		return getEmployeeUuid();
 	}
 
 
@@ -38,7 +36,7 @@ public class Position  extends Employees {
 	 * @param teacherUuid the teacherUuid to set
 	 */
 	public void setTeacherUuid(String teacherUuid) {
-		this.teacherUuid = teacherUuid;
+		setEmployeeUuid(teacherUuid);
 	}
 
 
@@ -84,8 +82,8 @@ public class Position  extends Employees {
 		builder.append("Nonteachingstaff position");
 		builder.append("[ id =");
 		builder.append(getId()); 
-		builder.append(", teacherUuid =");
-		builder.append(teacherUuid);
+		builder.append(", getTeacherUuid() =");
+		builder.append(getTeacherUuid());
 		builder.append(", position =");
 		builder.append(position);
 		builder.append(", salary =");

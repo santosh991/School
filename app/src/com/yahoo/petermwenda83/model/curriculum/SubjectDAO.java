@@ -22,9 +22,7 @@ import com.yahoo.petermwenda83.model.DBConnectDAO;
 
 
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
@@ -35,7 +33,7 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 	
 	/**
 	 * 
-	 * @return
+	 * @return subjectDAO
 	 */
 	public static SubjectDAO getInstance(){
 		if(subjectDAO == null){
@@ -177,6 +175,9 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 	}
 
 	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#editSubject(com.yahoo.petermwenda83.contoller.student.Subject, java.lang.String)
+	 */
 	public boolean editSubject(Subject subject,String uuid) {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
@@ -225,7 +226,10 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 		return success; 
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Subject)
+	 */
 	public boolean deleteStudent(Subject subject) {
 		boolean success = true; 
         try(
@@ -271,7 +275,10 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 		return list;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getAllStudentSubject()
+	 */
 	public List<StudentSubject> getAllStudentSubject() {
 		List<StudentSubject>  list = null;
 		
@@ -292,7 +299,10 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 		return list;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getSubjects(java.lang.String)
+	 */
 	public Subject getSubjects(String subjectcode) {
 		Subject Subject = null;
         ResultSet rset = null;

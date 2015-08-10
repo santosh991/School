@@ -5,6 +5,8 @@
  */
 package com.yahoo.petermwenda83.model.exam;
 
+import java.util.List;
+
 import com.yahoo.petermwenda83.contoller.exam.CatMarks;
 import com.yahoo.petermwenda83.contoller.exam.CatResults;
 import com.yahoo.petermwenda83.contoller.exam.Exam;
@@ -15,9 +17,7 @@ import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public interface TeacherExamDAO {
@@ -25,35 +25,42 @@ public interface TeacherExamDAO {
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 public ExamType getExamType(String uuid);
 
-
+  /**
+   * 
+   * @param examno
+   * 
+   */
 public ExamType getExamTypes(String examno);
+
+
+public ExamType get(String examtype,String clasz,String description);
 /**
  * 
  * @param uuid
- * @return
+ * 
  */
 public MainMarks getMainMarks(String uuid);
 /**
  * 
  * @param uuid
- * @return
+ * 
  */
 public MainResults getExamResults(String uuid);
 
 /**
  * 
  * @param uuid
- * @return
+ * 
  */
 public CatMarks getCatMarks(String uuid);
 /**
  * 
  * @param uuid
- * @return
+ * 
  */
 public CatResults getCatResults(String uuid);
 	
@@ -61,7 +68,7 @@ public CatResults getCatResults(String uuid);
 	  * 
 	  * @param exam
 	  * @param uuid
-	  * @return
+	  *
 	  */
 	 
 	public boolean putExamType(ExamType examType);
@@ -69,48 +76,50 @@ public CatResults getCatResults(String uuid);
 	 * 
 	 * @param exam
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public boolean putExamMarks(Exam exam);
 	/**
 	 * 
 	 * @param exam
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public boolean putExamResults(Exam exam);
 	  /**
 	   * 
 	   * @param exam
 	   * @param uuid
-	   * @return
+	   * 
 	   */
 	public boolean editExamType(ExamType type,String uuid);
 	/**
 	 * 
 	 * @param exam
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public boolean editExamMarks(Exam exam,StudentSuper studentSuper,Subject subject);
 	
 	    /**
 	     * 
 	     * @param uuid
-	     * @return
+	     * 
 	     */
 	public boolean deleteExamType(ExamType type);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public boolean deleteExamMarks(Exam exam,String uuid);
 	/**
 	 * 
 	 * @param uuid
-	 * @return
+	 * 
 	 */
 	public boolean deleteExamResults(Exam exam,String uuid);
+	
+	public List <ExamType> getAllExamtype();
 	
 }

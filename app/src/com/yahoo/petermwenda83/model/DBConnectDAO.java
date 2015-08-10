@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class DBConnectDAO {

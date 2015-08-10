@@ -18,7 +18,7 @@ import com.yahoo.petermwenda83.model.DBConnectDAO;
 import com.yahoo.petermwenda83.util.SecurityUtil;
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
@@ -30,7 +30,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	
 	/**
 	 * 
-	 * @return
+	 * @return the usresDAO
 	 */
 	public static UsresDAO getInstance(){
 		if(usresDAO == null){
@@ -53,7 +53,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getUser(java.lang.String)
 	 */
-	@Override
+	
 	public User getUser(String Uuid) {
 		User user = null;
         ResultSet rset = null;
@@ -83,7 +83,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#editUser(com.yahoo.petermwenda83.contoller.user.User, java.lang.String)
 	 */
-	@Override
+	
 	public boolean editUser(User user, String Uuid) {
 		boolean success = true;
 		
@@ -103,19 +103,14 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         } 
-        
-		 
-		
-		
-		
-		
+        		
 		return success;
 	}
 
 	/**
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#putUser(com.yahoo.petermwenda83.contoller.user.User)
 	 */
-	@Override
+	
 	public boolean putUser(User user) {
 		boolean success = true;
 		
@@ -127,7 +122,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	            pstmt.setString(1, user.getUuid());
 	            pstmt.setString(2, user.getUserType());
 	            pstmt.setString(3, user.getUsername());
-	            pstmt.setString(4, SecurityUtil.getMD5Hash(user.getPassword()));
+	            pstmt.setString(4, user.getPassword());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -141,10 +136,10 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#deleteUser(com.yahoo.petermwenda83.contoller.user.User)
 	 */
-	@Override
+	
 	public boolean deleteUser(User user) {
 		// TODO Auto-generated method stub
 		return false;
@@ -153,7 +148,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getAllUsers()
 	 */
-	@Override
+	
 	public List<User> getAllUsers() {
 		List<User>  list = null;
 		
@@ -174,7 +169,10 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 		return list;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getUserName(com.yahoo.petermwenda83.contoller.users.User)
+	 */
 	public User getUserName(User use) { 
 		User user = null;
         ResultSet rset = null;

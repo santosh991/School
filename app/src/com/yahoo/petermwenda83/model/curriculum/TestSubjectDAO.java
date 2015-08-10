@@ -16,9 +16,7 @@ import com.yahoo.petermwenda83.contoller.student.StudentSubject;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class TestSubjectDAO {
