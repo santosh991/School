@@ -357,7 +357,7 @@ CREATE TABLE teacher (
     firstName text,
     lastName text,
     surname text,
-    nhsfno text UNIQUE,
+    nhifno text UNIQUE,
     nssfno text UNIQUE,
     phone text UNIQUE,
     dob text,
@@ -366,7 +366,7 @@ CREATE TABLE teacher (
     county text,
     location text
 );
-\COPY teacher(uuid,firstName,lastName,surname,nhsfno,nssfno,phone,dob,nationalID,teacherNumber,county,location) FROM '/tmp/Teacher.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY teacher(uuid,firstName,lastName,surname,nhifno,nssfno,phone,dob,nationalID,teacherNumber,county,location) FROM '/tmp/Teacher.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE teacher OWNER TO allamano;
 
 -- -------------------
@@ -400,6 +400,8 @@ CREATE TABLE ntstaff (
     fisrtname text,
     lastname text,
     surname text,
+    nhifno text UNIQUE,
+    nssfno text UNIQUE,
     dob text,
     phone text,
     nationalID text UNIQUE ,
@@ -407,7 +409,7 @@ CREATE TABLE ntstaff (
     location text,
     sublocation text
 );
-\COPY ntstaff(uuid,fisrtname,lastname,surname,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/NTStaff.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY ntstaff(uuid,fisrtname,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/NTStaff.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ntstaff OWNER TO allamano;
 
 --------------------

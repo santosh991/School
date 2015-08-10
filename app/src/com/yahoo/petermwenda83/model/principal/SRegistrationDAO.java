@@ -60,7 +60,7 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 
 	
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#getTeacher(java.lang.String)
 	 */
 	@Override
@@ -92,7 +92,7 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 	}
 
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#getstaffPos(java.lang.String)
 	 */
 	public Position getstaffPos(String Uuid) {
@@ -121,7 +121,10 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 		return pos; 
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#getNtStaff(java.lang.String)
+	 */
 	public Employees getNtStaff(String uuid) {
 		NTstaff ntstaff = new NTstaff();
         ResultSet rset = null;
@@ -149,7 +152,10 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 		 
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#getNtstaffPos(java.lang.String)
+	 */
 	public NTPosition getNtstaffPos(String uuid) {
 		NTPosition ntsstaffpos = new NTPosition();
         ResultSet rset = null;
@@ -178,7 +184,7 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 	}
 
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#putStaff(com.yahoo.petermwenda83.contoller.staff.Employees)
 	 */
 	public boolean putStaff(Employees emp) {
@@ -188,40 +194,39 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 		try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Teacher" 
 			        		+"(Uuid, FirstName, LastName, Surname,Nhifno,Nhifno,Phone"
-			        		+ "DOB,NationalID,TeacherNumber,County) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
+			        		+ "DOB,NationalID,TeacherNumber,County) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
 				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Ntstaff" 
 		        		+"(Uuid, FirstName, LastName, Surname,Nhifno,Nhifno,Phone"
-			        		+ "DOB,NationalID,County) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+			        		+ "DOB,NationalID,County) VALUES (?,?,?,?,?,?,?,?,?,?);");
         		){
 			  if(emp instanceof Teacher ){
-	            pstmt.setString(1, teacher.getUuid());
+	            pstmt.setString(1, teacher.getTeacherUuid());
 	            pstmt.setString(2, teacher.getFirstName());
 	            pstmt.setString(3, teacher.getLastName());
 	            pstmt.setString(4, teacher.getSurname());
 	            pstmt.setString(5, teacher.getNhifno());
 	            pstmt.setString(6, teacher.getNssfno());
-	            pstmt.setString(7, teacher.getNhifno());
-	            pstmt.setString(8, teacher.getPhone());
-	            pstmt.setString(9, teacher.getDOB());
-	            pstmt.setString(10, teacher.getNationalID());
-	            pstmt.setString(11, teacher.getTeacherNumber());
-	            pstmt.setString(12, teacher.getCounty());
+	            pstmt.setString(7, teacher.getPhone());
+	            pstmt.setString(8, teacher.getDOB());
+	            pstmt.setString(9, teacher.getNationalID());
+	            pstmt.setString(10, teacher.getTeacherNumber());
+	            pstmt.setString(11, teacher.getCounty());
+	           
 	          
 	            
 	            
 	            pstmt.executeUpdate();
 			  }else{         //NTstaff
-				    pstmt2.setString(1, ntstaff.getUuid());
+				    pstmt2.setString(1, ntstaff.getNTstaffUuid());
 		            pstmt2.setString(2, ntstaff.getFirstName());
 		            pstmt2.setString(3, ntstaff.getLastName());
 		            pstmt2.setString(4, ntstaff.getSurname());
 		            pstmt2.setString(5, ntstaff.getNhifno());
 		            pstmt2.setString(6, ntstaff.getNssfno());
-		            pstmt2.setString(7, ntstaff.getNhifno());
-		            pstmt2.setString(8, ntstaff.getPhone());
-		            pstmt2.setString(9, ntstaff.getDOB());
-		            pstmt2.setString(10, ntstaff.getNationalID());
-		            pstmt2.setString(11, ntstaff.getCounty());
+		            pstmt2.setString(7, ntstaff.getPhone());
+		            pstmt2.setString(8, ntstaff.getDOB());
+		            pstmt2.setString(9, ntstaff.getNationalID());
+		            pstmt2.setString(10, ntstaff.getCounty());
 				   
 		            pstmt2.executeUpdate(); 
 			  }
@@ -240,20 +245,135 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 
 	@Override
 	public boolean putstaffPOss(Employees emp) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		Position pos = new Position();
+		NTPosition ntpos = new NTPosition();
+		  try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Position" 
+			        		+"(Uuid, TeacherUuid, Position, Salary) VALUES (?,?,?,?);");
+				  PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Ntposition" 
+			        		+"(Uuid, NTstaffUuid, Position, Salary) VALUES (?,?,?,?);");
+      		){
+			   if(emp instanceof Position){
+	            pstmt.setString(1, pos.getUuid());
+	            pstmt.setString(2, pos.getTeacherUuid());
+	            pstmt.setString(3, pos.getPosition());
+	            pstmt.setString(4, pos.getSalary());
+	            pstmt.executeUpdate();
+			   }else{
+				    pstmt2.setString(1, ntpos.getUuid());
+		            pstmt2.setString(2, ntpos.getNTstaffUuid());
+		            pstmt2.setString(3, ntpos.getPosition());
+		            pstmt2.setString(4, ntpos.getSalary());
+		            pstmt2.executeUpdate(); 
+			   }
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to put Employees Position: "+emp);
+           logger.error(ExceptionUtils.getStackTrace(e)); 
+           success = false;
+		 }
+		 
+		
+		
+		return success;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#editStaff(com.yahoo.petermwenda83.contoller.staff.Employees)
+	 */
 	public boolean editStaff(Employees emp) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		Teacher teacher = new Teacher();
+		NTstaff ntstaff = new NTstaff();
+		try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE Teacher SET "
+	        			+ "FirstName=?, LastName=?, Surname =?, Nhifno =?, Nssfno =?, "
+	        			+ "Phone =?, DOB =?, NationalID =?, TeacherNumber =?,"
+	        			+ " County =? WHERE Uuid = ?;");
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE Ntstaff SET "
+	        			+ "FirstName=?, LastName=?, Surname =?, Nhifno =?, Nssfno =?, "
+	        			+ "Phone =?, DOB =?, NationalID =?,"
+	        			+ " County =? WHERE Uuid = ?;");
+        		){
+			  if(emp instanceof Teacher ){
+	           
+	            pstmt.setString(1, teacher.getFirstName());
+	            pstmt.setString(2, teacher.getLastName());
+	            pstmt.setString(3, teacher.getSurname());
+	            pstmt.setString(4, teacher.getNhifno());
+	            pstmt.setString(5, teacher.getNssfno());
+	            pstmt.setString(6, teacher.getPhone());
+	            pstmt.setString(7, teacher.getDOB());
+	            pstmt.setString(8, teacher.getNationalID());
+	            pstmt.setString(9, teacher.getTeacherNumber());
+	            pstmt.setString(10, teacher.getCounty());
+	            pstmt.setString(11, teacher.getTeacherUuid());
+	          
+	            
+	            
+	            pstmt.executeUpdate();
+			  }else{         //NTstaff
+				   
+		            pstmt2.setString(1, ntstaff.getFirstName());
+		            pstmt2.setString(2, ntstaff.getLastName());
+		            pstmt2.setString(3, ntstaff.getSurname());
+		            pstmt2.setString(4, ntstaff.getNhifno());
+		            pstmt2.setString(5, ntstaff.getNssfno());
+		            pstmt2.setString(6, ntstaff.getPhone());
+		            pstmt2.setString(7, ntstaff.getDOB());
+		            pstmt2.setString(8, ntstaff.getNationalID());
+		            pstmt2.setString(9, ntstaff.getCounty());
+		            pstmt2.setString(10, ntstaff.getNTstaffUuid());
+				   
+		            pstmt2.executeUpdate(); 
+			  }
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to put: "+emp);
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             success = false;
+		 }
+		
+		
+		return success;
 	}
 
-	@Override
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#editStaffPos(com.yahoo.petermwenda83.contoller.staff.Employees)
+	 */
 	public boolean editStaffPos(Employees emp) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		Position pos = new Position();
+		NTPosition ntpos = new NTPosition();
+		  try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE Position SET "
+	        			+ "Position=?, Salary=? WHERE TeacherUuid = ?;");
+				  PreparedStatement pstmt2 = conn.prepareStatement("UPDATE Ntposition SET "
+		        			+ "Position=?, Salary=? WHERE TeacherUuid = ?;");
+      		){
+			   if(emp instanceof Position){
+	            pstmt.setString(1, pos.getPosition());
+	            pstmt.setString(2, pos.getSalary());
+	            pstmt.setString(3, pos.getTeacherUuid());
+	            pstmt.executeUpdate();
+			   }else{				   
+		            pstmt2.setString(1, ntpos.getPosition());
+		            pstmt2.setString(2, ntpos.getSalary());
+		            pstmt2.setString(3, ntpos.getNTstaffUuid());
+		            pstmt2.executeUpdate(); 
+			   }
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to edit Employees Position: "+emp);
+           logger.error(ExceptionUtils.getStackTrace(e)); 
+           success = false;
+		 }
+		 
+		
+		
+		return success;
 	}
 
 	@Override
@@ -269,21 +389,51 @@ public class SRegistrationDAO extends DBConnectDAO  implements StaffRegistration
 	}
 	
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#getTeacher()
 	 */
 	@Override
 	public List<Teacher> getAllTeacher() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Teacher>  list = null;
+		
+		 try(   
+     		Connection conn = dbutils.getConnection();
+     		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Teacher ;");   
+     		ResultSet rset = pstmt.executeQuery();
+ 		) {
+     	
+         list = beanProcessor.toBeanList(rset, Teacher.class);
+
+     } catch(SQLException e){
+     	logger.error("SQL Exception when getting all Teacher");
+         logger.error(ExceptionUtils.getStackTrace(e));
+     }
+   
+		
+		return list;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO#getNTstaff()
 	 */
 	@Override
-	public List<Teacher> getAllNTstaff() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<NTstaff> getAllNTstaff() {
+		List<NTstaff>  list = null;
+		
+		 try(   
+     		Connection conn = dbutils.getConnection();
+     		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM NTstaff ;");   
+     		ResultSet rset = pstmt.executeQuery();
+ 		) {
+     	
+         list = beanProcessor.toBeanList(rset, NTstaff.class);
+
+     } catch(SQLException e){
+     	logger.error("SQL Exception when getting all NTstaff");
+         logger.error(ExceptionUtils.getStackTrace(e));
+     }
+   
+		
+		return list;
 	}
 }

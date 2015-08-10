@@ -41,14 +41,14 @@ public class Teacher  extends Employees {
 	 * @return the teacherUuid
 	 */
 	public String getTeacherUuid() {
-		return teacherUuid;
+		return getEmployeeUuid();
 	}
 
 	/**
 	 * @param teacherUuid the teacherUuid to set
 	 */
 	public void setTeacherUuid(String teacherUuid) {
-		this.teacherUuid = teacherUuid;
+		setEmployeeUuid(teacherUuid);
 	}
 
 	public String toString(){
@@ -58,6 +58,8 @@ public class Teacher  extends Employees {
 		builder.append(getId()); 
 		builder.append(", teacherNumber =");
 		builder.append(teacherNumber);
+		builder.append(", getTeacherUuid() =");
+		builder.append(getTeacherUuid());
 		builder.append(", teacherUuid =");
 		builder.append(teacherUuid);
 		builder.append(", getFirstName() =");

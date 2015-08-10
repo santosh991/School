@@ -11,14 +11,14 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  */
 public class Position  extends Employees {
 	private String position ;
-	private double salary ;
+	private String salary ;
 	/**
 	 * 
 	 */
 	public Position() {
 		super();
 		position = "";
-		salary = 0.0;
+		salary = "";
 	}
 
 	
@@ -62,7 +62,7 @@ public class Position  extends Employees {
 	/**
 	 * @return the salary
 	 */
-	public double getSalary() {
+	public String getSalary() {
 		return salary;
 	}
 
@@ -71,7 +71,7 @@ public class Position  extends Employees {
 	/**
 	 * @param salary the salary to set
 	 */
-	public void setSalary(double salary) {
+	public void setSalary(String salary) {
 		this.salary = salary;
 	}
 
