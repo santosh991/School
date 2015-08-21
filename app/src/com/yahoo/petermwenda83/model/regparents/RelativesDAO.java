@@ -1,4 +1,18 @@
-/**
+/**##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without approval of from
+ * ###### owner.#############################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.model.regparents;
@@ -17,7 +31,7 @@ import com.yahoo.petermwenda83.contoller.guardian.StudentRelative;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
@@ -52,31 +66,67 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#getStudentRelative(com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
 	
-	public StudentRelative getStudentRelative(StudentRelative Relative) {
+	public StudentRelative getStudentRelative(String StudentUuid) {
+		StudentRelative relative = null;
 		ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
            	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student_relative"
-           	      		+ " WHERE studentUuid = ?;");       
+           	      		+ " WHERE StudentUuid = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, Relative.getStudentUuid()); 
+        	 pstmt.setString(1, StudentUuid); 
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
-	    	 Relative  = beanProcessor.toBean(rset,StudentRelative.class);
+	    	 relative  = beanProcessor.toBean(rset,StudentRelative.class);
 	   }
         	
         	
         	
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting StudentRelative : " + Relative);
+        	 logger.error("SQL Exception when getting StudentRelative  by StudentUuid: " + StudentUuid);
              logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
         }
         
-		return Relative; 
+		return relative; 
 	}
+	
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#getStudentRelativeByNationalID(java.lang.String)
+	 */
+	
+	public StudentRelative getStudentRelativeByNationalID(String NationalID) {
+		StudentRelative relative = null;
+		ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student_relative"
+           	      		+ " WHERE NationalID = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, NationalID); 
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 relative  = beanProcessor.toBean(rset,StudentRelative.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting StudentRelative By NationalID : " + NationalID);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return relative; 
+	}
+
 
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#putStudentRelative(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
@@ -87,15 +137,15 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO student_relative ("
-						+ "StudentUuid "
-    			+ "RelativeName,RelativePhone,NationalID) VALUES (?,?,?,?);");
+						+ "Uuid,StudentUuid "
+    			+ "RelativeName,RelativePhone,NationalID) VALUES (?,?,?,?,?);");
     		){
 			   
-			    pstmt.setString(1, relative.getStudentUuid());
-			    
-			    pstmt.setString(2, relative.getRelativeName());
-	            pstmt.setString(3, relative.getRelativePhone());
-	            pstmt.setString(4, relative.getNationalID());
+			    pstmt.setString(1, relative.getUuid());
+			    pstmt.setString(2, relative.getStudentUuid());
+			    pstmt.setString(3, relative.getRelativeName());
+	            pstmt.setString(4, relative.getRelativePhone());
+	            pstmt.setString(5, relative.getNationalID());
 	           
 	    	    pstmt.executeUpdate();
 
@@ -103,6 +153,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put StudentRelative: "+relative);
          logger.error(ExceptionUtils.getStackTrace(e)); 
+         System.out.println(ExceptionUtils.getStackTrace(e));
          success = false;
 		 }
 		 
@@ -114,7 +165,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#editStudentRelative(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
-	public boolean editStudentRelative(StudentRelative relative) {
+	public boolean editStudentRelative(StudentRelative relative,String StudentUuid) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
     	PreparedStatement pstmt = conn.prepareStatement("UPDATE student_relative SET RelativeName=?,"
@@ -123,26 +174,44 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 			    pstmt.setString(1, relative.getRelativeName());
 	            pstmt.setString(2, relative.getRelativePhone());
 	            pstmt.setString(3, relative.getNationalID());
-	            pstmt.setString(4, relative.getStudentUuid());
+	            pstmt.setString(4, StudentUuid);
 	          
 	            pstmt.executeUpdate();
 
     } catch (SQLException e) {
         logger.error("SQL Exception when updating Student_Parent: " + relative);
         logger.error(ExceptionUtils.getStackTrace(e));
+        System.out.println(ExceptionUtils.getStackTrace(e));
         success = false;
     } 
     		
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#deleteStudentRelative(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
-	@Override
 	public boolean deleteStudentRelative(StudentRelative relative) {
-		// TODO Auto-generated method stub
-		return false;
+		  boolean success = true; 
+	      try(
+	      		  Connection conn = dbutils.getConnection();
+	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM student_relative"
+	         	      		+ " WHERE StudentUuid = ?;");       
+	      		
+	      		){
+	      	
+	      	 pstmt.setString(1, relative.getStudentsUuid());
+		         pstmt.executeUpdate();
+		     
+	      }catch(SQLException e){
+	      	 logger.error("SQL Exception when deletting relative : " +relative);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success;
 	}
 
 	/**

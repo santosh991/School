@@ -123,13 +123,13 @@ CREATE TABLE student_parent (
     fatherName text ,
     fatherPhone text ,
     fatherOccupation text,
-    fatherID text UNIQUE ,
+    fatherID text ,
     fatherEmail text,
     motherName text ,
     motherPhone text ,
     motherOccupation text,
     motherEmail text,
-    motherID text UNIQUE,
+    motherID text ,
     relationship text
 );
 \COPY student_parent(uuid,studentUuid,fatherName,fatherPhone,fatherOccupation,fatherID,fatherEmail,motherName,motherPhone,motherOccupation,motherEmail,motherID,relationship) FROM '/tmp/Student_Parent.csv' WITH DELIMITER AS '|' CSV HEADER
@@ -147,7 +147,7 @@ CREATE TABLE student_relative (
     studentUuid text REFERENCES student(uuid),
     relativeName text,
     relativePhone text,
-    nationalID text UNIQUE
+    nationalID text 
 );
 \COPY student_relative(uuid,studentUuid,relativeName,relativePhone,nationalID) FROM '/tmp/Student_Relative.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student_relative OWNER TO allamano;
@@ -163,7 +163,7 @@ CREATE TABLE student_sponsor (
     studentUuid text REFERENCES student(uuid),
     Name text,
     Phone text,
-    nationalID text UNIQUE,
+    nationalID text,
     Occupation text,
     County text,
     country text

@@ -17,7 +17,7 @@ public class StudentParent extends StudentSuper {
 	private String fatherID;
 	private String fatherEmail;
 	
-	private String motherrname;
+	private String mothername;
 	private String motherphone;
 	private String motheroccupation;
 	private String motherID;
@@ -31,7 +31,7 @@ public class StudentParent extends StudentSuper {
 		 fatherphone ="";
 		 fatheroccupation ="";
 		 fatherEmail ="";
-		 motherrname ="";
+		 mothername ="";
 		 motherID = "";
 		 motherphone = "";
 		 motheroccupation = "";
@@ -86,14 +86,14 @@ public class StudentParent extends StudentSuper {
 		this.fatheroccupation = fatheroccupation;
 	}
 	
-	public String getMotherrname() {
-		return motherrname;
+	public String getMothername() {
+		return mothername;
 	}
 
 
 
-	public void setMotherrname(String motherrname) {
-		this.motherrname = motherrname;
+	public void setMothername(String mothername) {
+		this.mothername = mothername;
 	}
 
 
@@ -221,8 +221,8 @@ public class StudentParent extends StudentSuper {
 		builder.append(fatherEmail);
 		builder.append(", fatherID =");
 		builder.append(fatherID);
-		builder.append(", motherrname = ");
-		builder.append(motherrname);
+		builder.append(", mothername = ");
+		builder.append(mothername);
 		builder.append(", motherphone =");
 		builder.append(motherphone);
 		builder.append(", motheroccupation =");

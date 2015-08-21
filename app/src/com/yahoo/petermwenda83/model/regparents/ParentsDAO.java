@@ -1,4 +1,18 @@
-/**
+/**##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without approval of from
+ * ###### owner.#############################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.model.regparents;
@@ -17,7 +31,7 @@ import com.yahoo.petermwenda83.contoller.guardian.StudentParent;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
@@ -49,34 +63,100 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	}
 
 	/**
+	 * @return 
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getStudentParent(com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
-	public StudentParent getStudentParent(StudentParent Parent) {
+	public StudentParent getStudentParent(String Uuid) {
+		StudentParent parent = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student_Parent WHERE studentUuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student_Parent"
+           	      		+ " WHERE studentUuid = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, Parent.getStudentUuid()); 
+        	 pstmt.setString(1, Uuid); 
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
-	    	 Parent  = beanProcessor.toBean(rset,StudentParent.class);
+	    	 parent  = beanProcessor.toBean(rset,StudentParent.class);
 	   }
         	
         	
         	
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting an users with uuid: " + Parent);
+        	 logger.error("SQL Exception when getting an users with uuid: " + parent);
              logger.error(ExceptionUtils.getStackTrace(e));
+             
         }
         
-		return Parent; 
+		return parent; 
 	}
 
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getParentByFatherId(java.lang.String)
+	 */
+	public StudentParent getParentByFatherId(String FatherId) {
+		StudentParent parent = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student_Parent"
+           	      		+ " WHERE FatherId = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, FatherId); 
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
 	
+	    	 parent  = beanProcessor.toBean(rset,StudentParent.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting an users with FatherId: " + FatherId);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             
+        }
+        
+		return parent; 
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getParentByMotherId(java.lang.String)
+	 */
+	public StudentParent getParentByMotherId(String MotherID) {
+		StudentParent parent = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student_Parent"
+           	      		+ " WHERE MotherID = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, MotherID); 
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 parent  = beanProcessor.toBean(rset,StudentParent.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting an users with MotherID: " + MotherID);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             
+        }
+        
+		return parent; 
+	}
+
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#putStudentParent(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
@@ -84,27 +164,30 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student_Parent (studentUuid" 
-			        		+"fatherName,fatherPhone,fatherOccupation,fatherID,fatherEmail,"
-      			+ "motherName,motherPhone,motherOccupation,"
-      			+ "motherEmail,motherID,relationship) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student_Parent"+
+						"(Uuid,StudentUuid,FatherName,FatherPhone,"
+						+ "FatherOccupation,FatherID,FatherEmail,"
+						+ "MotherName,MotherPhone,MotherOccupation,"
+						+ "MotherEmail,MotherID,Relationship)"
+						+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
       		){
 			   
-			    pstmt.setString(1, parent.getStudentUuid());
-			    
-			    pstmt.setString(2, parent.getFathername());
-	            pstmt.setString(3, parent.getFatherphone());
-	            pstmt.setString(4, parent.getFatheroccupation());
-	            pstmt.setString(5, parent.getFatherID());
-	            pstmt.setString(6, parent.getFatherEmail());
+			   
+			    pstmt.setString(1, parent.getUuid());
+			    pstmt.setString(2, parent.getStudentUuid());
+			    pstmt.setString(3, parent.getFathername());
+	            pstmt.setString(4, parent.getFatherphone());
+	            pstmt.setString(5, parent.getFatheroccupation());
+	            pstmt.setString(6, parent.getFatherID());
+	            pstmt.setString(7, parent.getFatherEmail());
 	           
-	            pstmt.setString(7, parent.getMotherrname());
-	            pstmt.setString(8, parent.getMotherphone());
-	            pstmt.setString(9, parent.getMotheroccupation());
-	            pstmt.setString(10, parent.getMotherEmail());
-	            pstmt.setString(11, parent.getMotherID());
+	            pstmt.setString(8, parent.getMothername());
+	            pstmt.setString(9, parent.getMotherphone());
+	            pstmt.setString(10, parent.getMotheroccupation());
+	            pstmt.setString(11, parent.getMotherEmail());
+	            pstmt.setString(12, parent.getMotherID());
 	            
-	            pstmt.setString(12, parent.getRelationship());
+	            pstmt.setString(13, parent.getRelationship());
 	            
 	           
 	            
@@ -113,8 +196,9 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put StudentParent: "+parent);
+		   logger.error("SQL Exception trying to put StudentParent: "+parent);
            logger.error(ExceptionUtils.getStackTrace(e)); 
+           System.out.println(ExceptionUtils.getStackTrace(e));
            success = false;
 		 }
 		 
@@ -129,13 +213,13 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#ediStudentParent(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
-	public boolean ediStudentParent(StudentParent parent) {
+	public boolean ediStudentParent(StudentParent parent,String StudentUuid) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
-      	PreparedStatement pstmt = conn.prepareStatement("UPDATE Student_Parent SET fatherName=?,"
-      			+ "fatherPhone=?, fatherOccupation=?,fatherID =?,fatherEmail =?"
-      			+ " ,motherName =?,motherPhone =?,motherOccupation =?,"
-      			+ "motherEmail =?,motherID =?,relationship   WHERE studentUuid = ?;");
+      	PreparedStatement pstmt = conn.prepareStatement("UPDATE Student_Parent SET FatherName=?,"
+      			+ "FatherPhone=?, FatherOccupation=?,FatherID=?,FatherEmail =?,"
+      			+ "MotherName=?,MotherPhone =?,MotherOccupation =?,"
+      			+ "MotherEmail=?,MotherID=?,Relationship=?   WHERE StudentUuid=?;");
       	) {
               
 	            pstmt.setString(1, parent.getFathername());
@@ -144,7 +228,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	            pstmt.setString(4, parent.getFatherID());
 	            pstmt.setString(5, parent.getFatherEmail());
 	           
-	            pstmt.setString(6, parent.getMotherrname());
+	            pstmt.setString(6, parent.getMothername());
 	            pstmt.setString(7, parent.getMotherphone());
 	            pstmt.setString(8, parent.getMotheroccupation());
 	            pstmt.setString(9, parent.getMotherEmail());
@@ -152,7 +236,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	            
 	            pstmt.setString(11, parent.getRelationship());
 	            
-	            pstmt.setString(12, parent.getStudentUuid());
+	            pstmt.setString(12,StudentUuid);
 	            
 	            
 	            pstmt.executeUpdate();
@@ -160,6 +244,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
       } catch (SQLException e) {
           logger.error("SQL Exception when updating Student_Parent: " + parent);
           logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
           success = false;
       } 
       		
@@ -168,13 +253,31 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 
 	
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#deleteStudentParent(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
-	@Override
 	public boolean deleteStudentParent(StudentParent parent) {
-		// TODO Auto-generated method stub
-		return false;
+
+		  boolean success = true; 
+      try(
+      		  Connection conn = dbutils.getConnection();
+         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Student_Parent"
+         	      		+ " WHERE StudentUuid = ?;");       
+      		
+      		){
+      	
+      	 pstmt.setString(1, parent.getStudentsUuid());
+	         pstmt.executeUpdate();
+	     
+      }catch(SQLException e){
+      	 logger.error("SQL Exception when deletting parent : " +parent);
+           logger.error(ExceptionUtils.getStackTrace(e));
+           System.out.println(ExceptionUtils.getStackTrace(e));
+           success = false;
+           
+      }
+      
+		return success;
 	}
 
 
