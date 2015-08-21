@@ -34,20 +34,43 @@ public interface StudentRegistrationDAO {
 	 */
 	
 	public boolean getStudents(Student student);
+	 
+	
+	 /**
+	  * 
+	  * @param activity
+	  * @return 
+	  */
+	public boolean getStudent(Activity activity);
+	
+	   /**
+	    * 
+	    * @param house
+	    * @return whether House was got successfully
+	    */
+	public boolean getStudent(House house);
+	
+	/**
+	   * 
+	   * @param location
+	   * @return whether Location was got successfully
+	   */
+	public boolean getStudent(Location location);
+      
 	/**
 	 * 
-	 * @param studentSuper
-	 * @param uuid
-	 * 
+	 * @param stusubject
+	 * @return whether StudentSubject was got successfully
 	 */
-	public boolean putStudent(Activity activity);
+	public boolean getStudent(StudentSubject stusubject);
+      
 	/**
-	 * 
-	 * @param studentSuper
-	 * @param house
-	 * 
-	 */
-	public boolean putStudent(House house);
+	  * 
+	  * @param student
+	  * @return
+	  */
+	public boolean putStudents(Student student);
+	
 	  /**
 	   * 
 	   * @param studentSuper
@@ -56,6 +79,23 @@ public interface StudentRegistrationDAO {
 	   */
 	
 	public boolean putStudent(Location location);
+	   
+	/**
+	 * 
+	 * @param studentSuper
+	 * @param house 
+	 * 
+	 */
+	public boolean putStudent(House house);
+	
+	/**
+	 * 
+	 * @param studentSuper
+	 * @param uuid
+	 * 
+	 */
+	public boolean putStudent(Activity activity);
+	
 	
 	/**
 	 * 
@@ -64,6 +104,7 @@ public interface StudentRegistrationDAO {
 	 * 
 	 */
 	public boolean putStudent(StudentSubject stusubject);
+	
 	/**
 	 * 
 	 * @param studentSuper
@@ -92,6 +133,14 @@ public interface StudentRegistrationDAO {
 	 * 
 	 */
 	public boolean  editStudent(StudentSubject stusubject);
+	
+	
+	/**
+	 * 
+	 * @param student
+	 * @return whether edit was successful or not
+	 */
+	public boolean editStudents(Student student);
 	/**
 	 * 
 	 * @param uuid
@@ -131,9 +180,12 @@ public interface StudentRegistrationDAO {
 	public List<House> getAllHouse();
 	/**
 	 * 
-	 * @return
+	 * @return all student location
 	 */
 	public List<Location> getAllLocation();
+	
+
+	
 	
 
 }

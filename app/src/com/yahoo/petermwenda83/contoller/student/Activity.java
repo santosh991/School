@@ -18,23 +18,6 @@ public class Activity extends StudentSuper {
 		activity = "";
 	}
 	
-	
-	/**
-	 * @return the studentUuid
-	 */
-	public String getStudentUuid() {
-		return getStudentUuid();
-	}
-
-
-	/**
-	 * @param studentUuid the studentUuid to set
-	 */
-	public void setStudentUuid(String studentUuid) {
-		setStudentUuid(studentUuid);
-	}
-
-
 	/**
 	 * @return the activity
 	 */

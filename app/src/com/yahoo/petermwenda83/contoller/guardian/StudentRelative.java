@@ -3,26 +3,26 @@
  */
 package com.yahoo.petermwenda83.contoller.guardian;
 
-import com.yahoo.petermwenda83.contoller.AllBean;
+import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 
 /**
  * @author peter
  *
  */
-public class StudentRelative extends AllBean{
+public class StudentRelative extends StudentSuper{
 
 	private String relativeName;
-	private int relativePhone;
-	private int nationalID;
-	private String studentUuid; 
+	private String relativePhone;
+	private String nationalID;
+	//private String studentUuid; 
 
 	
 	public StudentRelative() {
 		super();
 		relativeName = "";
-		relativePhone = 0;
-		nationalID = 0;
-		studentUuid = "";
+		relativePhone = "";
+		nationalID = "";
+		//studentUuid = "";
 		
 	}
 
@@ -46,7 +46,7 @@ public class StudentRelative extends AllBean{
 	/**
 	 * @return the relativePhone
 	 */
-	public int getRelativePhone() {
+	public String getRelativePhone() {
 		return relativePhone;
 	}
 
@@ -54,7 +54,7 @@ public class StudentRelative extends AllBean{
 	/**
 	 * @param relativePhone the relativePhone to set
 	 */
-	public void setRelativePhone(int relativePhone) {
+	public void setRelativePhone(String relativePhone) {
 		this.relativePhone = relativePhone;
 	}
 
@@ -62,7 +62,7 @@ public class StudentRelative extends AllBean{
 	/**
 	 * @return the nationalID
 	 */
-	public int getNationalID() {
+	public String getNationalID() {
 		return nationalID;
 	}
 
@@ -70,7 +70,7 @@ public class StudentRelative extends AllBean{
 	/**
 	 * @param nationalID the nationalID to set
 	 */
-	public void setNationalID(int nationalID) {
+	public void setNationalID(String nationalID) {
 		this.nationalID = nationalID;
 	}
 
@@ -78,17 +78,19 @@ public class StudentRelative extends AllBean{
 	/**
 	 * @return the studentUuid
 	 */
-	public String getStudentUuid() {
-		return studentUuid;
+	public String getStudentsUuid() {
+		return getStudentUuid();
 	}
+
 
 
 	/**
 	 * @param studentUuid the studentUuid to set
 	 */
-	public void setStudentUuid(String studentUuid) {
-		this.studentUuid = studentUuid;
+	public void setStudentsUuid(String studentUuid) {
+		setStudentUuid(studentUuid);
 	}
+
 
 
 	public String toString(){
@@ -97,13 +99,13 @@ public class StudentRelative extends AllBean{
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(", relativeName = ");
-		builder.append("relativeName");
+		builder.append(relativeName);
 		builder.append(", relativePhone =");
-		builder.append("relativePhone");
+		builder.append(relativePhone);
 		builder.append(", nationalID =");
-		builder.append("nationalID");
-		builder.append(", studentUuid =");
-		builder.append("studentUuid");
+		builder.append(nationalID);
+		builder.append(",getStudentsUuid() =");
+		builder.append(getStudentUuid());
 		builder.append("]");
 		return builder.toString(); 
 		}

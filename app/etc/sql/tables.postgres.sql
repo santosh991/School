@@ -161,14 +161,14 @@ CREATE TABLE student_sponsor (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
-    sponsorName text,
-    sponsorPhone text,
+    Name text,
+    Phone text,
     nationalID text UNIQUE,
-    sponsorOccupation text,
-    sponsorCoutry text,
-    sponsorCounty text
+    Occupation text,
+    County text,
+    country text
 );
-\COPY student_sponsor(uuid,studentUuid,sponsorName,sponsorPhone,nationalID,sponsorOccupation,sponsorCoutry,sponsorCounty) FROM '/tmp/Student_Sponsor.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY student_sponsor(uuid,studentUuid,Name,Phone,nationalID,Occupation,County,country) FROM '/tmp/Student_Sponsor.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student_sponsor OWNER TO allamano;
 
 
@@ -255,13 +255,14 @@ CREATE TABLE  exam_marks (
     examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
     marks text ,
+    grade text,
     submitdate timestamp with time zone
    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY exam_marks(uuid,studentUuid,examtypeUuid,subjectUuid,marks,submitdate) FROM '/tmp/Exam_Marks.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY exam_marks(uuid,studentUuid,examtypeUuid,subjectUuid,marks,grade,submitdate) FROM '/tmp/Exam_Marks.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE exam_marks OWNER TO allamano;
 
 -- -------------------
@@ -302,13 +303,14 @@ CREATE TABLE  catmarks (
     examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
     marks text,
+    grade text,
     submitdate timestamp with time zone
    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY catmarks(uuid,studentUuid,examtypeUuid,subjectUuid,marks,submitdate) FROM '/tmp/CatMarks.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY catmarks(uuid,studentUuid,examtypeUuid,subjectUuid,marks,grade,submitdate) FROM '/tmp/CatMarks.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE catmarks OWNER TO allamano;
 
 -- -------------------
@@ -378,10 +380,10 @@ CREATE TABLE teacher_subject (
     uuid text UNIQUE NOT NULL,
     teacherUuid text REFERENCES Teacher (Uuid),
     sujectUuid text REFERENCES subject (Uuid),
-    form text,
-    class text
+    form text
+   
 );
-\COPY teacher_subject(uuid,teacherUuid,sujectUuid,form,class) FROM '/tmp/Teacher_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY teacher_subject(uuid,teacherUuid,sujectUuid,form) FROM '/tmp/Teacher_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE teacher_subject OWNER TO allamano;
 
 

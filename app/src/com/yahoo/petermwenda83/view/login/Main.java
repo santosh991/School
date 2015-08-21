@@ -8,6 +8,8 @@ package com.yahoo.petermwenda83.view.login;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
+import com.yahoo.petermwenda83.cache.Init;
 /**
  * @author peter
  * @author <h1>mwendapeter72@gmail.com </h1>
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
  *
  */
 public class Main implements Runnable{
+	
 	 private final JFrame frame;
 	    public Main(JFrame frm){
 	        this.frame=frm;
@@ -24,6 +27,7 @@ public class Main implements Runnable{
 	    }//run method closed
 	    public static void main(String args[]){
 	       EventQueue.invokeLater(new Main(new LoginScreen()));
+	       new Init();
 	    }//main method closed
 
 

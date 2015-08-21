@@ -3,35 +3,39 @@
  */
 package com.yahoo.petermwenda83.contoller.guardian;
 
-import com.yahoo.petermwenda83.contoller.AllBean;
+import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 
 /**
  * @author peter
  *
  */
-public class StudentParent extends AllBean {
-	private String studentUuid;
+public class StudentParent extends StudentSuper {
+	private String relationship;
 	private String fathername;
-	private int fatherphone;
+	private String fatherphone;
 	private String fatheroccupation;
-	private int fatherID;
+	private String fatherID;
+	private String fatherEmail;
 	
 	private String motherrname;
-	private int motherphone;
+	private String motherphone;
 	private String motheroccupation;
-	private int motherID;
+	private String motherID;
+	private String motherEmail;
 	
 	public StudentParent() {
 		super();
-		 studentUuid = "";
+		relationship = "";
 		 fathername = "";
-		 fatherID = 0;
-		 fatherphone =0;
+		 fatherID = "";
+		 fatherphone ="";
 		 fatheroccupation ="";
+		 fatherEmail ="";
 		 motherrname ="";
-		 motherID = 0;
-		 motherphone = 0;
+		 motherID = "";
+		 motherphone = "";
 		 motheroccupation = "";
+		 motherEmail = "";
 	}
 	
 	
@@ -48,25 +52,25 @@ public class StudentParent extends AllBean {
 
 
 
-	public int getFatherID() {
+	public String getFatherID() {
 		return fatherID;
 	}
 
 
 
-	public void setFatherID(int fatherID) {
+	public void setFatherID(String fatherID) {
 		this.fatherID = fatherID;
 	}
 
 
 
-	public int getFatherphone() {
+	public String getFatherphone() {
 		return fatherphone;
 	}
 
 
 
-	public void setFatherphone(int fatherphone) {
+	public void setFatherphone(String fatherphone) {
 		this.fatherphone = fatherphone;
 	}
 
@@ -94,25 +98,25 @@ public class StudentParent extends AllBean {
 
 
 
-	public int getMotherID() {
+	public String getMotherID() {
 		return motherID;
 	}
 
 
 
-	public void setMotherID(int motherID) {
+	public void setMotherID(String motherID) {
 		this.motherID = motherID;
 	}
 
 
 
-	public int getMotherphone() {
+	public String getMotherphone() {
 		return motherphone;
 	}
 
 
 
-	public void setMotherphone(int motherphone) {
+	public void setMotherphone(String motherphone) {
 		this.motherphone = motherphone;
 	}
 
@@ -131,8 +135,8 @@ public class StudentParent extends AllBean {
 	/**
 	 * @return the studentUuid
 	 */
-	public String getStudentUuid() {
-		return studentUuid;
+	public String getStudentsUuid() {
+		return getStudentUuid();
 	}
 
 
@@ -140,8 +144,62 @@ public class StudentParent extends AllBean {
 	/**
 	 * @param studentUuid the studentUuid to set
 	 */
-	public void setStudentUuid(String studentUuid) {
-		this.studentUuid = studentUuid;
+	public void setStudentsUuid(String studentUuid) {
+		setStudentUuid(studentUuid);
+	}
+
+
+
+	/**
+	 * @return the fatherEmail
+	 */
+	public String getFatherEmail() {
+		return fatherEmail;
+	}
+
+
+
+	/**
+	 * @param fatherEmail the fatherEmail to set
+	 */
+	public void setFatherEmail(String fatherEmail) {
+		this.fatherEmail = fatherEmail;
+	}
+
+
+
+	/**
+	 * @return the motherEmail
+	 */
+	public String getMotherEmail() {
+		return motherEmail;
+	}
+
+
+
+	/**
+	 * @param motherEmail the motherEmail to set
+	 */
+	public void setMotherEmail(String motherEmail) {
+		this.motherEmail = motherEmail;
+	}
+
+
+
+	/**
+	 * @return the relationship
+	 */
+	public String getRelationship() {
+		return relationship;
+	}
+
+
+
+	/**
+	 * @param relationship the relationship to set
+	 */
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
 	}
 
 
@@ -151,24 +209,30 @@ public class StudentParent extends AllBean {
 		builder.append("StudentParent");
 		builder.append("[ id =");
 		builder.append(getId()); 
-		builder.append(", studentUuid = ");
-		builder.append("studentUuid");
+		builder.append(", getStudentsUuid() = ");
+		builder.append(getStudentUuid());
 		builder.append(", fathername = ");
-		builder.append("fathername");
+		builder.append(fathername);
 		builder.append(", fatherphone =");
-		builder.append("fatherphone");
+		builder.append(fatherphone);
 		builder.append(", fatheroccupation =");
-		builder.append("fatheroccupation");
+		builder.append(fatheroccupation);
+		builder.append(", fatherEmail =");
+		builder.append(fatherEmail);
 		builder.append(", fatherID =");
-		builder.append("fatherID");
+		builder.append(fatherID);
 		builder.append(", motherrname = ");
-		builder.append("motherrname");
+		builder.append(motherrname);
 		builder.append(", motherphone =");
-		builder.append("motherphone");
+		builder.append(motherphone);
 		builder.append(", motheroccupation =");
-		builder.append("motheroccupation");
+		builder.append(motheroccupation);
+		builder.append(", motherEmail =");
+		builder.append(motherEmail);
 		builder.append(", motherID =");
-		builder.append("motherID");
+		builder.append(motherID);
+		builder.append(", relationship =");
+		builder.append(relationship);
 		builder.append("]");
 		return builder.toString(); 
 		}

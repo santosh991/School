@@ -31,8 +31,6 @@ public class Student extends StudentSuper  {
 		builder.append(getSurname());
 		builder.append(",getAdmno() =");
 		builder.append(getAdmno());
-		builder.append(",getForm() =");
-		builder.append(getForm());
 		builder.append(",getYear() =");
 		builder.append(getYear());
 		builder.append(",getDOB() =");
