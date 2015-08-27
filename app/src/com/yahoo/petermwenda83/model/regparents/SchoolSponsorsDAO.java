@@ -1,4 +1,20 @@
-/**
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.model.regparents;
@@ -19,7 +35,14 @@ public interface SchoolSponsorsDAO {
 	  * @param uuid
 	  * @return StudentSponsor
 	  */
-	public StudentSponsor getStudentSponser(StudentSponsor Sponser);
+	public StudentSponsor getStudentSponsor(String StudentUuid);
+	
+	  /**
+	   * 
+	   * @param NationalID
+	   * @return StudentSponsor
+	   */
+	public StudentSponsor getStudentSponsorById(String NationalID);
 	
 	/**
 	  * 
@@ -27,7 +50,7 @@ public interface SchoolSponsorsDAO {
 	  * @param sponser
 	  *
 	  */
-	public boolean putStudentSponser(StudentSponsor sponser);
+	public boolean putStudentSponsor(StudentSponsor sponser);
 	
 	/**
 	  * 
@@ -35,7 +58,7 @@ public interface SchoolSponsorsDAO {
 	  * @param sponser
 	  * 
 	  */
-	public boolean editStudentSponser(StudentSponsor sponser);
+	public boolean editStudentSponsor(StudentSponsor sponsor,String StudentUuid);
 	
 	
 	 /**
@@ -44,14 +67,14 @@ public interface SchoolSponsorsDAO {
 	  * @param sponser
 	  * 
 	  */
-	public boolean deleteStudentSponser(StudentSponsor sponser);
+	public boolean deleteStudentSponsor(StudentSponsor sponser);
 	
 	
 	 /**
 	  * 
 	  * @return AllStudentSponser
 	  */
-	public List<StudentSponsor> getAllStudentSponser();
+	public List<StudentSponsor> getAllStudentSponsor();
 	
 
 }

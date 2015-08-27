@@ -20,6 +20,11 @@ public class Employees extends AllBean{
 	private String nhifno;
 	private String  nssfno;
 	private String DOB;
+	private String location;
+	String sublocation ;
+	private String teacherNumber;
+	private String position ;
+	private String salary ;
 	
 	private String	EmployeeUuid ;
 	
@@ -37,8 +42,12 @@ public class Employees extends AllBean{
 		nhifno = "";
 		nssfno  = "";
 		DOB = "";
+		location ="";
+		sublocation ="";
+		teacherNumber = "";
+		position = "";
+		salary = "";
 		
-		EmployeeUuid ="";
 		
 	}
 /**
@@ -161,6 +170,73 @@ public String getEmployeeUuid() {
 public void setEmployeeUuid(String employeeUuid) {
 	EmployeeUuid = employeeUuid;
 }
+/**
+ * @return the location
+ */
+public String getLocation() {
+	return location;
+}
+/**
+ * @param location the location to set
+ */
+public void setLocation(String location) {
+	this.location = location;
+}
+
+/**
+ * @return the sublocation
+ */
+public String getSublocation() {
+	return sublocation;
+}
+/**
+ * @param sublocation the sublocation to set
+ */
+public void setSublocation(String sublocation) {
+	this.sublocation = sublocation;
+}
+/**
+ * @return the teacherNumber
+ */
+public String getTeacherNumber() {
+	return teacherNumber;
+}
+
+/**
+ * @param teacherNumber the teacherNumber to set
+ */
+public void setTeacherNumber(String teacherNumber) {
+	this.teacherNumber = teacherNumber;
+}
+
+/**
+ * @return the position
+ */
+public String getPosition() {
+	return position;
+}
+/**
+ * @param position the position to set
+ */
+public void setPosition(String position) {
+	this.position = position;
+}
+/**
+ * @return the salary
+ */
+public String getSalary() {
+	return salary;
+}
+/**
+ * @param salary the salary to set
+ */
+public void setSalary(String salary) {
+	this.salary = salary;
+}
+
+
+
+
 
 
 }

@@ -10,15 +10,12 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  *
  */
 public class Position  extends Employees {
-	private String position ;
-	private String salary ;
 	/**
 	 * 
 	 */
 	public Position() {
 		super();
-		position = "";
-		salary = "";
+
 	}
 
 	
@@ -30,8 +27,6 @@ public class Position  extends Employees {
 		return getEmployeeUuid();
 	}
 
-
-
 	/**
 	 * @param teacherUuid the teacherUuid to set
 	 */
@@ -39,55 +34,19 @@ public class Position  extends Employees {
 		setEmployeeUuid(teacherUuid);
 	}
 
-
-
-	/**
-	 * @return the position
-	 */
-	public String getPosition() {
-		return position;
-	}
-
-
-
-	/**
-	 * @param position the position to set
-	 */
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-
-
-	/**
-	 * @return the salary
-	 */
-	public String getSalary() {
-		return salary;
-	}
-
-
-
-	/**
-	 * @param salary the salary to set
-	 */
-	public void setSalary(String salary) {
-		this.salary = salary;
-	}
-
-
-
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Nonteachingstaff position");
 		builder.append("[ id =");
 		builder.append(getId()); 
+		builder.append(",getUuid() =");
+		builder.append(getUuid());
 		builder.append(", getTeacherUuid() =");
 		builder.append(getTeacherUuid());
-		builder.append(", position =");
-		builder.append(position);
-		builder.append(", salary =");
-		builder.append(salary);
+		builder.append(", getPosition() =");
+		builder.append(getPosition());
+		builder.append(", getSalary() =");
+		builder.append(getSalary());
 		builder.append("]"); 
 		return builder.toString();
 	}

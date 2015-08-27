@@ -22,8 +22,8 @@ import com.yahoo.petermwenda83.contoller.AllBean;
 import com.yahoo.petermwenda83.contoller.users.User;
 import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
 import com.yahoo.petermwenda83.model.exam.ExamDAO;
-import com.yahoo.petermwenda83.model.principal.SRegistrationDAO;
-import com.yahoo.petermwenda83.model.registration.RegistrationDAO;
+import com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO;
+import com.yahoo.petermwenda83.model.registration.StudentDAO;
 import com.yahoo.petermwenda83.model.regparents.ParentsDAO;
 import com.yahoo.petermwenda83.model.user.UsresDAO;
 
@@ -35,8 +35,8 @@ public class Init {
 	    protected SubjectDAO subjectDAO;
 	    protected ParentsDAO parentsDAO;
 	    protected UsresDAO usersDAO;
-	    protected RegistrationDAO registrationDAO;
-	    protected SRegistrationDAO sRegistrationDAO;
+	    protected StudentDAO studentDAO;
+	    protected StaffRegistrationDAO staffRegistrationDAO;
 	    protected ExamDAO examDAO;
 	    
 	    
@@ -52,8 +52,8 @@ public class Init {
 	    	subjectDAO = SubjectDAO.getInstance();
 	    	parentsDAO = ParentsDAO.getInstance();
 	    	usersDAO = UsresDAO.getInstance();
-	    	registrationDAO = RegistrationDAO.getInstance();
-	    	sRegistrationDAO = SRegistrationDAO.getInstance();
+	    	studentDAO = StudentDAO.getInstance();
+	    	staffRegistrationDAO = StaffRegistrationDAO.getInstance();
 	    	examDAO = ExamDAO.getInstance();
 	    	
 	        sizeOfPolicyConfiguration = new SizeOfPolicyConfiguration();
@@ -91,13 +91,13 @@ public class Init {
 	        objList = parentsDAO.getAllStudentParent();
 	        initCacheByUuid(CacheVariables.CACHE_PARENTS_BY_UUID, objList);
 
-	        objList = registrationDAO.getAllStudents();
+	        objList = studentDAO.getAllStudents();
 	        initCacheByUuid(CacheVariables.CACHE_REG_BY_UUID, objList);
 
-	        objList = sRegistrationDAO.getAllTeacher();
+	        objList = staffRegistrationDAO.getAllTeacher();
 	        initCacheByUuid(CacheVariables.CACHE_SREG_STATUS_BY_UUID, objList);
 	                
-	        objList = examDAO.getAllExamtype(); 
+	      //  objList = examDAO.getAllExamtype(); 
 	        initCacheByUuid(CacheVariables.CACHE_EXAM_BY_UUID, objList);
 	        
 	        

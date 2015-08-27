@@ -17,54 +17,67 @@
  * ##########################################################
  * 
  */
-package com.yahoo.petermwenda83.model.user;
-
+package com.yahoo.petermwenda83.model.registration;
 import java.util.List;
 
-import com.yahoo.petermwenda83.contoller.users.User;
-
+import com.yahoo.petermwenda83.contoller.student.Student;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public interface SystemUsersDAO {
+public interface SchoolStudentDAO {
 	/**
 	 * 
-	 * @param Uuid, user uuid
-	 * @return the Uuid
+	 * @param uuid
+	 * @return Student
 	 */
-	public User getUser(String Uuid);
-	 
+	public Student getStudent(String uuid);
 	/**
 	 * 
-	 * @param user, the user
-	 * @return the user
+	 * @param admno
+	 * @return Student
 	 */
-	public User getUserName(User user); 
+	public Student getStudents(String admno);
+	/**
+	 * 
+	 * @param studentSuper
+	 * @return Student
+	 */
+	
+	public boolean getStudents(Student student);
+	     
+	/**
+	  * 
+	  * @param student
+	  * @return
+	  */
+	public boolean putStudents(Student student);
 	
 	/**
-	 * @param user, the user
-	 * @param Uuid, user Uuid
-	 * @return user
+	 * 
+	 * @param student
+	 * @return whether edit was successful or not
 	 */
-	public boolean editUser(User user,String Uuid);
+	public boolean editStudents(Student student);
+	
 	/**
 	 * 
-	 * @param user, the user
-	 * @return user
+	 * @param student
+	 * @return
 	 */
-	public boolean putUser(User user);
-	  /**
-	   * 
-	   * @param  user, the user
-	   * @return user
-	   */
-	public boolean deleteUser(User user);
-	  /**
-	   * 
-	   * @return get AllUsers
-	   */
-	public List<User> getAllUsers();
+	public boolean deleteStudents(Student student);
+	
+	 
+	   /**
+	    * @return AllStudents
+	    */
+	public List<Student> getAllStudents();
+	  
+	
+	
+
+	
+	
 
 }

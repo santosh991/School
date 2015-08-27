@@ -5,14 +5,14 @@
  */
 package com.yahoo.petermwenda83.model.curriculum;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.yahoo.petermwenda83.contoller.student.StudentSubject;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
@@ -100,21 +100,6 @@ private SubjectDAO store;
      
      
 
-	/**
-	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getStudentSubject(java.lang.String)}.
-	 */
-    @Ignore
-	@Test
-	public void testGetStudentSubject() {
-    	store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-    	 
-    	StudentSubject stusub = new StudentSubject();
-    	stusub = store.getStudentSubject(STUSUB_UUID);
-    	assertEquals(stusub.getUuid(),STUSUB_UUID);
-		assertEquals(stusub.getStudentUuid(),STU_UUID);
-		assertEquals(stusub.getSubjectUuid(),SUB_UUID);
-    	
-	}
 
 	/**
 	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#putSubject(com.yahoo.petermwenda83.contoller.student.Subject)}.
@@ -133,21 +118,7 @@ private SubjectDAO store;
 	    assertTrue(store.putSubject(sub));
 	}
 
-	/**
-	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#putStudentSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
-	 */
-    @Ignore
-	@Test
-	public void testPutStudentSubject() {
-    	store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-    	StudentSubject stusub = new StudentSubject();
-    	String stusubUuid = stusub.getUuid();
-    	stusub.setUuid(stusubUuid);
-    	stusub.setStudentUuid(STU_UUID);
-    	stusub.setSubjectUuid(STU_UUID_3);
-    	assertTrue(store.putStudentSubject(stusub));
-    
-	}
+	
 
 	/**
 	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#editSubject(com.yahoo.petermwenda83.contoller.student.Subject)}.
@@ -164,19 +135,6 @@ private SubjectDAO store;
     	assertTrue(store.editSubject(sub,SUB_UUID_3));
 	}
 
-
-
-	/**
-	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#deleteSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject)}.
-	 */
-    @Ignore
-	@Test
-	public void testDeleteSubject() {
-		store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		StudentSubject stusubject = new StudentSubject();
-		stusubject.setUuid(uuid); 
-		assertTrue(store.deleteSubject(stusubject)); 
-	}
 
 	/**
 	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Subject)}.
@@ -208,23 +166,6 @@ private SubjectDAO store;
 		
 	}
 
-	/**
-	 * SubjectUi method for {@link com.yahoo.petermwenda83.model.curriculum.SubjectDAO#getAllSubject()}.
-	 */
-	@Ignore
-	@Test
-	public void testgetAllStudentSubject() {
-		 store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-			
-		 List<StudentSubject> list = store.getAllStudentSubject();	
-			assertEquals(list.size(), 2);
-			System.out.println(list);
-			for (StudentSubject l : list) {
-				System.out.println(l);
-				
-			}
-		 
-	}
 	
 	
 }

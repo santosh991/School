@@ -42,7 +42,7 @@ public class Activity extends StudentSuper {
 		builder.append(", getStudentUuid() =");
 		builder.append(getStudentUuid());
 		builder.append(", activity =");
-		builder.append("activity");
+		builder.append(activity);
 		builder.append("]");
 		return builder.toString(); 
 		}

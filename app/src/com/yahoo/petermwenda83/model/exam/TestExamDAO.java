@@ -10,19 +10,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
-import java.util.List;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.yahoo.petermwenda83.contoller.exam.CatMarks;
 import com.yahoo.petermwenda83.contoller.exam.CatResults;
-import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
 import com.yahoo.petermwenda83.contoller.student.StudentSuper;
 import com.yahoo.petermwenda83.contoller.student.Subject;
-import com.yahoo.petermwenda83.contoller.users.User;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -79,71 +75,7 @@ public class TestExamDAO {
 	final String CEXAMNO = "EN65116",CEXAMNO2 = "EN65773";
 	
 	private ExamDAO store;
-	/**
-	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getExamType(java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testGetExamType() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		ExamType examType = new ExamType();
-		examType = store.getExamType(TYPE_UUID);
-		assertEquals(examType.getUuid(),TYPE_UUID);
-		assertEquals(examType.getExamtype(),EXAM_TYPE);
-		assertEquals(examType.getTerm(),EXAM_TERM);
-		assertEquals(examType.getClasz(),EXAM_CLASS);
-		assertEquals(examType.getOutof(),OUTOF);
-		assertEquals(examType.getYear(),EXAM_YEAR);
-		assertEquals(examType.getDescription(),EXAM_DESCRI);
-		assertEquals(examType.getExamno(),CEXAMNO);
-		
-		
-	}
 	
-	
-	
-	/**
-	 * 
-	 */
-	@Ignore
-	@Test
-	public void testGetExamTypes() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		ExamType examType = new ExamType();
-		examType = store.getExamTypes(CEXAMNO);
-		assertEquals(examType.getUuid(),TYPE_UUID);
-		assertEquals(examType.getExamtype(),EXAM_TYPE);
-		assertEquals(examType.getTerm(),EXAM_TERM);
-		assertEquals(examType.getClasz(),EXAM_CLASS);
-		assertEquals(examType.getOutof(),OUTOF);
-		assertEquals(examType.getYear(),EXAM_YEAR);
-		assertEquals(examType.getDescription(),EXAM_DESCRI);
-		assertEquals(examType.getExamno(),CEXAMNO);
-		
-		
-	}
-	
-	/**
-	 * 
-	 */
-	@Ignore
-	@Test
-	public void testGeget() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		ExamType examType = new ExamType();
-		examType = store.get(EXAM_TYPE, EXAM_CLASS, EXAM_DESCRI);
-		assertEquals(examType.getUuid(),TYPE_UUID);
-		assertEquals(examType.getExamtype(),EXAM_TYPE);
-		assertEquals(examType.getTerm(),EXAM_TERM);
-		assertEquals(examType.getClasz(),EXAM_CLASS);
-		assertEquals(examType.getOutof(),OUTOF);
-		assertEquals(examType.getYear(),EXAM_YEAR);
-		assertEquals(examType.getDescription(),EXAM_DESCRI);
-		//assertEquals(examType.getExamno(),CEXAMNO);
-		
-		
-	}
-
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getMainMarks(java.lang.String)}.
 	 */
@@ -220,28 +152,7 @@ public class TestExamDAO {
 		//assertEquals(catResults.getSubmitdate(),RESULTS_DATE);
 	}
 
-	/**
-	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamType(java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testPutExamType() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		
-		ExamType examType = new ExamType();
-    	String Uuid = examType.getUuid();
-    	//System.out.println(Uuid);
-		examType.setUuid(Uuid);
-		examType.setExamtype(EXAM_TYPE_NEW);
-		examType.setTerm(EXAM_TERM_NEW);
-	    examType.setYear(EXAM_YEAR);
-		examType.setClasz(EXAM_CLASS);
-		examType.setOutof(OUTOF); 
-	    examType.setDescription(EXAM_DESCRI_NEW);
-	    examType.setExamno(CEXAMNO);
-	    assertTrue(store.putExamType(examType));
-		 
-	}
+	
 
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
@@ -302,24 +213,6 @@ public class TestExamDAO {
 		assertTrue(store.putExamResults(catr));
 	}
 
-	/**
-	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamType(java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testEditExamType() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		ExamType type = new ExamType();//
-		type.setExamtype(EXAM_TYPE_UPDATE);
-		type.setTerm(EXAM_TERM_UPDATE);
-		type.setYear(EXAM_YEAR_UPDATE);
-		type.setClasz(EXAM_CLASS_UPDATE);
-		type.setOutof(OUTOF); 
-		type.setDescription(EXAM_DESCRI_UPDATE);
-		type.setExamno(CEXAMNO2);
-	    assertTrue(store.editExamType(type, TYPE_UUID_NEW)); 
-		
-	}
 
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#editExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
@@ -347,20 +240,6 @@ public class TestExamDAO {
 		
 	}
 
-	
-	/**
-	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamType(java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testDeleteExamType() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		ExamType type = new ExamType();
-		String uuid = "08e6abb2-e1f6-4b84-b3f6-39e4ba80fe39";
-		type.setUuid(uuid);
-		assertTrue(store.deleteExamType(type));
-	}
-
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#deleteExamMarks(java.lang.String)}.
 	 */
@@ -382,17 +261,5 @@ public class TestExamDAO {
 	}
 	
 	
-	//@Ignore
-	@Test
-	public void testGetAllExamtype() {
-		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		 List<ExamType> list = store.getAllExamtype();	
-			//assertEquals(list.size(), 6);
-			//System.out.println(list);
-			for (ExamType l : list) {
-				System.out.println(l);
-				
-			}
-	}
 
 }

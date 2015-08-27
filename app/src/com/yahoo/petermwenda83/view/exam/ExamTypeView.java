@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.model.exam.ExamDAO;
+import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
 
 /**
@@ -42,7 +43,7 @@ public class ExamTypeView extends JInternalFrame {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static int selectedRow;
     
-    private static ExamDAO examDAO; 
+    private static ExamtypeDAO examtypeDAO; 
     List<ExamType> etypList = new ArrayList<ExamType>(); 
     
     public ExamTypeView() 
@@ -76,8 +77,8 @@ public class ExamTypeView extends JInternalFrame {
         buttonPanel.add(btnaddMarks);
         buttonPanel.add(btnClose);
         
-        examDAO = ExamDAO.getInstance(); 
-        etypList = examDAO.getAllExamtype();
+        examtypeDAO = ExamtypeDAO.getInstance(); 
+        etypList = examtypeDAO.getAllExamtype();
 
         add(tablePanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.PAGE_END);

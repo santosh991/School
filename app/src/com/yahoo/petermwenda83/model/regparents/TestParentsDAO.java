@@ -1,11 +1,13 @@
-/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
  * ### This is My Forth Year Project#########################
  * ####### Maasai Mara University############################
  * ####### Year:2015-2016 ###################################
  * ####### Although this software is open source, No one
  * ###### should assume it ownership and copy paste 
- * ###### the code herein without approval of from
- * ###### owner.#############################################
+ * ###### the code herein without the owner's approval.
+ * ###################################################
  * ##########################################################
  * ##### School Management System ###########################
  * ##### Uses MVC Model, Postgres database, ant for 
@@ -207,7 +209,7 @@ public class TestParentsDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.regparents.ParentsDAO#deleteStudentParent(com.yahoo.petermwenda83.contoller.guardian.StudentParent)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testDeleteStudentParent() {
 		store = new ParentsDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

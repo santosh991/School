@@ -1,4 +1,20 @@
-/**
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.model.regparents;
@@ -16,8 +32,9 @@ import org.apache.log4j.Logger;
 import com.yahoo.petermwenda83.contoller.guardian.StudentSponsor;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 
+
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
@@ -52,7 +69,8 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#getStudentSponser(com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
-	public StudentSponsor getStudentSponser(StudentSponsor Sponser) {
+	public StudentSponsor getStudentSponsor(String StudentUuid) {
+		StudentSponsor sponser = null;
 		ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
@@ -61,51 +79,83 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
         		
         		){
         	
-        	 pstmt.setString(1, Sponser.getStudentUuid()); 
+        	 pstmt.setString(1, StudentUuid); 
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
-	    	 Sponser  = beanProcessor.toBean(rset,StudentSponsor.class);
+	    	 sponser  = beanProcessor.toBean(rset,StudentSponsor.class);
 	   }
         	
         	
         	
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting StudentSponsor : " + Sponser);
+        	 logger.error("SQL Exception when getting StudentSponsor with StudentUuid : " + StudentUuid);
              logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e)); 
         }
         
-		return Sponser; 
+		return sponser; 
 	}
 
 	/**
+	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#getStudentSponserById(java.lang.String)
+	 */
+	public StudentSponsor getStudentSponsorById(String NationalID) {
+		StudentSponsor sponser = null;
+		ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM student_sponsor"
+           	      		+ " WHERE NationalID = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, NationalID); 
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 sponser  = beanProcessor.toBean(rset,StudentSponsor.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting StudentSponsor with NationalID : " + NationalID);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e)); 
+        }
+        
+		return sponser; 
+	}
+	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#putStudentSponser(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
-	public boolean putStudentSponser(StudentSponsor sponsor) {
+	public boolean putStudentSponsor(StudentSponsor sponsor) {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO student_sponsor ("
-						+ "StudentUuid "
-  			+ "sponsorName,sponsorPhone,nationalID,sponsorOccupation,"
-  			+ "sponsorCoutry,sponsorCounty) VALUES (?,?,?,?);");
+						+ "Uuid,StudentUuid ,"
+  			+ "Name,Phone,nationalID,Occupation,"
+  			+ "Country,County) VALUES (?,?,?,?,?,?,?,?);");
   		){     
 			   
-			    pstmt.setString(1, sponsor.getStudentUuid());
-			    
-			    pstmt.setString(2, sponsor.getName()); 
-			    pstmt.setString(3, sponsor.getPhone());
-	            pstmt.setString(3, sponsor.getNationalID());
-	            pstmt.setString(4, sponsor.getOccupation());
-	            pstmt.setString(4, sponsor.getCountry());
-	            pstmt.setString(4, sponsor.getCounty());
+			    pstmt.setString(1, sponsor.getUuid()); 
+			    pstmt.setString(2, sponsor.getStudentUuid()); 
+			    pstmt.setString(3, sponsor.getName()); 
+			    pstmt.setString(4, sponsor.getPhone());
+	            pstmt.setString(5, sponsor.getNationalID());
+	            pstmt.setString(6, sponsor.getOccupation());
+	            pstmt.setString(7, sponsor.getCountry());
+	            pstmt.setString(8, sponsor.getCounty());
 	           	           
 	    	    pstmt.executeUpdate();
 
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put StudentSponsor: "+sponsor);
+	   logger.error("SQL Exception trying to put StudentSponsor: "+sponsor);
        logger.error(ExceptionUtils.getStackTrace(e)); 
+       System.out.println(ExceptionUtils.getStackTrace(e)); 
        success = false;
 		 }
 		 
@@ -117,46 +167,63 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#editStudentSponser(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
-	public boolean editStudentSponser(StudentSponsor sponsor) {
+	public boolean editStudentSponsor(StudentSponsor sponsor,String StudentUuid) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
-  	PreparedStatement pstmt = conn.prepareStatement("UPDATE student_sponsor SET sponsorName=?,"
-  			+ "sponsorPhone=?, nationalID=?,sponsorOccupation =?"
-  			+ ",sponsorCoutry =?,sponsorCounty =? WHERE studentUuid = ?;");
-  	) {		   
-  			
-			   			    
+  	             PreparedStatement pstmt = conn.prepareStatement("UPDATE student_sponsor SET Name=?,"
+  			+ "Phone=?, nationalID=?,Occupation =?,"
+  			+ "County =?,Country =? WHERE StudentUuid = ?;");
+  	          ) {		   			   			    
 			    pstmt.setString(1, sponsor.getName()); 
 			    pstmt.setString(2, sponsor.getPhone());
 	            pstmt.setString(3, sponsor.getNationalID());
 	            pstmt.setString(4, sponsor.getOccupation());
-	            pstmt.setString(4, sponsor.getCountry());
-	            pstmt.setString(6, sponsor.getCounty());
-	            pstmt.setString(7, sponsor.getStudentUuid());
+	            pstmt.setString(5, sponsor.getCounty());
+	            pstmt.setString(6, sponsor.getCountry());
+	            pstmt.setString(7, StudentUuid);
+	            pstmt.executeUpdate();
 	           	           
 
   } catch (SQLException e) {
-      logger.error("SQL Exception when updating StudentSponsor: " + sponsor);
+      logger.error("SQL Exception when updating StudentSponsor: " + sponsor+"with StudentUuid" +StudentUuid);
       logger.error(ExceptionUtils.getStackTrace(e));
+      System.out.println(ExceptionUtils.getStackTrace(e)); 
       success = false;
   } 
   		
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#deleteStudentSponser(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
-	@Override
-	public boolean deleteStudentSponser(StudentSponsor sponser) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteStudentSponsor(StudentSponsor sponser) {
+		 boolean success = true; 
+	      try(
+	      		  Connection conn = dbutils.getConnection();
+	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM student_sponsor"
+	         	      		+ " WHERE StudentUuid = ?;");       
+	      		
+	      		){
+	      	
+	      	 pstmt.setString(1, sponser.getStudentsUuid());
+		         pstmt.executeUpdate();
+		     
+	      }catch(SQLException e){
+	      	 logger.error("SQL Exception when deletting sponser : " +sponser);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success;
 	}
 
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#getAllStudentSponser()
 	 */
-	public List<StudentSponsor> getAllStudentSponser() {
+	public List<StudentSponsor> getAllStudentSponsor() {
 		List<StudentSponsor>  list = null;
 		
 		 try(   
@@ -177,5 +244,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 		return list;
 	
 	}
+
+	
 
 }

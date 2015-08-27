@@ -10,7 +10,9 @@ package com.yahoo.petermwenda83.contoller.student;
  *
  */
 public class StudentSubject extends StudentSuper{
-	   
+	   public StudentSubject(){
+		   super();
+	   }
 
 	public String toString(){
 	StringBuilder builder = new StringBuilder();
@@ -20,8 +22,6 @@ public class StudentSubject extends StudentSuper{
 	builder.append(getStudentUuid());
 	builder.append(", getSubjectUuid() =");
 	builder.append(getSubjectUuid());
-	builder.append(", getSubjectcode() =");
-	builder.append(getSubjectcode());
 	builder.append(", getClasz() =");
 	builder.append(getClasz());
 	

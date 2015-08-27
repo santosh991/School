@@ -1,11 +1,13 @@
-/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
  * ### This is My Forth Year Project#########################
  * ####### Maasai Mara University############################
  * ####### Year:2015-2016 ###################################
  * ####### Although this software is open source, No one
  * ###### should assume it ownership and copy paste 
- * ###### the code herein without approval of from
- * ###### owner.#############################################
+ * ###### the code herein without the owner's approval.
+ * ###################################################
  * ##########################################################
  * ##### School Management System ###########################
  * ##### Uses MVC Model, Postgres database, ant for 
@@ -40,19 +42,19 @@ public class TestRelativesDAO {
 	
 	final String STU_UUID = "DAF7EC32-EA25-7D32-8708-2CC132446A2Y",
 			STU_UUID_NEW = "",
-			STU_UUID_UPDATE = "";
+			STU_UUID_UPDATE = "838c6508-b971-4590-b7f1-4021867a197e";
 	final String UUID = "C3CFA249-F2A3-8253-1F44-B1C594C6A8D2",
 			UUID_NEW ="",
 			UUID_UPDATE ="";
 	final String REL_NAME = "Dyanna Mwende",
-			REL_NAME_NEW="",
-			REL_NAME_UPDATE="";
+			REL_NAME_NEW="Jane Ng'endo",
+			REL_NAME_UPDATE="Updated name";
 	final String REL_PHONE = "7177667779",
-			REL_PHONE_NEW = "",
-			REL_PHONE_UPDATE = "";
+			REL_PHONE_NEW = "07208765566",
+			REL_PHONE_UPDATE = "999999999999";
 	final String REL_ID = "377666662",
-			REL_ID_NEW = "",
-			REL_ID_UPDATE = "";
+			REL_ID_NEW = "29876666",
+			REL_ID_UPDATE = "8888888888";
 	
 	
 	private RelativesDAO store;
@@ -93,12 +95,12 @@ public class TestRelativesDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.regparents.RelativesDAO#putStudentRelative(com.yahoo.petermwenda83.contoller.guardian.StudentRelative)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testPutStudentRelative() {
 		store = new RelativesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		StudentRelative r = new StudentRelative();
-		r.setStudentsUuid(STU_UUID_NEW);
+		r.setStudentsUuid(STU_UUID);
 		r.setRelativeName(REL_NAME_NEW);
 		r.setRelativePhone(REL_PHONE_NEW);
 		r.setNationalID(REL_ID_NEW);
@@ -114,11 +116,10 @@ public class TestRelativesDAO {
 	public void testEditStudentRelative() {
 		store = new RelativesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		StudentRelative r = new StudentRelative();
-		r.setStudentsUuid(STU_UUID_UPDATE);
 		r.setRelativeName(REL_NAME_UPDATE);
 		r.setRelativePhone(REL_PHONE_UPDATE);
 		r.setNationalID(REL_ID_UPDATE); 
-		assertTrue(store.editStudentRelative(r, STU_UUID_NEW)); 
+		assertTrue(store.editStudentRelative(r, STU_UUID_UPDATE)); 
 	}
 
 	/**
@@ -129,7 +130,7 @@ public class TestRelativesDAO {
 	public void testDeleteStudentRelative() {
 		store = new RelativesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		StudentRelative r = new StudentRelative();
-		r.setStudentsUuid(STU_UUID_NEW);
+		r.setStudentsUuid(STU_UUID_UPDATE);
 		assertTrue(store.deleteStudentRelative(r));
 	}
 

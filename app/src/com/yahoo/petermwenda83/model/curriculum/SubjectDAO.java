@@ -25,7 +25,7 @@ import com.yahoo.petermwenda83.model.DBConnectDAO;
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
+public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 
 	private static SubjectDAO subjectDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -61,7 +61,7 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 	}
 	
 	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
+	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#getSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
 	 */
 	public Subject getSubject(String uuid) {
 		Subject Subject = null;
@@ -89,219 +89,8 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
 		return Subject; 
 	}
 
-
 	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getStudentSubject(java.lang.String)
-	 */
-	public StudentSubject getStudentSubject(String uuid) {
-		StudentSubject StuSubject = null;
-        ResultSet rset = null;
-        try(
-        		 Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student_Subject WHERE Uuid = ?;");       
-        		
-        		){
-        	
-        	 pstmt.setString(1, uuid);
-	         rset = pstmt.executeQuery();
-	     while(rset.next()){
-	
-	    	 StuSubject  = beanProcessor.toBean(rset,StudentSubject.class);
-	   }
-        	
-        	
-        	
-        }catch(SQLException e){
-        	 logger.error("SQL Exception when getting an StudentSubject with uuid: " + uuid);
-             logger.error(ExceptionUtils.getStackTrace(e));
-        }
-        
-		return StuSubject; 
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#putSubject(com.yahoo.petermwenda83.contoller.student.Subject)
-	 */
-	public boolean putSubject(Subject subject) {
-		boolean success = true;
-		 try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Subject" 
-			        		+"(Uuid, subjectcode, subjectname, subjectcategory) VALUES (?,?,?,?);");
-        		){
-			   
-	            pstmt.setString(1, subject.getUuid());
-	            pstmt.setString(2, subject.getSubjectcode());
-	            pstmt.setString(3, subject.getSubjectname());
-	            pstmt.setString(4, subject.getSubjectcategory());
-	            pstmt.executeUpdate();
-			 
-		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put: "+subject);
-             logger.error(ExceptionUtils.getStackTrace(e)); 
-             success = false;
-		 }
-		
-		
-		return success;
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#putStudentSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject)
-	 */
-	public boolean putStudentSubject(StudentSubject stusubject) {
-		boolean success = true;
-	
-		 try(
-        		 Connection conn = dbutils.getConnection();
-				 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student_Subject" 
-			        		+"(Uuid, studentUuid, subjectUuid) VALUES (?,?,?);");
-        		){
-			
-			    pstmt.setString(1, stusubject.getUuid());
-	            pstmt.setString(2, stusubject.getStudentUuid());
-	            pstmt.setString(3, stusubject.getSubjectUuid());
-	            pstmt.executeUpdate();
-			 
-		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put: " + stusubject);
-             logger.error(ExceptionUtils.getStackTrace(e)); 
-             success = false;
-		 }
-		
-		
-		return success;
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#editSubject(com.yahoo.petermwenda83.contoller.student.Subject, java.lang.String)
-	 */
-	public boolean editSubject(Subject subject,String uuid) {
-		boolean success = true;
-        try (  Connection conn = dbutils.getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET subjectcode=?, "
-        			+ "subjectname=?, subjectcategory=? WHERE Uuid = ?;");
-        	) {
-            
-            pstmt.setString(1, subject.getSubjectcode());
-            pstmt.setString(2, subject.getSubjectname());
-            pstmt.setString(3, subject.getSubjectcategory());
-            pstmt.setString(4, subject.getUuid());
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when updating SubjectUi with uuid " + subject);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } 
-        
-        return success;
-		
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#deleteSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject)
-	 */
-	public boolean deleteSubject(StudentSubject stusubject) {
-		boolean success = true; 
-        try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Student_Subject WHERE Uuid = ?;");       
-        		
-        		){
-        	
-        	 pstmt.setString(1, stusubject.getUuid());
-	         pstmt.executeUpdate();
-	     
-        }catch(SQLException e){
-        	 logger.error("SQL Exception when deletting: " + stusubject);
-             logger.error(ExceptionUtils.getStackTrace(e));
-             success = false;
-            
-        }
-        
-		return success; 
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Subject)
-	 */
-	public boolean deleteStudent(Subject subject) {
-		boolean success = true; 
-        try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE Uuid = ?;");       
-        		
-        		){
-        	
-        	 pstmt.setString(1, subject.getUuid());
-	         pstmt.executeUpdate();
-	     
-        }catch(SQLException e){
-        	 logger.error("SQL Exception when deletting: " + subject);
-             logger.error(ExceptionUtils.getStackTrace(e));
-             success = false;
-             
-        }
-        
-		return success; 
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getAllStudent()
-	 */
-	public List<Subject> getAllSubjects() {
-		List<Subject>  list = null;
-		
-		 try(   
-        		Connection conn = dbutils.getConnection();
-        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");   
-        		ResultSet rset = pstmt.executeQuery();
-    		) {
-        	
-            list = beanProcessor.toBeanList(rset, Subject.class);
-
-        } catch(SQLException e){
-        	logger.error("SQL Exception when getting all SubjectUi");
-            logger.error(ExceptionUtils.getStackTrace(e));
-        }
-      
-		
-		return list;
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getAllStudentSubject()
-	 */
-	public List<StudentSubject> getAllStudentSubject() {
-		List<StudentSubject>  list = null;
-		
-		 try(   
-       		Connection conn = dbutils.getConnection();
-       		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Student_Subject;");   
-       		ResultSet rset = pstmt.executeQuery();
-   		) {
-       	
-           list = beanProcessor.toBeanList(rset, StudentSubject.class);
-
-       } catch(SQLException e){
-       	logger.error("SQL Exception when getting all StudentSubject");
-           logger.error(ExceptionUtils.getStackTrace(e));
-       }
-     
-		
-		return list;
-	}
-
-	
-	/**
-	 * @see com.yahoo.petermwenda83.model.curriculum.AssignSubjectDAO#getSubjects(java.lang.String)
+	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#getSubjects(java.lang.String)
 	 */
 	public Subject getSubjects(String subjectcode) {
 		Subject Subject = null;
@@ -328,4 +117,111 @@ public class SubjectDAO extends DBConnectDAO implements AssignSubjectDAO {
         
 		return Subject; 
 	}
+
+	
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#putSubject(com.yahoo.petermwenda83.contoller.student.Subject)
+	 */
+	public boolean putSubject(Subject subject) {
+		boolean success = true;
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Subject" 
+			        		+"(Uuid, subjectcode, subjectname, subjectcategory) VALUES (?,?,?,?);");
+        		){
+			   
+	            pstmt.setString(1, subject.getUuid());
+	            pstmt.setString(2, subject.getSubjectcode());
+	            pstmt.setString(3, subject.getSubjectname());
+	            pstmt.setString(4, subject.getSubjectcategory());
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to put: "+subject);
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             success = false;
+		 }
+		
+		
+		return success;
+	}
+
+
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#editSubject(com.yahoo.petermwenda83.contoller.student.Subject, java.lang.String)
+	 */
+	public boolean editSubject(Subject subject,String uuid) {
+		boolean success = true;
+        try (  Connection conn = dbutils.getConnection();
+        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET subjectcode=?, "
+        			+ "subjectname=?, subjectcategory=? WHERE Uuid = ?;");
+        	) {
+            
+            pstmt.setString(1, subject.getSubjectcode());
+            pstmt.setString(2, subject.getSubjectname());
+            pstmt.setString(3, subject.getSubjectcategory());
+            pstmt.setString(4, subject.getUuid());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception when updating SubjectUi with uuid " + subject);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            success = false;
+        } 
+        
+        return success;
+		
+	}
+
+	
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Subject)
+	 */
+	public boolean deleteStudent(Subject subject) {
+		boolean success = true; 
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE Uuid = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, subject.getUuid());
+	         pstmt.executeUpdate();
+	     
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when deletting: " + subject);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             success = false;
+             
+        }
+        
+		return success; 
+	}
+
+	
+	/**
+	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#getAllStudent()
+	 */
+	public List<Subject> getAllSubjects() {
+		List<Subject>  list = null;
+		
+		 try(   
+        		Connection conn = dbutils.getConnection();
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");   
+        		ResultSet rset = pstmt.executeQuery();
+    		) {
+        	
+            list = beanProcessor.toBeanList(rset, Subject.class);
+
+        } catch(SQLException e){
+        	logger.error("SQL Exception when getting all SubjectUi");
+            logger.error(ExceptionUtils.getStackTrace(e));
+        }
+      
+		
+		return list;
+	}
+
+	
 }

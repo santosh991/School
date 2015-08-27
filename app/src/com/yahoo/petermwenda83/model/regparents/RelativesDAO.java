@@ -1,11 +1,13 @@
-/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
  * ### This is My Forth Year Project#########################
  * ####### Maasai Mara University############################
  * ####### Year:2015-2016 ###################################
  * ####### Although this software is open source, No one
  * ###### should assume it ownership and copy paste 
- * ###### the code herein without approval of from
- * ###### owner.#############################################
+ * ###### the code herein without the owner's approval.
+ * ###################################################
  * ##########################################################
  * ##### School Management System ###########################
  * ##### Uses MVC Model, Postgres database, ant for 
@@ -137,7 +139,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO student_relative ("
-						+ "Uuid,StudentUuid "
+						+ "Uuid,StudentUuid,"
     			+ "RelativeName,RelativePhone,NationalID) VALUES (?,?,?,?,?);");
     		){
 			   

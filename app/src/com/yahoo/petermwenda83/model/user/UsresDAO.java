@@ -1,4 +1,20 @@
-/**
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.model.user;
@@ -141,8 +157,26 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 */
 	
 	public boolean deleteUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
+		 boolean success = true; 
+	      try(
+	      		  Connection conn = dbutils.getConnection();
+	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Users"
+	         	      		+ " WHERE Uuid = ?;");       
+	      		
+	      		){
+	      	
+	      	 pstmt.setString(1, user.getUuid());
+		         pstmt.executeUpdate();
+		     
+	      }catch(SQLException e){
+	      	 logger.error("SQL Exception when deletting user : " +user);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success;
 	}
 
 	/**

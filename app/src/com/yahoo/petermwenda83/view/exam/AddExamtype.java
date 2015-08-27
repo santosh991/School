@@ -21,8 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
-import com.yahoo.petermwenda83.model.exam.ExamDAO;
-import com.yahoo.petermwenda83.view.MainWindow;
+import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
 
 /**
  * @author peter
@@ -35,7 +34,7 @@ public class AddExamtype extends JInternalFrame {
 	 private JTextField txtyear,txtputof,txtdescr;
 	 private JPanel panel1,  panel2;
 	 
-	 private static ExamDAO examDAO; 
+	 private static ExamtypeDAO examTypeDAO; 
 
 	 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	/**
@@ -60,7 +59,7 @@ public class AddExamtype extends JInternalFrame {
 		 txtputof  = new JTextField();
 		 txtdescr  = new JTextField("CAT 1");
 		 
-		  examDAO = ExamDAO.getInstance(); 
+		 examTypeDAO = ExamtypeDAO.getInstance(); 
 		 
 		  cmbexmtyp.addItem("");
 		 cmbexmtyp.addItem("CAT");
@@ -233,12 +232,12 @@ public class AddExamtype extends JInternalFrame {
                     txtdescr.requestFocus();
                     return; 
                 }
-                if (examDAO.get(type.toUpperCase(), clas.toUpperCase(), txtdescr.getText().toUpperCase()) !=null) {
+                if (examTypeDAO.get(type.toUpperCase(), clas.toUpperCase(), txtdescr.getText().toUpperCase()) !=null) {
                     JOptionPane.showMessageDialog(null, "This Exam Already exist", "Error", JOptionPane.DEFAULT_OPTION);
                    
                 }else{
                 	
-                	 if(examDAO.putExamType(examType)){
+                	 if(examTypeDAO.putExamType(examType)){
                 	  JOptionPane.showMessageDialog(null, "Added", "Success", JOptionPane.DEFAULT_OPTION);
                 	 
                 }

@@ -21,29 +21,18 @@ public class NTstaff extends Employees{
 		
 	}
 
-	/**
-	 * @return the nTstaffUuid
-	 */
-	public String getNTstaffUuid() {
-		return getEmployeeUuid();
-	}
 
-	/**
-	 * @param nTstaffUuid the nTstaffUuid to set
-	 */
-	public void setNTstaffUuid(String nTstaffUuid) {
-		setEmployeeUuid(nTstaffUuid);
-	}
+
 
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Nonteaching staff");
 		builder.append("[ id =");
 		builder.append(getId()); 
-		builder.append(",getNTstaffUuid() =");
-		builder.append(getNTstaffUuid());	
+		builder.append(",getUuid() =");
+		builder.append(getUuid());	
 		builder.append(", getFirstName() =");
-		builder.append(getFirstName());		
+		builder.append(getFirstName());			
 		builder.append(", getLastName() =");
 		builder.append(getLastName());	
 		builder.append(", getSurname() =");
@@ -60,6 +49,10 @@ public class NTstaff extends Employees{
 		builder.append(getNhifno());		
 		builder.append(", getNssfno() =");
 		builder.append(getNssfno());
+		builder.append(", getLocation() =");
+		builder.append(getLocation());
+		builder.append(", getLocation() =");
+		builder.append(getLocation());
 		builder.append("]"); 
 		return builder.toString();
 	}

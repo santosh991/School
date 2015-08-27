@@ -74,11 +74,10 @@ CREATE TABLE student_subject (
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    subjectcode text  REFERENCES subject(subjectcode),
     clasz text 
 );
 
-\COPY student_subject(uuid,studentUuid,subjectUuid,subjectcode,clasz) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY student_subject(uuid,studentUuid,subjectUuid,clasz) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student_subject OWNER TO allamano;
 
 
@@ -359,12 +358,12 @@ CREATE TABLE teacher (
     firstName text,
     lastName text,
     surname text,
-    nhifno text UNIQUE,
-    nssfno text UNIQUE,
-    phone text UNIQUE,
+    nhifno text ,
+    nssfno text ,
+    phone text ,
     dob text,
-    nationalID text UNIQUE ,
-    teacherNumber text UNIQUE,
+    nationalID text,
+    teacherNumber text,
     county text,
     location text
 );
@@ -399,19 +398,19 @@ ALTER TABLE teacher_subject OWNER TO allamano;
 CREATE TABLE ntstaff (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    fisrtname text,
+    firstName text,
     lastname text,
     surname text,
-    nhifno text UNIQUE,
-    nssfno text UNIQUE,
+    nhifno text ,
+    nssfno text ,
     dob text,
     phone text,
-    nationalID text UNIQUE ,
+    nationalID text,
     county text,
     location text,
     sublocation text
 );
-\COPY ntstaff(uuid,fisrtname,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/NTStaff.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY ntstaff(uuid,firstName,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/NTStaff.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ntstaff OWNER TO allamano;
 
 --------------------

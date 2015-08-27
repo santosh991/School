@@ -34,7 +34,7 @@ import javax.swing.table.AbstractTableModel;
 	import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.student.Student;
 import com.yahoo.petermwenda83.model.exam.ExamDAO;
-import com.yahoo.petermwenda83.model.registration.RegistrationDAO;
+import com.yahoo.petermwenda83.model.registration.StudentDAO;
 
 	/**
 	 * @author peter
@@ -53,7 +53,7 @@ import com.yahoo.petermwenda83.model.registration.RegistrationDAO;
 	    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	    private static int selectedRow;
 	    
-	    private static RegistrationDAO regDAO; 
+	    private static StudentDAO regDAO; 
 	    List<Student> stuList = new ArrayList<Student>(); 
 	    
 	    public marksView(String descr, String term, String clasz,String subject)  
@@ -93,7 +93,7 @@ import com.yahoo.petermwenda83.model.registration.RegistrationDAO;
 	        buttonPanel.add(btnPrint);
 	        buttonPanel.add(btnClose);
 	        
-	        regDAO = RegistrationDAO.getInstance(); 
+	        regDAO = StudentDAO.getInstance(); 
 	        stuList = regDAO.getAllStudents(); 
 
 	        add(tablePanel, BorderLayout.CENTER);
