@@ -136,7 +136,7 @@ public class MainWindow extends JFrame implements WindowListener {
         mnuUser.setActionCommand("newuser");
         mnuUser.addActionListener(menulistener);
         
-        nmuTeacher = new JMenuItem("Manage Teachers");
+        nmuTeacher = new JMenuItem("Manage Workers");
         nmuTeacher.setForeground(Color.blue);
         nmuTeacher.setFont(new Font("monospaced", Font.PLAIN, 12));
         nmuTeacher.setMnemonic('T');

@@ -75,7 +75,7 @@ public class LoginScreen extends JFrame{
         btnCancel.setBounds(190, 150, 100, 25); 
 		box.addItem("Principal");
 		box.addItem("Secretary");
-		box.addItem("Teacher");
+		box.addItem("Teachers");
 		box.addItem("HOD");
 		box.addItem("CM");
 		box.addItem("Clerk");
@@ -146,7 +146,7 @@ public class LoginScreen extends JFrame{
             new MainWindow(logname).LoginManager();             
         } else if(box.getSelectedItem().equals("Secretary")){
         	new MainWindow(logname).LoginSecretary();
-        }else if(box.getSelectedItem().equals("Teacher")){
+        }else if(box.getSelectedItem().equals("Teachers")){
         	new MainWindow(logname).LoginTeacher();
         }else if(box.getSelectedItem().equals("HOD")){
         	new MainWindow(logname).LoginHOD();

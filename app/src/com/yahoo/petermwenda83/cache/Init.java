@@ -22,7 +22,7 @@ import com.yahoo.petermwenda83.contoller.AllBean;
 import com.yahoo.petermwenda83.contoller.users.User;
 import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
 import com.yahoo.petermwenda83.model.exam.ExamDAO;
-import com.yahoo.petermwenda83.model.principal.StaffRegistrationDAO;
+import com.yahoo.petermwenda83.model.principal.TeacherRegistrationDAO;
 import com.yahoo.petermwenda83.model.registration.StudentDAO;
 import com.yahoo.petermwenda83.model.regparents.ParentsDAO;
 import com.yahoo.petermwenda83.model.user.UsresDAO;
@@ -36,7 +36,7 @@ public class Init {
 	    protected ParentsDAO parentsDAO;
 	    protected UsresDAO usersDAO;
 	    protected StudentDAO studentDAO;
-	    protected StaffRegistrationDAO staffRegistrationDAO;
+	    protected TeacherRegistrationDAO teacherRegistrationDAO;
 	    protected ExamDAO examDAO;
 	    
 	    
@@ -53,7 +53,7 @@ public class Init {
 	    	parentsDAO = ParentsDAO.getInstance();
 	    	usersDAO = UsresDAO.getInstance();
 	    	studentDAO = StudentDAO.getInstance();
-	    	staffRegistrationDAO = StaffRegistrationDAO.getInstance();
+	    	teacherRegistrationDAO = TeacherRegistrationDAO.getInstance();
 	    	examDAO = ExamDAO.getInstance();
 	    	
 	        sizeOfPolicyConfiguration = new SizeOfPolicyConfiguration();
@@ -94,8 +94,8 @@ public class Init {
 	        objList = studentDAO.getAllStudents();
 	        initCacheByUuid(CacheVariables.CACHE_REG_BY_UUID, objList);
 
-	        objList = staffRegistrationDAO.getAllTeacher();
-	        initCacheByUuid(CacheVariables.CACHE_SREG_STATUS_BY_UUID, objList);
+	      //  objList = teacherRegistrationDAO.getAllTeacher();
+	       // initCacheByUuid(CacheVariables.CACHE_SREG_STATUS_BY_UUID, objList);
 	                
 	      //  objList = examDAO.getAllExamtype(); 
 	        initCacheByUuid(CacheVariables.CACHE_EXAM_BY_UUID, objList);

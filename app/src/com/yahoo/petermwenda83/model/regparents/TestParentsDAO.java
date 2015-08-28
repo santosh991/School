@@ -53,7 +53,7 @@ public class TestParentsDAO {
 	
 	final String MOTHER_NAME = "Mary Muthoni",MOTHER_NAME_NEW ="Merit Karimi";
 	final String MOTHER_PHONE = "29314165",MOTHER_PHONE_NEW ="8765456787";
-	final String MOTHER_OCCUP = "Teacher",MOTHER_OCCUP_NEW ="Business woman";
+	final String MOTHER_OCCUP = "Teachers",MOTHER_OCCUP_NEW ="Business woman";
 	final String MOTHER_ID = "65567788",MOTHER_ID_NEW= "7654567",MOTHER_ID_UPDATE="87678";
 	final String MOTHER_EMAIL = "muthoni@gmail.com",MOTHER_EMAIL_NEW="karimimerit@yahoo.com",
 			MOTHER_EMAIL_UPDATE ="meritkarimi@yahoo.com";

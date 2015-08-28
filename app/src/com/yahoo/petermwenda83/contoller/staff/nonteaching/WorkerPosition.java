@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.yahoo.petermwenda83.contoller.staff.teaching;
+package com.yahoo.petermwenda83.contoller.staff.nonteaching;
 
 import com.yahoo.petermwenda83.contoller.staff.Employees;
 
@@ -9,40 +9,46 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  * @author peter
  *
  */
-public class Position  extends Employees {
+public class WorkerPosition  extends Employees {
+	
 	/**
 	 * 
 	 */
-	public Position() {
+	public WorkerPosition() {
 		super();
-
+		
 	}
-
 	
-
+	
 	/**
-	 * @return the teacherUuid
+	 * @return the nTstaffUuid
 	 */
-	public String getTeacherUuid() {
+	public String getWorkerUuid() {
 		return getEmployeeUuid();
 	}
 
+
+
+
 	/**
-	 * @param teacherUuid the teacherUuid to set
+	 * @param nTstaffUuid the nTstaffUuid to set
 	 */
-	public void setTeacherUuid(String teacherUuid) {
-		setEmployeeUuid(teacherUuid);
+	public void setWorkerUuid(String workerUuid) {
+		setEmployeeUuid(workerUuid); 
 	}
+
+
+
 
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Nonteachingstaff position");
+		builder.append("Worker Position");
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(",getUuid() =");
 		builder.append(getUuid());
-		builder.append(", getTeacherUuid() =");
-		builder.append(getTeacherUuid());
+		builder.append(", getWorkerUuid() =");
+		builder.append(getWorkerUuid());
 		builder.append(", getPosition() =");
 		builder.append(getPosition());
 		builder.append(", getSalary() =");
@@ -50,4 +56,5 @@ public class Position  extends Employees {
 		builder.append("]"); 
 		return builder.toString();
 	}
+
 }

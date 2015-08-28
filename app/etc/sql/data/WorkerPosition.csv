@@ -1,4 +1,4 @@
-uuid|ntstaffuuid|position|    salary text
+uuid|workerUuid|position|salary 
 767b2084-570f-44c0-8416-fb5f25496a9f|616361c1-e7c3-4336-ba25-5905ac0712a3|Driver|4000
 da6bee9-2860-4cf9-b8f3-50212a4e576a|27bcb692-b5c9-42fd-9ef4-3fa8a15cec3e|Secretary|5000
 ae3fcddc-df08-4b6b-a13b-f87f7501c6ef|d84bf5f4-7278-42d2-b528-79666e75811c|Bursar|6000

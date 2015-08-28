@@ -14,15 +14,20 @@ public class Employees extends AllBean{
 	private String firstName;
 	private String lastName;
 	private String surname;
+	
 	private String phone;
 	private String nationalID;
+	
 	private String	county; 
+	private String location;
+	
+	
 	private String nhifno;
 	private String  nssfno;
 	private String DOB;
-	private String location;
-	String sublocation ;
-	private String teacherNumber;
+	
+	
+	
 	private String position ;
 	private String salary ;
 	
@@ -43,8 +48,6 @@ public class Employees extends AllBean{
 		nssfno  = "";
 		DOB = "";
 		location ="";
-		sublocation ="";
-		teacherNumber = "";
 		position = "";
 		salary = "";
 		
@@ -181,32 +184,6 @@ public String getLocation() {
  */
 public void setLocation(String location) {
 	this.location = location;
-}
-
-/**
- * @return the sublocation
- */
-public String getSublocation() {
-	return sublocation;
-}
-/**
- * @param sublocation the sublocation to set
- */
-public void setSublocation(String sublocation) {
-	this.sublocation = sublocation;
-}
-/**
- * @return the teacherNumber
- */
-public String getTeacherNumber() {
-	return teacherNumber;
-}
-
-/**
- * @param teacherNumber the teacherNumber to set
- */
-public void setTeacherNumber(String teacherNumber) {
-	this.teacherNumber = teacherNumber;
 }
 
 /**

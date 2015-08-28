@@ -392,10 +392,10 @@ ALTER TABLE teacher_subject OWNER TO allamano;
 
 
 --------------------
--- Table NTStaff
+-- Table Worker
 ---------------------
 
-CREATE TABLE ntstaff (
+CREATE TABLE worker (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     firstName text,
@@ -410,14 +410,14 @@ CREATE TABLE ntstaff (
     location text,
     sublocation text
 );
-\COPY ntstaff(uuid,firstName,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/NTStaff.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE ntstaff OWNER TO allamano;
+\COPY worker(uuid,firstName,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/Worker.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE worker OWNER TO allamano;
 
 --------------------
--- Table Position
+-- Table TeacherPosition
 ---------------------
 
-CREATE TABLE position (
+CREATE TABLE teacherPosition (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     teacherUuid text REFERENCES teacher(uuid),
@@ -425,24 +425,24 @@ CREATE TABLE position (
     salary text
    
 );
-\COPY position(uuid,teacherUuid,position,salary) FROM '/tmp/Position.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE position OWNER TO allamano;
+\COPY teacherPosition(uuid,teacherUuid,position,salary) FROM '/tmp/TeacherPosition.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE teacherPosition OWNER TO allamano;
 
 
 --------------------
 -- Table NTPosition
 ---------------------
 
-CREATE TABLE ntposition (
+CREATE TABLE workerPosition (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    ntstaffUuid text REFERENCES ntstaff(uuid),
+    workerUuid text REFERENCES worker(uuid),
     position text,
     salary text
    
 );
-\COPY ntposition(uuid,ntstaffUuid,position,salary) FROM '/tmp/NTPosition.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE ntposition OWNER TO allamano;
+\COPY workerPosition(uuid,workerUuid,position,salary) FROM '/tmp/WorkerPosition.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE workerPosition OWNER TO allamano;
 
 
 

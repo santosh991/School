@@ -9,29 +9,42 @@ import com.yahoo.petermwenda83.contoller.staff.Employees;
  * @author peter
  *
  */
-public class Teacher  extends Employees {
-	
+public class Teachers  extends Employees {
+	private String teacherNumber;
 	
 	/**
 	 * 
 	 */
-	public Teacher() {
+	public Teachers() {
 		super();
-		
+		teacherNumber = "";
 		
 	}
 	
-	
+	/**
+	 * @return the teacherNumber
+	 */
+	public String getTeacherNumber() {
+		return teacherNumber;
+	}
+
+	/**
+	 * @param teacherNumber the teacherNumber to set
+	 */
+	public void setTeacherNumber(String teacherNumber) {
+		this.teacherNumber = teacherNumber;
+	}
+
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Teacher");
+		builder.append("Teachers");
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(",getUuid() =");
 		builder.append(getUuid());
-		builder.append(", getTeacherNumber() =");
-		builder.append(getTeacherNumber());
+		builder.append(", teacherNumber =");
+		builder.append(teacherNumber);
 		builder.append(", getFirstName() =");
 		builder.append(getFirstName());		
 		builder.append(", getLastName() =");
