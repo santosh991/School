@@ -79,7 +79,8 @@ public class WorkersPositionDAO  extends DBConnectDAO implements SchoolWorkersPo
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM WorkerPosition WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM WorkerPosition "
+        	      		+ "WHERE Uuid = ?;");       
      		
      		){
      	
@@ -109,10 +110,10 @@ public class WorkersPositionDAO  extends DBConnectDAO implements SchoolWorkersPo
 		WorkerPosition p = new WorkerPosition();
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO WorkerPosition" 
-			        		+"(Uuid, WorkerUuid, TeacherPosition, Salary) VALUES (?,?,?,?);");
+			        		+"(Uuid, WorkerUuid,Position, Salary) VALUES (?,?,?,?);");
       		){
 	            pstmt.setString(1, p.getUuid());
-	            pstmt.setString(2, workerPos.getEmployeeUuid());
+	            pstmt.setString(2, workerPos.getWorkerUuid());
 	            pstmt.setString(3, workerPos.getPosition());
 	            pstmt.setString(4, workerPos.getSalary());
 	            pstmt.executeUpdate();
@@ -137,7 +138,7 @@ public class WorkersPositionDAO  extends DBConnectDAO implements SchoolWorkersPo
 		boolean success = true;
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE WorkerPosition SET "
-	        			+ "TeacherPosition=?, Salary=? WHERE WorkerUuid = ?;");
+	        			+ "Position=?, Salary=? WHERE WorkerUuid = ?;");
       		){
 			  
 	            pstmt.setString(1, workerPos.getPosition());

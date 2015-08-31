@@ -1,7 +1,22 @@
-/**
- * School Management System
- * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
- * copywrite peter&MigwiSoftwares.co.ltd
+/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
+ * 
  */
 package com.yahoo.petermwenda83.model.exam;
 

@@ -18,30 +18,38 @@
  * ##########################################################
  * 
  */
-package com.yahoo.petermwenda83.view.login;
+package com.yahoo.petermwenda83.model.exam;
 
-import java.awt.EventQueue;
+import java.util.List;
 
-import javax.swing.JFrame;
-
-
+import com.yahoo.petermwenda83.contoller.exam.CatMarks;
+import com.yahoo.petermwenda83.contoller.exam.CatResults;
+import com.yahoo.petermwenda83.contoller.exam.MainMarks;
+import com.yahoo.petermwenda83.contoller.exam.MainResults;
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class Main implements Runnable{
-	
-	 private final JFrame frame;
-	    public Main(JFrame frm){
-	        this.frame=frm;
-	    }//constructor closed
-	    public void run(){
-	        frame.setVisible(true);
-	    }//run method closed
-	    public static void main(String args[]){
-	       EventQueue.invokeLater(new Main(new LoginScreen()));
-	      
-	    }//main method closed
+public interface SchoolExamListsDAO {
+	/**
+	 * 
+	 * @return Lists of all Students CatMarks
+	 */
+	public List<CatMarks> getAllCatMarks();
+	 /**
+	  * 
+	  * @return Lists of all Students CatResults
+	  */
+	public List<CatResults> getAllCatResults();
+	 /**
+	  * 
+	  * @return Lists of all Students MainMarks
+	  */
+	public List<MainMarks> getAllMainMarks();
+	 /**
+	  * 
+	  * @return Lists of all Students MainResults
+	  */
+	public List<MainResults> getAllMainResults();
 
-
-}//class closed
+}

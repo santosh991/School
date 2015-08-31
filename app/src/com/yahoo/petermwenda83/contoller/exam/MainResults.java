@@ -1,53 +1,50 @@
-/**
+/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.contoller.exam;
 
-
 /**
- * @author peter
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class MainResults extends Exam {
    
-	private String MainMarksUuid;
+	
 	
 	/**
 	 * 
 	 */
 	public MainResults() {
 		super();
-		MainMarksUuid = "";
+		
 	}
- 
-	
-	/**
-	 * @return the mainMarksUuid
-	 */
-	public String getMainMarksUuid() {
-		return MainMarksUuid;
-	}
-
-
-	/**
-	 * @param mainMarksUuid the mainMarksUuid to set
-	 */
-	public void setMainMarksUuid(String mainMarksUuid) {
-		MainMarksUuid = mainMarksUuid;
-	}
-
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Exam Totals");
+		builder.append("Main Exam Results");
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(", getSubjectUuid()=");
 		builder.append(getSubjectUuid());
 		builder.append(", getStudentUuid()=");
 		builder.append(getStudentUuid());
-		builder.append(", getExamTypeUuid()=");
-		builder.append(getExamTypeUuid());
 		builder.append(", getTotal()=");
 		builder.append(getTotal());
 		builder.append(", getPoints()=");
@@ -60,8 +57,6 @@ public class MainResults extends Exam {
 		builder.append(getRemarks());
 		builder.append(", getSubmitdate()=");
 		builder.append(getSubmitdate());
-		builder.append(", MainMarksUuid =");
-		builder.append("MainMarksUuid");
 		builder.append("]");
 		return builder.toString(); 
 		}

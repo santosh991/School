@@ -1,4 +1,21 @@
-/**
+/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
  * 
  */
 package com.yahoo.petermwenda83.contoller.exam;
@@ -8,36 +25,19 @@ package com.yahoo.petermwenda83.contoller.exam;
  *
  */
 public class CatResults extends Exam  {
-	private String CatResultsUuid;
-	/**
-	 * 
-	 */
-	public CatResults() {
-		CatResultsUuid = "";
-	}
-	/**
-	 * @return the catResultsUuid
-	 */
-	public String getCatResultsUuid() {
-		return CatResultsUuid;
-	}
-	/**
-	 * @param catResultsUuid the catResultsUuid to set
-	 */
-	public void setCatResultsUuid(String catResultsUuid) {
-		CatResultsUuid = catResultsUuid;
+	
+	public CatResults(){
+		super();
 	}
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Exam Totals");
+		builder.append("Cat Exam results");
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(", getSubjectUuid()=");
 		builder.append(getSubjectUuid());
 		builder.append(", getStudentUuid()=");
 		builder.append(getStudentUuid());
-		builder.append(", getExamTypeUuid()=");
-		builder.append(getExamTypeUuid());
 		builder.append(", getTotal()=");
 		builder.append(getTotal());
 		builder.append(", getPoints()=");
@@ -50,8 +50,6 @@ public class CatResults extends Exam  {
 		builder.append(getRemarks());
 		builder.append(", getSubmitdate()=");
 		builder.append(getSubmitdate());
-		builder.append(", CatResultsUuid =");
-		builder.append("CatResultsUuid");
 		builder.append("]");
 		return builder.toString(); 
 		}

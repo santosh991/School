@@ -75,7 +75,7 @@ public class TeacherRegistrationDAO extends DBConnectDAO  implements SchoolTeach
 	 * @see com.yahoo.petermwenda83.model.principal.SchoolTeacherRegistrationDAO#getTeacher(java.lang.String)
 	 */
 	@Override
-	public Teachers getTeacher(String uuid) {
+	public Teachers getTeacher(String TeacherNumber) {
 		 Teachers teachers  = null;
          ResultSet rset = null;
       try(
@@ -84,7 +84,7 @@ public class TeacherRegistrationDAO extends DBConnectDAO  implements SchoolTeach
       		
       		){
       	
-      	 pstmt.setString(1, uuid);
+      	 pstmt.setString(1, TeacherNumber);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -94,7 +94,7 @@ public class TeacherRegistrationDAO extends DBConnectDAO  implements SchoolTeach
       	
       	
       }catch(SQLException e){
-    	   logger.error("SQL Exception when getting Teachers with uuid: " + uuid);
+    	   logger.error("SQL Exception when getting Teachers with TeacherNumber: " + TeacherNumber);
            logger.error(ExceptionUtils.getStackTrace(e));
            System.out.println(ExceptionUtils.getStackTrace(e));
       }

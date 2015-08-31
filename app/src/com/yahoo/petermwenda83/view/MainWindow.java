@@ -1,7 +1,22 @@
-/**
- * School Management System
- * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
- * copywrite peter&MigwiSoftwares.co.ltd
+/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
+ * 
  */
 package com.yahoo.petermwenda83.view;
 
@@ -34,11 +49,8 @@ import com.yahoo.petermwenda83.view.exam.ExamTypeView;
 import com.yahoo.petermwenda83.view.exam.AddExamtype;
 import com.yahoo.petermwenda83.view.login.LoginScreen;
 import com.yahoo.petermwenda83.view.subject.SubjectView;
-
 /**
- * @author peter
- * @author <h1>mwendapeter72@gmail.com </h1>
- * @author <h1>migwindungu0@gmail.com </h1>
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class MainWindow extends JFrame implements WindowListener {
@@ -122,13 +134,13 @@ public class MainWindow extends JFrame implements WindowListener {
 	protected JMenuBar CreateJMenuBar() {
         JMenuBar menubar = new JMenuBar();
         /**********CREATING Manage User MENU***********************/
-        mnuUsers = new JMenu("System Users");
+        mnuUsers = new JMenu("Admin Panel");
         mnuUsers.setForeground((Color.blue));
         mnuUsers.setFont(new Font("monospaced", Font.PLAIN, 12));
         mnuUsers.setMnemonic('P');
         mnuUsers.setEnabled(false);
 
-        mnuUser = new JMenuItem("Manage Users");
+        mnuUser = new JMenuItem("System Users");
         mnuUser.setForeground(Color.blue);
         mnuUser.setFont(new Font("monospaced", Font.PLAIN, 12));
         mnuUser.setMnemonic('U');
@@ -144,7 +156,7 @@ public class MainWindow extends JFrame implements WindowListener {
         nmuTeacher.setActionCommand("nmuTeacher");
         nmuTeacher.addActionListener(menulistener);
         
-        mnuNonTeaching = new JMenuItem("Manage NonTeaching staff");
+        mnuNonTeaching = new JMenuItem("Manage Teachers");
         mnuNonTeaching.setForeground(Color.blue);
         mnuNonTeaching.setFont(new Font("monospaced", Font.PLAIN, 12));
         mnuNonTeaching.setMnemonic('N');
@@ -176,7 +188,7 @@ public class MainWindow extends JFrame implements WindowListener {
         mnuExamination.setMnemonic('E');
         mnuExamination.setEnabled(false);
        
-        mnuMain = new JMenuItem("Manage Main Exams");
+        mnuMain = new JMenuItem("Manage Exams");
         mnuMain.setForeground(Color.blue);
         mnuMain.setFont(new Font("monospaced", Font.PLAIN, 12));
         mnuMain.setMnemonic('M');

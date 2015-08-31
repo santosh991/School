@@ -74,16 +74,17 @@ public class TeacherPositionDAO extends DBConnectDAO implements SchoolTeacherPos
 	 * @see com.yahoo.petermwenda83.model.principal.SchoolTeacherPositionDAO#getstaffPos(java.lang.String)
 	 */
 	@Override
-	public TeacherPosition getstaffPos(String Uuid) {
+	public TeacherPosition getstaffPos(String TeacherUuid) {
 		TeacherPosition tp = new TeacherPosition();
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TeacherPosition WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TeacherPosition "
+        	      		+ "WHERE TeacherUuid = ?;");       
      		
      		){
      	
-     	     pstmt.setString(1, Uuid);
+     	     pstmt.setString(1, TeacherUuid);
 	         rset = pstmt.executeQuery();
 	        while(rset.next()){
 	
@@ -93,7 +94,7 @@ public class TeacherPositionDAO extends DBConnectDAO implements SchoolTeacherPos
      	
      	
      }catch(SQLException e){
-     	  logger.error("SQL Exception when getting TeacherPosition with Uuid: " + Uuid);
+     	  logger.error("SQL Exception when getting TeacherPosition with TeacherUuid: " + TeacherUuid);
           logger.error(ExceptionUtils.getStackTrace(e));
      }
      
@@ -109,16 +110,16 @@ public class TeacherPositionDAO extends DBConnectDAO implements SchoolTeacherPos
 		TeacherPosition pos = new TeacherPosition();
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO TeacherPosition" 
-			        		+"(Uuid, TeacherUuid, TeacherPosition, Salary) VALUES (?,?,?,?);");
+			        		+"(Uuid, TeacherUuid, Position, Salary) VALUES (?,?,?,?);");
       		){
 	            pstmt.setString(1, pos.getUuid());
-	            pstmt.setString(2, teacherPos.getEmployeeUuid());
+	            pstmt.setString(2, teacherPos.getTeacherUuid());
 	            pstmt.setString(3, teacherPos.getPosition());
 	            pstmt.setString(4, teacherPos.getSalary());
 	            pstmt.executeUpdate();
 			  
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put Employees TeacherPosition: "+teacherPos);
+			 logger.error("SQL Exception trying to put  TeacherPosition: "+teacherPos);
              logger.error(ExceptionUtils.getStackTrace(e)); 
              System.out.println(ExceptionUtils.getStackTrace(e));
            success = false;
@@ -137,7 +138,7 @@ public class TeacherPositionDAO extends DBConnectDAO implements SchoolTeacherPos
 		boolean success = true;
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE TeacherPosition SET "
-	        			+ "TeacherPosition=?, Salary=? WHERE TeacherUuid = ?;");
+	        			+ "Position=?, Salary=? WHERE TeacherUuid = ?;");
       		){
 			 
 	            pstmt.setString(1, teacherPos.getPosition());

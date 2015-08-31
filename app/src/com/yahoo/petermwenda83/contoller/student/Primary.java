@@ -20,51 +20,100 @@
  */
 package com.yahoo.petermwenda83.contoller.student;
 
-
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class House extends StudentSuper  {
+public class Primary extends StudentSuper {
 	
-	private String housename;
+	private String schoolname;
+	private String index;
+	private String kcpeyear;
+	private String kcpemarks;
+	
 	/**
 	 * 
 	 */
-	public House() {
+	public Primary() {
 		super();
-		housename = "";
+		schoolname ="";
+		index ="";
+		kcpeyear ="";
+		kcpemarks ="";
 	}
 	
-	
 	/**
-	 * @return the housename
+	 * @return the schoolname
 	 */
-	public String getHousename() {
-		return housename;
+	public String getSchoolname() {
+		return schoolname;
 	}
 
-
 	/**
-	 * @param housename the housename to set
+	 * @param schoolname the schoolname to set
 	 */
-	public void setHousename(String housename) {
-		this.housename = housename;
+	public void setSchoolname(String schoolname) {
+		this.schoolname = schoolname;
 	}
 
+	/**
+	 * @return the index
+	 */
+	public String getIndex() {
+		return index;
+	}
+
+	/**
+	 * @param index the index to set
+	 */
+	public void setIndex(String index) {
+		this.index = index;
+	}
+
+	/**
+	 * @return the kcpeyear
+	 */
+	public String getKcpeyear() {
+		return kcpeyear;
+	}
+
+	/**
+	 * @param kcpeyear the kcpeyear to set
+	 */
+	public void setKcpeyear(String kcpeyear) {
+		this.kcpeyear = kcpeyear;
+	}
+
+	/**
+	 * @return the kcpemarks
+	 */
+	public String getKcpemarks() {
+		return kcpemarks;
+	}
+
+	/**
+	 * @param kcpemarks the kcpemarks to set
+	 */
+	public void setKcpemarks(String kcpemarks) {
+		this.kcpemarks = kcpemarks;
+	}
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("House");
-		builder.append("[ id =");
+		builder.append(" Primary");
+		builder.append("[ id ="); 
 		builder.append(getId()); 
 		builder.append(", getStudentUuid() =");
 		builder.append(getStudentUuid());
-		builder.append(", housename =");
-		builder.append(housename);
+		builder.append(",schoolname =");
+		builder.append(schoolname);
+		builder.append(",index =");
+		builder.append(index);
+		builder.append(",kcpeyear =");
+		builder.append(kcpeyear);
+		builder.append(",kcpemarks =");
+		builder.append(kcpemarks);
 		builder.append("]");
 		return builder.toString(); 
 		}
-
-
 }

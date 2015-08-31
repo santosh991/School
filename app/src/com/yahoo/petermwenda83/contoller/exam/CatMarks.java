@@ -1,5 +1,28 @@
+/**##########################################################
+/*************************************************************
+ * ##########################################################
+ * ##########################################################
+ * ### This is My Forth Year Project#########################
+ * ####### Maasai Mara University############################
+ * ####### Year:2015-2016 ###################################
+ * ####### Although this software is open source, No one
+ * ###### should assume it ownership and copy paste 
+ * ###### the code herein without the owner's approval.
+ * ###################################################
+ * ##########################################################
+ * ##### School Management System ###########################
+ * ##### Uses MVC Model, Postgres database, ant for 
+ * ##### project management and other technologies.
+ * ##### It consist Desktop application and a web
+ * #### application all sharing the same DB.
+ * ##########################################################
+ * 
+ */
 package com.yahoo.petermwenda83.contoller.exam;
-
+/**
+ * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ *
+ */
 public class CatMarks extends Exam  {
 
 	public CatMarks() {
@@ -20,7 +43,7 @@ public class CatMarks extends Exam  {
 	}
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("CatMarks [getUuid()=");
+		builder.append("Cat Subject Marks [getUuid()=");
 		builder.append(getUuid());
 		builder.append(", getSubjectUuid()=");
 		builder.append(getSubjectUuid());
@@ -28,12 +51,8 @@ public class CatMarks extends Exam  {
 		builder.append(getStudentUuid());
 		builder.append(", getExamTypeUuid()=");
 		builder.append(getExamTypeUuid());
-		builder.append(", getSubjectcode()=");
-		builder.append(getSubjectcode());
-		builder.append(", getSubmitdate()=");
-		builder.append(getSubmitdate());
-		builder.append(", getCatMarksUuid()=");
-		builder.append(getCatMarksUuid());
+		builder.append(", getMarks()=");
+		builder.append(getMarks());
 		builder.append(", getSubmitdate()=");
 		builder.append(getSubmitdate());
 		builder.append("]");

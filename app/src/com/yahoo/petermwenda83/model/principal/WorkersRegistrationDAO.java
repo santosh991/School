@@ -95,6 +95,7 @@ public class WorkersRegistrationDAO extends DBConnectDAO implements SchoolWorker
      }catch(SQLException e){
      	  logger.error("SQL Exception when getting Workers with Uuid: " + Uuid);
           logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
      }
      
 		return w; 
@@ -106,13 +107,12 @@ public class WorkersRegistrationDAO extends DBConnectDAO implements SchoolWorker
 	@Override
 	public boolean putWorker(Workers worker) {
 		boolean success = true;
-		Workers w = new Workers();
 		try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Worker" 
 		        		+"(Uuid, FirstName, LastName, Surname,Nhifno,Nssfno,Phone,"
 			        		+ "DOB,NationalID,County,Location,Sublocation) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
         		){
-				    pstmt2.setString(1, w.getUuid());
+				    pstmt2.setString(1, worker.getUuid());
 		            pstmt2.setString(2, worker.getFirstName());
 		            pstmt2.setString(3, worker.getLastName());
 		            pstmt2.setString(4, worker.getSurname());
@@ -149,7 +149,7 @@ public class WorkersRegistrationDAO extends DBConnectDAO implements SchoolWorker
 				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE Worker SET "
 	        			+ "FirstName=?, LastName=?, Surname =?, Nhifno =?, Nssfno =?, "
 	        			+ "Phone =?, DOB =?, NationalID =?,"
-	        			+ " County =? WHERE Uuid = ?;");
+	        			+ " County =?,Location =?,Sublocation =? WHERE Uuid = ?;");
         		){
 			        pstmt2.setString(1, worker.getFirstName());
 		            pstmt2.setString(2, worker.getLastName());
@@ -160,8 +160,10 @@ public class WorkersRegistrationDAO extends DBConnectDAO implements SchoolWorker
 		            pstmt2.setString(7, worker.getDOB());
 		            pstmt2.setString(8, worker.getNationalID());
 		            pstmt2.setString(9, worker.getCounty());
-		            pstmt2.setString(10, worker.getUuid());
-				   
+		            pstmt2.setString(10, worker.getLocation());
+		            pstmt2.setString(11, worker.getSublocation());
+		            pstmt2.setString(12, worker.getUuid());
+				   				   
 		            pstmt2.executeUpdate(); 
 			  
 		 }catch(SQLException e){
@@ -219,7 +221,8 @@ public class WorkersRegistrationDAO extends DBConnectDAO implements SchoolWorker
 
    } catch(SQLException e){
    	logger.error("SQL Exception when getting all Workers");
-       logger.error(ExceptionUtils.getStackTrace(e));
+     logger.error(ExceptionUtils.getStackTrace(e));
+     System.out.println(ExceptionUtils.getStackTrace(e));
    }
  
 		
