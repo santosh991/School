@@ -2,12 +2,12 @@
 <html>
 <head>
 	<title>Index: School Management system</title>
-	    <link rel="stylesheet" href="css/uikit.min.css" />
-	      <link rel="stylesheet" href="css/uikit.css" />
-	       <link rel="stylesheet" href="css/uikit.gradient.min.css" />
-	        <link rel="stylesheet" href="css/uikit.gradient.css" />
-	         <link rel="stylesheet" href="css/uikit.almost-flat.min.css" />
-	          <link rel="stylesheet" href="css/uikit.almost-flat.css" />
+	    <link rel="stylesheet" href="ulkit/css/uikit.min.css" />
+	      <link rel="stylesheet" href="ulkit/css/uikit.css" />
+	       <link rel="stylesheet" href="ulkit/css/uikit.gradient.min.css" />
+	        <link rel="stylesheet" href="ulkit/css/uikit.gradient.css" />
+	         <link rel="stylesheet" href="ulkit/css/uikit.almost-flat.min.css" />
+	          <link rel="stylesheet" href="ulkit/css/uikit.almost-flat.css" />
         <script src="jq/jquery.js"></script>
         <script src="js/uikit.min.js"></script>
 </head>
