@@ -94,6 +94,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
       }catch(SQLException e){
       	 logger.error("SQL Exception when getting ExamType with uuid: " + uuid);
            logger.error(ExceptionUtils.getStackTrace(e));
+           System.out.println(ExceptionUtils.getStackTrace(e));
       }
       
 		return examType; 
@@ -124,6 +125,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
       }catch(SQLException e){
       	 logger.error("SQL Exception when getting ExamType with uuid: " + examno);
            logger.error(ExceptionUtils.getStackTrace(e));
+           System.out.println(ExceptionUtils.getStackTrace(e));
       }
 	return examType;
 	}
@@ -156,6 +158,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
       }catch(SQLException e){
       	 logger.error("SQL Exception when getting ExamType with: "+examtype+" and "+clasz+" and "+description);
            logger.error(ExceptionUtils.getStackTrace(e));
+           System.out.println(ExceptionUtils.getStackTrace(e));
       }
 	return examType;
 	}
@@ -169,7 +172,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO exam_type" 
-			        		+"(Uuid, examtype, term, year,clasz,outof,description,examno) VALUES (?,?,?,?,?,?,?,?);");
+			        		+"(Uuid, examtype, term, year,clasz,outof,description,examno,subjectUuid) VALUES (?,?,?,?,?,?,?,?,?);");
        		){
 			   
 	            pstmt.setString(1, examType.getUuid());
@@ -180,11 +183,13 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 	            pstmt.setString(6, examType.getOutof());
 	            pstmt.setString(7, examType.getDescription());
 	            pstmt.setString(8, examType.getExamno());
+	            pstmt.setString(9, examType.getSubjectUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put: "+examType);
             logger.error(ExceptionUtils.getStackTrace(e)); 
+            System.out.println(ExceptionUtils.getStackTrace(e));
             success = false;
 		 }
 		
@@ -201,7 +206,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 		  
 			 try(   Connection conn = dbutils.getConnection();
 		PreparedStatement pstmt = conn.prepareStatement("UPDATE exam_type SET examtype =?,"
-				+ " term =?, year =?,clasz =?,outof =?,description =?,examno =? WHERE Uuid = ? ;");
+				+ " term =?, year =?,clasz =?,outof =?,description =?,examno =?,subjectUuid=? WHERE Uuid = ? ;");
 	        		){
 		            pstmt.setString(1, type.getExamtype());
 		            pstmt.setString(2, type.getTerm());
@@ -210,12 +215,14 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 		            pstmt.setString(5, type.getOutof()); 
 		            pstmt.setString(6, type.getDescription());
 		            pstmt.setString(7, type.getExamno());
-		            pstmt.setString(8, Uuid);
+		            pstmt.setString(8, type.getSubjectUuid());
+		            pstmt.setString(9, Uuid);
 		            pstmt.executeUpdate();
 				 
 			 }catch(SQLException e){
 				 logger.error("SQL Exception trying to update: "+type);
 	             logger.error(ExceptionUtils.getStackTrace(e)); 
+	             System.out.println(ExceptionUtils.getStackTrace(e));
 	             success = false;
 			 }
 			
@@ -242,6 +249,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
       }catch(SQLException e){
       	 logger.error("SQL Exception when deletting : " +type);
            logger.error(ExceptionUtils.getStackTrace(e));
+           System.out.println(ExceptionUtils.getStackTrace(e));
            success = false;
            
       }
@@ -266,6 +274,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 	      } catch(SQLException e){
 	      	logger.error("SQL Exception when getting all ExamType");
 	          logger.error(ExceptionUtils.getStackTrace(e));
+	          System.out.println(ExceptionUtils.getStackTrace(e));
 	      }
 	    
 			

@@ -79,12 +79,13 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#getMainMarks(java.lang.String)
 	 */
+	
 	public MainMarks getMainMarks(String uuid) {
 		MainMarks mainMarks = null;
          ResultSet rset = null;
       try(
       		 Connection conn = dbutils.getConnection();
-         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM exam_marks WHERE Uuid = ?;");       
+         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM MainSubjectMark WHERE Uuid = ?;");       
       		
       		){
       	
@@ -114,7 +115,7 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM exam_totals WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ExamResult WHERE Uuid = ?;");       
      		
      		){
      	
@@ -144,10 +145,10 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM catmarks WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatSubjectMark WHERE Uuid = ?;");       
      		
      		){
-     	
+    	
      	 pstmt.setString(1, uuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
@@ -175,8 +176,8 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM cattotals WHERE Uuid = ?;");       
-     		
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatResult WHERE Uuid = ?;");       
+    		
      		){
      	
      	 pstmt.setString(1, uuid);
@@ -205,9 +206,9 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 		MainMarks mainm = new MainMarks();
 		CatMarks catm = new CatMarks();
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO catmarks" 
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO CatSubjectMark" 
 			        		+"(Uuid, studentuuid, examtypeuuid, subjectuuid,marks,submitdate) VALUES (?,?,?,?,?,?);");
-				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO exam_marks" 
+				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO MainSubjectMark" 
 		        		+"(Uuid, studentuuid, examtypeuuid, subjectuuid,marks,submitdate) VALUES (?,?,?,?,?,?);");
         		){
 			  if(exam instanceof CatMarks ){
@@ -248,9 +249,9 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 		MainResults mainr = new MainResults();
 		CatResults catr = new CatResults();
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO cattotals" 
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO CatResult" 
 			        		+"(Uuid,subjectuuid,studentuuid,total,points,grade,position,remarks,submitdate) VALUES (?,?,?,?,?,?,?,?,?);");
-				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO exam_totals" 
+				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO ExamResult" 
 		        		+"(Uuid,subjectuuid,studentuuid,total,points,grade,position,remarks,submitdate) VALUES (?,?,?,?,?,?,?,?,?);");
         		){
 			  if(exam instanceof CatResults ){
@@ -291,12 +292,13 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#editExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.student.Subject)
 	 */
+	
 	public boolean editExamMarks(Exam exam,StudentSuper studentSuper,Subject subject) {
 		boolean success = true;
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE catmarks SET marks =?, submitdate =?"
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE CatSubjectMark SET marks =?, submitdate =?"
 						+ " WHERE Studentuuid = ? AND Subjectuuid = ?;");
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE exam_marks SET marks =?, submitdate =? "
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MainSubjectMark SET marks =?, submitdate =? "
 						+ " WHERE Studentuuid = ? AND Subjectuuid = ? ;");
         		){
 			  if(exam instanceof CatMarks ){
@@ -337,7 +339,7 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	//CatResult ,ExamResult, CatSubjectMark,MainSubjectMark
 
 
 }

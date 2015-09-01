@@ -150,7 +150,7 @@ public class TestExamDAO {
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#getCatResults(java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetCatResults() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

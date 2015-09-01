@@ -1,9 +1,9 @@
-uuid|examtype|term|year|clasz|out of|description|examno
-DAF7EC32-EA25-7D32-8708-2CC132446A2F|CAT|one|2015|Form 1 A|30| Cat 1|EN656
-c68a47da-3191-47fb-9d87-c60c84777dae|MAIN|one|2015|Form 1 A|70|pre midterm|EN6576
-89f25a99-5ce2-4a83-b179-9af51ee490e3|CAT|one|2015|Form 1 A|40|Cat 2|EN65876
-802ae460-a850-4a50-b2f0-58f5ed2d6bf9|MAIN|one|2015|Form 1 A|100|end term exam|EN65654
-f38fa402-48a0-41d0-b64d-1b8193e68e75|CAT|one|2015|form 3 A|35|Cat 1|EN5666
-7010c212-ee53-4f12-9690-5b26dd6ab1b3|MAIN|one|2015|form 3 A|80|pre midterm|EN145
-ea2494bf-97b2-4b2f-9d79-9e08d9b0118d|CAT|one|2015|form 3 A|20|Cat 2|EN524
-615ab7fd-a34b-4373-84b5-47fbbbf7d21d|MAIN|one|2015|form 3 A|70|end term exam|EN87669
+uuid|examtype|term|year|clasz|out of|description|examno|subjectuuid
+DAF7EC32-EA25-7D32-8708-2CC132446A2F|CAT|one|2015|Form 1 A|30| Cat 1|EN656|D0F7EC32-EA25-7D32-8708-2CC132446A2E
+c68a47da-3191-47fb-9d87-c60c84777dae|MAIN|one|2015|Form 1 A|70|pre midterm|EN6576|66027e51-b1ad-4b10-8250-63af64d23323
+89f25a99-5ce2-4a83-b179-9af51ee490e3|CAT|one|2015|Form 1 A|40|Cat 2|EN65876|4f59580d-1a16-4669-9ed5-4b89615d6903
+802ae460-a850-4a50-b2f0-58f5ed2d6bf9|MAIN|one|2015|Form 1 A|100|end term exam|EN65654|552c0a24-6038-440f-add5-2dadfb9a23bd
+f38fa402-48a0-41d0-b64d-1b8193e68e75|CAT|one|2015|form 3 A|35|Cat 1|EN5666|44f23b3c-e066-4b45-931c-0e8073d3a93a
+7010c212-ee53-4f12-9690-5b26dd6ab1b3|MAIN|one|2015|form 3 A|80|pre midterm|EN145|de0c86be-9bcb-4d3b-8098-b06687536c1f
+ea2494bf-97b2-4b2f-9d79-9e08d9b0118d|CAT|one|2015|form 3 A|20|Cat 2|EN524|D0F7EC32-EA25-7D32-8708-2CC132446A2E
+615ab7fd-a34b-4373-84b5-47fbbbf7d21d|MAIN|one|2015|form 3 A|70|end term exam|EN87669|66027e51-b1ad-4b10-8250-63af64d23323

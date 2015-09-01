@@ -34,6 +34,8 @@ public class ExamType extends Exam{
 	private String outof ;
 	private String description ; //CAT1,CAT2,CAT3 ,MAIN1,MOCK1 etc
 	private String examno;
+	private String subjectUuid;
+	
 	/**
 	 * 
 	 */
@@ -47,6 +49,7 @@ public class ExamType extends Exam{
 		outof = "";
 		description = "";
 		examno = "";
+		subjectUuid ="";
 	}
 	
 	/**
@@ -148,6 +151,20 @@ public class ExamType extends Exam{
 		this.examno = examno;
 	}
 
+	/**
+	 * @return the subjectUuid
+	 */
+	public String getSubjectUuid() {
+		return subjectUuid;
+	}
+
+	/**
+	 * @param subjectUuid the subjectUuid to set
+	 */
+	public void setSubjectUuid(String subjectUuid) {
+		this.subjectUuid = subjectUuid;
+	}
+
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Exam Type");
@@ -167,6 +184,8 @@ public class ExamType extends Exam{
 		builder.append(description);
 		builder.append(", examno =");
 		builder.append(examno);
+		builder.append(", subjectUuid =");
+		builder.append(subjectUuid);
 		builder.append("]");
 		return builder.toString(); 
 		}

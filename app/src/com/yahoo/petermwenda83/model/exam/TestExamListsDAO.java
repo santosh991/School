@@ -61,7 +61,7 @@ public class TestExamListsDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamListsDAO#getAllCatResults()}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAllCatResults() {
 		store = new ExamListsDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

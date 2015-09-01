@@ -81,11 +81,15 @@ public class TestExamtypeDAO {
 	
 	final String CEXAMNO = "EN65116",CEXAMNO2 = "EN65773";
 	
+	final String SUBJECT_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E",
+			     SUBJECT_UUID_NEW ="b9bbd718-b32f-4466-ab34-42f544ff900e";
+	
 	private ExamtypeDAO store;
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamtypeDAO#getExamType(java.lang.String)}.
 	 */
+	@Ignore
 	@Test
 	public void testGetExamType() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -99,11 +103,13 @@ public class TestExamtypeDAO {
 		assertEquals(examType.getYear(),EXAM_YEAR);
 		assertEquals(examType.getDescription(),EXAM_DESCRI);
 		assertEquals(examType.getExamno(),CEXAMNO);
+		assertEquals(examType.getSubjectUuid(),SUBJECT_UUID);
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamtypeDAO#getExamTypes(java.lang.String)}.
 	 */
+	@Ignore
 	@Test
 	public void testGetExamTypes() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -117,11 +123,13 @@ public class TestExamtypeDAO {
 		assertEquals(examType.getYear(),EXAM_YEAR);
 		assertEquals(examType.getDescription(),EXAM_DESCRI);
 		assertEquals(examType.getExamno(),CEXAMNO);
+		assertEquals(examType.getSubjectUuid(),SUBJECT_UUID);
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamtypeDAO#get(java.lang.String, java.lang.String, java.lang.String)}.
 	 */
+	@Ignore
 	@Test
 	public void testGet() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -134,19 +142,19 @@ public class TestExamtypeDAO {
 		assertEquals(examType.getOutof(),OUTOF);
 		assertEquals(examType.getYear(),EXAM_YEAR);
 		assertEquals(examType.getDescription(),EXAM_DESCRI);
+		assertEquals(examType.getSubjectUuid(),SUBJECT_UUID);
 		//assertEquals(examType.getExamno(),CEXAMNO);
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamtypeDAO#putExamType(com.yahoo.petermwenda83.contoller.exam.ExamType)}.
 	 */
+	@Ignore
 	@Test
 	public void testPutExamType() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		ExamType examType = new ExamType();
-    	String Uuid = examType.getUuid();
-    	//System.out.println(Uuid);
-		examType.setUuid(Uuid);
+		examType.setUuid(TYPE_UUID_NEW);
 		examType.setExamtype(EXAM_TYPE_NEW);
 		examType.setTerm(EXAM_TERM_NEW);
 	    examType.setYear(EXAM_YEAR);
@@ -154,6 +162,7 @@ public class TestExamtypeDAO {
 		examType.setOutof(OUTOF); 
 	    examType.setDescription(EXAM_DESCRI_NEW);
 	    examType.setExamno(CEXAMNO);
+	    examType.setSubjectUuid(SUBJECT_UUID_NEW); 
 	    assertTrue(store.putExamType(examType));
 		 
 	}
@@ -161,6 +170,7 @@ public class TestExamtypeDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamtypeDAO#editExamType(com.yahoo.petermwenda83.contoller.exam.ExamType, java.lang.String)}.
 	 */
+	@Ignore
 	@Test
 	public void testEditExamType() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -172,6 +182,7 @@ public class TestExamtypeDAO {
 		type.setOutof(OUTOF); 
 		type.setDescription(EXAM_DESCRI_UPDATE);
 		type.setExamno(CEXAMNO2);
+		type.setSubjectUuid(SUBJECT_UUID_NEW); 
 	    assertTrue(store.editExamType(type, TYPE_UUID_NEW)); 
 	}
 
@@ -190,6 +201,7 @@ public class TestExamtypeDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.ExamtypeDAO#getAllExamtype()}.
 	 */
+	@Ignore
 	@Test
 	public void testGetAllExamtype() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

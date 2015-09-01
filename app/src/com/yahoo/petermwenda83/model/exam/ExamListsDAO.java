@@ -81,7 +81,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 		List<CatMarks> list = null;
 		try(   
 	      		Connection conn = dbutils.getConnection();
-	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM CatMarks ;");   
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM CatSubjectMark ;");   
 	      		ResultSet rset = pstmt.executeQuery();
 	  		) {
 	      	
@@ -93,7 +93,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 	        System.out.println(ExceptionUtils.getStackTrace(e));
 	      }
 	    
-			
+		
 		
 		return list;
 	
@@ -107,7 +107,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 		List<CatResults> list = null;
 		try(   
 	      		Connection conn = dbutils.getConnection();
-	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM CatTotals ;");   
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM CatResult ;");   
 	      		ResultSet rset = pstmt.executeQuery();
 	  		) {
 	      	
@@ -133,7 +133,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 		List<MainMarks> list = null;
 		try(   
 	      		Connection conn = dbutils.getConnection();
-	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Exam_Marks ;");   
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM MainSubjectMark ;");   
 	      		ResultSet rset = pstmt.executeQuery();
 	  		) {
 	      	
@@ -145,7 +145,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 	        System.out.println(ExceptionUtils.getStackTrace(e));
 	      }
 	    
-			
+		
 		
 		return list;
 	}
@@ -158,7 +158,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 		List<MainResults> list = null;
 		try(   
 	      		Connection conn = dbutils.getConnection();
-	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Exam_Totals ;");   
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM ExamResult ;");   
 	      		ResultSet rset = pstmt.executeQuery();
 	  		) {
 	      	
