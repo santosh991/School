@@ -15,7 +15,6 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.contoller.student.StudentSubject;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 

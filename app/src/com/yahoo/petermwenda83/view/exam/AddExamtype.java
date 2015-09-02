@@ -26,6 +26,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,7 +42,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
+import com.yahoo.petermwenda83.contoller.room.ClassRoom;
+import com.yahoo.petermwenda83.contoller.student.Subject;
+import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
 import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
+import com.yahoo.petermwenda83.model.room.RoomDAO;
 
 
 /**
@@ -46,13 +54,25 @@ import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
  *
  */
 public class AddExamtype extends JInternalFrame {
-	 private JLabel lblexamtype,lblyear,lblterm,lblclass,lbloutof,lbldescr,examNO;
-	 private JComboBox<String>  cmbexmtyp,cmbterm,cmbclass;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2782233027666184065L;
+	private JLabel lblexamtype,lblyear,lblterm,lblclass,lbloutof,lbldescr,examNO,lblsubject;
+	 private JComboBox<String>  cmbexmtyp,cmbterm,cmbclass,cmbsubjects;
 	 private JButton Next,Cancel;
 	 private JTextField txtyear,txtputof,txtdescr;
 	 private JPanel panel1,  panel2;
+	 private String subjectUuid,roomUuid;
+	 
+	 List<Subject> subjectList = new ArrayList<>();
+	 List<ClassRoom> classroomList = new ArrayList<>();
+	 HashMap<String, String> SubHash= new HashMap<>();
+	 HashMap<String, String> roomHash= new HashMap<>();
 	 
 	 private static ExamtypeDAO examTypeDAO; 
+	 private static SubjectDAO subjectDAO;
+	 private static RoomDAO roomDAO;
 
 	 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	/**
@@ -66,6 +86,7 @@ public class AddExamtype extends JInternalFrame {
 		 lblclass  = new  JLabel("Class");
 		 lbloutof  = new  JLabel("Exam Outof");
 		 lbldescr  = new  JLabel("Description");
+		 lblsubject  = new  JLabel("Subject");
 		 examNO = new JLabel();
 		 cmbexmtyp = new JComboBox<String>();
 		 cmbterm = new JComboBox<String>();
@@ -73,13 +94,28 @@ public class AddExamtype extends JInternalFrame {
 		 Next = new JButton("Add");
 		 Cancel = new JButton("Cancel");
 		 txtyear = new JTextField();
-		 cmbclass = new JComboBox<String>();
+		 cmbsubjects = new JComboBox<String>();
 		 txtputof  = new JTextField();
 		 txtdescr  = new JTextField("CAT 1");
 		 
 		 examTypeDAO = ExamtypeDAO.getInstance(); 
+		 subjectDAO = SubjectDAO.getInstance();
+		 roomDAO = RoomDAO.getInstance();
 		 
-		  cmbexmtyp.addItem("");
+		 classroomList = roomDAO.getAllRooms();
+		 subjectList = subjectDAO.getAllSubjects();
+		 for(Subject s : subjectList){
+			 SubHash.put(s.getUuid(), s.getSubjectname());
+			 cmbsubjects.addItem(SubHash.get(s.getUuid()));  
+		 }
+		 for(ClassRoom r : classroomList){
+			 roomHash.put(r.getUuid(), r.getRoomname()); 
+			 cmbclass.addItem(roomHash.get(r.getUuid())); 
+			
+		 }
+		 
+		 
+		 cmbexmtyp.addItem("");
 		 cmbexmtyp.addItem("CAT");
 		 cmbexmtyp.addItem("MAIN");
 		 
@@ -88,15 +124,7 @@ public class AddExamtype extends JInternalFrame {
 		 cmbterm.addItem("TWO");
 		 cmbterm.addItem("THREE");
 		 
-		 cmbclass.addItem("");
-		 cmbclass.addItem("FORM 1 N");
-		 cmbclass.addItem("FORM 1 S");
-		 cmbclass.addItem("FORM 2 W");
-		 cmbclass.addItem("FORM 2 E");
-		 cmbclass.addItem("FORM 3 N");
-		 cmbclass.addItem("FORM 3 S");
-		 cmbclass.addItem("FORM 4 W");
-		 cmbclass.addItem("FORM 4 E");
+		
 		 
 	     panel1 = new JPanel();
 	     panel1.setLayout(null); 
@@ -104,7 +132,7 @@ public class AddExamtype extends JInternalFrame {
 	     panel2.setLayout(null); 
 	     
 	     panel1.setBounds(0, 0, 500, 500); // x, y, width, height
-	     panel2.setBounds(10, 10, 450, 400); 
+	     panel2.setBounds(0, 0, 500, 500); 
 	     
 	     examNO.setBounds(220, 0, 150, 30);
 	     lblexamtype.setBounds(20, 30, 150, 30);
@@ -118,6 +146,7 @@ public class AddExamtype extends JInternalFrame {
 	     
 	     lblclass.setBounds(20, 180, 150, 30);
 	     cmbclass.setBounds(150, 180, 150, 30);
+	    
 	     
 	     lbloutof.setBounds(20, 230, 150, 30);
 	     txtputof.setBounds(150, 230, 150, 30);
@@ -126,8 +155,11 @@ public class AddExamtype extends JInternalFrame {
 	     txtdescr.setBounds(150, 280, 150, 30);
 	     txtdescr.setToolTipText("e.g CAT 1"); 
 	     
-	     Next.setBounds(100, 320, 100, 30);
-	     Cancel.setBounds(240, 320, 100, 30);
+	     lblsubject.setBounds(20, 320, 150, 30);
+	     cmbsubjects.setBounds(150, 320, 150, 30);
+	     
+	     Next.setBounds(100, 380, 100, 30);
+	     Cancel.setBounds(240, 380, 100, 30);
 	     
 	     AtomicInteger seq = new AtomicInteger();
 	     int nextVal = seq.incrementAndGet();
@@ -185,6 +217,8 @@ public class AddExamtype extends JInternalFrame {
 		 panel2.add(cmbterm);
 		 panel2.add(cmbclass);
 		 panel2.add(txtputof);
+		 panel2.add(cmbsubjects);
+		 panel2.add(lblsubject);
 		 panel2.add(txtdescr);
 	
 		 
@@ -201,19 +235,45 @@ public class AddExamtype extends JInternalFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			
+			
 			 ExamType examType = new  ExamType();
 			 String type = (String) cmbexmtyp.getSelectedItem();
 			 String term = (String) cmbterm.getSelectedItem();
 			 String clas = (String) cmbclass.getSelectedItem();
+			 String subject = (String) cmbsubjects.getSelectedItem();
+			 String classroom = (String) cmbclass.getSelectedItem();
 			
-			
+			 for (Entry<String, String> entry : SubHash.entrySet()) {
+		            if (entry.getValue().equals(subject)) {
+		            	subjectUuid = entry.getKey();
+		               // System.out.println(entry.getKey()); 
+		            	
+		            }
+		        }
+
+			 for (Entry<String, String> entry : roomHash.entrySet()) {
+		            if (entry.getValue().equals(classroom)) {
+		            	roomUuid = entry.getKey(); 
+		            	// System.out.println(entry.getKey()); 
+		            }
+		        }
+			 
+			 
+			 
+			 
+			 
+			 
 			   examType.setExamtype(type.toUpperCase());
 			   examType.setYear(txtyear.getText().toUpperCase()); 
 			   examType.setTerm(term.toUpperCase());
-			   examType.setClasz(clas.toUpperCase());
+			   examType.setRoomnameUuid(roomUuid);
 			   examType.setOutof(txtputof.getText().toUpperCase());
 			   examType.setDescription(txtdescr.getText().toUpperCase()); 
-			 
+			   examType.setSubjectUuid(subjectUuid);
+			  // System.out.println("roomUuid:"+roomUuid);
+			   
 			  if (e.getSource() == Next) {
                 if (txtyear.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Enter Year", "Missing field", JOptionPane.DEFAULT_OPTION);
@@ -268,5 +328,5 @@ public class AddExamtype extends JInternalFrame {
 		}
 		 
 	 }
-
+	
 }

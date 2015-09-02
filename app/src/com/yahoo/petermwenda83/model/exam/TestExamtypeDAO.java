@@ -41,20 +41,21 @@ public class TestExamtypeDAO {
 	final int databasePort = 5432;
 	
 	final String TYPE_UUID = "DAF7EC32-EA25-7D32-8708-2CC132446A2F",//DAF7EC32-EA25-7D32-8708-2CC132446A2F
-    		TYPE_UUID_NEW = "e65ebcd2-31df-47df-96b2-0a104bda136f";
+    		     TYPE_UUID_NEW = "e65ebcd2-31df-47df-96b2-0a104bda136f";
     final String EXAM_TYPE = "CAT",
-    		EXAM_TYPE_NEW = "MAIN",
-    		EXAM_TYPE_UPDATE = "UPADTE" ;
+    		     EXAM_TYPE_NEW = "MAIN",
+    		     EXAM_TYPE_UPDATE = "UPADTE" ;
     final String EXAM_TERM = "one",
-    		EXAM_TERM_NEW = "two",
-    		EXAM_TERM_UPDATE = "three" ;
-    final String EXAM_CLASS = "Form 1 A" ,
-    		EXAM_CLASS_UPDATE = "Form 4 N";
+    		     EXAM_TERM_NEW = "two",
+    		     EXAM_TERM_UPDATE = "three" ;
+    final String ROOM_UUID = "4DA86139-6A72-4089-8858-6A3A613FDFE6" ,
+    		     ROOM_UUID_NEW = "37D3223A-547E-4BA9-BD0C-28F6187BB5D4",
+    		     ROOM_UUID_UPDATE = "B6D838A4-9476-428D-9AFF-758BB55FF270";
     final String EXAM_YEAR = "2015",
-    		EXAM_YEAR_UPDATE = "2014" ;
+    		     EXAM_YEAR_UPDATE = "2014" ;
     final String EXAM_DESCRI = " Cat 1",
-    		EXAM_DESCRI_NEW = " Cat 2",
-    		EXAM_DESCRI_UPDATE = " Cat UPDATE" ;
+    		     EXAM_DESCRI_NEW = "Cat 2",
+    		     EXAM_DESCRI_UPDATE = "CatUPDATE" ;
     
     final String EXAM_MARKS_UUID = "71f243fb-3826-4911-b1cb-545d9a033578";
 	final String STU_UUID = "9771e08e-4e87-4fe4-9608-a31952ec10cd";//type uuid DAF7EC32-EA25-7D32-8708-2CC132446A2F
@@ -79,10 +80,12 @@ public class TestExamtypeDAO {
 	final String CAT_REMARKS = "fair";
 	final String OUTOF = "30";
 	
-	final String CEXAMNO = "EN65116",CEXAMNO2 = "EN65773";
+	final String CEXAMNO = "EN656",CEXAMNO2 = "EN65773";
 	
 	final String SUBJECT_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E",
 			     SUBJECT_UUID_NEW ="b9bbd718-b32f-4466-ab34-42f544ff900e";
+	
+	
 	
 	private ExamtypeDAO store;
 
@@ -98,7 +101,7 @@ public class TestExamtypeDAO {
 		assertEquals(examType.getUuid(),TYPE_UUID);
 		assertEquals(examType.getExamtype(),EXAM_TYPE);
 		assertEquals(examType.getTerm(),EXAM_TERM);
-		assertEquals(examType.getClasz(),EXAM_CLASS);
+		assertEquals(examType.getRoomnameUuid(),ROOM_UUID);
 		assertEquals(examType.getOutof(),OUTOF);
 		assertEquals(examType.getYear(),EXAM_YEAR);
 		assertEquals(examType.getDescription(),EXAM_DESCRI);
@@ -118,7 +121,7 @@ public class TestExamtypeDAO {
 		assertEquals(examType.getUuid(),TYPE_UUID);
 		assertEquals(examType.getExamtype(),EXAM_TYPE);
 		assertEquals(examType.getTerm(),EXAM_TERM);
-		assertEquals(examType.getClasz(),EXAM_CLASS);
+		assertEquals(examType.getRoomnameUuid(),ROOM_UUID);
 		assertEquals(examType.getOutof(),OUTOF);
 		assertEquals(examType.getYear(),EXAM_YEAR);
 		assertEquals(examType.getDescription(),EXAM_DESCRI);
@@ -134,11 +137,11 @@ public class TestExamtypeDAO {
 	public void testGet() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		ExamType examType = new ExamType();
-		examType = store.get(EXAM_TYPE, EXAM_CLASS, EXAM_DESCRI);
+		examType = store.get(EXAM_TYPE, ROOM_UUID, EXAM_DESCRI);
 		assertEquals(examType.getUuid(),TYPE_UUID);
 		assertEquals(examType.getExamtype(),EXAM_TYPE);
 		assertEquals(examType.getTerm(),EXAM_TERM);
-		assertEquals(examType.getClasz(),EXAM_CLASS);
+		assertEquals(examType.getRoomnameUuid(),ROOM_UUID);
 		assertEquals(examType.getOutof(),OUTOF);
 		assertEquals(examType.getYear(),EXAM_YEAR);
 		assertEquals(examType.getDescription(),EXAM_DESCRI);
@@ -158,7 +161,7 @@ public class TestExamtypeDAO {
 		examType.setExamtype(EXAM_TYPE_NEW);
 		examType.setTerm(EXAM_TERM_NEW);
 	    examType.setYear(EXAM_YEAR);
-		examType.setClasz(EXAM_CLASS);
+		examType.setRoomnameUuid(ROOM_UUID_NEW);
 		examType.setOutof(OUTOF); 
 	    examType.setDescription(EXAM_DESCRI_NEW);
 	    examType.setExamno(CEXAMNO);
@@ -178,7 +181,7 @@ public class TestExamtypeDAO {
 		type.setExamtype(EXAM_TYPE_UPDATE);
 		type.setTerm(EXAM_TERM_UPDATE);
 		type.setYear(EXAM_YEAR_UPDATE);
-		type.setClasz(EXAM_CLASS_UPDATE);
+		type.setRoomnameUuid(ROOM_UUID_UPDATE);
 		type.setOutof(OUTOF); 
 		type.setDescription(EXAM_DESCRI_UPDATE);
 		type.setExamno(CEXAMNO2);
@@ -194,8 +197,7 @@ public class TestExamtypeDAO {
 	public void testDeleteExamType() {
 		store = new ExamtypeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		ExamType type = new ExamType();
-		String uuid = "08e6abb2-e1f6-4b84-b3f6-39e4ba80fe39";
-		type.setUuid(uuid);
+		type.setStudentUuid(SUBJECT_UUID);
 		assertTrue(store.deleteExamType(type));
 	}
 	/**

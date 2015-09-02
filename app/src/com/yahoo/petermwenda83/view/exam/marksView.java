@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 	import javax.swing.JButton;
@@ -43,10 +44,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-	import com.yahoo.petermwenda83.contoller.exam.ExamType;
+import org.apache.commons.lang3.StringUtils;
+
+import com.yahoo.petermwenda83.contoller.exam.ExamType;
+import com.yahoo.petermwenda83.contoller.room.ClassRoom;
 import com.yahoo.petermwenda83.contoller.student.Student;
+import com.yahoo.petermwenda83.contoller.student.StudentSubject;
+import com.yahoo.petermwenda83.contoller.student.Subject;
+import com.yahoo.petermwenda83.model.curriculum.StudSubjectDAO;
+import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
 import com.yahoo.petermwenda83.model.exam.ExamDAO;
 import com.yahoo.petermwenda83.model.registration.StudentDAO;
+import com.yahoo.petermwenda83.model.room.RoomDAO;
 
 
 /**
@@ -61,23 +70,41 @@ import com.yahoo.petermwenda83.model.registration.StudentDAO;
 	    private JPanel tablePanel;
 	    private JPanel buttonPanel;
 	    private JPanel haederPanel;
-	    private JLabel lblterm,lbldescr,lblclasz,sub;
+	    private JLabel lblterm,lbldescr,lblclasz,lblsubject,lblexam;
 	    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	    private static int selectedRow;
 	    
 	    private static StudentDAO regDAO; 
-	    List<Student> stuList = new ArrayList<Student>(); 
+	    private static StudSubjectDAO studSubjectDAO;
+	    private static SubjectDAO subjectDAO;
+	    private static RoomDAO roomDAO;
 	    
-	    public marksView(String descr, String term, String clasz,String subject)  
+	    private String classroom =""; 
+	    
+	    List<Student> stuList = new ArrayList<Student>(); 
+	    List<StudentSubject> studentsubList = new ArrayList<StudentSubject>();
+	    List<StudentSubject> studentsubList2 = new ArrayList<StudentSubject>(); 
+	    List<Subject> subjectList = new ArrayList<Subject>();  
+	    List<ClassRoom> roomList = new ArrayList<>();
+	    HashMap<String, String> SutudentSRUNANMEHash= new HashMap<>();
+	    HashMap<String, String> SutudentADMnoHash= new HashMap<>();
+	    HashMap<String, String> SutudentFIRSTNAMEHash= new HashMap<>();
+	    HashMap<String, String> SutudentLASTNAMEHash= new HashMap<>();
+	    HashMap<String, String> SutudentSubjectHash= new HashMap<>();
+	    HashMap<String, String> SubjecttHash= new HashMap<>();
+	    HashMap<String, String> roomHash= new HashMap<>();
+	    
+	    public marksView(String descr, String term, String room,String subject,String exam)  
 	    {
+	    	classroom = room;
 	        setSize(1000, 400);
 	        setLayout(new BorderLayout());
 
 	        tblExamList = new JTable(new AbstractTable());
 	        
 	        javax.swing.table.TableColumn column = null;
-	        for (int i = 0; i < 7; i++) 
+	        for (int i = 0; i < 11; i++) 
 	        {
 	            column = tblExamList.getColumnModel().getColumn(i);
 	           
@@ -86,17 +113,19 @@ import com.yahoo.petermwenda83.model.registration.StudentDAO;
 	        tablePanel = new JPanel(new GridLayout());
 	        tablePanel.add(jsp);
             
-	        lbldescr= new JLabel("("+descr);
-	        lblterm = new JLabel(")TERM:"+term);
-	        lblclasz= new JLabel(clasz);
-	        sub = new JLabel(subject);
-	        
+	        lbldescr= new JLabel(exam+":"+descr);
+	        lblterm = new JLabel("TERM:"+term);
+	        lblclasz= new JLabel(classroom);
+	        lblsubject = new JLabel(subject);
+	       // lblexam = new JLabel(exam);
+	       
 	        btnSave = new JButton("Save");
 	        btnRefresh = new JButton("Refresh");
 	        btnClose = new JButton("Close");
 	        btnPrint = new JButton("Print");
 	        haederPanel= new javax.swing.JPanel(new java.awt.FlowLayout());
-	        haederPanel.add(sub); 
+	        haederPanel.add(lblsubject);
+	       // haederPanel.add(lblexam); 
 	        haederPanel.add(lbldescr); 
 	        haederPanel.add(lblterm); 
 	        haederPanel.add(lblclasz); 
@@ -107,7 +136,38 @@ import com.yahoo.petermwenda83.model.registration.StudentDAO;
 	        buttonPanel.add(btnClose);
 	        
 	        regDAO = StudentDAO.getInstance(); 
+	        studSubjectDAO = StudSubjectDAO.getInstance();
+	        subjectDAO =  SubjectDAO .getInstance();
+	        roomDAO = RoomDAO.getInstance();
+	        
+	        roomList = roomDAO.getAllRooms();
 	        stuList = regDAO.getAllStudents(); 
+	        studentsubList = studSubjectDAO.getAllStudentSubject();
+	        
+	        for(ClassRoom r : roomList){
+	        	roomHash.put(r.getRoomname(), r.getUuid()); 
+	        }
+	         
+	          StudentSubject stsub = new StudentSubject();
+	    	  stsub.setRoomnameUuid(roomHash.get(classroom));  
+	    	  studentsubList2  = studSubjectDAO.getStudentSubject(stsub,classroom); 
+	       
+	        subjectList = subjectDAO.getAllSubjects();
+	        
+	        for(Student st : stuList){
+	        	SutudentSRUNANMEHash.put(st.getUuid(), st.getSurname());
+	        	SutudentADMnoHash.put(st.getUuid(), st.getAdmno());
+	        	SutudentFIRSTNAMEHash.put(st.getUuid(), st.getFirstname());
+	        	SutudentLASTNAMEHash.put(st.getUuid(), st.getLastname());
+	        }
+	        for(StudentSubject ss : studentsubList){
+	        	SutudentSubjectHash.put(ss.getStudentUuid(), ss.getSubjectUuid());
+	        	
+	        }
+	        for(Subject sb : subjectList){
+	        	SubjecttHash.put(sb.getUuid(), sb.getSubjectcode());
+	        }
+	       
 
 	        add(tablePanel, BorderLayout.CENTER);
 	        add(buttonPanel, BorderLayout.PAGE_END);
@@ -129,6 +189,7 @@ import com.yahoo.petermwenda83.model.registration.StudentDAO;
 	            public void actionPerformed(ActionEvent e)
 	            {
 	               dispose();
+	              
 	            }
 	        });
 	        btnPrint.addActionListener(new ActionListener() 
@@ -173,7 +234,7 @@ import com.yahoo.petermwenda83.model.registration.StudentDAO;
 
 	    class AbstractTable extends AbstractTableModel {
 
-	        private String[] columnNames = {"AdmNo","Name","Marks","Total","Points","Grade","Remarks"};
+	        private String[] columnNames = {"ADM_NO","FIRSTNAME","LASTNAME","SURNAME","SUBJECT","MARK","TOTAL","POINTS","GARDE","POSITION","REMARKS"};
 	        private Object[][] data = new Object[50][50];
 	        
 	       
@@ -200,23 +261,25 @@ import com.yahoo.petermwenda83.model.registration.StudentDAO;
 	            fireTableCellUpdated(row, col);
 	        }
 	        public boolean isCellEditable(int row, int col){
-	        	return (col ==2);
+	        	return (col ==5);
 	        }
 	        
 	    }
 
 	    public void reloaded() {
-	    	 
-	    	 int Numrow = 0;
-	    	for(Student sub : stuList){
 	    	
-	     	tblExamList.setValueAt(sub.getAdmno().trim(), Numrow, 0);
-	     	tblExamList.setValueAt(sub.getSurname().trim(), Numrow, 1);
-	     	//System.out.println(sub);
+	    	 int Numrow = 0;
+	    	for(StudentSubject s : studentsubList2){
+	     	tblExamList.setValueAt(SutudentADMnoHash.get(s.getStudentUuid()).trim(), Numrow, 0);
+	        tblExamList.setValueAt(SutudentFIRSTNAMEHash.get(s.getStudentUuid()).trim(), Numrow, 1);
+	        tblExamList.setValueAt(SutudentLASTNAMEHash.get(s.getStudentUuid()).trim(), Numrow, 2);
+	     	tblExamList.setValueAt(SutudentSRUNANMEHash.get(s.getStudentUuid()).trim(), Numrow, 3);
+	     	tblExamList.setValueAt(SubjecttHash.get(SutudentSubjectHash.get(s.getStudentUuid())) .trim(), Numrow, 4);
+	   
 	    	
 	         Numrow++;
 	    	}
-
+	    	//}
 	    }
 	
 

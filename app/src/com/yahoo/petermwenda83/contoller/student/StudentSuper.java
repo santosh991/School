@@ -38,7 +38,7 @@ public class StudentSuper extends AllBean{
 		private String DOB;
 		private String bcertno;
 		private Date admissiondate;
-		private String clasz;
+		private String roomnameUuid;
 		private String subjectUuid;
 		private String StudenttUuid;
 		private String subjectcode;
@@ -55,7 +55,7 @@ public class StudentSuper extends AllBean{
 		DOB = "";
 		bcertno = "";
 		admissiondate = new Date();
-		clasz = "";
+		roomnameUuid = "";
 		subjectUuid = "";
 		StudenttUuid = "";
 		subjectcode = "";
@@ -190,18 +190,19 @@ public class StudentSuper extends AllBean{
 		this.admissiondate = admissiondate;
 	}
 
+
 	/**
-	 * @return the clasz
+	 * @return the roomnameUuid
 	 */
-	public String getClasz() {
-		return clasz;
+	public String getRoomnameUuid() {
+		return roomnameUuid;
 	}
 
 	/**
-	 * @param clasz the clasz to set
+	 * @param roomnameUuid the roomnameUuid to set
 	 */
-	public void setClasz(String clasz) {
-		this.clasz = clasz;
+	public void setRoomnameUuid(String roomnameUuid) {
+		this.roomnameUuid = roomnameUuid;
 	}
 
 	/**

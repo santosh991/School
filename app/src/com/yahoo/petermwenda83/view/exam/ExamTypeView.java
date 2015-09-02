@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -41,8 +42,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
-import com.yahoo.petermwenda83.model.exam.ExamDAO;
+import com.yahoo.petermwenda83.contoller.room.ClassRoom;
+import com.yahoo.petermwenda83.contoller.student.Subject;
+import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
 import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
+import com.yahoo.petermwenda83.model.room.RoomDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
 
 
@@ -52,6 +56,10 @@ import com.yahoo.petermwenda83.view.MainWindow;
  */
 public class ExamTypeView extends JInternalFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8463494563548520254L;
 	private static JTable tblExamList;
     private JScrollPane jsp;
     private JButton btnAddNew,  btnRefresh,  btnClose,  btnUpdate,  btnaddMarks;
@@ -60,9 +68,16 @@ public class ExamTypeView extends JInternalFrame {
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static int selectedRow;
-    
     private static ExamtypeDAO examtypeDAO; 
-    List<ExamType> etypList = new ArrayList<ExamType>(); 
+    private static SubjectDAO subjectDAO;
+    private static RoomDAO roomDAO;
+   
+     List<ExamType> etypList = new ArrayList<ExamType>(); 
+     List<Subject> subjectList = new ArrayList<>();
+     List<ClassRoom> roomList = new ArrayList<>();
+	 HashMap<String, String> SubHash= new HashMap<>();
+	 HashMap<String, String> roomHash= new HashMap<>();
+	
     
     public ExamTypeView() 
     {
@@ -71,7 +86,7 @@ public class ExamTypeView extends JInternalFrame {
 
         tblExamList = new JTable(new AbstractTable());
         javax.swing.table.TableColumn column = null;
-        for (int i = 0; i < 6; i++) 
+        for (int i = 0; i < 7; i++) 
         {
             column = tblExamList.getColumnModel().getColumn(i);
             if (i == 5) 
@@ -96,7 +111,23 @@ public class ExamTypeView extends JInternalFrame {
         buttonPanel.add(btnClose);
         
         examtypeDAO = ExamtypeDAO.getInstance(); 
+        subjectDAO = SubjectDAO.getInstance();
+        roomDAO = RoomDAO.getInstance();
+       
+        
         etypList = examtypeDAO.getAllExamtype();
+        roomList = roomDAO.getAllRooms();
+        
+        for(ClassRoom r : roomList){
+        	roomHash.put(r.getUuid(), r.getRoomname()); 
+        }
+        
+        
+        
+		 subjectList = subjectDAO.getAllSubjects();
+		 for(Subject s : subjectList){
+			 SubHash.put(s.getUuid(), s.getSubjectname());
+		 }
 
         add(tablePanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.PAGE_END);
@@ -188,7 +219,11 @@ public class ExamTypeView extends JInternalFrame {
 
     class AbstractTable extends AbstractTableModel {
 
-        private String[] columnNames = {"examtype","year","term","class","outof","descr"};
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 3415420070975219228L;
+		private String[] columnNames = {"EXAM","YEAR","TERM","CLASS","SUBJECT","OUToF","DESCRIPTION"};
         private Object[][] data = new Object[50][50];
 
         public int getColumnCount() {
@@ -220,10 +255,12 @@ public class ExamTypeView extends JInternalFrame {
      	tblExamList.setValueAt(typ.getExamtype().trim(), Numrow, 0);
      	tblExamList.setValueAt(typ.getYear().trim(), Numrow, 1);
      	tblExamList.setValueAt(typ.getTerm().trim(), Numrow, 2);
-     	tblExamList.setValueAt(typ.getClasz().trim(), Numrow, 3);
-     	tblExamList.setValueAt(typ.getOutof().trim(), Numrow, 4);
-     	tblExamList.setValueAt(typ.getDescription().trim(), Numrow, 5);
-    	
+     	tblExamList.setValueAt(roomHash.get(typ.getRoomnameUuid()).trim(), Numrow, 3);
+     	tblExamList.setValueAt(SubHash.get(typ.getSubjectUuid()).trim(), Numrow, 4); 
+     	tblExamList.setValueAt(typ.getOutof().trim(), Numrow, 5);
+     	tblExamList.setValueAt(typ.getDescription().trim(), Numrow, 6);
+     	//String roomuuid = typ.getRoomnameUuid();
+    	//System.out.println(roomHash.get(typ.getRoomnameUuid())); 
          Numrow++;
     	}
 
@@ -231,16 +268,17 @@ public class ExamTypeView extends JInternalFrame {
     
     private void addMarks() {
     	
-    	        String examtype,year,term,clasz, outof,descr;
+    	        String examtype,year,term,subject,room, outof,descr;
     	   	
     			examtype = tblExamList.getValueAt(getSelectedRow(), 0).toString();
     			year = tblExamList.getValueAt(getSelectedRow(), 1).toString();
     			term = tblExamList.getValueAt(getSelectedRow(), 2).toString();
-    			clasz = tblExamList.getValueAt(getSelectedRow(), 3).toString();
-    			outof = tblExamList.getValueAt(getSelectedRow(), 4).toString();
-    			descr = tblExamList.getValueAt(getSelectedRow(), 5).toString();
+    			room = tblExamList.getValueAt(getSelectedRow(), 3).toString();
+    			subject = tblExamList.getValueAt(getSelectedRow(), 4).toString();
+    			outof = tblExamList.getValueAt(getSelectedRow(), 5).toString();
+    			descr = tblExamList.getValueAt(getSelectedRow(), 6).toString();
                
-    			addMarks frm = new addMarks(examtype,year,term,clasz, outof,descr);
+    			addMarks frm = new addMarks(examtype,year,term,room,subject,outof,descr);
                 MainWindow.desktop.add(frm);
                 frm.setVisible(true);
     			

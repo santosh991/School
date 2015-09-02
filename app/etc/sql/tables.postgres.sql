@@ -38,6 +38,18 @@ CREATE TABLE subject (
 \COPY subject(uuid,subjectcode,subjectname,subjectcategory) FROM '/tmp/Subject.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE subject OWNER TO allamano;
 
+-- -------------------
+-- Table ClassRoom
+-- -------------------
+CREATE TABLE classroom (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    roomname text
+);
+-- import data from the CSV file for the status table
+\COPY classroom(uuid,roomname) FROM '/tmp/ClassRoom.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE classroom OWNER TO allamano;
+
 
 
 -- ================================
@@ -74,10 +86,10 @@ CREATE TABLE student_subject (
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    clasz text 
+    roomnameUuid text REFERENCES classroom(uuid)
 );
 
-\COPY student_subject(uuid,studentUuid,subjectUuid,clasz) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY student_subject(uuid,studentUuid,subjectUuid,roomnameUuid) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student_subject OWNER TO allamano;
 
 
@@ -233,7 +245,7 @@ CREATE TABLE  exam_type (
     examtype text,
     term text,
     year text,
-    clasz text,
+    roomnameUuid text REFERENCES classroom(uuid),
     outof text,
     description text,
     examno text,
@@ -242,7 +254,7 @@ CREATE TABLE  exam_type (
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY exam_type(uuid,examtype,term,year,clasz,outof,description,examno,subjectUuid) FROM '/tmp/Exam_Type.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY exam_type(uuid,examtype,term,year,roomnameUuid,outof,description,examno,subjectUuid) FROM '/tmp/Exam_Type.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE exam_type OWNER TO allamano;
 
 -- -------------------

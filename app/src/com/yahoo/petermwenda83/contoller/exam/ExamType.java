@@ -30,7 +30,7 @@ public class ExamType extends Exam{
 	private String examtype ;//CAT or MAIN
 	private String year ;
 	private String term ;
-	private String clasz ;
+	private String roomnameUuid ;
 	private String outof ;
 	private String description ; //CAT1,CAT2,CAT3 ,MAIN1,MOCK1 etc
 	private String examno;
@@ -45,7 +45,7 @@ public class ExamType extends Exam{
 		examtype = "";
 		term = "";
 		year = "";
-		clasz = "";
+		roomnameUuid = "";
 		outof = "";
 		description = "";
 		examno = "";
@@ -94,18 +94,19 @@ public class ExamType extends Exam{
 		this.term = term;
 	}
 
+
 	/**
-	 * @return the clasz
+	 * @return the roomnameUuid
 	 */
-	public String getClasz() {
-		return clasz;
+	public String getRoomnameUuid() {
+		return roomnameUuid;
 	}
 
 	/**
-	 * @param clasz the clasz to set
+	 * @param roomnameUuid the roomnameUuid to set
 	 */
-	public void setClasz(String clasz) {
-		this.clasz = clasz;
+	public void setRoomnameUuid(String roomnameUuid) {
+		this.roomnameUuid = roomnameUuid;
 	}
 
 	/**
@@ -176,8 +177,8 @@ public class ExamType extends Exam{
 		builder.append(term);
 		builder.append(", year =");
 		builder.append(year);
-		builder.append(", clasz =");
-		builder.append(clasz);
+		builder.append(", roomnameUuid =");
+		builder.append(roomnameUuid);
 		builder.append(", outof =");
 		builder.append(outof);
 		builder.append(", description =");

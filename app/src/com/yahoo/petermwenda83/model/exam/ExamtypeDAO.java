@@ -134,18 +134,18 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamtypeDAO#get(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public ExamType get(String examtype, String clasz, String description) {
+	public ExamType get(String examtype, String RoomnameUuid, String description) {
 		 ExamType examType = null;
          ResultSet rset = null;
       try(
       		 Connection conn = dbutils.getConnection();
          	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM exam_type "
-         	      		+ "WHERE examtype = ? AND clasz =? AND description =? ;");       
+         	      		+ "WHERE examtype = ? AND RoomnameUuid =? AND description =? ;");       
       		
       		){
       	
       	 pstmt.setString(1, examtype);
-      	 pstmt.setString(2, clasz);
+      	 pstmt.setString(2, RoomnameUuid);
       	 pstmt.setString(3, description);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
@@ -156,7 +156,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
       	
       	
       }catch(SQLException e){
-      	 logger.error("SQL Exception when getting ExamType with: "+examtype+" and "+clasz+" and "+description);
+      	 logger.error("SQL Exception when getting ExamType with: "+examtype+" and "+RoomnameUuid+" and "+description);
            logger.error(ExceptionUtils.getStackTrace(e));
            System.out.println(ExceptionUtils.getStackTrace(e));
       }
@@ -172,14 +172,15 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO exam_type" 
-			        		+"(Uuid, examtype, term, year,clasz,outof,description,examno,subjectUuid) VALUES (?,?,?,?,?,?,?,?,?);");
+			        		+"(Uuid, examtype, term, year,RoomnameUuid,outof,description,"
+			        		+ "examno,subjectUuid) VALUES (?,?,?,?,?,?,?,?,?);");
        		){
 			   
 	            pstmt.setString(1, examType.getUuid());
 	            pstmt.setString(2, examType.getExamtype());
 	            pstmt.setString(3, examType.getTerm());
 	            pstmt.setString(4, examType.getYear());
-	            pstmt.setString(5, examType.getClasz());
+	            pstmt.setString(5, examType.getRoomnameUuid());
 	            pstmt.setString(6, examType.getOutof());
 	            pstmt.setString(7, examType.getDescription());
 	            pstmt.setString(8, examType.getExamno());
@@ -201,22 +202,23 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamtypeDAO#editExamType(com.yahoo.petermwenda83.contoller.exam.ExamType, java.lang.String)
 	 */
 	@Override
-	public boolean editExamType(ExamType type, String Uuid) {
+	public boolean editExamType(ExamType type, String subjectUuid) {
 		  boolean success = true; 
 		  
 			 try(   Connection conn = dbutils.getConnection();
 		PreparedStatement pstmt = conn.prepareStatement("UPDATE exam_type SET examtype =?,"
-				+ " term =?, year =?,clasz =?,outof =?,description =?,examno =?,subjectUuid=? WHERE Uuid = ? ;");
+				+ " term =?, year =?,RoomnameUuid =?,outof =?,description =?,"
+				+ "examno =? WHERE SubjectUuid = ? ;");
 	        		){
 		            pstmt.setString(1, type.getExamtype());
 		            pstmt.setString(2, type.getTerm());
 		            pstmt.setString(3, type.getYear());
-		            pstmt.setString(4, type.getClasz());
+		            pstmt.setString(4, type.getRoomnameUuid());
 		            pstmt.setString(5, type.getOutof()); 
 		            pstmt.setString(6, type.getDescription());
 		            pstmt.setString(7, type.getExamno());
 		            pstmt.setString(8, type.getSubjectUuid());
-		            pstmt.setString(9, Uuid);
+		           // pstmt.setString(9, subjectUuid);
 		            pstmt.executeUpdate();
 				 
 			 }catch(SQLException e){
@@ -239,11 +241,11 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 		  boolean success = true; 
       try(
       		  Connection conn = dbutils.getConnection();
-         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM exam_type WHERE Uuid = ?;");       
+         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM exam_type WHERE SubjectUuid = ?;");       
       		
       		){
       	
-      	 pstmt.setString(1, type.getUuid());
+      	 pstmt.setString(1, type.getSubjectUuid());
 	         pstmt.executeUpdate();
 	     
       }catch(SQLException e){

@@ -18,6 +18,12 @@ public interface SchoolStudSubjectDAO {
 	 * 
 	 */
 	public  StudentSubject getStudentSubject(String Uuid);
+	 /**
+	  * 
+	  * @param suject
+	  * @return
+	  */
+	public  List<StudentSubject> getStudentSubject(StudentSubject suject,String Class);
 	/**
 	 * 
 	 * @param subject

@@ -95,13 +95,13 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student_Subject" 
-			        		+"(Uuid, StudentUuid, SubjectUuid,Clasz) VALUES (?,?,?,?);");
+			        		+"(Uuid, StudentUuid, SubjectUuid,roomnameUuid) VALUES (?,?,?,?);");
 		){
 			   
 	            pstmt.setString(1, stusubject.getUuid());
 	            pstmt.setString(2, stusubject.getStudentUuid());
 	            pstmt.setString(3, stusubject.getSubjectUuid());
-	            pstmt.setString(4, stusubject.getClasz());
+	            pstmt.setString(4, stusubject.getRoomnameUuid());
 	           
 	            pstmt.executeUpdate();
 			 
@@ -124,12 +124,12 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
-  	PreparedStatement pstmt = conn.prepareStatement("UPDATE Student_Subject SET Clasz =? "
+  	PreparedStatement pstmt = conn.prepareStatement("UPDATE Student_Subject SET roomnameUuid =? "
   			+ "WHERE SubjectUuid=? AND StudentUuid = ?;");
   	) {
 	           
 	           
-	            pstmt.setString(1, stusubject.getClasz());
+	            pstmt.setString(1, stusubject.getRoomnameUuid());
 	            pstmt.setString(2, stusubject.getSubjectUuid());
 	            pstmt.setString(3, stusubject.getStudentUuid());
 	            pstmt.executeUpdate();

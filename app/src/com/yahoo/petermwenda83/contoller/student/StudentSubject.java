@@ -38,8 +38,8 @@ public class StudentSubject extends StudentSuper{
 	builder.append(getStudentUuid());
 	builder.append(", getSubjectUuid() =");
 	builder.append(getSubjectUuid());
-	builder.append(", getClasz() =");
-	builder.append(getClasz());
+	builder.append(", getRoomnameUuid() =");
+	builder.append(getRoomnameUuid());
 	
 	builder.append("]");
 	return builder.toString(); 

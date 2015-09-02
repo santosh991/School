@@ -41,12 +41,12 @@ public class TestStudentSubjectDAO {
 	
 	
 	final String SUB_UUID ="D0F7EC32-EA25-7D32-8708-2CC132446A2E",
-			     SUB_UUID_NEW ="b9bbd718-b32f-4466-ab34-42f544ff900e",//AGR UUID
-			     SUB_UUID_UPDATE ="";
+			     SUB_UUID_NEW ="b9bbd718-b32f-4466-ab34-42f544ff900e";
+			    
 	
-	final String CLASS ="FORM 1 W",
-			     CLASS_NEW ="NEWClass",
-			     CLASS_UPDATE ="UPdateClass";
+	final String ROOMNAMEUUID ="4DA86139-6A72-4089-8858-6A3A613FDFE6",
+			     ROOMNAMEUUID_NEW ="B6D838A4-9476-428D-9AFF-758BB55FF270",
+			    		 ROOMNAMEUUID_UPDATE ="58444390-EFCA-4C4B-9010-577C31499A63";
 	
 	final String STU_UUID ="DAF7EC32-EA25-7D32-8708-2CC132446A2Y",
 			     STU_UUID_NEW ="838c6508-b971-4590-b7f1-4021867a197e";
@@ -64,7 +64,7 @@ public class TestStudentSubjectDAO {
 		s = store.getStudentSubject(STU_UUID);
 		assertEquals(s.getStudentUuid(),STU_UUID);
 		assertEquals(s.getSubjectUuid(),SUB_UUID);
-		assertEquals(s.getClasz(),CLASS);
+		assertEquals(s.getRoomnameUuid(),ROOMNAMEUUID);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class TestStudentSubjectDAO {
 		StudentSubject s = new StudentSubject();
 		s.setStudentUuid(STU_UUID_NEW);
 		s.setSubjectUuid(SUB_UUID_NEW);
-		s.setClasz(CLASS_NEW);
+		s.setRoomnameUuid(ROOMNAMEUUID_NEW);
 		assertTrue(store.putStudentSubject(s));
 	}
 
@@ -91,7 +91,7 @@ public class TestStudentSubjectDAO {
 		StudentSubject s = new StudentSubject();
 		s.setSubjectUuid(SUB_UUID_NEW);
 		s.setStudentUuid(STU_UUID_NEW);
-		s.setClasz(CLASS_UPDATE);
+		s.setRoomnameUuid(ROOMNAMEUUID_UPDATE);
 		assertTrue(store.editStudentSubject(s));
 	}
 
