@@ -25,8 +25,6 @@ import com.yahoo.petermwenda83.contoller.exam.CatResults;
 import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
-import com.yahoo.petermwenda83.contoller.student.StudentSuper;
-import com.yahoo.petermwenda83.contoller.student.Subject;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -40,26 +38,26 @@ public interface SchoolExamDAO {
  * @param uuid
  * 
  */
-public MainMarks getMainMarks(String uuid);
+public MainMarks getMainMarks(String StudentUuid,String Subjectuuid,String ExamTypeUuid);
 /**
  * 
  * @param uuid
  * 
  */
-public MainResults getExamResults(String uuid);
+public MainResults getExamResults(String StudentUuid,String Subjectuuid);
 
 /**
  * 
  * @param uuid
  * 
  */
-public CatMarks getCatMarks(String uuid);
+public CatMarks getCatMarks(String StudentUuid,String Subjectuuid,String ExamTypeUuid);
 /**
  * 
  * @param uuid
  * 
  */
-public CatResults getCatResults(String uuid);
+public CatResults getCatResults(String StudentUuid,String Subjectuuid);
 	
 	 
 	/**
@@ -83,7 +81,7 @@ public CatResults getCatResults(String uuid);
 	 * @param uuid
 	 * 
 	 */
-	public boolean editExamMarks(Exam exam,StudentSuper studentSuper,Subject subject);
+	public boolean editExamMarks(Exam exam);
 	
 	 
 	/**
@@ -91,13 +89,13 @@ public CatResults getCatResults(String uuid);
 	 * @param uuid
 	 * 
 	 */
-	public boolean deleteExamMarks(Exam exam,String uuid);
+	public boolean deleteExamMarks(Exam exam);
 	/**
 	 * 
 	 * @param uuid
 	 * 
 	 */
-	public boolean deleteExamResults(Exam exam,String uuid);
+	public boolean deleteExamResults(Exam exam);
 	
 	
 	

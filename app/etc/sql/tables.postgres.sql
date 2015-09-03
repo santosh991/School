@@ -267,6 +267,7 @@ CREATE TABLE  mainsubjectmark (
     examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
     marks text ,
+    percent text,
     grade text,
     submitdate timestamp with time zone
    
@@ -274,7 +275,7 @@ CREATE TABLE  mainsubjectmark (
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY mainsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,grade,submitdate) FROM '/tmp/MainSubjectmark.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY mainsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,percent,grade,submitdate) FROM '/tmp/MainSubjectmark.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE mainsubjectmark OWNER TO allamano;
 
 -- -------------------
@@ -315,6 +316,8 @@ CREATE TABLE  catsubjectmark (
     examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
     marks text,
+    submark text,
+    percent text,
     grade text,
     submitdate timestamp with time zone
    
@@ -322,7 +325,7 @@ CREATE TABLE  catsubjectmark (
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY catsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,grade,submitdate) FROM '/tmp/CatSubjectMark.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY catsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,submark,percent,grade,submitdate) FROM '/tmp/CatSubjectMark.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE catsubjectmark OWNER TO allamano;
 
 -- -------------------

@@ -34,6 +34,8 @@ public class Exam extends AllBean{
 	private String ExamTypeUuid ;
 	private String Subjectcode;
 	private String marks ;
+	private String submark ;
+	private String percent ;
 	private String total ;
 	private String points;
 	private String  grade ;
@@ -54,6 +56,8 @@ public class Exam extends AllBean{
 		ExamTypeUuid = "";
 		Subjectcode = "";
 		marks = "";
+		submark = "";
+		percent ="";
 		total = "";
 		points = "";
 		grade = "";
@@ -126,6 +130,38 @@ public class Exam extends AllBean{
 	 */
 	public void setSubjectcode(String subjectcode) {
 		Subjectcode = subjectcode;
+	}
+
+
+	/**
+	 * @return the submark
+	 */
+	public String getSubmark() {
+		return submark;
+	}
+
+
+	/**
+	 * @param submark the submark to set
+	 */
+	public void setSubmark(String submark) {
+		this.submark = submark;
+	}
+
+
+	/**
+	 * @return the percent
+	 */
+	public String getPercent() {
+		return percent;
+	}
+
+
+	/**
+	 * @param percent the percent to set
+	 */
+	public void setPercent(String percent) {
+		this.percent = percent;
 	}
 
 

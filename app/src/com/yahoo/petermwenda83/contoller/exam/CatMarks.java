@@ -53,10 +53,16 @@ public class CatMarks extends Exam  {
 		builder.append(getExamTypeUuid());
 		builder.append(", getMarks()=");
 		builder.append(getMarks());
+		builder.append(", getSubmark()=");
+		builder.append(getSubmark());
+		builder.append(", getPercent()=");
+		builder.append(getPercent());
+		builder.append(", getGrade()=");
+		builder.append(getGrade());
 		builder.append(", getSubmitdate()=");
 		builder.append(getSubmitdate());
 		builder.append("]");
 		return builder.toString();
 		}
-
+   //  
 }

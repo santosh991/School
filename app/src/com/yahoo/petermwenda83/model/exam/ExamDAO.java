@@ -34,8 +34,6 @@ import com.yahoo.petermwenda83.contoller.exam.CatResults;
 import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.MainResults;
-import com.yahoo.petermwenda83.contoller.student.StudentSuper;
-import com.yahoo.petermwenda83.contoller.student.Subject;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -80,16 +78,19 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#getMainMarks(java.lang.String)
 	 */
 	
-	public MainMarks getMainMarks(String uuid) {
+	public MainMarks getMainMarks(String StudentUuid,String Subjectuuid,String ExamTypeUuid) {
 		MainMarks mainMarks = null;
          ResultSet rset = null;
       try(
       		 Connection conn = dbutils.getConnection();
-         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM MainSubjectMark WHERE Uuid = ?;");       
+         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM MainSubjectMark"
+         	      		+ " WHERE StudentUuid = ? AND Subjectuuid=? AND ExamTypeUuid =? ;");       
       		
       		){
       	
-      	 pstmt.setString(1, uuid);
+      	 pstmt.setString(1, StudentUuid);
+      	 pstmt.setString(2, Subjectuuid);
+      	 pstmt.setString(3, ExamTypeUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -99,8 +100,9 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
       	
       	
       }catch(SQLException e){
-      	 logger.error("SQL Exception when getting MainMarks with uuid: " + uuid);
-           logger.error(ExceptionUtils.getStackTrace(e));
+      	 logger.error("SQL Exception when getting MainMarks with StudentUuid: " + StudentUuid);
+         logger.error(ExceptionUtils.getStackTrace(e));
+         System.out.print(ExceptionUtils.getStackTrace(e));
       }
       
 		return mainMarks; 
@@ -110,17 +112,19 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#getExamResults(java.lang.String)
 	 */
-	public MainResults getExamResults(String uuid) {
+	public MainResults getExamResults(String StudentUuid,String Subjectuuid) {
 		MainResults mainResults = null;
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ExamResult WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ExamResult WHERE"
+        	      		+ " StudentUuid =? AND Subjectuuid=?;");       
      		
      		){
      	
-     	 pstmt.setString(1, uuid);
-	         rset = pstmt.executeQuery();
+     	 pstmt.setString(1, StudentUuid);
+     	 pstmt.setString(2, Subjectuuid);
+	     rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
 	    	 mainResults  = beanProcessor.toBean(rset,MainResults.class);
@@ -129,8 +133,9 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting MainResults with uuid: " + uuid);
+     	 logger.error("SQL Exception when getting MainResults with StudentUuid: " + StudentUuid);
           logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.print(ExceptionUtils.getStackTrace(e));
      }
      
 		return mainResults; 
@@ -140,16 +145,19 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#getCatMarks(java.lang.String)
 	 */
-	public CatMarks getCatMarks(String uuid) {
+	public CatMarks getCatMarks(String StudentUuid,String Subjectuuid,String ExamTypeUuid) {
 		CatMarks catMarks = null;
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatSubjectMark WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatSubjectMark WHERE"
+        	      		+ " StudentUuid = ? AND Subjectuuid =? AND ExamTypeUuid =? ;");       
      		
      		){
     	
-     	 pstmt.setString(1, uuid);
+     	 pstmt.setString(1, StudentUuid);
+     	 pstmt.setString(2, Subjectuuid);
+     	 pstmt.setString(3, ExamTypeUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -159,8 +167,9 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting MainMarks with uuid: " + uuid);
+     	 logger.error("SQL Exception when getting MainMarks with StudentUuid: " + StudentUuid);
           logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.print(ExceptionUtils.getStackTrace(e));
      }
      
 		return catMarks; 
@@ -171,16 +180,18 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#getCatResults(java.lang.String)
 	 */
-	public CatResults getCatResults(String uuid) {
+	public CatResults getCatResults(String StudentUuid,String Subjectuuid) {
 		CatResults catResults = null;
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatResult WHERE Uuid = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatResult "
+        	      		+ "WHERE StudentUuid = ? AND Subjectuuid =?;");       
     		
      		){
      	
-     	 pstmt.setString(1, uuid);
+     	 pstmt.setString(1, StudentUuid);
+     	 pstmt.setString(2, Subjectuuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -190,8 +201,9 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting MainResults with uuid: " + uuid);
+     	 logger.error("SQL Exception when getting MainResults with StudentUuid: " + StudentUuid);
           logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.print(ExceptionUtils.getStackTrace(e));
      }
      
 		return catResults; 
@@ -207,9 +219,11 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 		CatMarks catm = new CatMarks();
 		try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO CatSubjectMark" 
-			        		+"(Uuid, studentuuid, examtypeuuid, subjectuuid,marks,submitdate) VALUES (?,?,?,?,?,?);");
+			        		+"(Uuid, studentuuid, examtypeuuid, subjectuuid,marks,"
+			        		+ "submark,percent,Grade,submitdate) VALUES (?,?,?,?,?,?,?,?,?);");
 				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO MainSubjectMark" 
-		        		+"(Uuid, studentuuid, examtypeuuid, subjectuuid,marks,submitdate) VALUES (?,?,?,?,?,?);");
+		        		+"(Uuid, studentuuid, examtypeuuid, subjectuuid,"
+		        		+ "marks,percent,Grade,submitdate) VALUES (?,?,?,?,?,?,?,?);");
         		){
 			  if(exam instanceof CatMarks ){
 	            pstmt.setString(1, catm.getUuid());
@@ -217,7 +231,10 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	            pstmt.setString(3, exam.getExamTypeUuid());
 	            pstmt.setString(4, exam.getSubjectUuid());
 	            pstmt.setString(5, exam.getMarks());
-	            pstmt.setTimestamp(6,  new Timestamp(exam.getSubmitdate().getTime()));
+	            pstmt.setString(6, exam.getSubmark());
+	            pstmt.setString(7, exam.getPercent());
+	            pstmt.setString(8, exam.getGrade());
+	            pstmt.setTimestamp(9,  new Timestamp(exam.getSubmitdate().getTime()));
 	            
 	            pstmt.executeUpdate();
 			  }else{         //Main marks
@@ -226,13 +243,16 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 		            pstmt2.setString(3, exam.getExamTypeUuid());
 		            pstmt2.setString(4, exam.getSubjectUuid());
 		            pstmt2.setString(5, exam.getMarks());
-		            pstmt2.setTimestamp(6,  new Timestamp(exam.getSubmitdate().getTime()));
+		            pstmt2.setString(6, exam.getPercent());
+		            pstmt2.setString(7, exam.getGrade());
+		            pstmt2.setTimestamp(8,  new Timestamp(exam.getSubmitdate().getTime()));
 		            
 		            pstmt2.executeUpdate(); 
 			  }
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put: "+exam);
              logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.print(ExceptionUtils.getStackTrace(e));
              success = false;
 		 }
 		
@@ -282,6 +302,7 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put: "+exam);
              logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.print(ExceptionUtils.getStackTrace(e));
              success = false;
 		 }
 		
@@ -293,32 +314,36 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#editExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam, com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.student.Subject)
 	 */
 	
-	public boolean editExamMarks(Exam exam,StudentSuper studentSuper,Subject subject) {
+	public boolean editExamMarks(Exam exam) {
 		boolean success = true;
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE CatSubjectMark SET marks =?, submitdate =?"
-						+ " WHERE Studentuuid = ? AND Subjectuuid = ?;");
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MainSubjectMark SET marks =?, submitdate =? "
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE CatSubjectMark SET marks =?, "
+						+ "submitdate =?"
+						+ " WHERE Studentuuid = ? AND Subjectuuid = ? AND ExamTypeUuid=?  ;");
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MainSubjectMark SET marks =?, "
+						+ "submitdate =? "
 						+ " WHERE Studentuuid = ? AND Subjectuuid = ? ;");
         		){
 			  if(exam instanceof CatMarks ){
 	            pstmt.setString(1, exam.getMarks());
 	            pstmt.setTimestamp(2, new Timestamp(exam.getSubmitdate().getTime()));
-	            pstmt.setString(3, studentSuper.getUuid());
-	            pstmt.setString(4, subject.getUuid());
+	            pstmt.setString(3, exam.getStudentUuid());
+	            pstmt.setString(4, exam.getSubjectUuid());
+	            pstmt.setString(5, exam.getExamTypeUuid());
 	            
 	            pstmt.executeUpdate();
 			  }else{         //Main marks
 				    pstmt2.setString(1, exam.getMarks());
 		            pstmt2.setTimestamp(2, new Timestamp(exam.getSubmitdate().getTime()));
-		            pstmt2.setString(3, studentSuper.getUuid());
-		            pstmt2.setString(4, subject.getUuid());
+		            pstmt2.setString(3, exam.getStudentUuid());
+		            pstmt2.setString(4, exam.getSubjectUuid());
 		            
 		            pstmt2.executeUpdate(); 
 			  }
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to update : "+subject+"for" +studentSuper);
+			 logger.error("SQL Exception trying to update Exam: "+exam);
              logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.print(ExceptionUtils.getStackTrace(e));
              success = false;
 		 }
 		
@@ -328,16 +353,76 @@ public class ExamDAO extends DBConnectDAO  implements SchoolExamDAO {
 
 	
 	
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#deleteExamMarks(com.yahoo.petermwenda83.contoller.exam.Exam)
+	 */
 	@Override
-	public boolean deleteExamMarks(Exam exam,String uuid) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteExamMarks(Exam exam) {
+		  boolean success = true; 
+	            try(
+	      		  Connection conn = dbutils.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement("DELETE FROM CatSubjectMark WHERE"
+	        		+ " StudentUuid = ? AND SubjectUuid = ? AND ExamTypeUuid=?  ;");       
+	        PreparedStatement pstmt2 = conn.prepareStatement("DELETE FROM MainSubjectMark WHERE"
+	         	       + " StudentUuid = ? AND SubjectUuid = ?  AND ExamTypeUuid=?;");       
+	         	      		
+	      		      ){
+	            	 if(exam instanceof CatMarks ){
+	      	          pstmt.setString(1,exam.getStudentUuid());
+	      	          pstmt.setString(2,exam.getSubjectUuid());
+	      	          pstmt.setString(3,exam.getExamTypeUuid());
+		              pstmt.executeUpdate();
+	            	 }else{
+	            		 pstmt2.setString(1,exam.getStudentUuid());
+		      	         pstmt2.setString(2,exam.getSubjectUuid());
+		      	         pstmt2.setString(3,exam.getExamTypeUuid());
+		      	         pstmt2.executeUpdate();
+	            	 }
+		     
+	      }catch(SQLException e){
+	      	 logger.error("SQL Exception when deletting Exam : " +exam);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success; 
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamDAO#deleteExamResults(com.yahoo.petermwenda83.contoller.exam.Exam)
+	 */
 	@Override
-	public boolean deleteExamResults(Exam exam,String uuid) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteExamResults(Exam exam) {
+		boolean success = true; 
+        try(
+  		  Connection conn = dbutils.getConnection();
+    PreparedStatement pstmt = conn.prepareStatement("DELETE FROM CatResult WHERE"
+    		+ " StudentUuid = ? AND SubjectUuid = ?;");       
+    PreparedStatement pstmt2 = conn.prepareStatement("DELETE FROM ExamResult WHERE"
+     	        		+ " StudentUuid = ? AND SubjectUuid = ?;");       
+     	      		
+  		      ){
+        	 if(exam instanceof CatResults ){
+  	          pstmt.setString(1,exam.getStudentUuid());
+  	          pstmt.setString(2,exam.getSubjectUuid());
+              pstmt.executeUpdate();
+        	 }else{
+        		 pstmt2.setString(1,exam.getStudentUuid());
+      	         pstmt2.setString(2,exam.getSubjectUuid());
+      	         pstmt2.executeUpdate();
+        	 }
+     
+       }catch(SQLException e){
+  	   logger.error("SQL Exception when deletting Exam : " +exam);
+       logger.error(ExceptionUtils.getStackTrace(e));
+       System.out.println(ExceptionUtils.getStackTrace(e));
+       success = false;
+       
+  }
+  
+	return success; 
 	}
 	//CatResult ,ExamResult, CatSubjectMark,MainSubjectMark
 
