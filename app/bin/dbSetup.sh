@@ -38,7 +38,7 @@ echo "Finished creating new role."
 #End automatic creation of role
 
 # Initialize the following variables as appropriate:
-DB_USERNAME="allamano"
+DB_USERNAME="school"
 DB_PASSWORD="AllaManO1"
 DB_HOST="localhost"
 

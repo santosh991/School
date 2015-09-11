@@ -1,6 +1,6 @@
 
--- Schema Name: allamanodb
--- Username: allamano
+-- Schema Name: schooldb
+-- Username: school
 -- Password: AllaManO1
 
 -- These tables describe the database of AllamanoBoys
@@ -14,11 +14,11 @@
 \c postgres
 
 -- Then execute the following:
-DROP DATABASE IF EXISTS allamanodb; -- To drop a database you can't be logged into it. Drops if it exists.
-CREATE DATABASE allamanodb;
+DROP DATABASE IF EXISTS schooldb; -- To drop a database you can't be logged into it. Drops if it exists.
+CREATE DATABASE schooldb;
 
 -- Connect with the database on the username
-\c allamanodb allamano
+\c schooldb school
 
 
 -- =========================
@@ -36,7 +36,7 @@ CREATE TABLE subject (
 );
 -- import data from the CSV file for the status table
 \COPY subject(uuid,subjectcode,subjectname,subjectcategory) FROM '/tmp/Subject.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE subject OWNER TO allamano;
+ALTER TABLE subject OWNER TO school;
 
 -- -------------------
 -- Table ClassRoom
@@ -48,7 +48,7 @@ CREATE TABLE classroom (
 );
 -- import data from the CSV file for the status table
 \COPY classroom(uuid,roomname) FROM '/tmp/ClassRoom.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE classroom OWNER TO allamano;
+ALTER TABLE classroom OWNER TO school;
 
 
 
@@ -75,7 +75,7 @@ CREATE TABLE student(
 );
 
 \COPY student(uuid, firstname, lastname,surname,admno,year,dob,bcertno,admissiondate) FROM '/tmp/Students.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student OWNER TO allamano;
+ALTER TABLE student OWNER TO school;
 
 
 -- -------------------
@@ -90,7 +90,7 @@ CREATE TABLE student_subject (
 );
 
 \COPY student_subject(uuid,studentUuid,subjectUuid,roomnameUuid) FROM '/tmp/Student_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_subject OWNER TO allamano;
+ALTER TABLE student_subject OWNER TO school;
 
 
 -- -------------------
@@ -105,7 +105,7 @@ CREATE TABLE  student_house (
 );
 
 \COPY student_house(uuid,studentUuid,housename) FROM '/tmp/Student_House.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_subject OWNER TO allamano;
+ALTER TABLE student_subject OWNER TO school;
 
 
 
@@ -121,7 +121,7 @@ CREATE TABLE student_location (
     sublocation text
 );
 \COPY student_location(uuid,studentUuid,county,location,sublocation) FROM '/tmp/Student_Location.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_location OWNER TO allamano;
+ALTER TABLE student_location OWNER TO school;
 
 
 -- -------------------
@@ -144,7 +144,7 @@ CREATE TABLE student_parent (
     relationship text
 );
 \COPY student_parent(uuid,studentUuid,fatherName,fatherPhone,fatherOccupation,fatherID,fatherEmail,motherName,motherPhone,motherOccupation,motherEmail,motherID,relationship) FROM '/tmp/Student_Parent.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_parent OWNER TO allamano;
+ALTER TABLE student_parent OWNER TO school;
 
 
 
@@ -161,7 +161,7 @@ CREATE TABLE student_relative (
     nationalID text 
 );
 \COPY student_relative(uuid,studentUuid,relativeName,relativePhone,nationalID) FROM '/tmp/Student_Relative.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_relative OWNER TO allamano;
+ALTER TABLE student_relative OWNER TO school;
 
 
 
@@ -180,7 +180,7 @@ CREATE TABLE student_sponsor (
     country text
 );
 \COPY student_sponsor(uuid,studentUuid,Name,Phone,nationalID,Occupation,County,country) FROM '/tmp/Student_Sponsor.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_sponsor OWNER TO allamano;
+ALTER TABLE student_sponsor OWNER TO school;
 
 
 -- -------------------
@@ -193,7 +193,7 @@ CREATE TABLE student_activities (
     activity text
 );
 \COPY student_activities(uuid,studentUuid,activity) FROM '/tmp/Student_Activities.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE student_activities OWNER TO allamano;
+ALTER TABLE student_activities OWNER TO school;
 
 
 -- -------------------
@@ -207,7 +207,7 @@ CREATE TABLE studentstatus (
     
 );
 \COPY studentstatus(uuid,studentUuid,description) FROM '/tmp/StudentStatus.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE studentstatus OWNER TO allamano;
+ALTER TABLE studentstatus OWNER TO school;
 
 
 
@@ -224,7 +224,7 @@ CREATE TABLE studentprimary (
     KcpeMarks text
 );
 \COPY studentprimary(uuid,studentUuid,schoolname,index,KcpeYear,KcpeMarks) FROM '/tmp/StudentPrimary.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE studentprimary OWNER TO allamano;
+ALTER TABLE studentprimary OWNER TO school;
 
 
 
@@ -255,7 +255,7 @@ CREATE TABLE  exam_type (
 
 -- import data from the CSV file for the Accounts table
 \COPY exam_type(uuid,examtype,term,year,roomnameUuid,outof,description,examno,subjectUuid) FROM '/tmp/Exam_Type.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE exam_type OWNER TO allamano;
+ALTER TABLE exam_type OWNER TO school;
 
 -- -------------------
 -- Table MainSubjectmark
@@ -276,7 +276,7 @@ CREATE TABLE  mainsubjectmark (
 
 -- import data from the CSV file for the Accounts table
 \COPY mainsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,percent,grade,submitdate) FROM '/tmp/MainSubjectmark.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE mainsubjectmark OWNER TO allamano;
+ALTER TABLE mainsubjectmark OWNER TO school;
 
 -- -------------------
 -- Table Examresult
@@ -286,6 +286,7 @@ ALTER TABLE mainsubjectmark OWNER TO allamano;
     uuid text UNIQUE NOT NULL,
     subjectUuid text REFERENCES subject(uuid),
     studentUuid text REFERENCES student(uuid),
+    examtypeUuid text REFERENCES exam_type(uuid),
     total text  ,
     points text,
     grade text,
@@ -297,8 +298,8 @@ ALTER TABLE mainsubjectmark OWNER TO allamano;
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY examresult(uuid,subjectUuid,studentUuid,total,points,grade,position,remarks,submitdate) FROM '/tmp/Examresult.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE examresult OWNER TO allamano;
+\COPY examresult(uuid,subjectUuid,studentUuid,examtypeUuid,total,points,grade,position,remarks,submitdate) FROM '/tmp/Examresult.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE examresult OWNER TO school;
 
 
 
@@ -326,7 +327,7 @@ CREATE TABLE  catsubjectmark (
 
 -- import data from the CSV file for the Accounts table
 \COPY catsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,submark,percent,grade,submitdate) FROM '/tmp/CatSubjectMark.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE catsubjectmark OWNER TO allamano;
+ALTER TABLE catsubjectmark OWNER TO school;
 
 -- -------------------
 -- Table Catresult
@@ -336,6 +337,7 @@ ALTER TABLE catsubjectmark OWNER TO allamano;
     uuid text UNIQUE NOT NULL,
     subjectUuid text REFERENCES subject(uuid),
     studentUuid text REFERENCES student(uuid),
+    examtypeUuid text REFERENCES exam_type(uuid),
     total text,
     points text,
     grade text,
@@ -347,8 +349,8 @@ ALTER TABLE catsubjectmark OWNER TO allamano;
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY catresult(uuid,subjectUuid,studentUuid,total,points,grade,position,remarks,submitdate) FROM '/tmp/Catresult.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE catresult OWNER TO allamano;
+\COPY catresult(uuid,subjectUuid,studentUuid,examtypeUuid,total,points,grade,position,remarks,submitdate) FROM '/tmp/Catresult.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE catresult OWNER TO school;
 
 
 
@@ -384,7 +386,7 @@ CREATE TABLE teacher (
     location text
 );
 \COPY teacher(uuid,firstName,lastName,surname,nhifno,nssfno,phone,dob,nationalID,teacherNumber,county,location) FROM '/tmp/Teacher.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE teacher OWNER TO allamano;
+ALTER TABLE teacher OWNER TO school;
 
 -- -------------------
 -- Table Teacher_Subject
@@ -399,7 +401,7 @@ CREATE TABLE teacher_subject (
    
 );
 \COPY teacher_subject(uuid,teacherUuid,sujectUuid,form) FROM '/tmp/Teacher_Subject.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE teacher_subject OWNER TO allamano;
+ALTER TABLE teacher_subject OWNER TO school;
 
 
 
@@ -427,7 +429,7 @@ CREATE TABLE worker (
     sublocation text
 );
 \COPY worker(uuid,firstName,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/Worker.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE worker OWNER TO allamano;
+ALTER TABLE worker OWNER TO school;
 
 --------------------
 -- Table TeacherPosition
@@ -442,7 +444,7 @@ CREATE TABLE teacherPosition (
    
 );
 \COPY teacherPosition(uuid,teacherUuid,position,salary) FROM '/tmp/TeacherPosition.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE teacherPosition OWNER TO allamano;
+ALTER TABLE teacherPosition OWNER TO school;
 
 
 --------------------
@@ -458,7 +460,7 @@ CREATE TABLE workerPosition (
    
 );
 \COPY workerPosition(uuid,workerUuid,position,salary) FROM '/tmp/WorkerPosition.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE workerPosition OWNER TO allamano;
+ALTER TABLE workerPosition OWNER TO school;
 
 
 
@@ -477,7 +479,7 @@ CREATE TABLE deposit (
 
 );
 \COPY deposit(uuid,studentUuid,amount,depositedate) FROM '/tmp/Deposit.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE deposit OWNER TO allamano;
+ALTER TABLE deposit OWNER TO school;
 
 -- -------------------
 -- Table  Balance
@@ -492,7 +494,7 @@ CREATE TABLE  withdraw (
 
 );
 \COPY withdraw(uuid,studentUuid,amount,withdrawdate) FROM '/tmp/Withdraw.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE withdraw OWNER TO allamano;
+ALTER TABLE withdraw OWNER TO school;
 
 -- ==================
 -- ==================
@@ -514,7 +516,7 @@ CREATE TABLE  users (
 
 );
 \COPY users(uuid,userType,username,password) FROM '/tmp/Users.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE users OWNER TO allamano;
+ALTER TABLE users OWNER TO school;
 
 
 

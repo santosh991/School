@@ -23,9 +23,9 @@ public class DButils {
     private String url = ""; 
     
 	public DButils() {
-		databaseName="allamanodb";
+		databaseName="schooldb";
 		Host="localhost";
-		databaseUsername="allamano";
+		databaseUsername="school";
 		databasePassword="AllaManO1";
 		databasePort=5432;
 	}
