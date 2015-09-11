@@ -65,6 +65,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentSubjectDAO#getStudent(com.yahoo.petermwenda83.contoller.student.StudentSubject)
 	 */
+	@Override
 	public StudentSubject getStudentSubject(String StudentUuid) {
 		StudentSubject stusubject = null;
 		ResultSet rset = null;
@@ -90,6 +91,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentSubjectDAO#putStudent(com.yahoo.petermwenda83.contoller.student.StudentSubject)
 	 */
+	@Override
 	public boolean putStudentSubject(StudentSubject stusubject) {
 		boolean success = true;
 		
@@ -120,6 +122,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentSubjectDAO#editStudent(com.yahoo.petermwenda83.contoller.student.StudentSubject, java.lang.String)
 	 */
+	@Override
 	public boolean editStudentSubject(StudentSubject stusubject) {
 		boolean success = true;
 		
@@ -147,6 +150,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentSubjectDAO#deleteStudentSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject)
 	 */
+	@Override
 	public boolean deleteStudentSubject(StudentSubject stusubject) {
 		  boolean success = true; 
 	      try(
@@ -174,6 +178,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentSubjectDAO#getAllStudentSubject()
 	 */
+	@Override
 	public List<StudentSubject> getAllStudentSubject() {
 		List<StudentSubject>  list = null;
 		

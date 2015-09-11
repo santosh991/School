@@ -47,6 +47,7 @@ public class Deposit extends StudentSuper {
 	/**
 	 * @return the uuid
 	 */
+	@Override
 	public String getUuid() {
 		return uuid;
 	}
@@ -55,6 +56,7 @@ public class Deposit extends StudentSuper {
 	/**
 	 * @param uuid the uuid to set
 	 */
+	@Override
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
@@ -63,6 +65,7 @@ public class Deposit extends StudentSuper {
 	/**
 	 * @return the studentUuid
 	 */
+	@Override
 	public String getStudentUuid() {
 		return studentUuid;
 	}
@@ -71,6 +74,7 @@ public class Deposit extends StudentSuper {
 	/**
 	 * @param studentUuid the studentUuid to set
 	 */
+	@Override
 	public void setStudentUuid(String studentUuid) {
 		this.studentUuid = studentUuid;
 	}
@@ -108,6 +112,7 @@ public class Deposit extends StudentSuper {
 	}
 
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Users");

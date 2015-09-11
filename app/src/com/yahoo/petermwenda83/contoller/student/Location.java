@@ -88,6 +88,7 @@ public class Location extends StudentSuper {
 	}
 
 
+	@Override
 	public String toString(){
 	StringBuilder builder = new StringBuilder();
 	builder.append("Location");

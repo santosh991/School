@@ -69,6 +69,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#getStudentSponser(com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
+	@Override
 	public StudentSponsor getStudentSponsor(String StudentUuid) {
 		StudentSponsor sponser = null;
 		ResultSet rset = null;
@@ -100,6 +101,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#getStudentSponserById(java.lang.String)
 	 */
+	@Override
 	public StudentSponsor getStudentSponsorById(String NationalID) {
 		StudentSponsor sponser = null;
 		ResultSet rset = null;
@@ -130,6 +132,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#putStudentSponser(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
+	@Override
 	public boolean putStudentSponsor(StudentSponsor sponsor) {
 		boolean success = true;
 		
@@ -167,6 +170,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#editStudentSponser(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
+	@Override
 	public boolean editStudentSponsor(StudentSponsor sponsor,String StudentUuid) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
@@ -197,6 +201,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#deleteStudentSponser(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentSponsor)
 	 */
+	@Override
 	public boolean deleteStudentSponsor(StudentSponsor sponser) {
 		 boolean success = true; 
 	      try(
@@ -223,6 +228,7 @@ public class SponsorsDAO extends DBConnectDAO implements SchoolSponsorsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolSponsorsDAO#getAllStudentSponser()
 	 */
+	@Override
 	public List<StudentSponsor> getAllStudentSponsor() {
 		List<StudentSponsor>  list = null;
 		

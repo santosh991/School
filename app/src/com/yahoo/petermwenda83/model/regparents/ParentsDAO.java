@@ -68,6 +68,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	 * @return 
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getStudentParent(com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
+	@Override
 	public StudentParent getStudentParent(String Uuid) {
 		StudentParent parent = null;
         ResultSet rset = null;
@@ -100,6 +101,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getParentByFatherId(java.lang.String)
 	 */
+	@Override
 	public StudentParent getParentByFatherId(String FatherId) {
 		StudentParent parent = null;
         ResultSet rset = null;
@@ -131,6 +133,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getParentByMotherId(java.lang.String)
 	 */
+	@Override
 	public StudentParent getParentByMotherId(String MotherID) {
 		StudentParent parent = null;
         ResultSet rset = null;
@@ -162,6 +165,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#putStudentParent(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
+	@Override
 	public boolean putStudentParent(StudentParent parent) {
 		boolean success = true;
 		
@@ -215,6 +219,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#ediStudentParent(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
+	@Override
 	public boolean ediStudentParent(StudentParent parent,String StudentUuid) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
@@ -258,6 +263,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#deleteStudentParent(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentParent)
 	 */
+	@Override
 	public boolean deleteStudentParent(StudentParent parent) {
 
 		  boolean success = true; 
@@ -286,6 +292,7 @@ public class ParentsDAO extends DBConnectDAO  implements SchoolParentsDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolParentsDAO#getAllStudentParent()
 	 */
+	@Override
 	public List<StudentParent> getAllStudentParent() {
 		List<StudentParent>  list = null;
 		

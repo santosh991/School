@@ -68,6 +68,7 @@ public class Subject extends StudentSuper{
 		this.subjectcategory = subjectcategory;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("SubjectUi [ getUuid() =");

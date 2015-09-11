@@ -138,7 +138,8 @@ public class ExamTypeView extends JInternalFrame {
         btnAddNew.addActionListener(new java.awt.event.ActionListener()
         {
 
-            public void actionPerformed(java.awt.event.ActionEvent e) 
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent e) 
             {
             	AddExamtype frm = new AddExamtype();
                 MainWindow.desktop.add(frm);
@@ -152,7 +153,8 @@ public class ExamTypeView extends JInternalFrame {
         btnClose.addActionListener(new ActionListener() 
         {
 
-            public void actionPerformed(ActionEvent e)
+            @Override
+			public void actionPerformed(ActionEvent e)
             {
                 setVisible(false);
             }
@@ -160,7 +162,8 @@ public class ExamTypeView extends JInternalFrame {
         btnRefresh.addActionListener(new ActionListener()
         {
 
-            public void actionPerformed(ActionEvent e) 
+            @Override
+			public void actionPerformed(ActionEvent e) 
             {
             	 reloaded();
             }
@@ -168,7 +171,8 @@ public class ExamTypeView extends JInternalFrame {
         btnaddMarks.addActionListener(new ActionListener() 
         {
 
-            public void actionPerformed(ActionEvent evt)
+            @Override
+			public void actionPerformed(ActionEvent evt)
             {
               addMarks();
             }
@@ -178,7 +182,8 @@ public class ExamTypeView extends JInternalFrame {
         btnUpdate.addActionListener(new ActionListener() 
         {
            
-            public void actionPerformed(ActionEvent e) 
+            @Override
+			public void actionPerformed(ActionEvent e) 
             {
             	
             }
@@ -199,7 +204,8 @@ public class ExamTypeView extends JInternalFrame {
         rowSel.addListSelectionListener(new ListSelectionListener()
         {
 
-            public void valueChanged(ListSelectionEvent e)
+            @Override
+			public void valueChanged(ListSelectionEvent e)
             {
                 if (e.getValueIsAdjusting())
                 {
@@ -226,23 +232,28 @@ public class ExamTypeView extends JInternalFrame {
 		private String[] columnNames = {"EXAM","YEAR","TERM","CLASS","SUBJECT","OUToF","DESCRIPTION"};
         private Object[][] data = new Object[50][50];
 
-        public int getColumnCount() {
+        @Override
+		public int getColumnCount() {
             return columnNames.length;
         }
 
-        public int getRowCount() {
+        @Override
+		public int getRowCount() {
             return data.length;
         }
 
-        public String getColumnName(int col) {
+        @Override
+		public String getColumnName(int col) {
             return columnNames[col];
         }
 
-        public Object getValueAt(int row, int col) {
+        @Override
+		public Object getValueAt(int row, int col) {
             return data[row][col];
         }
 
-        public void setValueAt(Object value, int row, int col) {
+        @Override
+		public void setValueAt(Object value, int row, int col) {
             data[row][col] = value;
             fireTableCellUpdated(row, col);
         }

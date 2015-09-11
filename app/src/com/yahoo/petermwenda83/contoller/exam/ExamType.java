@@ -155,6 +155,7 @@ public class ExamType extends Exam{
 	/**
 	 * @return the subjectUuid
 	 */
+	@Override
 	public String getSubjectUuid() {
 		return subjectUuid;
 	}
@@ -162,10 +163,12 @@ public class ExamType extends Exam{
 	/**
 	 * @param subjectUuid the subjectUuid to set
 	 */
+	@Override
 	public void setSubjectUuid(String subjectUuid) {
 		this.subjectUuid = subjectUuid;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Exam Type");

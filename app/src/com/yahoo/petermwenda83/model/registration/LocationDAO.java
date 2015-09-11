@@ -67,6 +67,7 @@ public class LocationDAO extends DBConnectDAO implements SchoolLocationDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolLocationDAO#getStudent(java.lang.String)
 	 */
+	@Override
 	public Location getStudent(String studentuuid) {
 		Location location =null;
 		ResultSet rset = null;
@@ -96,6 +97,7 @@ public class LocationDAO extends DBConnectDAO implements SchoolLocationDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolLocationDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Location)
 	 */
+	@Override
 	public boolean putStudent(Location location) {
 		boolean success = true;
 		
@@ -126,6 +128,7 @@ public class LocationDAO extends DBConnectDAO implements SchoolLocationDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolLocationDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Location, java.lang.String)
 	 */
+	@Override
 	public boolean editStudent(Location location, String studentuuid) {
 		boolean success = true;
 		
@@ -154,6 +157,7 @@ public class LocationDAO extends DBConnectDAO implements SchoolLocationDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolLocationDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Location)
 	 */
+	@Override
 	public boolean deleteStudent(Location location) {
 		 boolean success = true; 
 	      try(
@@ -180,6 +184,7 @@ public class LocationDAO extends DBConnectDAO implements SchoolLocationDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolLocationDAO#getAllLocation()
 	 */
+	@Override
 	public List<Location> getAllLocation() {
 		List<Location> list = null;
 

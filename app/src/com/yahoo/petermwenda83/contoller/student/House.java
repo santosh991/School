@@ -53,6 +53,7 @@ public class House extends StudentSuper  {
 	}
 
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("House");

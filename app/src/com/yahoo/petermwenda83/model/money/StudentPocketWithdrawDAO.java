@@ -5,7 +5,6 @@ package com.yahoo.petermwenda83.model.money;
 
     import java.util.List;
 
-import com.yahoo.petermwenda83.contoller.money.pocket.Money;
 import com.yahoo.petermwenda83.contoller.money.pocket.Withdraw;
 
 /**

@@ -34,9 +34,9 @@ import com.yahoo.petermwenda83.contoller.users.User;
  */
 public class TestUsresDAO {
 	
-	final String databaseName = "allamanodb";
+	final String databaseName = "schooldb";
 	final String Host = "localhost";
-	final String databaseUsername = "allamano";
+	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 
@@ -136,7 +136,7 @@ public class TestUsresDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.user.UsresDAO#getAllUsers()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllUsers() {
 		 store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

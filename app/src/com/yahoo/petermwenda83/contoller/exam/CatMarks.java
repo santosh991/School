@@ -41,6 +41,7 @@ public class CatMarks extends Exam  {
 	public void setCatMarksUuid(String catMarksUuid) {
 		setExamUuid(catMarksUuid);
 	}
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Cat Subject Marks [getUuid()=");

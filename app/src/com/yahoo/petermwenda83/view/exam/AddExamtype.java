@@ -179,7 +179,8 @@ public class AddExamtype extends JInternalFrame {
 	     
 	     txtputof.addKeyListener(new KeyAdapter() {
 
-	            public void keyTyped(KeyEvent e) {
+	            @Override
+				public void keyTyped(KeyEvent e) {
 	                char c = e.getKeyChar();
 	                if (!(Character.isDigit(c) ||
 	                        (c == KeyEvent.VK_BACK_SPACE) ||

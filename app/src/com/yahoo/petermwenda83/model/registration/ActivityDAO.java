@@ -67,6 +67,7 @@ public class ActivityDAO extends DBConnectDAO implements SchoolActivityDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolActivityDAO#getStudent(java.lang.String)
 	 */
+	@Override
 	public Activity getStudent(String studentuuid) {
 		 ResultSet rset = null;
 		 Activity activity = null;
@@ -99,6 +100,7 @@ public class ActivityDAO extends DBConnectDAO implements SchoolActivityDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolActivityDAO#putStudent(com.yahoo.petermwenda83.contoller.student.Activity)
 	 */
+	@Override
 	public boolean putStudent(Activity activity) {
 		boolean success = true;
 		
@@ -128,6 +130,7 @@ public class ActivityDAO extends DBConnectDAO implements SchoolActivityDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolActivityDAO#editStudent(com.yahoo.petermwenda83.contoller.student.Activity, java.lang.String)
 	 */
+	@Override
 	public boolean editStudent(Activity activity, String studentuuid) {
 		boolean success = true;
 		
@@ -154,6 +157,7 @@ public class ActivityDAO extends DBConnectDAO implements SchoolActivityDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolActivityDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Activity)
 	 */
+	@Override
 	public boolean deleteStudent(Activity activity) {
 		boolean success = true; 
 	      try(

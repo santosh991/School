@@ -68,6 +68,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#getStudentRelative(com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
 	
+	@Override
 	public StudentRelative getStudentRelative(String StudentUuid) {
 		StudentRelative relative = null;
 		ResultSet rset = null;
@@ -101,6 +102,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#getStudentRelativeByNationalID(java.lang.String)
 	 */
 	
+	@Override
 	public StudentRelative getStudentRelativeByNationalID(String NationalID) {
 		StudentRelative relative = null;
 		ResultSet rset = null;
@@ -134,6 +136,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#putStudentRelative(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
 	
+	@Override
 	public boolean putStudentRelative(StudentRelative relative) {
 		boolean success = true;
 		
@@ -167,6 +170,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#editStudentRelative(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
+	@Override
 	public boolean editStudentRelative(StudentRelative relative,String StudentUuid) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
@@ -193,6 +197,7 @@ public class RelativesDAO extends DBConnectDAO implements SchoolRelativesDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.regparents.SchoolRelativesDAO#deleteStudentRelative(com.yahoo.petermwenda83.contoller.student.StudentSuper, com.yahoo.petermwenda83.contoller.guardian.StudentRelative)
 	 */
+	@Override
 	public boolean deleteStudentRelative(StudentRelative relative) {
 		  boolean success = true; 
 	      try(

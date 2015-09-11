@@ -45,6 +45,7 @@ public class User extends AllBean {
 	/**
 	 * @return the uuid
 	 */
+	@Override
 	public String getUuid() {
 		return uuid;
 	}
@@ -52,6 +53,7 @@ public class User extends AllBean {
 	/**
 	 * @param uuid the uuid to set
 	 */
+	@Override
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
@@ -99,6 +101,7 @@ public class User extends AllBean {
 		this.password = password;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("User [ getUuid() =");

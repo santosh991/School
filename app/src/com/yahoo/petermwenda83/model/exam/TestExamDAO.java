@@ -37,9 +37,9 @@ import com.yahoo.petermwenda83.contoller.exam.MainResults;
  */
 public class TestExamDAO {
 
-	final String databaseName = "allamanodb";
+	final String databaseName = "schooldb";
 	final String Host = "localhost";
-	final String databaseUsername = "allamano";
+	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
@@ -320,13 +320,14 @@ public class TestExamDAO {
 	/**
 	 * LoginScreen method for {@link com.yahoo.petermwenda83.model.exam.ExamDAO#putExamResults(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testPutExamResults() {
 		store = new ExamDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		MainResults mainr = new MainResults();
 		mainr.setStudentUuid(MAIN_RESULT_STU_UUID_NEW); 
 		mainr.setSubjectUuid(MAIN_RESULT_SUB_UUID_NEW); 
+		mainr.setExamTypeUuid(MAIN_TYPE_UUID_NEW);
 		mainr.setTotal(MAIN_RESULT_TOTALS_NEW);
 		mainr.setPoints(MAIN_RESULT_POINTS_NEW);
 		mainr.setGrade(MAIN_RESULT_GRADE_NEW);
@@ -337,7 +338,8 @@ public class TestExamDAO {
 		
 		CatResults catr = new CatResults();
 		catr.setStudentUuid(CAT_RESULT_STU_UUID_NEW);
-		catr.setSubjectUuid(CAT_RESULT_SUB_UUID_NEW); 		
+		catr.setSubjectUuid(CAT_RESULT_SUB_UUID_NEW); 
+		catr.setExamTypeUuid(CAT_TYPE_UUID_NEW);
 		catr.setTotal(CAT_RESULT_TOTALS_NEW);
 		catr.setPoints(CAT_RESULT_POINTS_NEW);
 		catr.setGrade(CAT_RESULT_GRADE_NEW);

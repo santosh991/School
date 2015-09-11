@@ -73,16 +73,16 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamtypeDAO#getExamType(java.lang.String)
 	 */
 	@Override
-	public ExamType getExamType(String uuid) {
+	public ExamType getExamType(String RoomnameUuid) {
 		 ExamType examType = null;
          ResultSet rset = null;
       try(
       		 Connection conn = dbutils.getConnection();
-         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM exam_type WHERE Uuid = ?;");       
+         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM exam_type WHERE RoomnameUuid = ?;");       
       		
       		){
       	
-      	 pstmt.setString(1, uuid);
+      	 pstmt.setString(1, RoomnameUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -92,7 +92,7 @@ public class ExamtypeDAO extends DBConnectDAO  implements SchoolExamtypeDAO {
       	
       	
       }catch(SQLException e){
-      	 logger.error("SQL Exception when getting ExamType with uuid: " + uuid);
+      	 logger.error("SQL Exception when getting ExamType with RoomnameUuid: " + RoomnameUuid);
            logger.error(ExceptionUtils.getStackTrace(e));
            System.out.println(ExceptionUtils.getStackTrace(e));
       }

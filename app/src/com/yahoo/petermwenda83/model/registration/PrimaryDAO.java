@@ -45,6 +45,7 @@ public class PrimaryDAO extends DBConnectDAO implements SchoolPrimaryDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolPrimaryDAO#get(java.lang.String)
 	 */
+	@Override
 	public Primary get(String StudentUuid) {
 		Primary primary = null;
         ResultSet rset = null;

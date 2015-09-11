@@ -98,6 +98,7 @@ public class Primary extends StudentSuper {
 		this.kcpemarks = kcpemarks;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append(" Primary");

@@ -35,6 +35,7 @@ public class Withdraw extends Money{
 		this.withdrawdate = withdrawdate;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pocket Money");

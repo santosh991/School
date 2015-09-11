@@ -34,6 +34,7 @@ public class Deposit extends Money {
 		this.depositedate = depositedate;
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pocket Money");

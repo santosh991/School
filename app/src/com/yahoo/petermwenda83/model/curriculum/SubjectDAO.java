@@ -62,6 +62,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#getSubject(com.yahoo.petermwenda83.contoller.student.StudentSubject.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
 	 */
+	@Override
 	public Subject getSubject(String uuid) {
 		Subject Subject = null;
         ResultSet rset = null;
@@ -91,6 +92,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#getSubjects(java.lang.String)
 	 */
+	@Override
 	public Subject getSubjects(String subjectcode) {
 		Subject Subject = null;
         ResultSet rset = null;
@@ -122,6 +124,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#putSubject(com.yahoo.petermwenda83.contoller.student.Subject)
 	 */
+	@Override
 	public boolean putSubject(Subject subject) {
 		boolean success = true;
 		 try(   Connection conn = dbutils.getConnection();
@@ -149,6 +152,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#editSubject(com.yahoo.petermwenda83.contoller.student.Subject, java.lang.String)
 	 */
+	@Override
 	public boolean editSubject(Subject subject,String uuid) {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
@@ -177,6 +181,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#deleteStudent(com.yahoo.petermwenda83.contoller.student.Subject)
 	 */
+	@Override
 	public boolean deleteStudent(Subject subject) {
 		boolean success = true; 
         try(
@@ -202,6 +207,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.curriculum.SchoolSubjectDAO#getAllStudent()
 	 */
+	@Override
 	public List<Subject> getAllSubjects() {
 		List<Subject>  list = null;
 		

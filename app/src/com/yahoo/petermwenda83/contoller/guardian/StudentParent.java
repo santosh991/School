@@ -221,6 +221,7 @@ public class StudentParent extends StudentSuper {
 
 
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("StudentParent");

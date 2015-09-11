@@ -35,7 +35,8 @@ public class Main implements Runnable{
 	    public Main(JFrame frm){
 	        this.frame=frm;
 	    }//constructor closed
-	    public void run(){
+	    @Override
+		public void run(){
 	        frame.setVisible(true);
 	    }//run method closed
 	    public static void main(String args[]){

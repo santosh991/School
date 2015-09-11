@@ -22,7 +22,7 @@ package com.yahoo.petermwenda83.view.exam;
 
 
 
-	import java.awt.BorderLayout;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-	import javax.swing.JButton;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,16 +44,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.room.ClassRoom;
 import com.yahoo.petermwenda83.contoller.student.Student;
 import com.yahoo.petermwenda83.contoller.student.StudentSubject;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 import com.yahoo.petermwenda83.model.curriculum.StudSubjectDAO;
 import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.model.exam.ExamDAO;
 import com.yahoo.petermwenda83.model.registration.StudentDAO;
 import com.yahoo.petermwenda83.model.room.RoomDAO;
 
@@ -178,7 +174,8 @@ import com.yahoo.petermwenda83.model.room.RoomDAO;
 	        btnSave.addActionListener(new java.awt.event.ActionListener()
 	        {
 
-	            public void actionPerformed(java.awt.event.ActionEvent e) 
+	            @Override
+				public void actionPerformed(java.awt.event.ActionEvent e) 
 	            {
 	            	
 	            }
@@ -186,7 +183,8 @@ import com.yahoo.petermwenda83.model.room.RoomDAO;
 	        btnClose.addActionListener(new ActionListener() 
 	        {
 
-	            public void actionPerformed(ActionEvent e)
+	            @Override
+				public void actionPerformed(ActionEvent e)
 	            {
 	               dispose();
 	              
@@ -195,7 +193,8 @@ import com.yahoo.petermwenda83.model.room.RoomDAO;
 	        btnPrint.addActionListener(new ActionListener() 
 	        {
 
-	            public void actionPerformed(ActionEvent e)
+	            @Override
+				public void actionPerformed(ActionEvent e)
 	            {
 	               
 	            }
@@ -213,7 +212,8 @@ import com.yahoo.petermwenda83.model.room.RoomDAO;
 	        rowSel.addListSelectionListener(new ListSelectionListener()
 	        {
 
-	            public void valueChanged(ListSelectionEvent e)
+	            @Override
+				public void valueChanged(ListSelectionEvent e)
 	            {
 	                if (e.getValueIsAdjusting())
 	                {
@@ -240,27 +240,33 @@ import com.yahoo.petermwenda83.model.room.RoomDAO;
 	       
 	       
 	        
-	        public int getColumnCount() {
+	        @Override
+			public int getColumnCount() {
 	            return columnNames.length;
 	        }
 
-	        public int getRowCount() {
+	        @Override
+			public int getRowCount() {
 	            return data.length;
 	        }
 
-	        public String getColumnName(int col) {
+	        @Override
+			public String getColumnName(int col) {
 	            return columnNames[col];
 	        }
 
-	        public Object getValueAt(int row, int col) {
+	        @Override
+			public Object getValueAt(int row, int col) {
 	            return data[row][col];
 	        }
 
-	        public void setValueAt(Object value, int row, int col) {
+	        @Override
+			public void setValueAt(Object value, int row, int col) {
 	            data[row][col] = value;
 	            fireTableCellUpdated(row, col);
 	        }
-	        public boolean isCellEditable(int row, int col){
+	        @Override
+			public boolean isCellEditable(int row, int col){
 	        	return (col ==5);
 	        }
 	        
@@ -279,7 +285,7 @@ import com.yahoo.petermwenda83.model.room.RoomDAO;
 	    	
 	         Numrow++;
 	    	}
-	    	//}
+	    	
 	    }
 	
 

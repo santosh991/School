@@ -30,6 +30,7 @@ public class StudentSubject extends StudentSuper{
 		   super();
 	   }
 
+	@Override
 	public String toString(){
 	StringBuilder builder = new StringBuilder();
 	builder.append("StudentSubject [ getUuid() =");

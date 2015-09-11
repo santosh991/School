@@ -150,7 +150,7 @@ public class ExamListsDAO  extends DBConnectDAO  implements SchoolExamListsDAO {
 		return list;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolExamListsDAO#getAllMainResults()
 	 */
 	@Override

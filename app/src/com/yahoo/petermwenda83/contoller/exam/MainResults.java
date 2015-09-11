@@ -36,6 +36,7 @@ public class MainResults extends Exam {
 		
 	}
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Main Exam Results");
@@ -45,6 +46,8 @@ public class MainResults extends Exam {
 		builder.append(getSubjectUuid());
 		builder.append(", getStudentUuid()=");
 		builder.append(getStudentUuid());
+		builder.append(", getExamTypeUuid()=");
+		builder.append(getExamTypeUuid());
 		builder.append(", getTotal()=");
 		builder.append(getTotal());
 		builder.append(", getPoints()=");

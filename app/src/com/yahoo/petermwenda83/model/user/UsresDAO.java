@@ -70,6 +70,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getUser(java.lang.String)
 	 */
 	
+	@Override
 	public User getUser(String Uuid) {
 		User user = null;
         ResultSet rset = null;
@@ -100,6 +101,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#editUser(com.yahoo.petermwenda83.contoller.user.User, java.lang.String)
 	 */
 	
+	@Override
 	public boolean editUser(User user, String Uuid) {
 		boolean success = true;
 		
@@ -127,6 +129,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#putUser(com.yahoo.petermwenda83.contoller.user.User)
 	 */
 	
+	@Override
 	public boolean putUser(User user) {
 		boolean success = true;
 		
@@ -156,6 +159,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#deleteUser(com.yahoo.petermwenda83.contoller.user.User)
 	 */
 	
+	@Override
 	public boolean deleteUser(User user) {
 		 boolean success = true; 
 	      try(
@@ -183,6 +187,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getAllUsers()
 	 */
 	
+	@Override
 	public List<User> getAllUsers() {
 		List<User>  list = null;
 		
@@ -207,6 +212,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.user.SystemUsersDAO#getUserName(com.yahoo.petermwenda83.contoller.users.User)
 	 */
+	@Override
 	public User getUserName(User use) { 
 		User user = null;
         ResultSet rset = null;

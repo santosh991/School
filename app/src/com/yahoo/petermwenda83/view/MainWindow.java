@@ -43,11 +43,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
-import com.sun.glass.ui.Pixels.Format;
 import com.yahoo.petermwenda83.view.exam.ExamTypeView;
-import com.yahoo.petermwenda83.view.exam.AddExamtype;
-import com.yahoo.petermwenda83.view.login.LoginScreen;
 import com.yahoo.petermwenda83.view.subject.SubjectView;
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -92,7 +90,7 @@ public class MainWindow extends JFrame implements WindowListener {
         SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM yyyy");
         String today = formatter.format(new Date()); 
           
-        	 welcome  = new JLabel("Hi "+logname+ ",Today is on ( " +today+")", JLabel.CENTER);
+        	 welcome  = new JLabel("Hi "+logname+ ",Today is on ( " +today+")", SwingConstants.CENTER);
         	
         	 
         
@@ -272,7 +270,8 @@ public class MainWindow extends JFrame implements WindowListener {
         return menubar;
     }//CreateJMenuBar()closed
 	 ActionListener menulistener = new ActionListener() {
-		 public void actionPerformed(ActionEvent e) {
+		 @Override
+		public void actionPerformed(ActionEvent e) {
 			 String ActCmd = e.getActionCommand();
 			 if (ActCmd.equalsIgnoreCase("exit")) {
 	                ConfirmExit();//
@@ -294,6 +293,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowOpened(WindowEvent e) {
 		
 		
@@ -303,6 +303,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowClosing(WindowEvent e) {
 		 ConfirmExit();
 		
@@ -322,6 +323,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -331,6 +333,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -340,6 +343,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowDeiconified(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -349,6 +353,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -358,6 +363,7 @@ public class MainWindow extends JFrame implements WindowListener {
 	/**
 	 * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
 	 */
+	@Override
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		

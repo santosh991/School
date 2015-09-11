@@ -53,6 +53,7 @@ public class Teachers  extends Employees {
 	}
 
 
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Teachers");

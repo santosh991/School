@@ -44,6 +44,7 @@ public class MainMarks extends Exam  {
 	public void setMainMarksUuid(String mainMarksUuid) {
 		setExamUuid(mainMarksUuid);
 	}
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Main Exam Subject Marks [getUuid()=");

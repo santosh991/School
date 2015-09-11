@@ -68,6 +68,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentDAO#getStudent(java.lang.String)
 	 */
 	
+	@Override
 	public Student getStudent(String Uuid) {
 		Student student = null;
         ResultSet rset = null;
@@ -98,6 +99,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentDAO#getStudents(java.lang.String)
 	 */
 	
+	@Override
 	public Student getStudents(String admno) {
 		Student student = null;
         ResultSet rset = null;
@@ -138,6 +140,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentDAO#putStudents(com.yahoo.petermwenda83.contoller.student.Student)
 	 */
+	@Override
 	public boolean putStudents(Student student) {
 		boolean success = true;
 		
@@ -176,6 +179,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentDAO#editStudents(com.yahoo.petermwenda83.contoller.student.Student)
 	 */
+	@Override
 	public boolean editStudents(Student student) {
 		boolean success = true;
 		
@@ -209,6 +213,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentDAO#deleteStudents(com.yahoo.petermwenda83.contoller.student.Student)
 	 */
+	@Override
 	public boolean deleteStudents(Student student) {
 		 boolean success = true; 
 	      try(
@@ -235,6 +240,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolStudentDAO#getAllStudents()
 	 */
+	@Override
 	public List<Student> getAllStudents() {
 	List<Student> list = null;
 

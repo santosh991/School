@@ -68,6 +68,7 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolHouseDAO#getStudent(java.lang.String)
 	 */
+	@Override
 	public House getStudent(String studentuuid) {
 		House house = null;
 		ResultSet rset = null;
@@ -98,6 +99,7 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolHouseDAO#putStudent(com.yahoo.petermwenda83.contoller.student.House)
 	 */
+	@Override
 	public boolean putStudent(House house) {
 		boolean success = true;
 		
@@ -127,6 +129,7 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolHouseDAO#editStudent(com.yahoo.petermwenda83.contoller.student.House, java.lang.String)
 	 */
+	@Override
 	public boolean editStudent(House house, String studentuuid) {
 		boolean success = true;
 		
@@ -179,6 +182,7 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 	/**
 	 * @see com.yahoo.petermwenda83.model.registration.SchoolHouseDAO#getAllHouse()
 	 */
+	@Override
 	public List<House> getAllHouse() {
 		List<House> list = null;
 

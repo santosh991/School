@@ -29,6 +29,7 @@ public class CatResults extends Exam  {
 	public CatResults(){
 		super();
 	}
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Cat Exam results");
@@ -38,6 +39,8 @@ public class CatResults extends Exam  {
 		builder.append(getSubjectUuid());
 		builder.append(", getStudentUuid()=");
 		builder.append(getStudentUuid());
+		builder.append(", getExamTypeUuid()=");
+		builder.append(getExamTypeUuid());
 		builder.append(", getTotal()=");
 		builder.append(getTotal());
 		builder.append(", getPoints()=");
