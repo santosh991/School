@@ -30,7 +30,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.yahoo.petermwenda83.model.exam.ExamDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
 
 
@@ -50,7 +49,7 @@ public class addMarks extends JInternalFrame{
 	 private JButton Next,Cancel;
 	 private JPanel panel1,  panel2;
 	 
-	 private static ExamDAO examDAO; 
+	// private static ExamDAO examDAO; 
 
 	 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	/**
@@ -92,7 +91,7 @@ public class addMarks extends JInternalFrame{
 		 Cancel = new JButton("Cancel");
 		 
 		 
-		  examDAO = ExamDAO.getInstance(); 
+		 // examDAO = ExamDAO.getInstance(); 
 		 
 		 
 		 

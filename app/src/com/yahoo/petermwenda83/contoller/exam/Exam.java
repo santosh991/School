@@ -33,13 +33,13 @@ public class Exam extends AllBean{
 	private String studentUuid ;
 	private String ExamTypeUuid ;
 	private String Subjectcode;
-	private String marks ;
-	private String submark ;
-	private String percent ;
-	private String total ;
-	private String points;
+	private double marks ;
+	private double submark ;
+	private double percent ;
+	private double total ;
+	private double points;
 	private String  grade ;
-	private String  position ;
+	private int  position ;
 	private String remarks ;
 	private Date submitdate ;
 	
@@ -49,19 +49,19 @@ public class Exam extends AllBean{
 	/**
 	 * 
 	 */
-	public Exam() {
+	protected Exam() {
 		super();
 		subjectUuid = "";
 		studentUuid = "";
 		ExamTypeUuid = "";
 		Subjectcode = "";
-		marks = "";
-		submark = "";
-		percent ="";
-		total = "";
-		points = "";
+		marks = 0.0;
+		submark = 0.0;
+		percent =0.0;
+		total = 0.0;
+		points = 0.0;
 		grade = "";
-		position = "";
+		position = 0;
 		remarks = "";
 		submitdate = new Date();
 		
@@ -133,85 +133,6 @@ public class Exam extends AllBean{
 	}
 
 
-	/**
-	 * @return the submark
-	 */
-	public String getSubmark() {
-		return submark;
-	}
-
-
-	/**
-	 * @param submark the submark to set
-	 */
-	public void setSubmark(String submark) {
-		this.submark = submark;
-	}
-
-
-	/**
-	 * @return the percent
-	 */
-	public String getPercent() {
-		return percent;
-	}
-
-
-	/**
-	 * @param percent the percent to set
-	 */
-	public void setPercent(String percent) {
-		this.percent = percent;
-	}
-
-
-	/**
-	 * @return the marks
-	 */
-	public String getMarks() {
-		return marks;
-	}
-
-
-	/**
-	 * @param marks the marks to set
-	 */
-	public void setMarks(String marks) {
-		this.marks = marks;
-	}
-
-
-	/**
-	 * @return the total
-	 */
-	public String getTotal() {
-		return total;
-	}
-
-
-	/**
-	 * @param total the total to set
-	 */
-	public void setTotal(String total) {
-		this.total = total;
-	}
-
-
-	/**
-	 * @return the points
-	 */
-	public String getPoints() {
-		return points;
-	}
-
-
-	/**
-	 * @param points the points to set
-	 */
-	public void setPoints(String points) {
-		this.points = points;
-	}
-
 
 	/**
 	 * @return the grade
@@ -228,11 +149,90 @@ public class Exam extends AllBean{
 		this.grade = grade;
 	}
 
+	/**
+	 * @return the marks
+	 */
+	public double getMarks() {
+		return marks;
+	}
+
+
+	/**
+	 * @param marks the marks to set
+	 */
+	public void setMarks(double marks) {
+		this.marks = marks;
+	}
+
+
+	/**
+	 * @return the submark
+	 */
+	public double getSubmark() {
+		return submark;
+	}
+
+
+	/**
+	 * @param submark the submark to set
+	 */
+	public void setSubmark(double submark) {
+		this.submark = submark;
+	}
+
+
+	/**
+	 * @return the percent
+	 */
+	public double getPercent() {
+		return percent;
+	}
+
+
+	/**
+	 * @param percent the percent to set
+	 */
+	public void setPercent(double percent) {
+		this.percent = percent;
+	}
+
+
+	/**
+	 * @return the total
+	 */
+	public double getTotal() {
+		return total;
+	}
+
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+
+	/**
+	 * @return the points
+	 */
+	public double getPoints() {
+		return points;
+	}
+
+
+	/**
+	 * @param points the points to set
+	 */
+	public void setPoints(double points) {
+		this.points = points;
+	}
+
 
 	/**
 	 * @return the position
 	 */
-	public String getPosition() {
+	public int getPosition() {
 		return position;
 	}
 
@@ -240,7 +240,7 @@ public class Exam extends AllBean{
 	/**
 	 * @param position the position to set
 	 */
-	public void setPosition(String position) {
+	public void setPosition(int position) {
 		this.position = position;
 	}
 

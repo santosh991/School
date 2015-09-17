@@ -27,14 +27,13 @@ package com.yahoo.petermwenda83.contoller.exam;
  */
 public class ExamType extends Exam{
 
-	private String examtype ;//CAT or MAIN
-	private String year ;
-	private String term ;
-	private String roomnameUuid ;
-	private String outof ;
-	private String description ; //CAT1,CAT2,CAT3 ,MAIN1,MOCK1 etc
-	private String examno;
-	private String subjectUuid;
+	private String examuuid;
+	private String examname;
+	private String roomnameuuid;
+	private String subjectuuid;
+	private String term;
+	private String year;
+	private int outof;
 	
 	/**
 	 * 
@@ -42,28 +41,84 @@ public class ExamType extends Exam{
 	public ExamType() {
           super();
 		
-		examtype = "";
-		term = "";
-		year = "";
-		roomnameUuid = "";
-		outof = "";
-		description = "";
-		examno = "";
-		subjectUuid ="";
-	}
-	
-	/**
-	 * @return the examtype
-	 */
-	public String getExamtype() {
-		return examtype;
+        examuuid = "";
+        examname ="";
+        roomnameuuid = "";
+        subjectuuid = "";
+        term = "";
+        year = "";
+        outof = 0;
+		
 	}
 
 	/**
-	 * @param examtype the examtype to set
+	 * @return the examuuid
 	 */
-	public void setExamtype(String examtype) {
-		this.examtype = examtype;
+	public String getExamuuid() {
+		return examuuid;
+	}
+
+	/**
+	 * @param examuuid the examuuid to set
+	 */
+	public void setExamuuid(String examuuid) {
+		this.examuuid = examuuid;
+	}
+
+	/**
+	 * @return the examname
+	 */
+	public String getExamname() {
+		return examname;
+	}
+
+	/**
+	 * @param examname the examname to set
+	 */
+	public void setExamname(String examname) {
+		this.examname = examname;
+	}
+
+	/**
+	 * @return the roomnameuuid
+	 */
+	public String getRoomnameuuid() {
+		return roomnameuuid;
+	}
+
+	/**
+	 * @param roomnameuuid the roomnameuuid to set
+	 */
+	public void setRoomnameuuid(String roomnameuuid) {
+		this.roomnameuuid = roomnameuuid;
+	}
+
+	/**
+	 * @return the subjectuuid
+	 */
+	public String getSubjectuuid() {
+		return subjectuuid;
+	}
+
+	/**
+	 * @param subjectuuid the subjectuuid to set
+	 */
+	public void setSubjectuuid(String subjectuuid) {
+		this.subjectuuid = subjectuuid;
+	}
+
+	/**
+	 * @return the term
+	 */
+	public String getTerm() {
+		return term;
+	}
+
+	/**
+	 * @param term the term to set
+	 */
+	public void setTerm(String term) {
+		this.term = term;
 	}
 
 	/**
@@ -81,117 +136,18 @@ public class ExamType extends Exam{
 	}
 
 	/**
-	 * @return the term
-	 */
-	public String getTerm() {
-		return term;
-	}
-
-	/**
-	 * @param term the term to set
-	 */
-	public void setTerm(String term) {
-		this.term = term;
-	}
-
-
-	/**
-	 * @return the roomnameUuid
-	 */
-	public String getRoomnameUuid() {
-		return roomnameUuid;
-	}
-
-	/**
-	 * @param roomnameUuid the roomnameUuid to set
-	 */
-	public void setRoomnameUuid(String roomnameUuid) {
-		this.roomnameUuid = roomnameUuid;
-	}
-
-	/**
 	 * @return the outof
 	 */
-	public String getOutof() {
+	public int getOutof() {
 		return outof;
 	}
 
 	/**
 	 * @param outof the outof to set
 	 */
-	public void setOutof(String outof) {
+	public void setOutof(int outof) {
 		this.outof = outof;
 	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
 	
-
-	/**
-	 * @return the examno
-	 */
-	public String getExamno() {
-		return examno;
-	}
-
-	/**
-	 * @param examno the examno to set
-	 */
-	public void setExamno(String examno) {
-		this.examno = examno;
-	}
-
-	/**
-	 * @return the subjectUuid
-	 */
-	@Override
-	public String getSubjectUuid() {
-		return subjectUuid;
-	}
-
-	/**
-	 * @param subjectUuid the subjectUuid to set
-	 */
-	@Override
-	public void setSubjectUuid(String subjectUuid) {
-		this.subjectUuid = subjectUuid;
-	}
-
-	@Override
-	public String toString(){
-		StringBuilder builder = new StringBuilder();
-		builder.append("Exam Type");
-		builder.append("[ id =");
-		builder.append(getId()); 
-		builder.append(", examtype =");
-		builder.append(examtype);
-		builder.append(", term =");
-		builder.append(term);
-		builder.append(", year =");
-		builder.append(year);
-		builder.append(", roomnameUuid =");
-		builder.append(roomnameUuid);
-		builder.append(", outof =");
-		builder.append(outof);
-		builder.append(", description =");
-		builder.append(description);
-		builder.append(", examno =");
-		builder.append(examno);
-		builder.append(", subjectUuid =");
-		builder.append(subjectUuid);
-		builder.append("]");
-		return builder.toString(); 
-		}
 
 }

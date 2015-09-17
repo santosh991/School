@@ -45,7 +45,6 @@ import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.room.ClassRoom;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
 import com.yahoo.petermwenda83.model.room.RoomDAO;
 
 
@@ -70,7 +69,7 @@ public class AddExamtype extends JInternalFrame {
 	 HashMap<String, String> SubHash= new HashMap<>();
 	 HashMap<String, String> roomHash= new HashMap<>();
 	 
-	 private static ExamtypeDAO examTypeDAO; 
+	 //private static ExamtypeDAO examTypeDAO; 
 	 private static SubjectDAO subjectDAO;
 	 private static RoomDAO roomDAO;
 
@@ -98,7 +97,7 @@ public class AddExamtype extends JInternalFrame {
 		 txtputof  = new JTextField();
 		 txtdescr  = new JTextField("CAT 1");
 		 
-		 examTypeDAO = ExamtypeDAO.getInstance(); 
+		// examTypeDAO = ExamtypeDAO.getInstance(); 
 		 subjectDAO = SubjectDAO.getInstance();
 		 roomDAO = RoomDAO.getInstance();
 		 
@@ -266,12 +265,12 @@ public class AddExamtype extends JInternalFrame {
 			 
 			 
 			 
-			   examType.setExamtype(type.toUpperCase());
+			  // examType.setExamtype(type.toUpperCase());
 			   examType.setYear(txtyear.getText().toUpperCase()); 
 			   examType.setTerm(term.toUpperCase());
-			   examType.setRoomnameUuid(roomUuid);
-			   examType.setOutof(txtputof.getText().toUpperCase());
-			   examType.setDescription(txtdescr.getText().toUpperCase()); 
+			  // examType.setRoomnameUuid(roomUuid);
+			  // examType.setOutof(txtputof.getText().toUpperCase());
+			   //examType.setDescription(txtdescr.getText().toUpperCase()); 
 			   examType.setSubjectUuid(subjectUuid);
 			  // System.out.println("roomUuid:"+roomUuid);
 			   
@@ -311,22 +310,22 @@ public class AddExamtype extends JInternalFrame {
                     txtdescr.requestFocus();
                     return; 
                 }
-                if (examTypeDAO.get(type.toUpperCase(), clas.toUpperCase(), txtdescr.getText().toUpperCase()) !=null) {
+              //  if (examTypeDAO.get(type.toUpperCase(), clas.toUpperCase(), txtdescr.getText().toUpperCase()) !=null) {
                     JOptionPane.showMessageDialog(null, "This Exam Already exist", "Error", JOptionPane.DEFAULT_OPTION);
                    
                 }else{
                 	
-                	 if(examTypeDAO.putExamType(examType)){
+               // 	 if(examTypeDAO.putExamType(examType)){
                 	  JOptionPane.showMessageDialog(null, "Added", "Success", JOptionPane.DEFAULT_OPTION);
                 	 
                 }
                 	 }
                 
-			  }if(e.getSource() == Cancel){
-				  dispose();
-			  }
+			//  }if(e.getSource() == Cancel){
+				//  dispose();
+			 // }
 			
-		}
+		//}
 		 
 	 }
 	

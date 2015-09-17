@@ -67,6 +67,7 @@ CREATE TABLE student(
     firstname text ,
     lastname text ,
     surname text ,
+    gender text,
     admno text ,
     year text ,
     dob text,
@@ -74,7 +75,7 @@ CREATE TABLE student(
     admissiondate timestamp with time zone 
 );
 
-\COPY student(uuid, firstname, lastname,surname,admno,year,dob,bcertno,admissiondate) FROM '/tmp/Students.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY student(uuid, firstname, lastname,surname,gender,admno,year,dob,bcertno,admissiondate) FROM '/tmp/Students.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE student OWNER TO school;
 
 
@@ -235,27 +236,125 @@ ALTER TABLE studentprimary OWNER TO school;
 -- 3. Exam Management
 -- ======================
 -- ======================
---------------------
--- Table Exam_Type
---------------------
 
-CREATE TABLE  exam_type (
+
+-- -------------------
+-- Table Cat
+-- -------------------
+ CREATE TABLE  cat (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    examtype text,
-    term text,
-    year text,
-    roomnameUuid text REFERENCES classroom(uuid),
-    outof text,
-    description text,
-    examno text,
-    subjectUuid text REFERENCES subject(uuid)
+    catname text
+    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY exam_type(uuid,examtype,term,year,roomnameUuid,outof,description,examno,subjectUuid) FROM '/tmp/Exam_Type.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE exam_type OWNER TO school;
+\COPY cat(uuid,catname) FROM '/tmp/Cat.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE cat OWNER TO school;
+
+
+-- -------------------
+-- Table Main
+-- -------------------
+ CREATE TABLE  main (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    mainname text
+    
+   
+);
+
+-- import data from the CSV file for the Accounts table
+\COPY main(uuid,mainname) FROM '/tmp/Main.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE main OWNER TO school;
+
+
+
+--------------------
+-- Table MainDetails
+--------------------
+
+CREATE TABLE  maindetails (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    mainuuid text REFERENCES main(uuid),
+    roomnameUuid text REFERENCES classroom(uuid),
+    subjectUuid text REFERENCES subject(uuid),
+    term text,
+    year text,
+    outof Integer
+   
+);
+
+-- import data from the CSV file for the Accounts table
+\COPY maindetails(uuid,mainuuid,roomnameUuid,subjectUuid,term,year,outof) FROM '/tmp/MainDetails.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE maindetails OWNER TO school;
+
+
+--------------------
+-- Table CatDetails
+--------------------
+
+CREATE TABLE  catdetails (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    catuuid text REFERENCES cat(uuid),
+    roomnameUuid text REFERENCES classroom(uuid),
+    subjectUuid text REFERENCES subject(uuid),
+    term text,
+    year text,
+    outof Integer
+   
+);
+
+-- import data from the CSV file for the Accounts table
+\COPY catdetails(uuid,catuuid,roomnameUuid,subjectUuid,term,year,outof) FROM '/tmp/CatDetails.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE catdetails OWNER TO school;
+
+
+
+
+-- -------------------
+-- Table FinalResult
+-- -------------------
+ CREATE TABLE  finalresult (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    studentUuid text REFERENCES student(uuid),
+    points float,
+    grade text,
+    position Integer,
+    remarks text
+    
+   
+);
+
+-- import data from the CSV file for the Accounts table
+\COPY finalresult(uuid,studentUuid,points,grade,position,remarks) FROM '/tmp/FinalResult.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE finalresult OWNER TO school;
+
+
+
+-- -------------------
+-- Table FinalMarks
+-- -------------------
+ CREATE TABLE  finalmarks (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    studentUuid text REFERENCES student(uuid),
+    marks float,
+    grade text
+    
+   
+);
+
+-- import data from the CSV file for the Accounts table
+\COPY finalmarks(uuid,studentUuid,marks,grade) FROM '/tmp/FinalMarks.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE finalmarks OWNER TO school;
+
+
+
 
 -- -------------------
 -- Table MainSubjectmark
@@ -264,44 +363,39 @@ CREATE TABLE  mainsubjectmark (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
-    examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    marks text ,
-    percent text,
+    marks float, 
+    submark float,
+    percent float,
     grade text,
-    submitdate timestamp with time zone
+    points float, 
+    submitdate timestamp with time zone DEFAULT now()
    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY mainsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,percent,grade,submitdate) FROM '/tmp/MainSubjectmark.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY mainsubjectmark(uuid,studentUuid,subjectUuid,marks,submark,percent,grade,points,submitdate) FROM '/tmp/MainSubjectmark.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE mainsubjectmark OWNER TO school;
 
 -- -------------------
--- Table Examresult
+-- Table Mainresult
 -- -------------------
- CREATE TABLE  examresult (
+ CREATE TABLE  mainresult (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    subjectUuid text REFERENCES subject(uuid),
     studentUuid text REFERENCES student(uuid),
-    examtypeUuid text REFERENCES exam_type(uuid),
-    total text  ,
-    points text,
+    total float  ,
+    points float,
     grade text,
-    position text,
-    remarks text,
-    submitdate timestamp with time zone
-   
-   
-);
+    position Integer,
+    remarks text
+    
+   );
 
 -- import data from the CSV file for the Accounts table
-\COPY examresult(uuid,subjectUuid,studentUuid,examtypeUuid,total,points,grade,position,remarks,submitdate) FROM '/tmp/Examresult.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE examresult OWNER TO school;
-
-
+\COPY mainresult(uuid,studentUuid,total,points,grade,position,remarks) FROM '/tmp/Mainresult.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE mainresult OWNER TO school;
 
 
 
@@ -314,19 +408,19 @@ CREATE TABLE  catsubjectmark (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
-    examtypeUuid text REFERENCES exam_type(uuid),
     subjectUuid text REFERENCES subject(uuid),
-    marks text,
-    submark text,
-    percent text,
+    marks float,
+    submark float,
+    percent float,
     grade text,
-    submitdate timestamp with time zone
+    points float,
+    submitdate timestamp with time zone DEFAULT now()
    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY catsubjectmark(uuid,studentUuid,examtypeUuid,subjectUuid,marks,submark,percent,grade,submitdate) FROM '/tmp/CatSubjectMark.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY catsubjectmark(uuid,studentUuid,subjectUuid,marks,submark,percent,grade,points,submitdate) FROM '/tmp/CatSubjectMark.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE catsubjectmark OWNER TO school;
 
 -- -------------------
@@ -335,21 +429,19 @@ ALTER TABLE catsubjectmark OWNER TO school;
  CREATE TABLE  catresult (
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
-    subjectUuid text REFERENCES subject(uuid),
     studentUuid text REFERENCES student(uuid),
-    examtypeUuid text REFERENCES exam_type(uuid),
-    total text,
-    points text,
+    total float,
+    points float,
     grade text,
-    position text,
-    remarks text, 
-    submitdate timestamp with time zone
+    position Integer,
+    remarks text
+   
    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY catresult(uuid,subjectUuid,studentUuid,examtypeUuid,total,points,grade,position,remarks,submitdate) FROM '/tmp/Catresult.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY catresult(uuid,studentUuid,total,points,grade,position,remarks) FROM '/tmp/Catresult.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE catresult OWNER TO school;
 
 
@@ -376,6 +468,7 @@ CREATE TABLE teacher (
     firstName text,
     lastName text,
     surname text,
+    gender text,
     nhifno text ,
     nssfno text ,
     phone text ,
@@ -385,7 +478,7 @@ CREATE TABLE teacher (
     county text,
     location text
 );
-\COPY teacher(uuid,firstName,lastName,surname,nhifno,nssfno,phone,dob,nationalID,teacherNumber,county,location) FROM '/tmp/Teacher.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY teacher(uuid,firstName,lastName,surname,gender,nhifno,nssfno,phone,dob,nationalID,teacherNumber,county,location) FROM '/tmp/Teacher.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE teacher OWNER TO school;
 
 -- -------------------
@@ -419,6 +512,7 @@ CREATE TABLE worker (
     firstName text,
     lastname text,
     surname text,
+    gender text,
     nhifno text ,
     nssfno text ,
     dob text,
@@ -428,7 +522,7 @@ CREATE TABLE worker (
     location text,
     sublocation text
 );
-\COPY worker(uuid,firstName,lastname,surname,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/Worker.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY worker(uuid,firstName,lastname,surname,gender,nhifno,nssfno,dob,phone,nationalID,county,location,sublocation) FROM '/tmp/Worker.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE worker OWNER TO school;
 
 --------------------
@@ -475,7 +569,7 @@ CREATE TABLE deposit (
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
     amount float NOT NULL CHECK (amount>=0),
-    depositedate timestamp with time zone 
+    depositedate timestamp with time zone DEFAULT now()
 
 );
 \COPY deposit(uuid,studentUuid,amount,depositedate) FROM '/tmp/Deposit.csv' WITH DELIMITER AS '|' CSV HEADER
@@ -490,7 +584,7 @@ CREATE TABLE  withdraw (
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
     amount float NOT NULL CHECK (amount>=0),
-    withdrawdate timestamp with time zone 
+    withdrawdate timestamp with time zone DEFAULT now()
 
 );
 \COPY withdraw(uuid,studentUuid,amount,withdrawdate) FROM '/tmp/Withdraw.csv' WITH DELIMITER AS '|' CSV HEADER

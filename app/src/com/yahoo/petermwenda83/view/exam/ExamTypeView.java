@@ -45,7 +45,6 @@ import com.yahoo.petermwenda83.contoller.exam.ExamType;
 import com.yahoo.petermwenda83.contoller.room.ClassRoom;
 import com.yahoo.petermwenda83.contoller.student.Subject;
 import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.model.exam.ExamtypeDAO;
 import com.yahoo.petermwenda83.model.room.RoomDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
 
@@ -68,7 +67,7 @@ public class ExamTypeView extends JInternalFrame {
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static int selectedRow;
-    private static ExamtypeDAO examtypeDAO; 
+    //private static ExamtypeDAO examtypeDAO; 
     private static SubjectDAO subjectDAO;
     private static RoomDAO roomDAO;
    
@@ -110,12 +109,12 @@ public class ExamTypeView extends JInternalFrame {
         buttonPanel.add(btnaddMarks);
         buttonPanel.add(btnClose);
         
-        examtypeDAO = ExamtypeDAO.getInstance(); 
+      //  examtypeDAO = ExamtypeDAO.getInstance(); 
         subjectDAO = SubjectDAO.getInstance();
         roomDAO = RoomDAO.getInstance();
        
         
-        etypList = examtypeDAO.getAllExamtype();
+       // etypList = examtypeDAO.getAllExamtype();
         roomList = roomDAO.getAllRooms();
         
         for(ClassRoom r : roomList){
@@ -263,13 +262,13 @@ public class ExamTypeView extends JInternalFrame {
     	 int Numrow = 0;
     	for(ExamType typ : etypList){
     	
-     	tblExamList.setValueAt(typ.getExamtype().trim(), Numrow, 0);
+     	//tblExamList.setValueAt(typ.getExamtype().trim(), Numrow, 0);
      	tblExamList.setValueAt(typ.getYear().trim(), Numrow, 1);
      	tblExamList.setValueAt(typ.getTerm().trim(), Numrow, 2);
-     	tblExamList.setValueAt(roomHash.get(typ.getRoomnameUuid()).trim(), Numrow, 3);
+     	//tblExamList.setValueAt(roomHash.get(typ.getRoomnameUuid()).trim(), Numrow, 3);
      	tblExamList.setValueAt(SubHash.get(typ.getSubjectUuid()).trim(), Numrow, 4); 
-     	tblExamList.setValueAt(typ.getOutof().trim(), Numrow, 5);
-     	tblExamList.setValueAt(typ.getDescription().trim(), Numrow, 6);
+     	//tblExamList.setValueAt(typ.getOutof().trim(), Numrow, 5);
+     	//tblExamList.setValueAt(typ.getDescription().trim(), Numrow, 6);
      	//String roomuuid = typ.getRoomnameUuid();
     	//System.out.println(roomHash.get(typ.getRoomnameUuid())); 
          Numrow++;
