@@ -118,7 +118,7 @@ public class CatDAO extends DBConnectDAO implements SchoolCatDAO {
 		 boolean success = true; 
 		  
 		 try(   Connection conn = dbutils.getConnection();
-	      PreparedStatement pstmt = conn.prepareStatement("DELETE Cat WHERE Catname = ? ;");
+	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Cat WHERE Catname = ? ;");
         		){
 	            pstmt.setString(1, cat.getCatname());
 	            pstmt.executeUpdate();

@@ -12,6 +12,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.yahoo.petermwenda83.contoller.exam.cat.CatMarks;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalMark;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalResult;
 
 /**
  * @author peter
@@ -104,7 +106,7 @@ public class TestCatSubMarkDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.cat.CatSubMarkDAO#addCatMark(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.Double, java.lang.Double)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testAddCatMark() {
 		store = new CatSubMarkDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -117,6 +119,21 @@ public class TestCatSubMarkDAO {
 		catm.setGrade(CAT_GRADE); 
 		catm.setSubmitdate(CAT_DATE);
 		assertTrue(store.addCatMark(catm, CAT_MARK_NEW, CAT_POINTS_NEW));
+		
+
+		 FinalResult fr = new FinalResult();
+		 fr.setStudentUuid(CAT_STU_UUID);
+		 fr.setSubjectUuid(CAT_SUB_UUID); 
+		 fr.setGrade("A+");
+		 fr.setRemarks("Spledid"); 
+		 assertTrue(store.addCatMark(fr, CAT_MARK, CAT_POINTS));
+		 
+		 FinalMark fm = new FinalMark();
+		 fm.setStudentUuid(CAT_STU_UUID);
+		 fm.setSubjectUuid(CAT_SUB_UUID); 
+		 fm.setSubmark(45); 
+		 fm.setGrade("A+"); 
+		 assertTrue(store.addCatMark(fm, CAT_MARK, CAT_POINTS));
 	}
 
 	/**

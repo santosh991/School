@@ -14,7 +14,6 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.contoller.exam.cat.Cat;
 import com.yahoo.petermwenda83.contoller.exam.cat.CatDetails;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
 
@@ -59,17 +58,17 @@ public class CatDetailsDAO extends DBConnectDAO implements SchoolCatDetailsDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.cat.SchoolCatDetailsDAO#get(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public CatDetails get(String mainUuid, String roomNameUuid, String subjectUuid) {
+	public CatDetails get(String catUuid, String roomNameUuid, String subjectUuid) {
 		CatDetails catDetails = new CatDetails();
 		  ResultSet rset = null;
 		     try(
 		     		 Connection conn = dbutils.getConnection();
-		        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatDetails WHERE mainUuid = ?"
+		        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CatDetails WHERE catUuid = ?"
 		        	      		+ "AND roomNameUuid = ?  AND subjectUuid = ?;");       
 		     		
 		     		){
 		     	
-		     	 pstmt.setString(1, mainUuid);
+		     	 pstmt.setString(1, catUuid);
 		     	 pstmt.setString(2, roomNameUuid);
 		     	 pstmt.setString(3, subjectUuid);
 			         rset = pstmt.executeQuery();
@@ -81,7 +80,7 @@ public class CatDetailsDAO extends DBConnectDAO implements SchoolCatDetailsDAO {
 		     	
 		     	
 		     }catch(SQLException e){
-		     	 logger.error("SQL Exception when getting CatDetails with mainUuid: "+mainUuid+"And "
+		     	 logger.error("SQL Exception when getting CatDetails with catUuid: "+catUuid+"And "
 		     	 		+ "roomNameUuid"+roomNameUuid+"And subjectUuid"+subjectUuid);
 		          logger.error(ExceptionUtils.getStackTrace(e));
 		          System.out.println(ExceptionUtils.getStackTrace(e));
@@ -95,8 +94,30 @@ public class CatDetailsDAO extends DBConnectDAO implements SchoolCatDetailsDAO {
 	 */
 	@Override
 	public boolean put(CatDetails catdetals) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		  
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO CatDetails" 
+			        		+"(Uuid, Catuuid,Roomnameuuid,SubjectUuid,Term,Year,Outof) VALUES (?,?,?,?,?,?,?);");
+ 		){
+			   
+	            pstmt.setString(1, catdetals.getUuid());
+	            pstmt.setString(2, catdetals.getCatuuid());
+	            pstmt.setString(3, catdetals.getRoomnameuuid());
+	            pstmt.setString(4, catdetals.getSubjectUuid());
+	            pstmt.setString(5, catdetals.getTerm());
+	            pstmt.setString(6, catdetals.getYear());
+	            pstmt.setInt(7, catdetals.getOutof());
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+	   logger.error("SQL Exception trying to put CatDetails: "+catdetals);
+      logger.error(ExceptionUtils.getStackTrace(e)); 
+      System.out.println(ExceptionUtils.getStackTrace(e));
+      success = false;
+		 }
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -104,8 +125,30 @@ public class CatDetailsDAO extends DBConnectDAO implements SchoolCatDetailsDAO {
 	 */
 	@Override
 	public boolean edit(CatDetails catdetals) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		  
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE CatDetails SET Term =?, Year =?,Outof =? "
+						+ "WHERE Catuuid =? AND Roomnameuuid =? AND SubjectUuid =?  ;");
+		){
+			   
+			    pstmt.setString(1, catdetals.getTerm());
+	            pstmt.setString(2, catdetals.getYear());
+	            pstmt.setInt(3, catdetals.getOutof());
+	            pstmt.setString(4, catdetals.getCatuuid());
+	            pstmt.setString(5, catdetals.getRoomnameuuid());
+	            pstmt.setString(6, catdetals.getSubjectUuid());
+	          
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+	   logger.error("SQL Exception trying to put CatDetails: "+catdetals);
+       logger.error(ExceptionUtils.getStackTrace(e)); 
+       System.out.println(ExceptionUtils.getStackTrace(e));
+       success = false;
+		 }
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -116,13 +159,13 @@ public class CatDetailsDAO extends DBConnectDAO implements SchoolCatDetailsDAO {
 		boolean success = true; 
 		  
 		 try(   Connection conn = dbutils.getConnection();
-	      PreparedStatement pstmt = conn.prepareStatement("DELETE MainDetails WHERE Catuuid = ?"
+	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM CatDetails WHERE Catuuid = ?"
 		        	      		+ "AND roomNameUuid = ? AND subjectUuid = ? ;");
       		){
 	           pstmt.setString(1, catdetails.getCatuuid());
 	           pstmt.setString(2, catdetails.getRoomnameuuid());
-	           pstmt.setString(3, catdetails.getSubjectuuid());
-	            pstmt.executeUpdate();
+	           pstmt.setString(3, catdetails.getSubjectUuid());
+	           pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
 		   logger.error("SQL Exception trying to delete maindetails: "+catdetails);

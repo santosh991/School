@@ -31,7 +31,6 @@ import com.yahoo.petermwenda83.contoller.AllBean;
 public class Exam extends AllBean{
 	private String subjectUuid ;
 	private String studentUuid ;
-	private String ExamTypeUuid ;
 	private String Subjectcode;
 	private double marks ;
 	private double submark ;
@@ -53,7 +52,6 @@ public class Exam extends AllBean{
 		super();
 		subjectUuid = "";
 		studentUuid = "";
-		ExamTypeUuid = "";
 		Subjectcode = "";
 		marks = 0.0;
 		submark = 0.0;
@@ -99,23 +97,6 @@ public class Exam extends AllBean{
 	public void setStudentUuid(String studentUuid) {
 		this.studentUuid = studentUuid;
 	}
-
-
-	/**
-	 * @return the examTypeUuid
-	 */
-	public String getExamTypeUuid() {
-		return ExamTypeUuid;
-	}
-
-
-	/**
-	 * @param examTypeUuid the examTypeUuid to set
-	 */
-	public void setExamTypeUuid(String examTypeUuid) {
-		ExamTypeUuid = examTypeUuid;
-	}
-
 
 	/**
 	 * @return the subjectcode

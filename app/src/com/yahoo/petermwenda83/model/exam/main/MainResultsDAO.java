@@ -65,7 +65,7 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ExamResult WHERE"
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM MainResult WHERE"
         	      		+ " StudentUuid =?;");       
      		
      		){
@@ -97,7 +97,7 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
 		double Total = 0;
 		double Point = 0;
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("SELECT Total,Points FROM ExamResult "
+				PreparedStatement pstmt = conn.prepareStatement("SELECT Total,Points FROM MainResult "
 	        			+ "WHERE StudentUuid = ?;");
       		){
 			 
@@ -137,20 +137,20 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
 		//MainResults mainr = new MainResults();
 		if(hasMainResult(exam,0.0,0.0)) {
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE ExamResult " +
-						"SET Total = (SELECT Total FROM ExamResult WHERE StudentUuid=? "
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE MainResult " +
+						"SET Total = (SELECT Total FROM MainResult WHERE StudentUuid=? "
 						+ ") +?" +				
-						"WHERE Uuid = (SELECT Uuid FROM ExamResult WHERE StudentUuid=? );");	
+						"WHERE Uuid = (SELECT Uuid FROM MainResult WHERE StudentUuid=? );");	
 				
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE ExamResult " +
-						"SET Points = (SELECT Points FROM ExamResult WHERE StudentUuid=? "
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MainResult " +
+						"SET Points = (SELECT Points FROM MainResult WHERE StudentUuid=? "
 						+ ") +?" +				
-						"WHERE Uuid = (SELECT Uuid FROM ExamResult WHERE StudentUuid=? );");		
+						"WHERE Uuid = (SELECT Uuid FROM MainResult WHERE StudentUuid=? );");		
 				
-			  PreparedStatement pstmt3 = conn.prepareStatement("UPDATE ExamResult " +
+			  PreparedStatement pstmt3 = conn.prepareStatement("UPDATE MainResult " +
 						"SET Grade =? WHERE StudentUuid=?;");		
 				
-				PreparedStatement pstmt4 = conn.prepareStatement("UPDATE ExamResult " +
+				PreparedStatement pstmt4 = conn.prepareStatement("UPDATE MainResult " +
 						"SET Remarks =? WHERE StudentUuid=?;");	
 				
         		){
@@ -185,7 +185,7 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
 		}else{
 			
 			try(   Connection conn = dbutils.getConnection();
-					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO ExamResult" 
+					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO MainResult" 
 			        		+"(Uuid,Studentuuid,Total,"
 			        		+ "Points,Grade,Position,Remarks,Submitdate) VALUES (?,?,?,?,?,?,?,?);");
 	        		){
@@ -222,15 +222,15 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
 	public boolean deductMainResult(Exam exam, Double Total, Double Points) {
 		boolean success = true;
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE ExamResult " +
-						"SET Total = (SELECT Total FROM ExamResult WHERE StudentUuid=? "
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE MainResult " +
+						"SET Total = (SELECT Total FROM MainResult WHERE StudentUuid=? "
 						+ ") -?" +				
-						"WHERE Uuid = (SELECT Uuid FROM ExamResult WHERE StudentUuid=? );");	
+						"WHERE Uuid = (SELECT Uuid FROM MainResult WHERE StudentUuid=? );");	
 				
-				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE ExamResult " +
-						"SET Points = (SELECT Points FROM ExamResult WHERE StudentUuid=? "
+				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE MainResult " +
+						"SET Points = (SELECT Points FROM MainResult WHERE StudentUuid=? "
 						+ ") -?" +				
-						"WHERE Uuid = (SELECT Uuid FROM ExamResult WHERE StudentUuid=? );");		
+						"WHERE Uuid = (SELECT Uuid FROM MainResult WHERE StudentUuid=? );");		
 		
 				
         		){
@@ -266,7 +266,7 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
 		boolean success = true; 
         try(
   		  Connection conn = dbutils.getConnection();      
-          PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ExamResult WHERE"
+          PreparedStatement pstmt = conn.prepareStatement("DELETE FROM MainResult WHERE"
      	        		+ " StudentUuid = ?;");       
      	      		
   		      ){
@@ -295,7 +295,7 @@ public class MainResultsDAO extends DBConnectDAO  implements SchoolMainResultsDA
 		List<MainResults> list = null;
 		try(   
 	      		Connection conn = dbutils.getConnection();
-	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM ExamResult ;");   
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM MainResult ;");   
 	      		ResultSet rset = pstmt.executeQuery();
 	  		) {
 	      	

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -69,9 +70,9 @@ public class MainDetailsDAO extends DBConnectDAO implements SchoolMainDetailsDAO
 		     		){
 		     	
 		     	 pstmt.setString(1, mainUuid);
-		     	 pstmt.setString(1, roomNameUuid);
-		     	 pstmt.setString(1, subjectUuid);
-			         rset = pstmt.executeQuery();
+		     	 pstmt.setString(2, roomNameUuid);
+		     	 pstmt.setString(3, subjectUuid);
+			     rset = pstmt.executeQuery();
 			     while(rset.next()){
 			
 			    	 mainDetails  = beanProcessor.toBean(rset,MainDetails.class);
@@ -98,15 +99,20 @@ public class MainDetailsDAO extends DBConnectDAO implements SchoolMainDetailsDAO
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO MainDetails" 
-			        		+"(Uuid, Mainname) VALUES (?,?);");
+			        		+"(Uuid, Mainuuid,Roomnameuuid,SubjectUuid,Term,Year,Outof) VALUES (?,?,?,?,?,?,?);");
   		){
 			   
-	            pstmt.setString(1, main.getUuid());
-	            pstmt.setString(2, main.getMainname());
+	            pstmt.setString(1, maindetails.getUuid());
+	            pstmt.setString(2, maindetails.getMainuuid());
+	            pstmt.setString(3, maindetails.getRoomnameuuid());
+	            pstmt.setString(4, maindetails.getSubjectUuid());
+	            pstmt.setString(5, maindetails.getTerm());
+	            pstmt.setString(6, maindetails.getYear());
+	            pstmt.setInt(7, maindetails.getOutof());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put Main: "+main);
+	   logger.error("SQL Exception trying to put MainDetails: "+maindetails);
        logger.error(ExceptionUtils.getStackTrace(e)); 
        System.out.println(ExceptionUtils.getStackTrace(e));
        success = false;
@@ -120,8 +126,30 @@ public class MainDetailsDAO extends DBConnectDAO implements SchoolMainDetailsDAO
 	 */
 	@Override
 	public boolean edit(MainDetails maindetails) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		  
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE MainDetails SET Term =?, Year =?,Outof =? "
+						+ "WHERE Mainuuid =? AND Roomnameuuid =? AND SubjectUuid =?  ;");
+ 		){
+			   
+			    pstmt.setString(1, maindetails.getTerm());
+	            pstmt.setString(2, maindetails.getYear());
+	            pstmt.setInt(3, maindetails.getOutof());
+	            pstmt.setString(4, maindetails.getMainuuid());
+	            pstmt.setString(5, maindetails.getRoomnameuuid());
+	            pstmt.setString(6, maindetails.getSubjectUuid());
+	          
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+	   logger.error("SQL Exception trying to put MainDetails: "+maindetails);
+      logger.error(ExceptionUtils.getStackTrace(e)); 
+      System.out.println(ExceptionUtils.getStackTrace(e));
+      success = false;
+		 }
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -132,12 +160,12 @@ public class MainDetailsDAO extends DBConnectDAO implements SchoolMainDetailsDAO
 		boolean success = true; 
 		  
 		 try(   Connection conn = dbutils.getConnection();
-	      PreparedStatement pstmt = conn.prepareStatement("DELETE MainDetails WHERE mainUuid = ?"
+	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM MainDetails WHERE mainUuid = ?"
 		        	      		+ "AND roomNameUuid = ? AND subjectUuid = ? ;");
        		){
 	           pstmt.setString(1, maindetails.getMainuuid());
 	           pstmt.setString(2, maindetails.getRoomnameuuid());
-	           pstmt.setString(3, maindetails.getStudentUuid());
+	           pstmt.setString(3, maindetails.getSubjectUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -186,14 +214,16 @@ public class MainDetailsDAO extends DBConnectDAO implements SchoolMainDetailsDAO
 	  		) {
 	      	
 			  pstmt.setString(1, Term);
-			  ResultSet rset = pstmt.executeQuery();
-	          list = beanProcessor.toBeanList(rset, MainDetails.class);
-
+			  try(   ResultSet rset = pstmt.executeQuery();
+					  ){
+				  list = beanProcessor.toBeanList(rset, MainDetails.class); 
+			  }
 	      } catch(SQLException e){
 	      	  logger.error("SQL Exception when getting all MainDetails where term is:"+Term);
 	          logger.error(ExceptionUtils.getStackTrace(e));
 	          System.out.println(ExceptionUtils.getStackTrace(e));
 	      }
+		Collections.sort(list);
 		return list;
 	}
 

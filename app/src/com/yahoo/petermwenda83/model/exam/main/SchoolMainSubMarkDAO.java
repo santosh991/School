@@ -51,14 +51,14 @@ import com.yahoo.petermwenda83.contoller.exam.main.MainMarks;
 	 * @param exam
 	 * @return
 	 */
-	public boolean addMainMark(Exam exam,Double Marks,Double Points);
+	public boolean addMainMark(Exam exam,Double Percent,Double Points);
 	
 	/**
 	 * 
 	 * @param exam
 	 * @return
 	 */
-	public boolean editMainMark(Exam exam,Double Marks,Double Points);
+	public boolean editMainMark(Exam exam,Double Percent,Double Points);
 	
 	/**
 	 * 

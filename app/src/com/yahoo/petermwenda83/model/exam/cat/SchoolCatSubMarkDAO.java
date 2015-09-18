@@ -49,13 +49,13 @@ import com.yahoo.petermwenda83.contoller.exam.cat.CatMarks;
 	 * @param exam
 	 * @return
 	 */
-		public boolean addCatMark(Exam exam,Double Marks,Double Points);
+		public boolean addCatMark(Exam exam,Double Percent,Double Points);
 		/**
 		 * 
 		 * @param exam
 		 * @return
 		 */
-		public boolean editCatMark(Exam exam,Double Marks,Double Points);
+		public boolean editCatMark(Exam exam,Double Percent,Double Points);
 		
 		/**
 		 * 

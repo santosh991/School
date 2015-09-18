@@ -118,7 +118,7 @@ public class MainDAO extends DBConnectDAO implements SchoolMainDAO {
 		 boolean success = true; 
 		  
 		 try(   Connection conn = dbutils.getConnection();
-	      PreparedStatement pstmt = conn.prepareStatement("DELETE Main WHERE Mainname = ? ;");
+	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Main WHERE Mainname = ? ;");
         		){
 	            pstmt.setString(1, main.getMainname());
 	            pstmt.executeUpdate();

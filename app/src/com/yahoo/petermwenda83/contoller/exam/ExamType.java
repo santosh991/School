@@ -30,7 +30,6 @@ public class ExamType extends Exam{
 	private String examuuid;
 	private String examname;
 	private String roomnameuuid;
-	private String subjectuuid;
 	private String term;
 	private String year;
 	private int outof;
@@ -44,7 +43,6 @@ public class ExamType extends Exam{
         examuuid = "";
         examname ="";
         roomnameuuid = "";
-        subjectuuid = "";
         term = "";
         year = "";
         outof = 0;
@@ -92,21 +90,6 @@ public class ExamType extends Exam{
 	public void setRoomnameuuid(String roomnameuuid) {
 		this.roomnameuuid = roomnameuuid;
 	}
-
-	/**
-	 * @return the subjectuuid
-	 */
-	public String getSubjectuuid() {
-		return subjectuuid;
-	}
-
-	/**
-	 * @param subjectuuid the subjectuuid to set
-	 */
-	public void setSubjectuuid(String subjectuuid) {
-		this.subjectuuid = subjectuuid;
-	}
-
 	/**
 	 * @return the term
 	 */

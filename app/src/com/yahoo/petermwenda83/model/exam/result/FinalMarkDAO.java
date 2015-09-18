@@ -59,17 +59,20 @@ public class FinalMarkDAO extends DBConnectDAO implements SchoolFinalMarkDAO {
 	 * @see com.yahoo.petermwenda83.model.exam.result.SchoolFinalMarkDAO#get(java.lang.String)
 	 */
 	@Override
-	public FinalMark get(String StudentUuid) {
+	public FinalMark get(String StudentUuid,String SubjectUuid) {
 		FinalMark finalMark = null;
         ResultSet rset = null;
+        //getSubjectUuid()
      try(
      		 Connection conn = dbutils.getConnection();
         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM FinalMarks WHERE"
-        	      		+ " StudentUuid =?;");       
+        	      		+ " StudentUuid =? AND SubjectUuid =?;");       
      		
      		){
      	
      	 pstmt.setString(1, StudentUuid);
+     	 pstmt.setString(2, SubjectUuid);
+     	 
 	     rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -79,7 +82,7 @@ public class FinalMarkDAO extends DBConnectDAO implements SchoolFinalMarkDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting FinalMark with StudentUuid: " + StudentUuid);
+     	  logger.error("SQL Exception when getting FinalMark with StudentUuid: " + StudentUuid);
           logger.error(ExceptionUtils.getStackTrace(e));
           System.out.print(ExceptionUtils.getStackTrace(e));
      }
@@ -97,10 +100,11 @@ public class FinalMarkDAO extends DBConnectDAO implements SchoolFinalMarkDAO {
 		double mark = 0;
 		try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("SELECT Marks FROM FinalMarks "
-	        			+ "WHERE StudentUuid = ?;");
+	        			+ "WHERE StudentUuid = ? AND SubjectUuid =?;");
       		){
 			 
 	            pstmt.setString(1, exam.getStudentUuid());
+	            pstmt.setString(2, exam.getSubjectUuid());
 	            try(
 						ResultSet rset = pstmt.executeQuery();
 						
@@ -131,23 +135,26 @@ public class FinalMarkDAO extends DBConnectDAO implements SchoolFinalMarkDAO {
 		boolean success = true;
 		if(hasMark(exam,0)) {
 		try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE FinalMarks " +
-						"SET Marks = (SELECT Marks FROM FinalMarks WHERE StudentUuid =? "
+				  PreparedStatement pstmt = conn.prepareStatement("UPDATE FinalMarks " +
+						"SET Marks = (SELECT Marks FROM FinalMarks WHERE StudentUuid =? AND SubjectUuid =? "
 						+ ") +?" +				
-						"WHERE Uuid = (SELECT Uuid FROM FinalMarks WHERE StudentUuid=? );");	
+						"WHERE Uuid = (SELECT Uuid FROM FinalMarks WHERE StudentUuid =? AND SubjectUuid =?);");	
 				
 				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE FinalMarks " +
-						"SET Grade =? WHERE StudentUuid=?;");	
+						"SET Grade =? WHERE StudentUuid=? AND SubjectUuid =?;");	
 				
         		){
 			  if(exam instanceof FinalMark ){
 				    pstmt.setString(1, exam.getStudentUuid());
-				    pstmt.setDouble(2, Marks);
-		            pstmt.setString(3, exam.getStudentUuid());
+				    pstmt.setString(2, exam.getSubjectUuid());
+				    pstmt.setDouble(3, Marks);
+		            pstmt.setString(4, exam.getStudentUuid());
+		            pstmt.setString(5, exam.getSubjectUuid());
 		            pstmt.executeUpdate(); 
 		            
 		            pstmt2.setString(1, exam.getGrade());
 		            pstmt2.setString(2, exam.getStudentUuid());
+		            pstmt2.setString(3, exam.getSubjectUuid());
 		            pstmt2.executeUpdate(); 
 		        		            
 			  }
@@ -161,14 +168,15 @@ public class FinalMarkDAO extends DBConnectDAO implements SchoolFinalMarkDAO {
 			
 			try(   Connection conn = dbutils.getConnection();
 					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO FinalMarks" 
-			        		+"(Uuid,Studentuuid,Marks,Grade,) VALUES (?,?,?,?);");
+			        		+"(Uuid,Studentuuid,SubjectUuid,Marks,Grade) VALUES (?,?,?,?,?);");
 					
 	        		){
 				  if(exam instanceof FinalMark ){
 					    pstmt2.setString(1, exam.getUuid());
 			            pstmt2.setString(2, exam.getStudentUuid());
-			            pstmt2.setDouble(3, Marks);
-			            pstmt2.setString(4, exam.getGrade());
+			            pstmt2.setString(3, exam.getSubjectUuid());
+			            pstmt2.setDouble(4, Marks);
+			            pstmt2.setString(5, exam.getGrade());
 			           
 			            pstmt2.executeUpdate(); 
 				  }
@@ -193,22 +201,24 @@ public class FinalMarkDAO extends DBConnectDAO implements SchoolFinalMarkDAO {
 		boolean success = true;
 		try(  Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE FinalMarks " +
-						"SET Marks = (SELECT Marks FROM FinalMarks WHERE StudentUuid =? "
+						"SET Marks = (SELECT Marks FROM FinalMarks WHERE StudentUuid =? AND SubjectUuid =?"
 						+ ") -?" +				
-						"WHERE Uuid = (SELECT Uuid FROM FinalMarks WHERE StudentUuid=? );");	
+						"WHERE Uuid = (SELECT Uuid FROM FinalMarks WHERE StudentUuid=? AND SubjectUuid =?);");	
 				
 				PreparedStatement pstmt2 = conn.prepareStatement("UPDATE FinalMarks " +
-						"SET Grade =? WHERE StudentUuid=?;");	
+						"SET Grade =? WHERE StudentUuid=? AND SubjectUuid =?;");	
 				
         		){
 			  if(exam instanceof FinalMark ){
 				    pstmt.setString(1, exam.getStudentUuid());
 				    pstmt.setDouble(2, Marks);
 		            pstmt.setString(3, exam.getStudentUuid());
+		            pstmt.setString(4, exam.getSubjectUuid());
 		            pstmt.executeUpdate(); 
 		            
 		            pstmt2.setString(1, exam.getGrade());
 		            pstmt2.setString(2, exam.getStudentUuid());
+		            pstmt2.setString(3, exam.getSubjectUuid());
 		            pstmt2.executeUpdate(); 
 		        		            
 			  }

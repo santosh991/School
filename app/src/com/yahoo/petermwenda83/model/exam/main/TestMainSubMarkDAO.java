@@ -12,6 +12,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.yahoo.petermwenda83.contoller.exam.main.MainMarks;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalMark;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalResult;
 
 /**
  * @author peter
@@ -98,7 +100,7 @@ public class TestMainSubMarkDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.model.exam.main.MainSubMarkDAO#addMainMark(com.yahoo.petermwenda83.contoller.exam.Exam, java.lang.Double, java.lang.Double)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testAddMainMark() {
 		store = new MainSubMarkDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -112,6 +114,20 @@ public class TestMainSubMarkDAO {
 		m.setPoints(MAIN_POINTS);
 		m.setSubmitdate(MAIN_DATE);
 		assertTrue(store.addMainMark(m, MAIN_MARK, MAIN_POINTS));
+		
+		 FinalResult fr = new FinalResult();
+		 fr.setStudentUuid(MAIN_STU_UUID);
+		 fr.setSubjectUuid(MAIN_SUB_UUID);
+		 fr.setGrade("A+");
+		 fr.setRemarks("Spledid"); 
+		 assertTrue(store.addMainMark(fr, MAIN_MARK, MAIN_POINTS));
+		 
+		 FinalMark fm = new FinalMark();
+		 fm.setStudentUuid(MAIN_STU_UUID);
+		 fm.setSubjectUuid(MAIN_SUB_UUID);
+		 fm.setSubmark(45); 
+		 fm.setGrade("A+"); 
+		 assertTrue(store.addMainMark(fm, MAIN_MARK, MAIN_POINTS));
 	}
 
 	/**

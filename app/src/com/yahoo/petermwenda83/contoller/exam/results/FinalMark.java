@@ -17,6 +17,7 @@ public class FinalMark extends Exam {
 	public FinalMark() {
 		super();
 	}
+	//
 
 	@Override
 	public String toString(){
@@ -28,6 +29,8 @@ public class FinalMark extends Exam {
 		builder.append(getUuid());
 		builder.append(", getStudentUuid()=");
 		builder.append(getStudentUuid());
+		builder.append(", getSubjectUuid()=");
+		builder.append(getSubjectUuid());
 		builder.append(", getMarks()=");
 		builder.append(getMarks());
 		builder.append(", getGrade()=");

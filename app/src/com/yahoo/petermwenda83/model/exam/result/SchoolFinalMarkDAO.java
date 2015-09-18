@@ -18,7 +18,7 @@ public interface SchoolFinalMarkDAO {
 	  * @param StudentUuid
 	  * @return
 	  */
-	public FinalMark get(String StudentUuid);
+	public FinalMark get(String StudentUuid,String SubjectUuid);
 	
 	/**
 	 * 

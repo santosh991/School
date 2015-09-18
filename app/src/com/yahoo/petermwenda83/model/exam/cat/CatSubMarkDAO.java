@@ -17,7 +17,11 @@ import org.apache.log4j.Logger;
 import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.cat.CatMarks;
 import com.yahoo.petermwenda83.contoller.exam.cat.CatResults;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalMark;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalResult;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
+import com.yahoo.petermwenda83.model.exam.result.FinalMarkDAO;
+import com.yahoo.petermwenda83.model.exam.result.FinalResultDAO;
 
 /**
  * @author peter
@@ -27,7 +31,9 @@ public class CatSubMarkDAO extends DBConnectDAO  implements SchoolCatSubMarkDAO 
 
 	private static CatSubMarkDAO catSubMarkDAO;
 	
+	private static FinalResultDAO finalResultDAO;
 	private static CatResultsDAO catResultsDAO;
+	private static FinalMarkDAO finalMarkDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
@@ -45,6 +51,8 @@ public class CatSubMarkDAO extends DBConnectDAO  implements SchoolCatSubMarkDAO 
 	public CatSubMarkDAO() {
 		super();
 		catResultsDAO = CatResultsDAO.getInstance();
+		finalResultDAO = FinalResultDAO .getInstance();
+		finalMarkDAO =FinalMarkDAO.getInstance();
 		
 	}
 	
@@ -59,6 +67,8 @@ public class CatSubMarkDAO extends DBConnectDAO  implements SchoolCatSubMarkDAO 
 	public CatSubMarkDAO(String databaseName, String Host, String databaseUsername, String databasePassword, int databasePort){
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		catResultsDAO = new CatResultsDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		finalResultDAO = new FinalResultDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		finalMarkDAO = new FinalMarkDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
 	/* (non-Javadoc)
@@ -105,7 +115,7 @@ public class CatSubMarkDAO extends DBConnectDAO  implements SchoolCatSubMarkDAO 
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolCatSubMarkDAO#addCatMark(com.yahoo.petermwenda83.contoller.exam.Exam)
 	 */
 	@Override
-	public boolean addCatMark(Exam exam,Double Marks,Double Points) {
+	public boolean addCatMark(Exam exam,Double Percent,Double Points) {
 		boolean success = true;
 		try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO CatSubjectMark" 
@@ -116,11 +126,11 @@ public class CatSubMarkDAO extends DBConnectDAO  implements SchoolCatSubMarkDAO 
 	            pstmt.setString(1, exam.getUuid());
 	            pstmt.setString(2, exam.getStudentUuid());
 	            pstmt.setString(3, exam.getSubjectUuid());
-	            pstmt.setDouble(4, Marks);
-	            pstmt.setDouble(5, Points);
-	            pstmt.setDouble(6, exam.getSubmark());
-	            pstmt.setDouble(7, exam.getPercent());
-	            pstmt.setString(8, exam.getGrade());
+	            pstmt.setDouble(4, exam.getMarks());//25
+	            pstmt.setDouble(5, Points);//8
+	            pstmt.setDouble(6, exam.getSubmark());// 25/40*30=19  /2
+	            pstmt.setDouble(7, Percent);//25/40*100=63
+	            pstmt.setString(8, exam.getGrade());//B-
 	            pstmt.setTimestamp(9,  new Timestamp(exam.getSubmitdate().getTime()));
 	            pstmt.executeUpdate();
 	            
@@ -128,7 +138,24 @@ public class CatSubMarkDAO extends DBConnectDAO  implements SchoolCatSubMarkDAO 
 	            cr.setStudentUuid(exam.getStudentUuid()); 
 	            cr.setRemarks(exam.getRemarks()); 
 	            cr.setGrade(exam.getGrade()); 
-	            catResultsDAO.addCatMark(cr, Marks, Points);
+	            catResultsDAO.addCatMark(cr, Percent, Points);
+			  } if(exam instanceof FinalResult ){
+	            
+	            FinalResult fr = new FinalResult();
+	            fr.setUuid(exam.getUuid()); 
+	            fr.setStudentUuid(exam.getStudentUuid()); 
+	            fr.setGrade(exam.getGrade());//depends on submark
+	            fr.setRemarks(exam.getRemarks()); //depends on submark
+	           finalResultDAO.addPoints(fr, Points);//Points depend on submark
+			  } if(exam instanceof FinalMark ){
+	           
+	           FinalMark fm = new FinalMark();
+	           fm.setUuid(exam.getUuid());
+	           fm.setStudentUuid(exam.getStudentUuid());
+	           fm.setSubjectUuid(exam.getSubjectUuid()); 
+	           fm.setGrade(exam.getGrade()); 
+	           double Marks = exam.getSubmark();
+	           finalMarkDAO.addMark(fm, Marks); 
 	            
 	            
 			  }

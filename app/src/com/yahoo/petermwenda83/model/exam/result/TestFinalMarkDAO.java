@@ -26,6 +26,7 @@ public class TestFinalMarkDAO {
 	
 	final String UUID = "4ABEC752-0015-4005-ADC7-00D66C8C6EC1";
 	final String STU_UUID = "DAF7EC32-EA25-7D32-8708-2CC132446A2Y";
+	final String SUB_UUID ="b9bbd718-b32f-4466-ab34-42f544ff900e";
 	final double MARK = 74;
 	final String GRADE = "A-";
 	
@@ -41,7 +42,7 @@ public class TestFinalMarkDAO {
 	public void testGet() {
 		store = new FinalMarkDAO (databaseName, Host, databaseUsername, databasePassword, databasePort);
 		FinalMark f = new FinalMark();
-		f = store.get(STU_UUID);
+		f = store.get(STU_UUID,SUB_UUID);
 		assertEquals(f.getUuid(),UUID);
 		assertEquals(f.getStudentUuid(),STU_UUID);
 		assertEquals(f.getMarks(),MARK,0);
@@ -57,6 +58,7 @@ public class TestFinalMarkDAO {
 		store = new FinalMarkDAO (databaseName, Host, databaseUsername, databasePassword, databasePort);
 		FinalMark f = new FinalMark();
 		f.setStudentUuid(STU_UUID);
+		f.setSubjectUuid(SUB_UUID);
 		assertTrue(store.hasMark(f, MARK));
 	}
 
@@ -69,6 +71,7 @@ public class TestFinalMarkDAO {
 		store = new FinalMarkDAO (databaseName, Host, databaseUsername, databasePassword, databasePort);
 		FinalMark f = new FinalMark();
 		f.setStudentUuid(STU_UUID);
+		f.setSubjectUuid(SUB_UUID); 
 		f.setMarks(MARK);
 		f.setGrade(GRADE);
 		assertTrue(store.addMark(f, MARK));
@@ -83,6 +86,7 @@ public class TestFinalMarkDAO {
 		store = new FinalMarkDAO (databaseName, Host, databaseUsername, databasePassword, databasePort);
 		FinalMark f = new FinalMark();
 		f.setStudentUuid(STU_UUID);
+		f.setSubjectUuid(SUB_UUID); 
 		f.setMarks(MARK);
 		f.setGrade(GRADE);
 		assertTrue(store.deductMark(f, MARK));

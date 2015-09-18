@@ -17,7 +17,11 @@ import org.apache.log4j.Logger;
 import com.yahoo.petermwenda83.contoller.exam.Exam;
 import com.yahoo.petermwenda83.contoller.exam.main.MainMarks;
 import com.yahoo.petermwenda83.contoller.exam.main.MainResults;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalMark;
+import com.yahoo.petermwenda83.contoller.exam.results.FinalResult;
 import com.yahoo.petermwenda83.model.DBConnectDAO;
+import com.yahoo.petermwenda83.model.exam.result.FinalMarkDAO;
+import com.yahoo.petermwenda83.model.exam.result.FinalResultDAO;
 
 /**
  * @author peter
@@ -28,6 +32,8 @@ public class MainSubMarkDAO extends DBConnectDAO  implements SchoolMainSubMarkDA
 	private static MainSubMarkDAO mainSubMarkDAO;
 	
 	private static MainResultsDAO mainResultsDAO;
+	private static FinalResultDAO finalResultDAO;
+	private static FinalMarkDAO finalMarkDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
@@ -45,6 +51,8 @@ public class MainSubMarkDAO extends DBConnectDAO  implements SchoolMainSubMarkDA
 	public MainSubMarkDAO() {
 		super();
 		mainResultsDAO = MainResultsDAO.getInstance();
+		finalResultDAO = FinalResultDAO .getInstance();
+		finalMarkDAO =FinalMarkDAO.getInstance();
 	}
 	
 
@@ -58,6 +66,8 @@ public class MainSubMarkDAO extends DBConnectDAO  implements SchoolMainSubMarkDA
 	public MainSubMarkDAO(String databaseName, String Host, String databaseUsername, String databasePassword, int databasePort){
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		mainResultsDAO = new MainResultsDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		finalResultDAO = new FinalResultDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		finalMarkDAO = new FinalMarkDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
 
@@ -105,33 +115,53 @@ public class MainSubMarkDAO extends DBConnectDAO  implements SchoolMainSubMarkDA
 	 * @see com.yahoo.petermwenda83.model.exam.SchoolMainSubMarkDAO#addMainMark(com.yahoo.petermwenda83.contoller.exam.Exam)
 	 */
 	@Override
-	public boolean addMainMark(Exam exam,Double Marks,Double Points) {
+	public boolean addMainMark(Exam exam,Double Percent,Double Points) {
 		boolean success = true;
 		try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO MainSubjectMark" 
 		        		+"(Uuid, StudentUuid,SubjectUuid,"
-		        		+ "Marks,Percent,Grade,Points,Submitdate) VALUES (?,?,?,?,?,?,?,?);");
+		        		+ "Marks,Submark,Percent,Grade,Points,Submitdate) VALUES (?,?,?,?,?,?,?,?,?);");
         		){
-			  if(exam instanceof MainMarks ){
+			if(exam instanceof MainMarks ){
 				    pstmt2.setString(1, exam.getUuid());
 		            pstmt2.setString(2, exam.getStudentUuid());
 		            pstmt2.setString(3, exam.getSubjectUuid());
-		            pstmt2.setDouble(4, exam.getMarks());
-		            pstmt2.setDouble(5, exam.getPercent());
-		            pstmt2.setString(6, exam.getGrade());
-		            pstmt2.setDouble(7, exam.getPoints());
-		            pstmt2.setTimestamp(8,  new Timestamp(exam.getSubmitdate().getTime()));
+		            pstmt2.setDouble(4, exam.getMarks());//70 outof 100
+		            pstmt2.setDouble(5, exam.getSubmark());//70/100*70=49
+		            pstmt2.setDouble(6, Percent);// 70
+		            pstmt2.setString(7, exam.getGrade()); //A-
+		            pstmt2.setDouble(8, Points); //11
+		            pstmt2.setTimestamp(9,  new Timestamp(exam.getSubmitdate().getTime()));
 		            
 		            pstmt2.executeUpdate(); 
 		            
 		            MainResults mr = new MainResults();
 		            mr.setStudentUuid(exam.getStudentUuid()); 
-		            mr.setRemarks(exam.getRemarks()); 
-		            mr.setGrade(exam.getGrade()); 
-		            mainResultsDAO.addMainResult(mr, Marks, Points);
+		            mr.setRemarks(exam.getRemarks()); //excellent
+		            mr.setGrade(exam.getGrade()); //A-
+		            mainResultsDAO.addMainResult(mr, Percent, Points);// 70   11
+			}if(exam instanceof FinalResult ){
+		            
+		            FinalResult fr = new FinalResult();
+		            fr.setUuid(exam.getUuid()); 
+		            fr.setStudentUuid(exam.getStudentUuid()); 
+		            fr.setGrade(exam.getGrade());//depends on submark
+		            fr.setRemarks(exam.getRemarks()); //depends on submark
+		           finalResultDAO.addPoints(fr, Points);//Points depend on submark
+		           
+			}if(exam instanceof FinalMark ){
+		           FinalMark fm = new FinalMark();
+		           fm.setUuid(exam.getUuid());
+		           fm.setStudentUuid(exam.getStudentUuid());
+		           fm.setSubjectUuid(exam.getSubjectUuid()); 
+		           fm.setGrade(exam.getGrade()); 
+		           double Marks = exam.getSubmark();
+		           finalMarkDAO.addMark(fm, Marks); 
+		            
+		            
 		            
 		           
-			  }
+			 }
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put: "+exam);
              logger.error(ExceptionUtils.getStackTrace(e)); 

@@ -44,8 +44,8 @@ public class CatDetails extends ExamType {
 		builder.append(getCatuuid());
 		builder.append(",getRoomnameuuid() = ");
 		builder.append(getRoomnameuuid());
-		builder.append(",getSubjectuuid() = ");
-		builder.append(getSubjectuuid());
+		builder.append(",getSubjectUuid() = ");
+		builder.append(getSubjectUuid());
 		builder.append(",getTerm() = ");
 		builder.append(getTerm());
 		builder.append(",getYear() = ");

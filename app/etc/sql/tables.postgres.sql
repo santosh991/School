@@ -343,6 +343,7 @@ ALTER TABLE finalresult OWNER TO school;
     Id SERIAL PRIMARY KEY,
     uuid text UNIQUE NOT NULL,
     studentUuid text REFERENCES student(uuid),
+    subjectUuid text REFERENCES subject(uuid),
     marks float,
     grade text
     
@@ -350,7 +351,7 @@ ALTER TABLE finalresult OWNER TO school;
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY finalmarks(uuid,studentUuid,marks,grade) FROM '/tmp/FinalMarks.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY finalmarks(uuid,studentUuid,subjectUuid,marks,grade) FROM '/tmp/FinalMarks.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE finalmarks OWNER TO school;
 
 

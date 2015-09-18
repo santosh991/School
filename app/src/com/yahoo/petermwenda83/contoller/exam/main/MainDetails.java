@@ -5,11 +5,12 @@ package com.yahoo.petermwenda83.contoller.exam.main;
 
 import com.yahoo.petermwenda83.contoller.exam.ExamType;
 
+
 /**
  * @author peter
  *
  */
-public class MainDetails extends ExamType{
+public class MainDetails extends ExamType implements Comparable<MainDetails>{
 	
 
 	/**
@@ -34,6 +35,14 @@ public class MainDetails extends ExamType{
 	}
 	
 	@Override
+	public int compareTo(MainDetails o) {
+		// TODO Auto-generated method stub  
+		//return name.compareTo(((Contact) c).getName());
+		return 0;
+	}
+	
+	
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("StudentParent");
@@ -45,8 +54,8 @@ public class MainDetails extends ExamType{
 		builder.append(getMainuuid());
 		builder.append(",getRoomnameuuid() = ");
 		builder.append(getRoomnameuuid());
-		builder.append(",getSubjectuuid() = ");
-		builder.append(getSubjectuuid());
+		builder.append(",getSubjectUuid() = ");
+		builder.append(getSubjectUuid());
 		builder.append(",getTerm() = ");
 		builder.append(getTerm());
 		builder.append(",getYear() = ");
@@ -56,5 +65,7 @@ public class MainDetails extends ExamType{
 		builder.append("]");
 		return builder.toString(); 
 		}
+
+	
 
 }
