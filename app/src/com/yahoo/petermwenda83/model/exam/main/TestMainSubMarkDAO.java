@@ -44,6 +44,10 @@ public class TestMainSubMarkDAO {
 		         MAIN_MARK_NEW = 78.1,
 		         MAIN_MARK_UPDATE = 78.2;
     
+    final double MAIN_SUB_MARK =78.0,
+	         MAIN_SUB_MARK_NEW = 78.1,
+	         MAIN_SUB_MARK_UPDATE = 78.2;
+    
     final double MAIN_PERCENT = 86.0,
 	             MAIN_PERCENT_NEW = 86.1,
 	             MAIN_PERCENT_UPDATE = 86.2;
@@ -108,6 +112,7 @@ public class TestMainSubMarkDAO {
 		m.setStudentUuid(MAIN_STU_UUID);
 		m.setSubjectUuid(MAIN_SUB_UUID);
 		m.setMarks(MAIN_MARK);
+		m.setSubmark(MAIN_SUB_MARK);
 		m.setPercent(MAIN_PERCENT);
 		m.setGrade(MAIN_GRADE); 
 		m.setRemarks("remarks");

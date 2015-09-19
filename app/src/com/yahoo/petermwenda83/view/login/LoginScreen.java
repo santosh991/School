@@ -115,7 +115,7 @@ public class LoginScreen extends JFrame{
 	        this.add(Passwd);
 	        this.add(btnLogin);
 	        this.add(btnCancel);
-	       this.setVisible(true); 
+	        this.setVisible(true); 
 	      
 	     
 	      
