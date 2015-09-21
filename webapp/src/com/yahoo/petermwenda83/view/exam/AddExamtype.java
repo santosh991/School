@@ -41,11 +41,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.yahoo.petermwenda83.contoller.exam.ExamType;
-import com.yahoo.petermwenda83.contoller.room.ClassRoom;
-import com.yahoo.petermwenda83.contoller.student.Subject;
-import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.model.room.RoomDAO;
+import com.yahoo.petermwenda83.bean.exam.ExamType;
+import com.yahoo.petermwenda83.bean.room.ClassRoom;
+import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.dao.room.RoomDAO;
 
 
 /**
@@ -66,10 +66,10 @@ public class AddExamtype extends JInternalFrame {
 	 
 	 List<Subject> subjectList = new ArrayList<>();
 	 List<ClassRoom> classroomList = new ArrayList<>();
+
 	 HashMap<String, String> SubHash= new HashMap<>();
 	 HashMap<String, String> roomHash= new HashMap<>();
 	 
-	 //private static ExamtypeDAO examTypeDAO; 
 	 private static SubjectDAO subjectDAO;
 	 private static RoomDAO roomDAO;
 
@@ -239,9 +239,9 @@ public class AddExamtype extends JInternalFrame {
 			
 			
 			 ExamType examType = new  ExamType();
-			 String type = (String) cmbexmtyp.getSelectedItem();
+			// String type = (String) cmbexmtyp.getSelectedItem();
 			 String term = (String) cmbterm.getSelectedItem();
-			 String clas = (String) cmbclass.getSelectedItem();
+			// String clas = (String) cmbclass.getSelectedItem();
 			 String subject = (String) cmbsubjects.getSelectedItem();
 			 String classroom = (String) cmbclass.getSelectedItem();
 			

@@ -35,8 +35,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.yahoo.petermwenda83.contoller.student.Subject;
-import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
 
 
 /**

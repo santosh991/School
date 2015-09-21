@@ -45,7 +45,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
-import com.yahoo.petermwenda83.view.exam.ExamTypeView;
+import com.yahoo.petermwenda83.view.exam.SelectExam;
 import com.yahoo.petermwenda83.view.subject.SubjectView;
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -280,9 +280,9 @@ public class MainWindow extends JFrame implements WindowListener {
 	                desktop.add(frm);
 	                frm.setVisible(true);
 	            } else if (ActCmd.equalsIgnoreCase("mnuMain")) {
-	            	ExamTypeView epanel = new ExamTypeView();
-	                desktop.add(epanel);
-	                epanel.setVisible(true);
+	            	SelectExam selectexam = new SelectExam();
+	                desktop.add(selectexam);
+	                selectexam.setVisible(true);
 	            } 
 		 }
 	 };

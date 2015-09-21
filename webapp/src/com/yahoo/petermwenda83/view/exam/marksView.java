@@ -44,14 +44,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import com.yahoo.petermwenda83.contoller.room.ClassRoom;
-import com.yahoo.petermwenda83.contoller.student.Student;
-import com.yahoo.petermwenda83.contoller.student.StudentSubject;
-import com.yahoo.petermwenda83.contoller.student.Subject;
-import com.yahoo.petermwenda83.model.curriculum.StudSubjectDAO;
-import com.yahoo.petermwenda83.model.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.model.registration.StudentDAO;
-import com.yahoo.petermwenda83.model.room.RoomDAO;
+import com.yahoo.petermwenda83.bean.room.ClassRoom;
+import com.yahoo.petermwenda83.bean.student.Student;
+import com.yahoo.petermwenda83.bean.student.StudentSubject;
+import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.dao.curriculum.StudSubjectDAO;
+import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.dao.registration.StudentDAO;
+import com.yahoo.petermwenda83.dao.room.RoomDAO;
 
 
 /**

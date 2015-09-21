@@ -35,8 +35,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import com.yahoo.petermwenda83.contoller.users.User;
-import com.yahoo.petermwenda83.model.user.UsresDAO;
+import com.yahoo.petermwenda83.bean.users.User;
+import com.yahoo.petermwenda83.dao.user.UsresDAO;
 import com.yahoo.petermwenda83.util.SecurityUtil;
 import com.yahoo.petermwenda83.view.MainWindow;
 
