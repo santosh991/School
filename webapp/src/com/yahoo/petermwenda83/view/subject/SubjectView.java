@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.yahoo.petermwenda83.bean.student.Subject;
-import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.persistence.curriculum.SubjectDAO;
 
 
 /**

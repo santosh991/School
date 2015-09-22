@@ -19,10 +19,10 @@ import com.yahoo.petermwenda83.bean.exam.cat.Cat;
 import com.yahoo.petermwenda83.bean.exam.main.Main;
 import com.yahoo.petermwenda83.bean.room.ClassRoom;
 import com.yahoo.petermwenda83.bean.student.Subject;
-import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.dao.exam.cat.CatDAO;
-import com.yahoo.petermwenda83.dao.exam.main.MainDAO;
-import com.yahoo.petermwenda83.dao.room.RoomDAO;
+import com.yahoo.petermwenda83.persistence.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.persistence.exam.cat.CatDAO;
+import com.yahoo.petermwenda83.persistence.exam.main.MainDAO;
+import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
 
 /**

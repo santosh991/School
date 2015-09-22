@@ -48,10 +48,10 @@ import com.yahoo.petermwenda83.bean.room.ClassRoom;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.StudentSubject;
 import com.yahoo.petermwenda83.bean.student.Subject;
-import com.yahoo.petermwenda83.dao.curriculum.StudSubjectDAO;
-import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.dao.registration.StudentDAO;
-import com.yahoo.petermwenda83.dao.room.RoomDAO;
+import com.yahoo.petermwenda83.persistence.curriculum.StudSubjectDAO;
+import com.yahoo.petermwenda83.persistence.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.persistence.registration.StudentDAO;
+import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 
 
 /**

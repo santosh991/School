@@ -44,8 +44,8 @@ import javax.swing.JTextField;
 import com.yahoo.petermwenda83.bean.exam.ExamType;
 import com.yahoo.petermwenda83.bean.room.ClassRoom;
 import com.yahoo.petermwenda83.bean.student.Subject;
-import com.yahoo.petermwenda83.dao.curriculum.SubjectDAO;
-import com.yahoo.petermwenda83.dao.room.RoomDAO;
+import com.yahoo.petermwenda83.persistence.curriculum.SubjectDAO;
+import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 
 
 /**

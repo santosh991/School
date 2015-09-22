@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+<servlet>
+        <servlet-name>Log4jInit</servlet-name>
+        <servlet-class>      </servlet-class>
+        <init-param>
+            <param-name>log4j-init-file</param-name>
+            <param-value>/WEB-INF/log/log4j.properties</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>PropertiesConfig</servlet-name>
+        <servlet-class>   </servlet-class>
+        <init-param>
+            <param-name>config-file</param-name>
+            <param-value>/WEB-INF/config.properties</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+
+
+
+
+
+
+
+
+
+
+
+    <session-config>
+        <session-timeout>8</session-timeout>
+    </session-config>
+</web-app>

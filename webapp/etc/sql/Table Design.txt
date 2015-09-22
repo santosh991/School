@@ -1,7 +1,7 @@
 
  
 +++++++++++++++++++++++++++++++++++++++
-+ Allamano School Management System Database Layout.
++ School Management System Database Layout.
 +++++++++++++++++++++++++++++++++++++++
 
 The tables are divided into the following sections:
