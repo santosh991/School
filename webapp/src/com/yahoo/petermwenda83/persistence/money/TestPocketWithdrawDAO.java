@@ -29,7 +29,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.yahoo.petermwenda83.bean.money.pocket.Withdraw;
+import com.yahoo.petermwenda83.bean.money.Withdraw;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -74,7 +74,7 @@ public class TestPocketWithdrawDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketWithdrawDAO#put(com.yahoo.petermwenda83.bean.money.pocket.Deposit)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketWithdrawDAO#put(com.yahoo.petermwenda83.bean.money.Deposit)}.
 	 */
 	//@Ignore
 	@Test
@@ -88,7 +88,7 @@ public class TestPocketWithdrawDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketWithdrawDAO#getWithdraw(com.yahoo.petermwenda83.bean.money.pocket.Deposit)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketWithdrawDAO#getWithdraw(com.yahoo.petermwenda83.bean.money.Deposit)}.
 	 */
 	@Ignore
 	@Test

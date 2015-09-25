@@ -40,8 +40,9 @@ public class StudentSuper extends AllBean{
 		private Date admissiondate;
 		private String roomnameUuid;
 		private String subjectUuid;
-		private String StudenttUuid;
+		private String StudentUuid;
 		private String subjectcode;
+		private String SchoolAccountUuid;
 		
 		
 	
@@ -57,8 +58,9 @@ public class StudentSuper extends AllBean{
 		admissiondate = new Date();
 		roomnameUuid = "";
 		subjectUuid = "";
-		StudenttUuid = "";
+		StudentUuid = "";
 		subjectcode = "";
+		SchoolAccountUuid = "";
 		
 		
 	}
@@ -223,14 +225,14 @@ public class StudentSuper extends AllBean{
 	 * @return the studenttUuid
 	 */
 	public String getStudentUuid() {
-		return StudenttUuid;
+		return StudentUuid;
 	}
 
 	/**
 	 * @param studenttUuid the studenttUuid to set
 	 */
-	public void setStudentUuid(String studenttUuid) {
-		StudenttUuid = studenttUuid;
+	public void setStudentUuid(String studentUuid) {
+		StudentUuid = studentUuid;
 	}
 
 	/**
@@ -245,6 +247,20 @@ public class StudentSuper extends AllBean{
 	 */
 	public void setSubjectcode(String subjectcode) {
 		this.subjectcode = subjectcode;
+	}
+
+	/**
+	 * @return the schoolAccountUuid
+	 */
+	public String getSchoolAccountUuid() {
+		return SchoolAccountUuid;
+	}
+
+	/**
+	 * @param schoolAccountUuid the schoolAccountUuid to set
+	 */
+	public void setSchoolAccountUuid(String schoolAccountUuid) {
+		SchoolAccountUuid = schoolAccountUuid;
 	}
 
 	

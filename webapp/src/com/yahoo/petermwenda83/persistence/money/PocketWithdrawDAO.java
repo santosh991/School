@@ -32,7 +32,7 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.money.pocket.Withdraw;
+import com.yahoo.petermwenda83.bean.money.Withdraw;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 
 /**

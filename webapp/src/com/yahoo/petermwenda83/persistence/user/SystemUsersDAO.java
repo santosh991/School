@@ -21,7 +21,7 @@ package com.yahoo.petermwenda83.persistence.user;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.bean.users.User;
+import com.yahoo.petermwenda83.bean.systemuser.User;
 
 
 /**

@@ -55,6 +55,8 @@ public class Student extends StudentSuper  {
 		builder.append(getBcertno()); 
 		builder.append(",getAdmissiondate() =");
 		builder.append(getAdmissiondate());
+		builder.append(",getSchoolAccountUuid() =");
+		builder.append(getSchoolAccountUuid());
 		builder.append("]");
 		return builder.toString(); 
 		}

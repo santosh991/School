@@ -29,7 +29,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.yahoo.petermwenda83.bean.money.pocket.Deposit;
+import com.yahoo.petermwenda83.bean.money.Deposit;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -72,7 +72,7 @@ public class TestPocketDepositDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketDepositDAO#hasBalance(com.yahoo.petermwenda83.bean.money.pocket.Deposit, java.lang.Double)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketDepositDAO#hasBalance(com.yahoo.petermwenda83.bean.money.Deposit, java.lang.Double)}.
 	 */
 	@Ignore
 	@Test
@@ -84,7 +84,7 @@ public class TestPocketDepositDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketDepositDAO#addBalance(com.yahoo.petermwenda83.bean.money.pocket.Deposit, java.lang.Double)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketDepositDAO#addBalance(com.yahoo.petermwenda83.bean.money.Deposit, java.lang.Double)}.
 	 */
 	@Ignore
 	@Test
@@ -96,7 +96,7 @@ public class TestPocketDepositDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketDepositDAO#deductBalance(com.yahoo.petermwenda83.bean.money.pocket.Deposit, java.lang.Double)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PocketDepositDAO#deductBalance(com.yahoo.petermwenda83.bean.money.Deposit, java.lang.Double)}.
 	 */
 	@Ignore
 	@Test

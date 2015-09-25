@@ -79,6 +79,8 @@ public class Subject extends StudentSuper{
 		builder.append(subjectname);
 		builder.append("subjectcategory=");
 		builder.append(subjectcategory);
+		builder.append(",getSchoolAccountUuid() =");
+		builder.append(getSchoolAccountUuid());
 		builder.append("]");
 		return builder.toString(); 
 		}

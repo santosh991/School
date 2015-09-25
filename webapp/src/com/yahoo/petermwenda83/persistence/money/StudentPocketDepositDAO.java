@@ -5,8 +5,8 @@ package com.yahoo.petermwenda83.persistence.money;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.bean.money.pocket.Deposit;
-import com.yahoo.petermwenda83.bean.money.pocket.Money;
+import com.yahoo.petermwenda83.bean.money.Deposit;
+import com.yahoo.petermwenda83.bean.money.Money;
 
 /**
  * @author peter

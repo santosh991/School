@@ -28,6 +28,7 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.util.DbPoolUtil</servlet-class>
         <load-on-startup>3</load-on-startup>
     </servlet>
+   
 
 
 
@@ -35,6 +36,47 @@
 
 
 
+    <!-- Start - Account Holder servlets -->
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Login</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
+
+
+    <!-- Start - Administrator servlets -->
+    <servlet>
+        <servlet-name>AdminLogin</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.Login</servlet-class>
+    </servlet>
+
+
+
+
+
+ <!-- Servlet mapping start -->
+    
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+      
+    <!-- Start - Administrator servlet mapping -->
+    <servlet-mapping>
+        <servlet-name>AdminLogin</servlet-name>
+        <url-pattern>/admin/AdminLogin</url-pattern>      
+    </servlet-mapping>
+     
+    <session-config>
+        <session-timeout>8</session-timeout>
+    </session-config>
 
 
 

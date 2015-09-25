@@ -30,8 +30,8 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.money.pocket.Deposit;
-import com.yahoo.petermwenda83.bean.money.pocket.Money;
+import com.yahoo.petermwenda83.bean.money.Deposit;
+import com.yahoo.petermwenda83.bean.money.Money;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 
 /**
@@ -104,7 +104,7 @@ public class PocketDepositDAO extends DBConnectDAO implements StudentPocketDepos
 	}
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.money.StudentPocketDepositDAO#hasBalance(com.yahoo.petermwenda83.bean.money.pocket.Deposit)
+	 * @see com.yahoo.petermwenda83.persistence.money.StudentPocketDepositDAO#hasBalance(com.yahoo.petermwenda83.bean.money.Deposit)
 	 */
 	@Override
 	public boolean hasBalance(Money money,Double bal) {
@@ -140,7 +140,7 @@ public class PocketDepositDAO extends DBConnectDAO implements StudentPocketDepos
 	}
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.money.StudentPocketDepositDAO#addBalance(com.yahoo.petermwenda83.bean.money.pocket.Deposit)
+	 * @see com.yahoo.petermwenda83.persistence.money.StudentPocketDepositDAO#addBalance(com.yahoo.petermwenda83.bean.money.Deposit)
 	 */
 	@Override
 	public boolean addBalance(Money money,Double bal) {
@@ -196,7 +196,7 @@ public class PocketDepositDAO extends DBConnectDAO implements StudentPocketDepos
 	}
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.money.StudentPocketDepositDAO#deductBalance(com.yahoo.petermwenda83.bean.money.pocket.Deposit)
+	 * @see com.yahoo.petermwenda83.persistence.money.StudentPocketDepositDAO#deductBalance(com.yahoo.petermwenda83.bean.money.Deposit)
 	 */
 	@Override
 	public boolean deductBalance(Money money,Double bal) {

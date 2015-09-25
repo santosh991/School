@@ -26,7 +26,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.yahoo.petermwenda83.bean.users.User;
+import com.yahoo.petermwenda83.bean.systemuser.User;
 
 /**
  *@author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -71,7 +71,7 @@ public class TestUsresDAO {
 
 	
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#getUserName(com.yahoo.petermwenda83.bean.users.User)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#getUserName(com.yahoo.petermwenda83.bean.systemuser.User)}.
 	 */
 	@Ignore
 	@Test
@@ -91,7 +91,7 @@ public class TestUsresDAO {
 
 	
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#editUser(com.yahoo.petermwenda83.bean.users.User, java.lang.String)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#editUser(com.yahoo.petermwenda83.bean.systemuser.User, java.lang.String)}.
 	 */
 	@Ignore
 	@Test
@@ -106,7 +106,7 @@ public class TestUsresDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#putUser(com.yahoo.petermwenda83.bean.users.User)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#putUser(com.yahoo.petermwenda83.bean.systemuser.User)}.
 	 */
 	@Ignore
 	@Test
@@ -121,7 +121,7 @@ public class TestUsresDAO {
 	}
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#deleteUser(com.yahoo.petermwenda83.bean.users.User)}.
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#deleteUser(com.yahoo.petermwenda83.bean.systemuser.User)}.
 	 */
 	@Ignore
 	@Test

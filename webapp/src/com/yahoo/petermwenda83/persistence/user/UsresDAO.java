@@ -29,7 +29,7 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.users.User;
+import com.yahoo.petermwenda83.bean.systemuser.User;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 
@@ -210,7 +210,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 
 	
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getUserName(com.yahoo.petermwenda83.bean.users.User)
+	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getUserName(com.yahoo.petermwenda83.bean.systemuser.User)
 	 */
 	@Override
 	public User getUserName(User use) { 

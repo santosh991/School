@@ -11,12 +11,14 @@ import com.yahoo.petermwenda83.bean.AllBean;
  */
 public class ClassRoom  extends AllBean{
 	private String roomname;
+	private String SchoolAccountUuid;
 	/**
 	 * 
 	 */
 	public ClassRoom() {
 		super();
 		roomname ="";
+		SchoolAccountUuid ="";
 	}
 	
 	/**
@@ -33,6 +35,20 @@ public class ClassRoom  extends AllBean{
 		this.roomname = roomname;
 	}
 
+	/**
+	 * @return the schoolAccountUuid
+	 */
+	public String getSchoolAccountUuid() {
+		return SchoolAccountUuid;
+	}
+
+	/**
+	 * @param schoolAccountUuid the schoolAccountUuid to set
+	 */
+	public void setSchoolAccountUuid(String schoolAccountUuid) {
+		SchoolAccountUuid = schoolAccountUuid;
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
@@ -43,6 +59,8 @@ public class ClassRoom  extends AllBean{
 		builder.append( getUuid());
 		builder.append(", roomname =");
 		builder.append(roomname);
+		builder.append(", SchoolAccountUuid =");
+		builder.append(SchoolAccountUuid);
 		return builder.toString(); 
 		}
 
