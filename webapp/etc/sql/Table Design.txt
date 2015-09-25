@@ -5,103 +5,66 @@
 +++++++++++++++++++++++++++++++++++++++
 
 The tables are divided into the following sections:
-1. Student Management
-2. Staff Management
-3. Subject Management
-4. Exam Management
-5. Money Management
-6.Users
+1. School Account Management
+2. Subject Management
+3. ClassRoom Management
+4. Student Management
+5. Exam Management
+6. Employee Management
+7. Pocket Money Management
+8. User Management
 
 
 'UUID' stands for a universally unique identifier.
 
 ======================
 ======================
-1. Suject Management
+1. School Account Management
+======================
+======================
+
+-- -------------------
+-- Table SchoolAccount
+-- -------------------
+
+    -Id  (primary key)
+    -Uuid 
+    -SchoolName
+    -Username 
+    -Password 
+    -Mobile 
+    -Email 
+
+======================
+======================
+2. School Subject Management
 ======================
 ======================
 
 --------------------
-Table Subject
+--Table Subject
 --------------------
 This is to store all Subjects eg English, Kiswahili ete
 - Id (primary key)
-- uuid
-- subjectcode
-- subjectname
-- sujectcategory
+- SchoolAccountUuid 
+- SubjectCode 
+- SubjectName 
+- SubjectCategory
+- SysUser
+- RegDate
+
 
 
 ======================
 ======================
-2. Exam Management
+3. School ClassRoom Management
 ======================
 ======================
---------------------
-Table Exam_Type
---------------------
+ - Id (primary key)
+ - Uuid 
+ - SchoolAccountUuid 
+ - RoomName
 
-- Id (primary key)
-- uuid
-- examtype
-- term
-- year
-- class
-- description
-
---------------------
-Table Exam_Marks
---------------------
-
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Examtype uuid references Examtype(uuid)
-- Subject uuid references Suject(uuid)
-- Marks
-- Submitdate
-
---------------------
-Table Exam_Totals
---------------------
-
-- Id (primary key)
-- Uuid
-- Subject uuid references Suject(uuid)
-- Student uuid references Student(uuid)
-- Total
-- Points
-- Grade
-- Remarks
-- Submitdate
-
-
-
---------------------
-Table CatMarks
---------------------
-
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Examtype uuid references Examtype(uuid)
-- Subject uuid references Suject(uuid)
-- Marks
-- Submitdate
-
---------------------
-Table CatTotals
---------------------
-
-- Id (primary key)
-- Uuid
-- Subject uuid references Suject(uuid)
-- Student uuid references Student(uuid)
-- Total
-- Points
-- Grade
-- Remarks
-- Submitdate
 
 
 
@@ -112,227 +75,293 @@ Table CatTotals
 ================================
 ================================
 
----------------------
-Table Students
----------------------
-- Id (primary key)
-- Uuid
-- Gender
-- DOB
-- First Name
-- Last Name
-- Surname
-- ADM NO
-- Form
-- Class
-- Year
-- Date
-- dob 
--BcertNo
+-- ----------------
+-- Table Student
+-- ----------------
+
+    -Id 
+    -Uuid
+    -SchoolAccountUuid 
+    -FirstName 
+    -LastName 
+    -SurName 
+    -Gender
+    -Admno 
+    -Year 
+    -Dob 
+    -BcertNo 
+    -SysUser 
+    -RegDate 
 
 
 
----------------------
- Table Student_Subject
----------------------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Suject uuid references Suject(uuid)
+-- -------------------
+-- StudentSubject
+-- -------------------
 
-
----------------------
- Table Student_House
----------------------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- House Name
-
-
----------------
- Table Student_Location
--------------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- County
-- Location
-- Sublocation
-
-
-------
-Table Student_Parent
-------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Father Name
-- Father Phone
-- Father Occupation
-- Father ID
-- Father Email
-- Mother Name
-- Mother Phone
-- Mother Occupation
-- Mother ID
-- Mother Email
-- Relationship  //Real parent, adoption
-
-------
-Table Student_Relative
-------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Relative Name
-- Relative Phone
-- nationalID
-
-------
-Table Student_Sponsor
-------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Sponsor Name
-- Sponsor Phone
-- nationalID
-- Sponsor Occupation
-- Sponsor Coutry
-- Sponsor County
-
-
-------
-Table Student_Activities
-------
-This stores activities like sports,
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Activity
-
-
-------
-Table StudentStatus
-------
-This stores status like total orphan,partil etc,
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- Status, //partial orpahn, total orphan ,both parents alive
+    -Id
+    -Uuid 
+    -StudentUuid 
+    -subjectUuid 
+    -ClassRoomUuid 
+    -SysUser
+    -RegDate 
 
 
 
-------
-Table StudentPrimary
-------
-- Id (primary key)
-- Uuid
-- Student uuid references Student(uuid)
-- SchoolName
-- Index
-- KcpeYear
-- KcpeMarks
-- 
-- 
+-- -------------------
+-- StudentHouse
+----------------------
+
+    -Id
+    -Uuid 
+    -StudentUuid 
+    -HouseName 
+  
+
+
+
+-- -------------------
+-- Table StudentLocation
+----------------------
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -County 
+    -Location 
+    -SubLocation 
+
+
+-- -------------------
+-- Table StudentParent
+----------------------
+
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -FatherName 
+    -FatherPhone 
+    -FatherOccupation
+    -FatherID 
+    -FatherEmail 
+    -MotherName 
+    -MotherPhone 
+    -MotherOccupation
+    -MotherEmail 
+    -MotherID 
+    -Relationship 
 
 
 
 
+-- -------------------
+-- Table StudentRelative
+----------------------
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -RelativeName 
+    -RelativePhone 
+    -NationalID 
 
 
-==================
-==================
-4. Staff Management
-==================
-==================
 
----------------------
-Table Teacher
----------------------
-- Id (primary key)
-- Uuid
-- First Name
-- Last Name
-- Surname
-- nhsfno
-- nssfno 
-- Phone
-- dob
-- National ID
-- Teacher Number
-- county
-- location
+
+-- -------------------
+-- Table StudentSponsor
+----------------------
+
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -Name 
+    -Phone 
+    -NationalID 
+    -Occupation 
+    -County 
+    -Country 
+
+
+
+-- -------------------
+-- Table StudentActivity
+----------------------
+
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -Activity
+
+
+-- -------------------
+-- Table StudentPrimary
+----------------------
+
+    -Id
+    -Uuid
+    -StudentUuid 
+    -SchoolName 
+    -Index 
+    -KcpeYear
+
+
+
+======================
+======================
+4. School Exam Management
+======================
+======================
+-- -------------------
+-- Table Cat
+-- -------------------
+ 
+    -Id 
+    -Uuid
+    -ExamName 
  
 
----------------------
-Table Teacher_Subject
----------------------
-- Id (primary key)
-- Uuid
-- Teacher Uuid references Teacher (Uuid)
-- Suject Uuid references Suject (Uuid)
-- Form
-- Class
 
+--------------------
+-- Table MainExamDetail
+--------------------
+
+    -Id
+    -Uuid 
+    -SchoolAccountUuid 
+    -ExamUuid 
+    -ClassRoomUuid 
+    -SubjectUuid 
+    -Term 
+    -Year 
+    -OutOf
+
+
+
+-- -------------------
+-- Table Perfomance
+-- -------------------
+
+    -Id 
+    -StudentUuid 
+    -SubjectUuid 
+    -ExamDetailUuid 
+    -Assignment1 
+    -Assignment2
+    -Cat1 
+    -Cat2 
+    -Cat3 
+    -Paper1 
+    -Paper2 
+    -Paper3 
+    -SysUser 
+    -SubmitDate 
+
+
+
+-- -------------------
+-- Table Result
+-- -------------------
  
----------------------
-Table NTStaff
----------------------
-- Id (primary key)
-- Uuid
-- Fisrt Name
-- Last Name
-- Surname
-- National ID
-- County
-- Location
-- Sublocation
+    -Id 
+    -StudentUuid
+    -ExamDetailUuid 
+    -MPoint 
+    -Grade 
+    -Remark
+    -Position 
+  
 
+-- -------------------
+-- Table CatResult
+-- -------------------
+ 
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -ExamDetailUuid 
+    -CatPoint 
+    -Grade 
+    -Remark 
+    -Position 
+   
+   
+
+
+
+==================
+==================
+4. Employee Management
+==================
+==================
+
+
+    -Id 
+    -Uuid
+    -SchoolAccountUuid 
+    -Category 
+    -Position 
+
+
+
+-- -------------------
+-- Table EmployeeDetail
+-- -------------------
+
+    -Id 
+    -Uuid 
+    -EmployeeUuid 
+    -EmployeeNo 
+    -FirstName 
+    -LastName 
+    -Surname 
+    -Gender 
+    -NhifNo 
+    -NssfNo 
+    -Phone 
+    -Dob 
+    -NationalID
+    -County 
+    -SysUser
+    -RegDate 
+
+-- -------------------
+-- Table TeacherSubject
+-- -------------------
+
+    -Id 
+    -Uuid 
+    -EmployeeUuid 
+    -SubjectUuid 
+    -ClassRoomUuid
+    -SysUser 
+    -AssignDate
+
+
+
+==================
+==================
+5.Pocket Money Management
+==================
+==================
+--------------------
+Table Deposit
+-------------------
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -Amount 
+    -SysUser 
+    -DepositeDate 
 
 --------------------
-Table Position
+Table Withdraw
 -------------------
-- Id (primary key)
-- Uuid
-- PositionUuid references Teacher(Uuid)
-- Position
-- Salary
-
--------------------
-Table NTPosition
--------------------
-- Id (primary key)
-- Uuid
-- NTStaffUuid references NTStaff(Uuid)
-- Position
-- Salary
-
-
-
-==================
-==================
-5. Money Management
-==================
-==================
---------------------
-Table Money
--------------------
-- Id
-- Uuid
-- Student Uuid references Student(uuid)
-- Ammount
-- Date
-
---------------------
-Table Balance
--------------------
-- Id
-- Uuid
-- Student Uuid references Student(uuid)
-- Balance
-- Date
+    -Id 
+    -Uuid 
+    -StudentUuid 
+    -Amount 
+    -SysUser 
+    -WithdrawDate 
 
 
 
@@ -342,13 +371,14 @@ Table Balance
 ==================
 ==================
 --------------------
-Table Users
+Table SystemUser
 -------------------
-- Id
-- Uuid
-- User Type 
-- Username
-- Passowrd
+    -Id 
+    -Uuid 
+    -SchoolAccountUuid 
+    -UserType 
+    -UserName 
+    -Password 
 
 
 

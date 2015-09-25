@@ -5,6 +5,9 @@ package com.yahoo.petermwenda83.persistence;
 
 import java.sql.SQLException;
 
+import com.yahoo.petermwenda83.server.servlet.util.DbPoolUtil;
+
+
 
 
 /**
@@ -20,7 +23,7 @@ public class DBConnectDAO {
 	 * 
 	 */
 	public DBConnectDAO()  { 
-	dbutils =  new DButils();
+	dbutils =  DbPoolUtil.getDBCredentials();
 	}
 	/**
 	 * 

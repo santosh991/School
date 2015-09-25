@@ -24,6 +24,11 @@ import org.apache.log4j.Logger;
  */
 public class PropertiesConfig extends HttpServlet {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8894737966457928235L;
+
 	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	private static String configFile = "";
@@ -90,7 +95,8 @@ public class PropertiesConfig extends HttpServlet {
 			
 		} catch (ConfigurationException e) {
 			logger.error("ConfigurationException when trying to initialize configuration HashMap");
-			logger.error(ExceptionUtils.getStackTrace(e));			
+			logger.error(ExceptionUtils.getStackTrace(e));	
+			System.out.println(ExceptionUtils.getStackTrace(e));
 		} 
 	}
 }

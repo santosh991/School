@@ -39,6 +39,8 @@
     <copy todir="${build}/bin" overwrite="true">
       <fileset dir="${SCHOOL_HOME}/bin" />
     </copy>
+    <copy file="${config.file}" todir="${web-inf}" />
+    <copy file="${deployment.descriptor}" todir="${web-inf}" />
   </target>
 
 

@@ -5,7 +5,7 @@
 
 <servlet>
         <servlet-name>Log4jInit</servlet-name>
-        <servlet-class>      </servlet-class>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.init.Log4jInit</servlet-class>
         <init-param>
             <param-name>log4j-init-file</param-name>
             <param-value>/WEB-INF/log/log4j.properties</param-value>
@@ -15,12 +15,18 @@
     
     <servlet>
         <servlet-name>PropertiesConfig</servlet-name>
-        <servlet-class>   </servlet-class>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig</servlet-class>
         <init-param>
             <param-name>config-file</param-name>
             <param-value>/WEB-INF/config.properties</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
+    </servlet>  
+ 
+    <servlet>
+        <servlet-name>DbPoolUtil</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.util.DbPoolUtil</servlet-class>
+        <load-on-startup>3</load-on-startup>
     </servlet>
 
 
@@ -33,8 +39,5 @@
 
 
 
-
-    <session-config>
-        <session-timeout>8</session-timeout>
-    </session-config>
+    
 </web-app>

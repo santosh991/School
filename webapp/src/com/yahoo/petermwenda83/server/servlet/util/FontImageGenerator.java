@@ -49,6 +49,10 @@ import org.jasypt.util.text.BasicTextEncryptor;
 public class FontImageGenerator extends HttpServlet {
      		
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2686271754419422804L;
 	// The following are settings for the Captcha mechanism
 	final int CAPTCHA_IMAGE_FONT_SIZE = 25;
 	final int CAPTCHA_IMAGE_FONT_STYLE = 0;

@@ -33,7 +33,7 @@ import com.yahoo.petermwenda83.persistence.DButils;
 public class DbPoolUtil extends HttpServlet {
 
 	
-	private static DButils dButils;
+	private static DButils dButils; 
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
