@@ -20,13 +20,14 @@
  */
 package com.yahoo.petermwenda83.bean;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class AllBean {
+public class AllBean implements Serializable {
 	private int id;
 	private String uuid;
 	/**

@@ -10,7 +10,7 @@ import com.yahoo.petermwenda83.bean.AllBean;
  *
  */
 public class SchoolAccount extends AllBean {
-	 private String Uuid;
+	
 	 private String SchoolName;
 	 private String   Username;
 	 private String   Password;
@@ -22,7 +22,7 @@ public class SchoolAccount extends AllBean {
 	 * 
 	 */
 	public SchoolAccount() {
-		 Uuid = "";
+		
 		 SchoolName = "";
 		 Username = "";
 		 Password = "";
@@ -31,20 +31,6 @@ public class SchoolAccount extends AllBean {
 		
 	}
 	
-	/**
-	 * @return the uuid
-	 */
-	public String getUuid() {
-		return Uuid;
-	}
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	public void setUuid(String uuid) {
-		Uuid = uuid;
-	}
-
 	/**
 	 * @return the schoolName
 	 */
@@ -118,8 +104,11 @@ public class SchoolAccount extends AllBean {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("SchoolAccount [ getUuid() =");
-		builder.append(getUuid());
+		builder.append("SchoolAccount ");
+		builder.append("[ id =");
+		builder.append(getId()); 
+		builder.append(",getUuid()=");
+		builder.append( getUuid());
 		builder.append(", SchoolName =");
 		builder.append(SchoolName);
 		builder.append(", Username =");

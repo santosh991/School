@@ -10,30 +10,51 @@ import com.yahoo.petermwenda83.bean.AllBean;
  *
  */
 public class ClassRoom  extends AllBean{
-	private String roomname;
+	private String RoomName;
+	private String Room;
 	private String SchoolAccountUuid;
 	/**
 	 * 
 	 */
 	public ClassRoom() {
 		super();
-		roomname ="";
+		RoomName ="";
+		Room ="";
 		SchoolAccountUuid ="";
 	}
 	
+	
 	/**
-	 * @return the roomname
+	 * @return the roomName
 	 */
-	public String getRoomname() {
-		return roomname;
+	public String getRoomName() {
+		return RoomName;
 	}
 
+
 	/**
-	 * @param roomname the roomname to set
+	 * @param roomName the roomName to set
 	 */
-	public void setRoomname(String roomname) {
-		this.roomname = roomname;
+	public void setRoomName(String roomName) {
+		RoomName = roomName;
 	}
+
+
+	/**
+	 * @return the room
+	 */
+	public String getRoom() {
+		return Room;
+	}
+
+
+	/**
+	 * @param room the room to set
+	 */
+	public void setRoom(String room) {
+		Room = room;
+	}
+
 
 	/**
 	 * @return the schoolAccountUuid
@@ -52,13 +73,15 @@ public class ClassRoom  extends AllBean{
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Room Name");
+		builder.append("Room Details");
 		builder.append("[ id =");
 		builder.append(getId()); 
 		builder.append(",getUuid()=");
 		builder.append( getUuid());
-		builder.append(", roomname =");
-		builder.append(roomname);
+		builder.append(", Room =");
+		builder.append(Room);
+		builder.append(", RoomName =");
+		builder.append(RoomName);
 		builder.append(", SchoolAccountUuid =");
 		builder.append(SchoolAccountUuid);
 		return builder.toString(); 

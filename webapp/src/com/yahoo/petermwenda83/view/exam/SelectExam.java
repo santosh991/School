@@ -128,7 +128,7 @@ public class SelectExam  extends JInternalFrame{
 			 cmbsubject.addItem(SubHash.get(s.getUuid()));  
 		 }
 		 for(ClassRoom r : classroomList){
-			 roomHash.put(r.getUuid(), r.getRoomname()); 
+			 roomHash.put(r.getUuid(), r.getRoomName()); 
 			 cmbroom.addItem(roomHash.get(r.getUuid())); 
 			
 		 }

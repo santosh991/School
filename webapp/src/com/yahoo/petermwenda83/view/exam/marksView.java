@@ -141,7 +141,7 @@ import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 	        studentsubList = studSubjectDAO.getAllStudentSubject();
 	        
 	        for(ClassRoom r : roomList){
-	        	roomHash.put(r.getRoomname(), r.getUuid()); 
+	        	roomHash.put(r.getRoomName(), r.getUuid()); 
 	        }
 	         
 	          StudentSubject stsub = new StudentSubject();

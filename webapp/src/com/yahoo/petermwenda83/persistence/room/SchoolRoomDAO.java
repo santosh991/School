@@ -23,7 +23,7 @@ public interface SchoolRoomDAO {
 	   * @param RoomName
 	   * @return
 	   */
-	public ClassRoom get(String RoomName);
+	public ClassRoom get(String Room,String RoomName);
 	   /**
 	    * 
 	    * @param room
@@ -36,14 +36,14 @@ public interface SchoolRoomDAO {
 	    * @param roomname
 	    * @return
 	    */
-	public boolean editroom(ClassRoom room,String roomname);
+	public boolean editroom(ClassRoom room);
 	    /**
 	     * 
 	     * @param room
 	     * @param roomname
 	     * @return
 	     */
-	public boolean deleteroom(ClassRoom room,String roomname);
+	public boolean deleteroom(ClassRoom room);
 	    /**
 	     * 
 	     * @return

@@ -5,7 +5,7 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 
-<link href="css/tooplate_style.css" rel="stylesheet" type="text/css" />
+<link href="../css/tooplate_style.css" rel="stylesheet" type="text/css" />
 
 <script language="javascript" type="text/javascript">
 
@@ -21,10 +21,11 @@ function clearText(field)
 
 </script>
 
-<link rel="stylesheet" href="css/nivo-slider.css" type="text/css" media="screen" />
-<link href="css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
-<script src="js/jquery.min.js" type="text/javascript"></script>
-<script src="js/jquery.nivo.slider.js" type="text/javascript"></script>
+<link rel="stylesheet" href="../css/nivo-slider.css" type="text/css" media="screen" />
+<link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
+ <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+<script src="../js/jquery.min.js" type="text/javascript"></script>
+<script src="../js/jquery.nivo.slider.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 $(window).load(function() {
@@ -61,9 +62,9 @@ $(window).load(function() {
         <div id="site_title"><h1><a href="#">Admin Panel:School Management System </a></h1></div>
         
         <div id="social_box">
-            <a href="#"><img src="images/facebook.png" alt="facebook" /></a>
-            <a href="#"><img src="images/myspace.png" alt="myspace" /></a>
-            <a href="#"><img src="images/twitter.png" alt="twitter" /></a>
+            <a href="#"><img src="../images/facebook.png" alt="facebook" /></a>
+            <a href="#"><img src="../images/myspace.png" alt="myspace" /></a>
+            <a href="#"><img src="../images/twitter.png" alt="twitter" /></a>
         </div>
         
         <div class="cleaner"></div>
@@ -71,7 +72,7 @@ $(window).load(function() {
     
     <div id="tooplate_menu">
         <ul>
-            <li><a href="index.jsp" class="current">Home</a></li>
+            <li><a href="home.jsp" class="current">Home</a></li>
             <li><a href="#">Manage Schools</a></li>
              <li><a href="#">Notifications</a></li>
             <li class="last"><a href="#">Payments</a></li>

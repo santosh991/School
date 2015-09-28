@@ -29,7 +29,15 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
    
-
+ <servlet>
+        <servlet-name>CacheInit</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.init.CacheInit</servlet-class>
+        <init-param>
+            <param-name>ehcache-file</param-name>
+            <param-value>/WEB-INF/classes/ehcache.xml</param-value>
+        </init-param>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
 
 
 
@@ -41,7 +49,10 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Login</servlet-class>
     </servlet>
-
+   <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Logout</servlet-class>
+    </servlet>
 
 
 
@@ -68,6 +79,12 @@
         <url-pattern>/Login</url-pattern>
     </servlet-mapping>
       
+   <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>
         <servlet-name>AdminLogin</servlet-name>

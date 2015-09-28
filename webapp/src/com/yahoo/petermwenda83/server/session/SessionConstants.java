@@ -13,6 +13,16 @@ public class SessionConstants {
 	 
 	 final public static String SCHOOL_ACCOUNT_ADD_SUCCESS = "School Account Added Successfully";
 
+	public static final String ACCOUNT_SIGN_IN_ERROR_KEY = "Error Login";
+
+	public static final Object ACCOUNT_SIGN_IN_NO_EMAIL = "Sorry, there is no user with that email. Please try again.";
+
+	public static final String ACCOUNT_SIGN_IN_ACCOUNTUUID = "Account Signin AccountUuid";
+
+	public static final String ACCOUNT_SIGN_IN_KEY = "Account Signin Key";
+
+	public static final String ACCOUNT_SIGN_IN_TIME = "Account Signin Time";
+
 	/**
 	 * 
 	 */

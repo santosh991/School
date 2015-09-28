@@ -83,17 +83,18 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
 	 * @see com.yahoo.petermwenda83.model.room.SchoolRoomDAO#get(java.lang.String)
 	 */
 	@Override
-	public ClassRoom get(String RoomName) {
+	public ClassRoom get(String Room,String RoomName) {
 		ClassRoom room = new ClassRoom();
         ResultSet rset = null;
        try(
      		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ClassRoom WHERE RoomName = ?;");       
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ClassRoom WHERE Room=? AND RoomName = ?;");       
      		
      		){
      	
-     	 pstmt.setString(1, RoomName);
-	         rset = pstmt.executeQuery();
+     	 pstmt.setString(1, Room);
+     	 pstmt.setString(2, RoomName);
+	     rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
 	    	 room  = beanProcessor.toBean(rset,ClassRoom.class);
@@ -102,7 +103,7 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting ExamType with RoomName: " + RoomName);
+     	 logger.error("SQL Exception when getting ExamType with RoomName: " + Room+RoomName);
           logger.error(ExceptionUtils.getStackTrace(e));
           System.out.println(ExceptionUtils.getStackTrace(e));
      }
@@ -118,11 +119,13 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ClassRoom" 
-			        		+"(Uuid, Roomname) VALUES (?,?);");
+			        		+"(Uuid,SchoolAccountUuid,Room,Roomname) VALUES (?,?,?,?);");
       		){
 			   
 	            pstmt.setString(1, room.getUuid());
-	            pstmt.setString(2, room.getRoomname());
+	            pstmt.setString(2, room.getSchoolAccountUuid());
+	            pstmt.setString(3, room.getRoom());
+	            pstmt.setString(4, room.getRoomName());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -140,15 +143,16 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
 	 * @see com.yahoo.petermwenda83.model.room.SchoolRoomDAO#editroom(com.yahoo.petermwenda83.contoller.room.ClassRoom, java.lang.String)
 	 */
 	@Override
-	public boolean editroom(ClassRoom room, String roomname) {
+	public boolean editroom(ClassRoom room) {
 		 boolean success = true; 
-		  
 		 try(   Connection conn = dbutils.getConnection();
-	      PreparedStatement pstmt = conn.prepareStatement("UPDATE ClassRoom SET Roomname =?"
+	      PreparedStatement pstmt = conn.prepareStatement("UPDATE ClassRoom SET Room =?,RoomName =?,SchoolAccountUuid =? "
 			+ " WHERE Uuid = ? ;");
         		){
-	            pstmt.setString(1, room.getRoomname());
-	            pstmt.setString(2, room.getUuid());
+	            pstmt.setString(1, room.getRoom());
+	            pstmt.setString(2, room.getRoomName());
+	            pstmt.setString(3, room.getSchoolAccountUuid());
+	            pstmt.setString(4, room.getUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -158,7 +162,6 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
              success = false;
 		 }
 		
-		
 		return success;
 	}
 
@@ -166,17 +169,18 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
 	 * @see com.yahoo.petermwenda83.model.room.SchoolRoomDAO#deleteroom(com.yahoo.petermwenda83.contoller.room.ClassRoom, java.lang.String)
 	 */
 	@Override
-	public boolean deleteroom(ClassRoom room, String roomname) {
+	public boolean deleteroom(ClassRoom room) {
 		 boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
 	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ClassRoom WHERE"
-	         	      		+ " Roomname = ?;");       
+	         	      		+ " Room = ? AND RoomName =?;");       
 	      		
 	      		){
 	      	
-	      	 pstmt.setString(1, room.getRoomname());
-		         pstmt.executeUpdate();
+	      	 pstmt.setString(1, room.getRoom());
+	      	 pstmt.setString(2, room.getRoomName());
+		     pstmt.executeUpdate();
 		     
 	      }catch(SQLException e){
 	      	 logger.error("SQL Exception when deletting ClassRoom: " +room);
@@ -195,7 +199,7 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
 	@Override
 	public List<ClassRoom> getAllRooms() {
 		  List<ClassRoom> list =new  ArrayList<>(); 
-		try(   
+		  try(   
 	      		Connection conn = dbutils.getConnection();
 	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM ClassRoom ;");   
 	      		ResultSet rset = pstmt.executeQuery();
@@ -208,9 +212,7 @@ public class RoomDAO extends DBConnectDAO implements SchoolRoomDAO {
 	          logger.error(ExceptionUtils.getStackTrace(e));
 	          System.out.println(ExceptionUtils.getStackTrace(e));
 	      }
-	    
-			
-		
+	   
 		return list;
 	}
 

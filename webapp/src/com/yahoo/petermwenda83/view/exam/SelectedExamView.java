@@ -158,7 +158,7 @@ public class SelectedExamView extends JInternalFrame {
         roomList = roomDAO.getAllRooms();
         
         for(ClassRoom r : roomList){
-        	roomHash.put(r.getUuid(), r.getRoomname()); 
+        	roomHash.put(r.getUuid(), r.getRoomName()); 
         }
         
         

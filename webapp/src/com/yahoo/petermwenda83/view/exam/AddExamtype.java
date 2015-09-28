@@ -108,7 +108,7 @@ public class AddExamtype extends JInternalFrame {
 			 cmbsubjects.addItem(SubHash.get(s.getUuid()));  
 		 }
 		 for(ClassRoom r : classroomList){
-			 roomHash.put(r.getUuid(), r.getRoomname()); 
+			 roomHash.put(r.getUuid(), r.getRoomName()); 
 			 cmbclass.addItem(roomHash.get(r.getUuid())); 
 			
 		 }

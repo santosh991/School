@@ -78,11 +78,12 @@ CREATE TABLE ClassRoom (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    Room text,
     RoomName text
 
 );
 -- import data from the CSV file for the status table
-\COPY ClassRoom(Uuid,SchoolAccountUuid,RoomName) FROM '/tmp/ClassRoom.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY ClassRoom(Uuid,SchoolAccountUuid,Room,RoomName) FROM '/tmp/ClassRoom.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ClassRoom OWNER TO school;
 
 
