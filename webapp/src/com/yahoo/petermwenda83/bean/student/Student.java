@@ -37,7 +37,9 @@ public class Student extends StudentSuper  {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Students [ getUuid() =");
+		builder.append("Students[ id = ");
+		builder.append(getId()); 
+		builder.append(",getUuid() =");
 		builder.append(getUuid());
 		builder.append(",getFirstname() =");
 		builder.append(getFirstname());
@@ -47,6 +49,8 @@ public class Student extends StudentSuper  {
 		builder.append(getSurname());
 		builder.append(",getAdmno() =");
 		builder.append(getAdmno());
+		builder.append(",getGender() =");
+		builder.append(getGender());
 		builder.append(",getYear() =");
 		builder.append(getYear());
 		builder.append(",getDOB() =");

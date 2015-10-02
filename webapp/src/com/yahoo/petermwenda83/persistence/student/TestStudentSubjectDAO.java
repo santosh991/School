@@ -33,9 +33,9 @@ import com.yahoo.petermwenda83.bean.student.StudentSubject;
  *
  */
 public class TestStudentSubjectDAO {
-	final String databaseName = "allamanodb";
+	final String databaseName = "schooldb";
 	final String Host = "localhost";
-	final String databaseUsername = "allamano";
+	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
@@ -64,7 +64,7 @@ public class TestStudentSubjectDAO {
 		s = store.getStudentSubject(STU_UUID);
 		assertEquals(s.getStudentUuid(),STU_UUID);
 		assertEquals(s.getSubjectUuid(),SUB_UUID);
-		assertEquals(s.getRoomnameUuid(),ROOMNAMEUUID);
+		assertEquals(s.getClassRoomUuid(),ROOMNAMEUUID);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class TestStudentSubjectDAO {
 		StudentSubject s = new StudentSubject();
 		s.setStudentUuid(STU_UUID_NEW);
 		s.setSubjectUuid(SUB_UUID_NEW);
-		s.setRoomnameUuid(ROOMNAMEUUID_NEW);
+		s.setClassRoomUuid(ROOMNAMEUUID_NEW);
 		assertTrue(store.putStudentSubject(s));
 	}
 
@@ -91,7 +91,7 @@ public class TestStudentSubjectDAO {
 		StudentSubject s = new StudentSubject();
 		s.setSubjectUuid(SUB_UUID_NEW);
 		s.setStudentUuid(STU_UUID_NEW);
-		s.setRoomnameUuid(ROOMNAMEUUID_UPDATE);
+		s.setClassRoomUuid(ROOMNAMEUUID_UPDATE);
 		assertTrue(store.editStudentSubject(s));
 	}
 
@@ -111,7 +111,7 @@ public class TestStudentSubjectDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentSubjectDAO#getAllStudentSubject()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllStudentSubject() {
 		store = new StudentSubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

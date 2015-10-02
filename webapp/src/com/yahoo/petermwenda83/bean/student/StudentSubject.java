@@ -26,22 +26,26 @@ package com.yahoo.petermwenda83.bean.student;
  *
  */
 public class StudentSubject extends StudentSuper{
-	   public StudentSubject(){
+	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public StudentSubject(){
 		   super();
 	   }
 
 	@Override
 	public String toString(){
 	StringBuilder builder = new StringBuilder();
-	builder.append("StudentSubject [ getUuid() =");
+	builder.append("Student Subject [ getUuid() =");
 	builder.append(getUuid());
 	builder.append(", getStudentUuid() =");
 	builder.append(getStudentUuid());
 	builder.append(", getSubjectUuid() =");
 	builder.append(getSubjectUuid());
-	builder.append(", getRoomnameUuid() =");
-	builder.append(getRoomnameUuid());
-	
+	builder.append(", getClassoomUuid() =");
+	builder.append(getClassRoomUuid());
 	builder.append("]");
 	return builder.toString(); 
 	}

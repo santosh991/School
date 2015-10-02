@@ -201,14 +201,14 @@ a.more:hover {
 	float: right; 
 	margin: 10px 10px 0 0; 
 	width: 290px; 
-	height: 25px; 
+	height: 35px; 
 	background: url(../images/tooplate_search.png) no-repeat; 
 }
 
 #search_box form { 
 	clear: both; 
 	width: 290px; 
-	height: 25px; 
+	height: 35px; 
 	padding: 0; 
 	margin: 0; 
 } 
@@ -216,7 +216,7 @@ a.more:hover {
 #searchfield { 
 	float: left; 
 	display: block; 
-	height: 16px; 
+	height: 26px; 
 	width: 220px; 
 	padding: 5px; 
 	font-family: Verdana,Geneva,sans-serif;
@@ -496,6 +496,7 @@ a.more:hover {
 	clear: both; 
 	margin-bottom: 30px; 
 }
+
 
 .news_box h2 { 
 	font-size: 20px; 

@@ -50,7 +50,7 @@ import com.yahoo.petermwenda83.bean.student.StudentSubject;
 import com.yahoo.petermwenda83.bean.student.Subject;
 import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
-import com.yahoo.petermwenda83.persistence.subject.StudSubjectDAO;
+//import com.yahoo.petermwenda83.persistence.subject.StudSubjectDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 
 
@@ -72,7 +72,7 @@ import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 	    private static int selectedRow;
 	    
 	    private static StudentDAO regDAO; 
-	    private static StudSubjectDAO studSubjectDAO;
+	   // private static StudSubjectDAO studSubjectDAO;
 	    private static SubjectDAO subjectDAO;
 	    private static RoomDAO roomDAO;
 	    
@@ -132,21 +132,21 @@ import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 	        buttonPanel.add(btnClose);
 	        
 	        regDAO = StudentDAO.getInstance(); 
-	        studSubjectDAO = StudSubjectDAO.getInstance();
+	       // studSubjectDAO = StudSubjectDAO.getInstance();
 	        subjectDAO =  SubjectDAO .getInstance();
 	        roomDAO = RoomDAO.getInstance();
 	        
 	        roomList = roomDAO.getAllRooms();
 	        stuList = regDAO.getAllStudents(); 
-	        studentsubList = studSubjectDAO.getAllStudentSubject();
+	       // studentsubList = studSubjectDAO.getAllStudentSubject();
 	        
 	        for(ClassRoom r : roomList){
 	        	roomHash.put(r.getRoomName(), r.getUuid()); 
 	        }
 	         
 	          StudentSubject stsub = new StudentSubject();
-	    	  stsub.setRoomnameUuid(roomHash.get(classroom));  
-	    	  studentsubList2  = studSubjectDAO.getStudentSubject(stsub,classroom); 
+	    	 // stsub.setRoomnameUuid(roomHash.get(classroom));  
+	    	  //studentsubList2  = studSubjectDAO.getStudentSubject(stsub,classroom); 
 	       
 	        subjectList = subjectDAO.getAllSubjects();
 	        

@@ -22,12 +22,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 
@@ -262,6 +264,38 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	return list;
 	}
 
+	
+	/**
+	 * @param schoolaccount
+	 * @param startIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public List<Student> getStudentList (SchoolAccount schoolaccount , int startIndex , int endIndex){
+		List<Student> studentList = new ArrayList<>();
+		
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Student WHERE "
+						+ "SchoolAccountUuid = ? ORDER BY firstname ASC LIMIT ? OFFSET ? ;");
+				) {
+			psmt.setString(1, schoolaccount.getUuid());
+			psmt.setInt(2, endIndex - startIndex);
+			psmt.setInt(3, startIndex);
+			
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				studentList = beanProcessor.toBeanList(rset, Student.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Student List with an index and offset.");
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return studentList;		
+	}
+	
 	
 
 

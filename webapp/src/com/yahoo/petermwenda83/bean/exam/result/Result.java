@@ -20,13 +20,13 @@
  */
 package com.yahoo.petermwenda83.bean.exam.result;
 
-import com.yahoo.petermwenda83.bean.exam.Exam;
+import com.yahoo.petermwenda83.bean.AllBean;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class Result extends Exam {
+public class Result extends AllBean{
 	   private String StudentUuid;
 	   private String ExamDetailUuid;
 	   private double MPoint;

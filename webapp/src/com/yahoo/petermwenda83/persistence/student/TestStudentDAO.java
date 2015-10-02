@@ -28,19 +28,23 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
+import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
+
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class TestStudentDAO {
 
-	final String databaseName = "allamanodb";
+	final String databaseName = "schooldb";
 	final String Host = "localhost";
-	final String databaseUsername = "allamano";
+	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
+	private String SCH_UUID = "B643876D-B90C-435C-B215-CC558D596626";
 	
 	private String STU_UUID = "DAF7EC32-EA25-7D32-8708-2CC132446A2Y",
 			      STU_UUID_NEW = "541b324e-cd83-4d21-b687-aa63fffa5dc0";
@@ -80,6 +84,7 @@ public class TestStudentDAO {
 	
 	
 	private StudentDAO store;
+	private com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO storenew;
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentDAO#getStudent(java.lang.String)}.
 	 */
@@ -189,7 +194,7 @@ public class TestStudentDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentDAO#getAllStudents()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllStudents() {
 		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -198,7 +203,24 @@ public class TestStudentDAO {
 				System.out.println(l);
 			}
 	}
-
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentDAO#getAllStudents()}.
+	 */
+	@Ignore
+	@Test
+	public void testGetStudentList(){
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 storenew = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 SchoolAccount s = storenew.get(SCH_UUID);
+		
+		 List<Student> studentList = store.getStudentList(s, 0, 15);
+		
+		assertEquals(studentList.size() , 15);
+		for(Student ss : studentList){
+			System.out.println(ss);
+		}
+		
+	}
 	
 	
 

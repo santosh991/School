@@ -49,6 +49,40 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
+	
+
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#get(java.lang.String)
+	 */
+	@Override
+	public SchoolAccount get(String Uuid) {
+		SchoolAccount school = new SchoolAccount();
+        ResultSet rset = null;
+     try(
+     		 Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SchoolAccount WHERE Uuid = ?;");       
+     		
+     		){
+     	
+     	 pstmt.setString(1, Uuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 school  = beanProcessor.toBean(rset,SchoolAccount.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	 logger.error("SQL Exception when getting SchoolAccount with Uuid: " + Uuid);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return school; 
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getSchoolBySchoolName(java.lang.String)
 	 */
@@ -200,5 +234,6 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
 	   
 		return list;
 	}
+
 
 }

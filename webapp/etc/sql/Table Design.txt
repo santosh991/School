@@ -212,7 +212,7 @@ This is to store all Subjects eg English, Kiswahili ete
 ======================
 ======================
 -- -------------------
--- Table Cat
+-- Table Exam
 -- -------------------
  
     -Id 
@@ -243,10 +243,7 @@ This is to store all Subjects eg English, Kiswahili ete
 
     -Id 
     -StudentUuid 
-    -SubjectUuid 
     -ExamDetailUuid 
-    -Assignment1 
-    -Assignment2
     -Cat1 
     -Cat2 
     -Cat3 

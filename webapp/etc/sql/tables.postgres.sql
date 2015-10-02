@@ -268,7 +268,7 @@ ALTER TABLE StudentPrimary OWNER TO school;
 
 
 -- -------------------
--- Table Cat
+-- Table Exam
 -- -------------------
  CREATE TABLE  Exam (
     Id SERIAL PRIMARY KEY,
@@ -311,13 +311,9 @@ ALTER TABLE ExamDetail OWNER TO school;
  CREATE TABLE  Perfomance (
     Id SERIAL PRIMARY KEY,
     StudentUuid text REFERENCES Student(Uuid),
-    SubjectUuid text REFERENCES Subject(Uuid),
     ExamDetailUuid text REFERENCES ExamDetail(Uuid),
-    Assignment1 float,
-    Assignment2 float,
     Cat1 float,
     Cat2 float,
-    Cat3 float,
     Paper1 float,
     Paper2 float,
     Paper3 float,
@@ -327,7 +323,7 @@ ALTER TABLE ExamDetail OWNER TO school;
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY Perfomance(StudentUuid,SubjectUuid,ExamDetailUuid,Assignment1,Assignment2,Cat1,Cat2,Cat3,Paper1,Paper2,Paper3,SysUser,SubmitDate) FROM '/tmp/Perfomance.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Perfomance(StudentUuid,ExamDetailUuid,Cat1,Cat2,Paper1,Paper2,Paper3,SysUser,SubmitDate) FROM '/tmp/Perfomance.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Perfomance OWNER TO school;
 
 

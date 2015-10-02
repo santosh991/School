@@ -22,22 +22,22 @@ package com.yahoo.petermwenda83.bean.exam.result;
 
 import java.util.Date;
 
-import com.yahoo.petermwenda83.bean.exam.Exam;
+import com.yahoo.petermwenda83.bean.AllBean;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class Perfomance extends Exam  {
+public class Perfomance extends AllBean{
     
-	    private String StudentUuid;
-	    private String SubjectUuid;
+	    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7599496918489745339L;
+		private String StudentUuid;
 	    private String  ExamDetailUuid;
-	    private double Assignment1;
-	    private double  Assignment2;
 	    private double Cat1;
 	    private double Cat2;
-	    private double  Cat3;
 	    private double  Paper1;
 	    private double  Paper2;
 	    private double  Paper3;
@@ -49,13 +49,9 @@ public class Perfomance extends Exam  {
 	public Perfomance() {
 		super();
 		    StudentUuid ="";
-		    SubjectUuid ="";
 		    ExamDetailUuid ="";
-		    Assignment1 =0;
-		    Assignment2 =0;
-		    Cat1 =0;
+		    Cat1 = 0;
 		    Cat2 =0;
-		    Cat3 =0;
 		    Paper1 =0;
 		    Paper2 =0;
 		    Paper3 =0;
@@ -76,21 +72,7 @@ public class Perfomance extends Exam  {
 	public void setStudentUuid(String studentUuid) {
 		StudentUuid = studentUuid;
 	}
-
-	/**
-	 * @return the subjectUuid
-	 */
-	public String getSubjectUuid() {
-		return SubjectUuid;
-	}
-
-	/**
-	 * @param subjectUuid the subjectUuid to set
-	 */
-	public void setSubjectUuid(String subjectUuid) {
-		SubjectUuid = subjectUuid;
-	}
-
+	
 	/**
 	 * @return the examDetailUuid
 	 */
@@ -105,33 +87,6 @@ public class Perfomance extends Exam  {
 		ExamDetailUuid = examDetailUuid;
 	}
 
-	/**
-	 * @return the assignment1
-	 */
-	public double getAssignment1() {
-		return Assignment1;
-	}
-
-	/**
-	 * @param assignment1 the assignment1 to set
-	 */
-	public void setAssignment1(double assignment1) {
-		Assignment1 = assignment1;
-	}
-
-	/**
-	 * @return the assignment2
-	 */
-	public double getAssignment2() {
-		return Assignment2;
-	}
-
-	/**
-	 * @param assignment2 the assignment2 to set
-	 */
-	public void setAssignment2(double assignment2) {
-		Assignment2 = assignment2;
-	}
 
 	/**
 	 * @return the cat1
@@ -159,20 +114,6 @@ public class Perfomance extends Exam  {
 	 */
 	public void setCat2(double cat2) {
 		Cat2 = cat2;
-	}
-
-	/**
-	 * @return the cat3
-	 */
-	public double getCat3() {
-		return Cat3;
-	}
-
-	/**
-	 * @param cat3 the cat3 to set
-	 */
-	public void setCat3(double cat3) {
-		Cat3 = cat3;
 	}
 
 	/**
@@ -252,20 +193,12 @@ public class Perfomance extends Exam  {
 		builder.append(getUuid());
 		builder.append(",StudentUuid=");
 		builder.append(StudentUuid);
-		builder.append(",SubjectUuid=");
-		builder.append(SubjectUuid);
 		builder.append(",ExamDetailUuid=");
 		builder.append(ExamDetailUuid);
-		builder.append(",Assignment1=");
-		builder.append(Assignment1);
-		builder.append(", Assignment2=");
-		builder.append(Assignment2);
 		builder.append(",Cat1=");
 		builder.append(Cat1);
 		builder.append(",Cat2=");
 		builder.append(Cat2);
-		builder.append(",Cat3=");
-		builder.append(Cat3);
 		builder.append(",Paper1=");
 	    builder.append(Paper1);
 		builder.append(",Paper2=");

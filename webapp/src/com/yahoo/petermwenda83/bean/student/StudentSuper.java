@@ -29,16 +29,21 @@ import com.yahoo.petermwenda83.bean.AllBean;
  *
  */
 public class StudentSuper extends AllBean{
-	    private String firstname;
+	    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5531058462201649828L;
+		private String firstname;
 		private String lastname;
 		private String surname;
 		private String admno;
+		private String gender;
 		private String form;
 		private String year;		
 		private String DOB;
 		private String bcertno;
 		private Date admissiondate;
-		private String roomnameUuid;
+		private String ClassRoomUuid;
 		private String subjectUuid;
 		private String StudentUuid;
 		private String subjectcode;
@@ -51,12 +56,13 @@ public class StudentSuper extends AllBean{
 		lastname = "";
 		surname = "";
 		admno = "";
+		gender ="";
 		form = "";
 		year = "";
 		DOB = "";
 		bcertno = "";
 		admissiondate = new Date();
-		roomnameUuid = "";
+		ClassRoomUuid = "";
 		subjectUuid = "";
 		StudentUuid = "";
 		subjectcode = "";
@@ -119,6 +125,20 @@ public class StudentSuper extends AllBean{
 	 */
 	public void setAdmno(String admno) {
 		this.admno = admno;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public String getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	/**
@@ -193,18 +213,21 @@ public class StudentSuper extends AllBean{
 	}
 
 
+
+	
+
 	/**
-	 * @return the roomnameUuid
+	 * @return the classRoomUuid
 	 */
-	public String getRoomnameUuid() {
-		return roomnameUuid;
+	public String getClassRoomUuid() {
+		return ClassRoomUuid;
 	}
 
 	/**
-	 * @param roomnameUuid the roomnameUuid to set
+	 * @param classRoomUuid the classRoomUuid to set
 	 */
-	public void setRoomnameUuid(String roomnameUuid) {
-		this.roomnameUuid = roomnameUuid;
+	public void setClassRoomUuid(String classRoomUuid) {
+		ClassRoomUuid = classRoomUuid;
 	}
 
 	/**

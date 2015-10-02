@@ -13,6 +13,11 @@ import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
  */
 public interface SchoolAccountDAO {
 	/**
+	 * @param Uuid
+	 * @return
+	 */
+	public SchoolAccount get(String Uuid);
+	/**
 	 * 
 	 * @param SchoolName
 	 * @return the SchoolName

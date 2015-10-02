@@ -105,7 +105,7 @@ public class TestRoomDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.room.RoomDAO#deleteroom(com.yahoo.petermwenda83.bean.room.ClassRoom, java.lang.String)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testDeleteroom() {
 		store = new RoomDAO (databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -118,7 +118,7 @@ public class TestRoomDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.room.RoomDAO#getAllRooms()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllRooms() {
 		store = new RoomDAO (databaseName, Host, databaseUsername, databasePassword, databasePort);
