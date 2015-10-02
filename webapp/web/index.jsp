@@ -1,3 +1,15 @@
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+
+    if (session != null) {
+         session.invalidate();
+    }
+
+            
+%>
 <!DOCTYPE html>
 <html >
   <head>
