@@ -43,7 +43,7 @@ import javax.swing.JTextField;
 
 import com.yahoo.petermwenda83.bean.exam.ExamDetail;
 import com.yahoo.petermwenda83.bean.room.ClassRoom;
-import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 
@@ -103,10 +103,10 @@ public class AddExamtype extends JInternalFrame {
 		 
 		 classroomList = roomDAO.getAllRooms();
 		 subjectList = subjectDAO.getAllSubjects();
-		 for(Subject s : subjectList){
+		/* for(Subject s : subjectList){
 			 SubHash.put(s.getUuid(), s.getSubjectname());
 			 cmbsubjects.addItem(SubHash.get(s.getUuid()));  
-		 }
+		 }*/
 		 for(ClassRoom r : classroomList){
 			 roomHash.put(r.getUuid(), r.getRoomName()); 
 			 cmbclass.addItem(roomHash.get(r.getUuid())); 

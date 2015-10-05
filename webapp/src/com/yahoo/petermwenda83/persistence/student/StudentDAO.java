@@ -148,7 +148,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student" 
-			        		+"(Uuid, Firstname, Lastname,Surname,Admno,Year,DOB,Bcertno,Admissiondate)"
+			        		+"(Uuid, Firstname, Lastname,Surname,Admno,Year,DOB,Bcertno,SysUser,RegDate)"
 			        		+ " VALUES (?,?,?,?,?,?,?,?,?);");
 		){
 			   
@@ -160,7 +160,8 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	            pstmt.setString(6, student.getYear());
 	            pstmt.setString(7, student.getDOB());
 	            pstmt.setString(8, student.getBcertno());
-	            pstmt.setTimestamp(9, new Timestamp(student.getAdmissiondate().getTime()));
+	            pstmt.setString(8, student.getSysUser());
+	            pstmt.setTimestamp(9, new Timestamp(student.getRegDate().getTime()));
 	           
 	            pstmt.executeUpdate();
 			 
@@ -169,8 +170,6 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
      logger.error(ExceptionUtils.getStackTrace(e)); 
      success = false;
 		 }
-		 
-		
 		
 		return success;
 	}
@@ -188,7 +187,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student  SET Firstname =?," 
 			        +"Lastname =?,Surname =?,Year =?,DOB =?,"
-			        + "Bcertno =? WHERE Admno = ?; ");
+			        + "Bcertno =?,SysUser =?,RegDate=? WHERE Admno = ?; ");
 		){
 			  
 	            pstmt.setString(1, student.getFirstname());
@@ -197,8 +196,9 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	            pstmt.setString(4, student.getYear());
 	            pstmt.setString(5, student.getDOB());
 	            pstmt.setString(6, student.getBcertno());
-	            pstmt.setString(7, student.getAdmno());
-	           
+	            pstmt.setString(7, student.getSysUser());
+	            pstmt.setTimestamp(8, new Timestamp(student.getRegDate().getTime()));
+	            pstmt.setString(9, student.getAdmno());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

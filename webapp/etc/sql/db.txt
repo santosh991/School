@@ -1,9 +1,5 @@
 
 
-SMS Gateway
-Database Set Up
-
-su
 ######sudo ntfsfix /dev/sda4
 
 su – postgres

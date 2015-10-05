@@ -46,7 +46,7 @@ public class TestPerformanceDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.PerformanceDAO#getByStudentUuid(java.lang.String)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test 
 	public void testGet() {
 		store = new PerformanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -81,7 +81,7 @@ public class TestPerformanceDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.PerformanceDAO#getAllPerfomance()}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetAllPerfomance() {
 		store = new PerformanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

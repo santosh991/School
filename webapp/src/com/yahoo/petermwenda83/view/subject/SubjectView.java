@@ -24,8 +24,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,7 +33,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.yahoo.petermwenda83.bean.student.Subject;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 
 
@@ -50,7 +47,7 @@ public class SubjectView extends JInternalFrame {
 	 private JTextField txtsubname,txtsubcode;
 	 private JPanel panel1,  panel2;
 	 private static SubjectDAO subjectDAO;
-	 private static List<Subject> subList = new ArrayList<>();
+	 //private static List<Subject> subList = new ArrayList<>();
 	 
 	 Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -69,7 +66,7 @@ public class SubjectView extends JInternalFrame {
 		 button1 = new JButton("Add");
 		 
 		 subjectDAO = SubjectDAO.getInstance();
-		 subList = subjectDAO.getAllSubjects();
+		 //subList = subjectDAO.getAllSubjects();
 		 
 		 combosubcategory.addItem("Compulsary");
 		 combosubcategory.addItem("Science");
@@ -128,11 +125,11 @@ public class SubjectView extends JInternalFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Subject subject = new Subject();
+			/*Subject subject = new Subject();
 			subject.setSubjectname(txtsubname.getText()); 
 			subject.setSubjectcode(txtsubcode.getText()); 
 			String subcat = (String) combosubcategory.getSelectedItem();
-			subject.setSubjectcategory(subcat); 
+			subject.setSubjectcategory(subcat); */
 			
 			
 			if (e.getSource() == button1) {
@@ -149,7 +146,7 @@ public class SubjectView extends JInternalFrame {
                 	 JOptionPane.showMessageDialog(null, "Subject Code Already exist", "Error", JOptionPane.DEFAULT_OPTION);
                       	
                 }else{
-                	  subjectDAO.putSubject(subject);
+                	 // subjectDAO.putSubject(subject);
                 	  JOptionPane.showMessageDialog(null, "Subject Added", "Success", JOptionPane.DEFAULT_OPTION);
                 }
                 

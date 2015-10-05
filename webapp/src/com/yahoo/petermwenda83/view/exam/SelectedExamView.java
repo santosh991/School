@@ -42,10 +42,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.yahoo.petermwenda83.bean.room.ClassRoom;
-import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
@@ -162,11 +160,11 @@ public class SelectedExamView extends JInternalFrame {
         }
         
         
-        
+        /*
 		 subjectList = subjectDAO.getAllSubjects();
 		 for(Subject s : subjectList){
 			 SubHash.put(s.getUuid(), s.getSubjectname());
-		 }
+		 }*/
 
         add(tablePanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.PAGE_END);

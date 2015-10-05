@@ -29,6 +29,12 @@ public class Student extends StudentSuper  {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -7544635242162355411L;
+
+
+	/**
+	 * 
+	 */
 	public Student() {
 		super();
 	}
@@ -57,8 +63,10 @@ public class Student extends StudentSuper  {
 		builder.append(getDOB());
 		builder.append(",getBcertno() =");
 		builder.append(getBcertno()); 
-		builder.append(",getAdmissiondate() =");
-		builder.append(getAdmissiondate());
+		builder.append(",getRegDate() =");
+		builder.append(getRegDate());
+		builder.append(", getSysUser() =");
+		builder.append(getSysUser());
 		builder.append(",getSchoolAccountUuid() =");
 		builder.append(getSchoolAccountUuid());
 		builder.append("]");

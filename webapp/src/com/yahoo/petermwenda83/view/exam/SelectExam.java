@@ -12,11 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 
 import com.yahoo.petermwenda83.bean.room.ClassRoom;
-import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.view.MainWindow;
@@ -123,10 +125,10 @@ public class SelectExam  extends JInternalFrame{
         classroomList = roomDAO.getAllRooms();
 		 subjectList = subjectDAO.getAllSubjects();
 		 
-		 for(Subject s : subjectList){
+		/* for(Subject s : subjectList){
 			 SubHash.put(s.getUuid(), s.getSubjectname());
 			 cmbsubject.addItem(SubHash.get(s.getUuid()));  
-		 }
+		 }*/
 		 for(ClassRoom r : classroomList){
 			 roomHash.put(r.getUuid(), r.getRoomName()); 
 			 cmbroom.addItem(roomHash.get(r.getUuid())); 

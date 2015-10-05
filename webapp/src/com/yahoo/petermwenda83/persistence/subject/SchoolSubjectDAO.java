@@ -7,7 +7,7 @@ package com.yahoo.petermwenda83.persistence.subject;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 
 
 

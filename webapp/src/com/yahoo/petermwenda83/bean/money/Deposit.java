@@ -44,6 +44,8 @@ public class Deposit extends Money {
 		builder.append(getStudentUuid());
 		builder.append(", getAmount() =");
 		builder.append(getAmount());
+		builder.append(", getSysUser() =");
+		builder.append(getSysUser());
 		builder.append(", depositedate =");
 		builder.append(depositedate);
 		builder.append("]");

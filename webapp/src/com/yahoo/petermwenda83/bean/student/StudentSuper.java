@@ -42,13 +42,13 @@ public class StudentSuper extends AllBean{
 		private String year;		
 		private String DOB;
 		private String bcertno;
-		private Date admissiondate;
+		private Date RegDate;
 		private String ClassRoomUuid;
 		private String subjectUuid;
 		private String StudentUuid;
 		private String subjectcode;
 		private String SchoolAccountUuid;
-		
+		private String SysUser;
 		
 	
 	public StudentSuper() {
@@ -61,13 +61,13 @@ public class StudentSuper extends AllBean{
 		year = "";
 		DOB = "";
 		bcertno = "";
-		admissiondate = new Date();
+		RegDate = new Date();
 		ClassRoomUuid = "";
 		subjectUuid = "";
 		StudentUuid = "";
 		subjectcode = "";
 		SchoolAccountUuid = "";
-		
+		SysUser = "";
 		
 	}
 
@@ -199,22 +199,18 @@ public class StudentSuper extends AllBean{
 	}
 
 	/**
-	 * @return the admissiondate
+	 * @return the regDate
 	 */
-	public Date getAdmissiondate() {
-		return admissiondate;
+	public Date getRegDate() {
+		return RegDate;
 	}
 
 	/**
-	 * @param admissiondate the admissiondate to set
+	 * @param regDate the regDate to set
 	 */
-	public void setAdmissiondate(Date admissiondate) {
-		this.admissiondate = admissiondate;
+	public void setRegDate(Date regDate) {
+		RegDate = regDate;
 	}
-
-
-
-	
 
 	/**
 	 * @return the classRoomUuid
@@ -284,6 +280,20 @@ public class StudentSuper extends AllBean{
 	 */
 	public void setSchoolAccountUuid(String schoolAccountUuid) {
 		SchoolAccountUuid = schoolAccountUuid;
+	}
+
+	/**
+	 * @return the sysUser
+	 */
+	public String getSysUser() {
+		return SysUser;
+	}
+
+	/**
+	 * @param sysUser the sysUser to set
+	 */
+	public void setSysUser(String sysUser) {
+		SysUser = sysUser;
 	}
 
 	

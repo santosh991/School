@@ -47,7 +47,7 @@ import javax.swing.table.AbstractTableModel;
 import com.yahoo.petermwenda83.bean.room.ClassRoom;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.StudentSubject;
-import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.room.RoomDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 //import com.yahoo.petermwenda83.persistence.subject.StudSubjectDAO;
@@ -160,9 +160,9 @@ import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 	        	SutudentSubjectHash.put(ss.getStudentUuid(), ss.getSubjectUuid());
 	        	
 	        }
-	        for(Subject sb : subjectList){
+	       /* for(Subject sb : subjectList){
 	        	SubjecttHash.put(sb.getUuid(), sb.getSubjectcode());
-	        }
+	        }*/
 	       
 
 	        add(tablePanel, BorderLayout.CENTER);

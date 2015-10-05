@@ -9,13 +9,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.student.Subject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 
 
@@ -129,13 +130,16 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 		boolean success = true;
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Subject" 
-			        		+"(Uuid, subjectcode, subjectname, subjectcategory) VALUES (?,?,?,?);");
+			        		+"(Uuid,SchoolAccountUuid,SubjectCode,SubjectName,SubjectCategory,SysUser,RegDate) VALUES (?,?,?,?);");
         		){
 			   
 	            pstmt.setString(1, subject.getUuid());
-	            pstmt.setString(2, subject.getSubjectcode());
-	            pstmt.setString(3, subject.getSubjectname());
-	            pstmt.setString(4, subject.getSubjectcategory());
+	            pstmt.setString(2, subject.getSchoolAccountUuid());
+	            pstmt.setString(3, subject.getSubjectCode());
+	            pstmt.setString(4, subject.getSubjectName());
+	            pstmt.setString(5, subject.getSubjectCategory());
+	            pstmt.setString(6, subject.getSysUser());
+	            pstmt.setTimestamp(7, new Timestamp(subject.getRegDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -156,15 +160,17 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	public boolean editSubject(Subject subject,String uuid) {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET subjectcode=?, "
-        			+ "subjectname=?, subjectcategory=? WHERE Uuid = ?;");
-        	) {
-            
-            pstmt.setString(1, subject.getSubjectcode());
-            pstmt.setString(2, subject.getSubjectname());
-            pstmt.setString(3, subject.getSubjectcategory());
-            pstmt.setString(4, subject.getUuid());
-            pstmt.executeUpdate();
+        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET SubjectCode=?,"
+        			+ "SubjectName=?, SubjectCategory=?,SysUser=?,RegDate=? WHERE SchoolAccountUuid = ? AND  WHERE Uuid = ?;");
+        	) { 
+	            pstmt.setString(1, subject.getSubjectCode());
+	            pstmt.setString(2, subject.getSubjectName());
+	            pstmt.setString(3, subject.getSubjectCategory());
+	            pstmt.setString(4, subject.getSysUser());
+	            pstmt.setTimestamp(5, new Timestamp(subject.getRegDate().getTime()));
+	            pstmt.setString(6, subject.getSchoolAccountUuid());
+	            pstmt.setString(7, subject.getUuid());
+                pstmt.executeUpdate(); 
 
         } catch (SQLException e) {
             logger.error("SQL Exception when updating SubjectUi with uuid " + subject);
@@ -186,11 +192,11 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 		boolean success = true; 
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE SubjectName = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, subject.getUuid());
+        	 pstmt.setString(1, subject.getSubjectName());
 	         pstmt.executeUpdate();
 	     
         }catch(SQLException e){

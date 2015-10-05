@@ -153,7 +153,7 @@ public class TestStudentDAO {
 		 stu.setYear(STU_YEAR_NEW);
 		 stu.setDOB(STU_DOB_NEW);
 		 stu.setBcertno(STU_BCERTNO_NEW);
-		 stu.setAdmissiondate(STU_ADMDATE_NEW);
+		 stu.setRegDate(STU_ADMDATE_NEW);
 		 
 		
 		 assertTrue(store.putStudents(stu));   
@@ -173,7 +173,7 @@ public class TestStudentDAO {
 		 stu.setYear(STU_YEAR_UPDATE);
 		 stu.setDOB(STU_DOB_UPDATE);
 		 stu.setBcertno(STU_BCERTNO_UPDATE);
-		 stu.setAdmissiondate(STU_ADMDATE_UPDATE);
+		 stu.setRegDate(STU_ADMDATE_UPDATE);
 		 
 		 stu.setAdmno(STU_ADMNO_NEW);
 		 assertTrue(store.editStudents(stu));

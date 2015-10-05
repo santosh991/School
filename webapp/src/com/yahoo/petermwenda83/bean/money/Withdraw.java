@@ -45,6 +45,8 @@ public class Withdraw extends Money{
 		builder.append(getStudentUuid());
 		builder.append(", getAmount()=");
 		builder.append(getAmount());
+		builder.append(", getSysUser() =");
+		builder.append(getSysUser());
 		builder.append(", withdrawdate =");
 		builder.append(withdrawdate);
 		builder.append("]");
