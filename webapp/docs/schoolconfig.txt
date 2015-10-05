@@ -79,7 +79,7 @@ sudo update-alternatives --set java /opt/Programs/jdks/jdk1.8.0_25/jre/bin/java
 
  ######## RUN
 
- Sudo mkdir /opt/Programs/Wildfly/
+ Sudo mkdir /opt/Programs/WildFly/
  
  ###### COPY TO BROWSER
 
@@ -88,7 +88,7 @@ sudo update-alternatives --set java /opt/Programs/jdks/jdk1.8.0_25/jre/bin/java
 
 ######## RUN
 cd Downloads
-cp wildfly-8.2.0.Final.zip /opt/Programs/Wildfly
+cp wildfly-8.2.0.Final.zip /opt/Programs/WildFly
 unzip wildfly-8.2.0.Final.zip
 mv wildfly-8.2.0.Final 8.2.0
 
@@ -98,10 +98,10 @@ sudo gedit ./bashrc
 
 ####### ADD
 
-JBOSS_HOME=/opt/Programs/Wildfly/8.2.0
+JBOSS_HOME=/opt/Programs/WildFly/8.2.0
 export PATH=$JBOSS_HOME/bin:$PATH
 
-######RUN theQUIT
+######RUN
   sudo chown peter -R /opt/Programs/
 
 ./standalone.sh
@@ -109,7 +109,7 @@ export PATH=$JBOSS_HOME/bin:$PATH
 
 #######Add user
 
-cd /opt/Programs/Wildfly/BabbleSMS/bin
+cd /opt/Programs/WildFly/8.2.0/bin
 
 ./add-user.sh
 
