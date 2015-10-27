@@ -36,9 +36,9 @@ import com.yahoo.petermwenda83.bean.money.Deposit;
  *
  */
 public class TestPocketDepositDAO {
-	final String databaseName = "allamanodb";
+	final String databaseName = "schooldb";
 	final String Host = "localhost";
-	final String databaseUsername = "allamano";
+	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	

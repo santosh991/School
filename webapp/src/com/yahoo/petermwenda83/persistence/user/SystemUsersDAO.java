@@ -35,6 +35,12 @@ public interface SystemUsersDAO {
 	 * @return the Uuid
 	 */
 	public User getUser(String Uuid);
+	/**
+	 * 
+	 * @param Uuid
+	 * @return
+	 */
+	public User getUserByUsername(String UserUsername,String SchoolAccountUuid);
 	 
 	/**
 	 * 
@@ -65,6 +71,6 @@ public interface SystemUsersDAO {
 	   * 
 	   * @return get AllUsers
 	   */
-	public List<User> getAllUsers();
+	public List<User> getAllUsers(String SchoolAccountUuid);
 
 }

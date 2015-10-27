@@ -24,10 +24,11 @@ package com.yahoo.petermwenda83.bean.student;
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class Student extends StudentSuper  {
+public class Student extends StudentSuper implements Comparable<Student> {
+	
 
 	/**
-	 * 
+	 * private String admno;
 	 */
 	private static final long serialVersionUID = -7544635242162355411L;
 
@@ -72,6 +73,17 @@ public class Student extends StudentSuper  {
 		builder.append("]");
 		return builder.toString(); 
 		}
+
+
+	/*@Override
+	public int compareTo1(Student s) {
+		return firstname.compareTo(((Student) s).getFirstname());
+	}*/
+	
+	@Override
+	public int compareTo(Student ss) {
+		return getAdmno().compareTo(((Student) ss).getAdmno());
+	}
 
 
 }

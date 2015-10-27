@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -32,6 +33,7 @@ import org.apache.log4j.Logger;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -128,15 +130,64 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 		return student; 
 	}
 
+	
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getStudents(com.yahoo.petermwenda83.bean.student.StudentSuper)
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getStudentByName(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount, java.lang.String)
+	 */
+	public List<Student> getStudentByName(SchoolAccount schoolaccount, String firstname) {
+		List<Student> list = new ArrayList<>();
+
+        try (
+        		 Connection conn = dbutils.getConnection();
+     	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid = ? "
+     	       		+ "AND firstname ILIKE ?;");    		   
+     	   ) {
+         	   pstmt.setString(1, schoolaccount.getUuid());           
+         	   pstmt.setString(2, "%" + firstname + "%");
+         	   try( ResultSet rset = pstmt.executeQuery();){
+     	       
+     	       list = beanProcessor.toBeanList(rset, Student.class);
+         	   }
+        } catch (SQLException e) {
+            logger.error("SQLException when getting Student of " + schoolaccount  +
+            		" and student name '" + firstname +  "'"); 
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+                
+        Collections.sort(list);
+        return list;
+	}
+	
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getStudentAdmNo(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount, java.lang.String)
 	 */
 	@Override
-	public boolean getStudents(Student student) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public List<Student> getStudentAdmNo(String schoolaccountUuid, String admno ) {
+		List<Student> list = new ArrayList<>();
 
+        try (
+        		 Connection conn = dbutils.getConnection();
+     	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid = ? "
+     	       		+ "AND admno ILIKE ? ORDER BY admno ASC LIMIT ? OFFSET ?;;");    		   
+     	   ) {
+         	   pstmt.setString(1, schoolaccountUuid);           
+         	   pstmt.setString(2, "%" + admno.toUpperCase() + "%");
+         	   pstmt.setInt(3, 15);
+         	   pstmt.setInt(4, 0);
+         	   try( ResultSet rset = pstmt.executeQuery();){
+     	       
+     	       list = beanProcessor.toBeanList(rset, Student.class);
+         	   }
+        } catch (SQLException e) {
+            logger.error("SQLException when getting Student of " + schoolaccountUuid  +
+            		" and student admno '" + admno +  "'");
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+                
+        Collections.sort(list);
+        return list;
+	}
 	
 	
 	/**
@@ -148,20 +199,21 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student" 
-			        		+"(Uuid, Firstname, Lastname,Surname,Admno,Year,DOB,Bcertno,SysUser,RegDate)"
-			        		+ " VALUES (?,?,?,?,?,?,?,?,?);");
+			        		+"(Uuid,SchoolAccountUuid, Firstname, Lastname,Surname,Admno,Year,DOB,Bcertno,SysUser,RegDate)"
+			        		+ " VALUES (?,?,?,?,?,?,?,?,?,?);");
 		){
 			   
 	            pstmt.setString(1, student.getUuid());
-	            pstmt.setString(2, student.getFirstname());
-	            pstmt.setString(3, student.getLastname());
-	            pstmt.setString(4, student.getSurname());
-	            pstmt.setString(5, student.getAdmno());
-	            pstmt.setString(6, student.getYear());
-	            pstmt.setString(7, student.getDOB());
-	            pstmt.setString(8, student.getBcertno());
-	            pstmt.setString(8, student.getSysUser());
-	            pstmt.setTimestamp(9, new Timestamp(student.getRegDate().getTime()));
+	            pstmt.setString(2, student.getSchoolAccountUuid());
+	            pstmt.setString(3, student.getFirstname());
+	            pstmt.setString(4, student.getLastname());
+	            pstmt.setString(5, student.getSurname());
+	            pstmt.setString(6, student.getAdmno());
+	            pstmt.setString(7, student.getYear());
+	            pstmt.setString(8, student.getDOB());
+	            pstmt.setString(9, student.getBcertno());
+	            pstmt.setString(10, student.getSysUser());
+	            pstmt.setTimestamp(11, new Timestamp(student.getRegDate().getTime()));
 	           
 	            pstmt.executeUpdate();
 			 
@@ -187,7 +239,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student  SET Firstname =?," 
 			        +"Lastname =?,Surname =?,Year =?,DOB =?,"
-			        + "Bcertno =?,SysUser =?,RegDate=? WHERE Admno = ?; ");
+			        + "Bcertno =?,SysUser =?,RegDate=? WHERE Admno = ? AND SchoolAccountUuid =?; ");
 		){
 			  
 	            pstmt.setString(1, student.getFirstname());
@@ -199,6 +251,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	            pstmt.setString(7, student.getSysUser());
 	            pstmt.setTimestamp(8, new Timestamp(student.getRegDate().getTime()));
 	            pstmt.setString(9, student.getAdmno());
+	            pstmt.setString(10, student.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -221,12 +274,13 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	      try(
 	      		  Connection conn = dbutils.getConnection();
 	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Student"
-	         	      		+ " WHERE Uuid = ?;");       
+	         	      		+ " WHERE Uuid = ? AND SchoolAccountUuid =?; ");       
 	      		
 	      		){
 	      	
 	      	 pstmt.setString(1, student.getUuid());
-		         pstmt.executeUpdate();
+	      	 pstmt.setString(2, student.getSchoolAccountUuid());
+		     pstmt.executeUpdate();
 		     
 	      }catch(SQLException e){
 	      	 logger.error("SQL Exception when deletting student : " +student);
@@ -295,6 +349,8 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 		
 		return studentList;		
 	}
+
+
 	
 	
 

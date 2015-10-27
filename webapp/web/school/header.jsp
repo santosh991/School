@@ -1,6 +1,6 @@
 
 
-
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 
@@ -58,6 +58,7 @@
         statistics = (SessionStatistics) element.getObjectValue();
     }
 
+  
 %>
 
 
@@ -93,6 +94,8 @@ function clearText(field)
  <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
 <script src="../js/jquery.min.js" type="text/javascript"></script>
 <script src="../js/jquery.nivo.slider.js" type="text/javascript"></script>
+<script src="../js/searchstudent.js" type="text/javascript"></script>
+
 
 <script type="text/javascript">
 $(window).load(function() {
@@ -116,6 +119,13 @@ $(window).load(function() {
 });
 </script>
 
+<style type="text/css">
+   input{
+    height: 26px !important;
+   }
+   
+ </style>
+
 </head>
 
 <div id="tooplate_header">
@@ -130,16 +140,102 @@ $(window).load(function() {
         
         <div class="cleaner"></div>
     </div>
-    
+    <%      
+       
+                 out.print("You are Logged in as: ");
+                 out.print(request.getSession().getAttribute("user_username")); 
+                 out.print("("+request.getSession().getAttribute("position")+")");
+               
+               if(StringUtils.equals(PropertiesConfig.getConfigValue("POSITION_TEACHER"),"Teacher")){
+
+                      String teacher_home =  (String) PropertiesConfig.getConfigValue("SCHOOL_HOME");
+                      //out.print(teacher_home); 
+                 }
+         
+
+
+                  
+
+             %>
+
     <div id="tooplate_menu">
         <ul>
-            <li><a href="home.jsp" class="current">Home</a></li>
-            <li><a href="gallery.jsp">Exams</a></li>
-             <li><a href="#">Reports</a></li>
-            <li><a href="news.jsp">Money</a></li>
-            <li><a href="blog.jsp">Staffs</a></li>
-            <li class="last"><a href="../index.jsp">Logout(<%=username%>)</a></li>
+            <%
+            String POSITION =(String) request.getSession().getAttribute("position");
+            String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
+            String pos_Teacher =(String) PropertiesConfig.getConfigValue("POSITION_TEACHER");
+            String pos_HOD =(String) PropertiesConfig.getConfigValue("POSITION_HOD");
+            String pos_CM =(String) PropertiesConfig.getConfigValue("POSITION_CM");
+            String pos_Secretary =(String) PropertiesConfig.getConfigValue("POSITION_SECRETARY");
+            String pos_Bursar =(String) PropertiesConfig.getConfigValue("POSITION_BURSAR");
+
+            if(StringUtils.equals(POSITION,pos_Teacher)){
+
+                   %> 
+                   <li><a href="home.jsp" class="current">Home</a></li>
+                    <li><a href="#">Exams</a></li>
+                    <li><a href="#">Report</a></li>
+                   
+                  <% 
+                 
+             }else if(StringUtils.equals(POSITION,pos_HOD)){
+
+             %>     <li><a href="home.jsp" class="current">Home</a></li>
+                    <li><a href="#">Exam</a></li>
+                    <li><a href="#">Report</a></li>
+                    <li><a href="#">Subject</a></li>
+                  
+                  <% 
+         }else if(StringUtils.equals(POSITION,pos_CM)){
+
+             %>     <li><a href="home.jsp" class="current">Home</a></li>
+                    <li><a href="#">Exam</a></li>
+                    <li><a href="#">Report</a></li>
+                    <li><a href="#">Subject</a></li>
+                  
+                  <% 
+         }else if(StringUtils.equals(POSITION,pos_Secretary)){
+
+             %>     <li><a href="home.jsp" class="current">Home</a></li>
+                    <li><a href="student.jsp">Student</a></li>
+                   
+                  
+                  <% 
+         }
+          else if(StringUtils.equals(POSITION,pos_Bursar)){
+
+             %>     <li><a href="home.jsp" class="current">Home</a></li>
+                    <li><a href="student.jsp">Student</a></li>
+                    <li><a href="#">Money </a></li>
+                   
+                  
+                  <% 
+         }
+          else if(StringUtils.equals(POSITION,pos_Pricipal)){
+
+             %>     <li><a href="home.jsp" class="current">Home</a></li>
+                     <li><a href="student.jsp">Student</a></li>
+                    <li><a href="#">Exam</a></li>
+                    <li><a href="#">Report</a></li>
+                     <li><a href="#">Subject</a></li>
+                    <li><a href="#">Money </a></li>
+                    <li><a href="staff.jsp">Staff</a></li>
+                    <li><a href="#">Account</a></li>
+                  
+                  <% 
+         }
+          
+          
+          
+
+
+
+            %>
+                  
+                  
+                   <li class="last"><a href="../index.jsp">Logout(<%=username%>)</a></li>
+
         
         </ul>    	
-    
+          
     </div> <!-- end of tooplate_menu -->

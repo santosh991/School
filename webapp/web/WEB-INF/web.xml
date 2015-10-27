@@ -54,11 +54,23 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Logout</servlet-class>
     </servlet>
 
+   <!-- Start - School management  servlets -->
+   <servlet>
+        <servlet-name>AddStudent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.student.AddStudent</servlet-class>
+    </servlet>
 
+  <!-- Start - School management  servlets ,User Management-->
 
+   <servlet>
+        <servlet-name>EditUser</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.EditUser</servlet-class>
+    </servlet>
 
-
-
+    <servlet>
+        <servlet-name>EditUserPassword</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.EditUserPassword</servlet-class>
+    </servlet>
 
 
 
@@ -67,6 +79,10 @@
         <servlet-name>AdminLogin</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.Login</servlet-class>
     </servlet>
+
+
+
+
 
 
 
@@ -85,14 +101,47 @@
     </servlet-mapping>
 
 
+
+
+
+
+
+    <!-- Servlet mapping school management -->
+      <servlet-mapping>
+        <servlet-name>AddStudent</servlet-name>
+        <url-pattern>/addStudent</url-pattern>
+     </servlet-mapping>
+
+
+ <!-- Servlet mapping school management ,User Management -->
+   <servlet-mapping>
+        <servlet-name>EditUser</servlet-name>
+        <url-pattern>/editUser</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>EditUserPassword</servlet-name>
+        <url-pattern>/editUserPassword</url-pattern>
+    </servlet-mapping>
+
+
+
     <!-- Start - Administrator servlet mapping -->
     <servlet-mapping>
         <servlet-name>AdminLogin</servlet-name>
         <url-pattern>/admin/AdminLogin</url-pattern>      
     </servlet-mapping>
+
+
+
+
+
+
+
+
      
     <session-config>
-        <session-timeout>8</session-timeout>
+        <session-timeout>200</session-timeout>
     </session-config>
 
 

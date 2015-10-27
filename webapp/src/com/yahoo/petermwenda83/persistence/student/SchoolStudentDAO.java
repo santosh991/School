@@ -20,7 +20,10 @@
 package com.yahoo.petermwenda83.persistence.student;
 import java.util.List;
 
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
+
+
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -39,13 +42,30 @@ public interface SchoolStudentDAO {
 	 * @return Student
 	 */
 	public Student getStudents(String admno);
-	/**
-	 * 
-	 * @param studentSuper
-	 * @return Student
-	 */
 	
-	public boolean getStudents(Student student);
+	
+	 
+	   /**
+	    * 
+	    * @param schoolaccount
+	    * @param firstname
+	    * @return	a {@link List} of {@link Student}s whose firstname partly or wholly
+	    * matches the firstname and belongs to a particular school account. Matching is case 
+	    * insensitive. An empty list is returned if no Student matches the firstname.
+	    */
+	  public List<Student> getStudentByName(SchoolAccount schoolaccount, String firstname);
+	  
+	  
+
+	   /**
+	    * 
+	    * @param schoolaccount
+	    * @param admno
+	    * @return	a {@link List} of {@link Student}s whose admno partly or wholly
+	    * matches the admno and belongs to a particular school account. Matching is case 
+	    * insensitive. An empty list is returned if no Student matches the admno.
+	    */
+	  public List<Student> getStudentAdmNo(String schoolaccountUuid, String admno);
 	     
 	/**
 	  * 

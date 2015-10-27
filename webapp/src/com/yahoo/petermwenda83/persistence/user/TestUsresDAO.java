@@ -42,14 +42,15 @@ public class TestUsresDAO {
 
 	final String UUID ="740d418c-a50c-4d4c-ac8b-0d58714a8064";
 	
-	final String  USER_UUID = "730d418c-a50c-4d4c-ac8b-0d58714a8065",
+	final String  USER_UUID = "750d418c-a50c-4d4c-ac8b-0d58714a8069",
 			      USER_UUID_NEW = "678d418c-a50c-4d4c-ac8b-0d58714a8095";
-	final String  USER_USERNAME = "karani",
+	final String  USER_USERNAME = "mwenda",
 			      USER_USERNAME_NEW = "kewuser";
-	final String  USER_PASS = "karani",
+	final String  USER_PASS = "tc",
 			      USER_PASS_NEW = "newpas";
-	final String  USER_PYPE  = "Principal";
-
+	final String  USER_PYPE  = "Teacher";
+    
+	final String SCH_ACC_UUID ="B643876D-B90C-435C-B215-CC558D596626";
 
 	private UsresDAO store;
 
@@ -68,6 +69,21 @@ public class TestUsresDAO {
 		assertEquals(user.getPassword(),USER_PASS);
 		assertEquals(user.getUserType(),USER_PYPE);
 	}
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#getUser(java.lang.String)}.
+	 */
+	@Ignore
+	@Test
+	public void testGetUserBySchUuid() {
+		store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+        User user = new User();
+		
+        user = store.getUserByUsername(USER_USERNAME,SCH_ACC_UUID);
+		assertEquals(user.getUuid(),USER_UUID);
+		assertEquals(user.getUsername(),USER_USERNAME);
+		assertEquals(user.getPassword(),USER_PASS);
+		assertEquals(user.getUserType(),USER_PYPE);
+	}
 
 	
 	/**
@@ -81,24 +97,27 @@ public class TestUsresDAO {
         user.setUsername(USER_USERNAME); 
         user.setPassword(USER_PASS); 
         user.setUserType(USER_PYPE); 
+        user.setSchoolAccountUuid(SCH_ACC_UUID); 
         
         user = store.getUserName(user);  
         assertEquals(user.getUuid(),USER_UUID);
         assertEquals(user.getUsername(),USER_USERNAME);
         assertEquals(user.getPassword(),USER_PASS);
         assertEquals(user.getUserType(),USER_PYPE);
+        assertEquals(user.getSchoolAccountUuid(),SCH_ACC_UUID);
 	}
 
 	
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#editUser(com.yahoo.petermwenda83.bean.systemuser.User, java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testEditUser() {
 		store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		User user = new User();
 		user.setUuid(USER_UUID);
+		user.setSchoolAccountUuid(SCH_ACC_UUID);
 		user.setPassword(USER_PASS);
 		user.setUserType(USER_PYPE);
 		user.setUsername(USER_USERNAME); 
@@ -114,6 +133,7 @@ public class TestUsresDAO {
 		store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		User user = new User();
 		user.setUuid(USER_UUID_NEW);
+		user.setSchoolAccountUuid(SCH_ACC_UUID);
 		user.setPassword(USER_PASS_NEW);
 		user.setUserType(USER_PYPE);
 		user.setUsername(USER_USERNAME_NEW); 
@@ -136,11 +156,11 @@ public class TestUsresDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.user.UsresDAO#getAllUsers()}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAllUsers() {
 		 store = new UsresDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		 List<User> list = store.getAllUsers();	
+		 List<User> list = store.getAllUsers(SCH_ACC_UUID);	
 			assertEquals(list.size(), 6);
 			System.out.println(list);
 			for (User l : list) {

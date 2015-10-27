@@ -1,5 +1,8 @@
 
 
+<%@page import="com.yahoo.petermwenda83.persistence.user.UsresDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.systemuser.User"%>
+
 <%@page import="com.yahoo.petermwenda83.persistence.student.StudentSubjectDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.student.StudentSubject"%>
 
@@ -62,6 +65,7 @@
      
     StudentSubjectDAO subjectDAO = StudentSubjectDAO.getInstance();
     RoomDAO roomDAO = RoomDAO.getInstance();
+    UsresDAO userDAO = UsresDAO.getInstance();
 
     HashMap<String, String> roomHash = new HashMap<String, String>();
     HashMap<String, String> subHash = new HashMap<String, String>();
@@ -70,6 +74,7 @@
     subList = subjectDAO.getAllStudentSubject();
     List <ClassRoom> roomList = new ArrayList<ClassRoom>();
     roomList = roomDAO.getAllRooms();
+
 
     SchoolAccount school = new SchoolAccount();
     Element element;
@@ -89,11 +94,14 @@
         statistics = (SessionStatistics) element.getObjectValue();
     }
 
+     List <User> usersList = new ArrayList<User>();
+     usersList = userDAO.getAllUsers(accountuuid); 
+
      //StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
      //studentList = studentDAO.getStudentList(school , 0 , 15); 
 
-
+       
     //incount = statistics.getAllIncomingCount();
 
 
@@ -101,12 +109,6 @@
      StudentPaginator paginator = new StudentPaginator(accountuuid);
      StudentPage studentpage;
 
-      /*if (incount == 0) {   // This user has no Incoming USSD in the account
-        studentpage = new StudentPage();
-        studentList = new ArrayList<Student>();
-        ussdCount = 0;
-
-    } else { */
      studentpage = (StudentPage) session.getAttribute("currentPage");
         String referrer = request.getHeader("referer");
         String pageParam = (String) request.getParameter("page");
@@ -146,7 +148,7 @@
           roomHash.put(c.getUuid(), c.getRoom()+"("+c.getRoomName()+")"  );
 
           }
-      
+       
 %>
 <html>
 <body>
@@ -154,17 +156,17 @@
 
 <jsp:include page="header.jsp" />
 
-          
+         
      <div id="search_box">
             <form action="#" method="get">
-                <input type="text" value="Search" name="q" size="10" id="searchfield" title="searchfield" onfocus="clearText(this)" onblur="clearText(this)" />
-                <input type="submit" name="Search" value="" id="searchbutton" title="Search" />
+                <input type="text" placeholder="Search By AdmNo" name="q" size="10" id="searchfield" title="searchfield" onkeyup="searchstudents(this.value)" />
+                <!--<input type="submit" name="Search" value="" id="searchbutton" title="Search" />-->
             </form>
         </div>
   
          <div id="tooplate_main">        
          <div id="middle_left" >               
-            <a class="btn" href="addstudent.jsp" title="add student" data-rel="tooltip">Add</a>  
+           <!-- <a class="btn" href="addstudent.jsp" title="add student" data-rel="tooltip">Add</a>  -->
          </div>
 
           <p>Students Details</p>
@@ -182,7 +184,7 @@
                        
                     </tr>
                 </thead>   
-                <tbody>
+                <tbody class='tablebody'>
                     <%                                                          
                       
                        for (Student st : studentList) {
@@ -193,7 +195,7 @@
                             }
                       
                     %>
-                    <tr>
+                    <tr class="tabledit">
                         <td width="10%"><%=ussdCount%></td>
                          <td class="center"><%=st.getFirstname()%></td> 
                           <td class="center"><%=st.getLastname()%></td> 
@@ -243,8 +245,8 @@
         <div class="col_w580 float_l">
                     <div class="con_tit_01">Welcome <span>to ....... </span></div>
                     
-                    <p><em>uyfyuiiuyfghoiuyfghjgvhbjuyghjughjuyghjughjuyghj.</em></p>
-                    <p align="justify">jhdhdhfhjierjeioirioriotioioriiurioioriorioruiiuoiro .</p>  
+                    <p><em>uyfyuiiuyfghoiuyfghjgvhbjuyghjughj.</em></p>
+                    <p align="justify">jhdhdhfhjierjeioirioriotioio.</p>  
 
                     <div class="cleaner"></div>
            </div>
@@ -255,20 +257,20 @@
                     <div class="lbe_box">
                     <p class="date">Nov 17, 2015</p>
                     <h3><a href="#">Exam Start</a></h3>
-                    <p>ghjkjhghjkliuyfguiuyuioiuyghjitghjiuyghitgyu.</p>
+                    <p>ghjkjhghjkliuyfguiuyuioiuyghjitghjiu.</p>
                     
                     </div>
                     <div class="lbe_box">
                       <p class="date">Nov 27, 2015</p>
                         <h3><a href="#">Closing day</a></h3>
-                        <p>ghjkkuyiooiuytrtghiutrghjkoiuytfghjuytfgvuytfghjgf.</p>
+                        <p>ghjkkuyiooiuytrtghiutrghjkoiuytfghjuytfgvu.</p>
                         
                         
                     </div>
                     <div class="lbe_box">
                       <p class="date">Dec 10, 2015</p>
                         <h3><a href="#">School Opens</a></h3>
-                        <p>hgfdfghjkkgfghlkoiuyfghjkiuhgvbnmlugvhnliughjn.</p>
+                        <p>hgfdfghjkkgfghlkoiuyfghjkiuhgvbnmlugvhnl</p>
                     </div>                 
                   <div class="cleaner"></div>
               </div>

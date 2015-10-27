@@ -147,7 +147,7 @@
       
       <classpath refid="compile.classpath" />
 
-      <doctitle>  <![CDATA[<h1>SCHOOL MANAGEMENT SYSTEM/h1>]]>    </doctitle>
+      <doctitle>  <![CDATA[<h1>SCHOOL MANAGEMENT SYSTEM</h1>]]>    </doctitle>
       <bottom>  <![CDATA[<i>Copyright &#169; 2015 PETER PROJECT.</i>]]>     </bottom>
 
     </javadoc>

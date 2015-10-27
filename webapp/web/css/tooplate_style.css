@@ -142,21 +142,21 @@ a.more:hover {
 	height: 80px; 
 	color: #fff; 
 	text-indent: -10000px; 
-	background: url(../images/tooplate_logo.png); 
+	background: url(../images/fastech.png); 
 }
 
 /* menu */
 
 #tooplate_menu {
 	clear: both;
-	width: 960px;
+	width: 1000px;
 	height: 45px;
 	background: url(../images/tooplate_menu.png) no-repeat;
 }
 
 #tooplate_menu ul {
 	float: left;
-	width: 600px;
+	width: 1000px;
 	margin: 0;
 	padding: 0;
 	list-style: none;

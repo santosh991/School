@@ -48,7 +48,12 @@ $(window).load(function() {
 	});
 });
 </script>
-
+<style type="text/css">
+   input{
+    height: 26px !important;
+   }
+   
+ </style>
 </head>
 <body>
 

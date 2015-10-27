@@ -22,11 +22,11 @@ import com.yahoo.petermwenda83.bean.subject.Subject;
 public class TestSubjectDAO {
 	
 
-final String databaseName = "allamanodb";
-final String Host = "localhost";
-final String databaseUsername = "allamano";
-final String databasePassword = "AllaManO1";
-final int databasePort = 5432;
+	final String databaseName = "schooldb";
+	final String Host = "localhost";
+	final String databaseUsername = "school";
+	final String databasePassword = "AllaManO1";
+	final int databasePort = 5432;
 
 final String  SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446A2E",
 		       SUB_UUID_2 = "H0F7EC32-EA25-9D32-8708-2CC132446A2F",

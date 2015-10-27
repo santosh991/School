@@ -33,6 +33,7 @@ import com.yahoo.petermwenda83.bean.systemuser.User;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 
+
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
@@ -40,7 +41,7 @@ import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 
 
-   private static UsresDAO usresDAO;
+    private static UsresDAO usresDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
@@ -70,13 +71,13 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getUser(java.lang.String)
 	 */
 	
-	@Override
+	
 	public User getUser(String Uuid) {
 		User user = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SystemUser WHERE Uuid = ?;");       
         		
         		){
         	
@@ -97,51 +98,90 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 		return user; 
 	}
 
+	
+	
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#editUser(com.yahoo.petermwenda83.contoller.user.User, java.lang.String)
+	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getUserBySchUuid(java.lang.String)
 	 */
 	
-	@Override
-	public boolean editUser(User user, String Uuid) {
-		boolean success = true;
-		
-		  try (  Connection conn = dbutils.getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Users SET userType=?, "
-        			+ "username=?, password=? WHERE Uuid = ?;");
-        	) {
-                
-	            pstmt.setString(1, user.getUserType());
-	            pstmt.setString(2, user.getUsername());
-	            pstmt.setString(3, SecurityUtil.getMD5Hash(user.getPassword()));
-	            pstmt.setString(4, Uuid);
-	            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            logger.error("SQL Exception when updating SubjectUi with uuid " + user);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            success = false;
-        } 
+	public User getUserByUsername(String UserUsername,String SchoolAccountUuid) {
+		User user = new User();
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SystemUser WHERE Username = ? AND SchoolAccountUuid =?;");       
         		
-		return success;
+        		){
+        	
+        	 pstmt.setString(1, UserUsername);
+        	 pstmt.setString(2, SchoolAccountUuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	  user  = beanProcessor.toBean(rset,User.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting an users with UserUsername: " + UserUsername);
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return user; 
 	}
+	
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getUserName(com.yahoo.petermwenda83.bean.systemuser.User)
+	 */
+	
+	public User getUserName(User use) { 
+		User user = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SystemUser WHERE"
+           	      		+ " username =? AND Password =? AND userType =? AND SchoolAccountUuid =?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, use.getUsername());
+        	 pstmt.setString(2, use.getPassword());
+        	 pstmt.setString(3, use.getUserType());
+        	 pstmt.setString(4, use.getSchoolAccountUuid());
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 user  = beanProcessor.toBean(rset,User.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting user with: " + use);
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return user; 
+	}
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#putUser(com.yahoo.petermwenda83.contoller.user.User)
 	 */
 	
-	@Override
 	public boolean putUser(User user) {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Users" 
-			        		+"(Uuid, userType, username, password) VALUES (?,?,?,?);");
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SystemUser" 
+			        		+"(Uuid,SchoolAccountUuid, userType, username, password) VALUES (?,?,?,?,?);");
         		){
 			   
 	            pstmt.setString(1, user.getUuid());
-	            pstmt.setString(2, user.getUserType());
-	            pstmt.setString(3, user.getUsername());
-	            pstmt.setString(4, user.getPassword());
+	            pstmt.setString(2, user.getSchoolAccountUuid());
+	            pstmt.setString(3, user.getUserType());
+	            pstmt.setString(4, user.getUsername());
+	            pstmt.setString(5,  SecurityUtil.getMD5Hash(user.getPassword()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -156,15 +196,44 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	}
 
 	/**
+	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#editUser(com.yahoo.petermwenda83.contoller.user.User, java.lang.String)
+	 */
+	
+	public boolean editUser(User user, String Uuid) {
+		boolean success = true;
+		
+		  try (  Connection conn = dbutils.getConnection();
+        	PreparedStatement pstmt = conn.prepareStatement("UPDATE SystemUser SET userType=?, "
+        			+ "username=?, password=?,SchoolAccountUuid =? WHERE Uuid = ?;");
+        	) {
+                
+	            pstmt.setString(1, user.getUserType());
+	            pstmt.setString(2, user.getUsername());
+	            pstmt.setString(3, user.getPassword());
+	            pstmt.setString(4, user.getSchoolAccountUuid());
+	            pstmt.setString(5, Uuid);
+	            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("SQL Exception when updating SubjectUi with uuid " + user);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
+            success = false;
+        } 
+        		
+		return success;
+	}
+
+
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#deleteUser(com.yahoo.petermwenda83.contoller.user.User)
 	 */
 	
-	@Override
 	public boolean deleteUser(User user) {
 		 boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
-	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Users"
+	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM SystemUser"
 	         	      		+ " WHERE Uuid = ?;");       
 	      		
 	      		){
@@ -183,25 +252,30 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 			return success;
 	}
 
+	
+	
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getAllUsers()
 	 */
-	
-	@Override
-	public List<User> getAllUsers() {
+	public List<User> getAllUsers(String SchoolAccountUuid) {
 		List<User>  list = null;
 		
 		 try(   
       		Connection conn = dbutils.getConnection();
-      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Users ;");   
-      		ResultSet rset = pstmt.executeQuery();
+      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM SystemUser WHERE SchoolAccountUuid =? ;");   
+      		
   		) {
-      	
-          list = beanProcessor.toBeanList(rset, User.class);
+
+			  pstmt.setString(1,SchoolAccountUuid);
+			  try(ResultSet rset = pstmt.executeQuery();) {
+				  list = beanProcessor.toBeanList(rset, User.class);
+	      	   } 
+            
 
       } catch(SQLException e){
       	logger.error("SQL Exception when getting all StudentSubject");
-          logger.error(ExceptionUtils.getStackTrace(e));
+        logger.error(ExceptionUtils.getStackTrace(e));
+        System.out.println(ExceptionUtils.getStackTrace(e));
       }
     
 		
@@ -209,37 +283,7 @@ public class UsresDAO extends DBConnectDAO implements SystemUsersDAO {
 	}
 
 	
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.user.SystemUsersDAO#getUserName(com.yahoo.petermwenda83.bean.systemuser.User)
-	 */
-	@Override
-	public User getUserName(User use) { 
-		User user = null;
-        ResultSet rset = null;
-        try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Users WHERE"
-           	      		+ " username =? AND Password =? AND userType =?;");       
-        		
-        		){
-        	
-        	 pstmt.setString(1, use.getUsername());
-        	 pstmt.setString(2, use.getPassword());
-        	 pstmt.setString(3, use.getUserType());
-	         rset = pstmt.executeQuery();
-	     while(rset.next()){
+
 	
-	    	 user  = beanProcessor.toBean(rset,User.class);
-	   }
-        	
-        	
-        	
-        }catch(SQLException e){
-        	 logger.error("SQL Exception when getting user with: " + use);
-             logger.error(ExceptionUtils.getStackTrace(e));
-        }
-        
-		return user; 
-	}
 
 }

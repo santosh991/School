@@ -48,16 +48,22 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 ###### RUN
 
 cd ~/Downloads
-sudo cp -r jdk-8u25-linux-i586.tar.gz /opt/Programs/jdks
+sudo cp -r jdk-8u60-linux-i586.tar.gz /opt/Programs/jdks
 cd /opt/Programs/jdks
-sudo tar xvzf jdk-8u25-linux-i586.tar.gz
+sudo tar xvzf jdk-8u60-linux-i586.tar.gz
 
 sudo gedit /etc/profile
 
 #####ADD
-JAVA_HOME=/opt/Programs/jdk1.8.0_25
+JAVA_HOME=/opt/Programs/jdks/jdk1.8.0_60
 JRE_HOME=$JAVA_HOME/jre
 PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+
+
+JBOSS_HOME=/opt/Programs/WildFly/8.2.0
+
+export JBOSS_HOME
+
 export JAVA_HOME
 export JRE_HOME
 export PATH
@@ -152,7 +158,7 @@ sudo apt-get install subversion
 
 mkdir ~/svn
 
-########Checkout BabbleSMS project
+########Checkout School project
 cd svn
 svn checkout https://github.com/msomi22/School
 

@@ -27,7 +27,7 @@ import com.yahoo.petermwenda83.bean.AllBean;
  *
  */
 public class User extends AllBean {
-	 private String uuid;
+	
 	 private String userType;
 	 private String username;
 	 private String password;
@@ -37,29 +37,14 @@ public class User extends AllBean {
 	 */
 	public User() {
 		super();
-	    uuid = "";
+	  
 	    userType  = "";
 	    username  = "";
 	    password  = "";
 	    SchoolAccountUuid = "";
 	}
 	
-	/**
-	 * @return the uuid
-	 */
-	@Override
-	public String getUuid() {
-		return uuid;
-	}
-
-	/**
-	 * @param uuid the uuid to set
-	 */
-	@Override
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
+	
 	/**
 	 * @return the userType
 	 */

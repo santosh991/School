@@ -32,6 +32,7 @@ import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 
+
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
@@ -143,6 +144,38 @@ public class TestStudentDAO {
 	 */
 	@Ignore
 	@Test
+	public void testGetStudentByName() {
+	 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+	 SchoolAccount a = new SchoolAccount();
+	 a.setUuid(SCH_UUID);  
+			
+			List<Student> list = store.getStudentByName(a, "Joyce");
+			System.out.println(list);
+			//assertEquals(list.size(), 2);		
+		}
+
+	
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentDAO#putStudent(com.yahoo.petermwenda83.bean.student.StudentSubject)}.
+	 */
+	//@Ignore
+	@Test
+	public void testGetStudentAdmNo() {
+	 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+	 SchoolAccount a = new SchoolAccount();
+	 a.setUuid(SCH_UUID); 
+			
+			List<Student> list = store.getStudentAdmNo(SCH_UUID, "A1");
+			System.out.println(list);
+			assertEquals(list.size(), 11);		
+		}
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentDAO#putStudent(com.yahoo.petermwenda83.bean.student.StudentSubject)}.
+	 */
+	@Ignore
+	@Test
 	public void testPutStudents() {
 		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		 Student stu = new Student();
@@ -194,7 +227,7 @@ public class TestStudentDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.StudentDAO#getAllStudents()}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetAllStudents() {
 		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
