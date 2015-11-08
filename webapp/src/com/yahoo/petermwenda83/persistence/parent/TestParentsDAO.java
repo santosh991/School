@@ -41,22 +41,45 @@ public class TestParentsDAO {
 	final int databasePort = 5432;
 	
 	final String STUDENT_UUID ="9771e08e-4e87-4fe4-9608-a31952ec10cd";
+	
 	final String STU_UUID = "DAF7EC32-EA25-7D32-8708-2CC132446A2Y",
 			     STU_UUID_NEW = "d8a28954-5f2e-4899-8e3f-37b48694778b";
-	final String UUID = "C6D5BA33-C95E-BCC3-D951-2A099E5F9230";
-	final String FATHER_NAME = "Peter mwenda",FATHER_NAME_NEW ="Njeru Mwenda Peter";
-	final String FATHER_PHONE = "718953974",FATHER_PHONE_NEW ="765456787654";
-	final String FATHER_OCCUP = "Programmer",FATHER_OCCUP_NEW="newOccupation";
-	final String FATHER_ID = "28314165",FATHER_ID_NEW="111111",FATHER_ID_UPDATE ="11112";
-	final String FATHER_EMAIL = "peter@gmail.com",FATHER_EMAIL_NEW ="xxxxx@gmail.com",
-			FATHER_EMAIL_UPDATE ="petermwenda72@gmail.com";
 	
-	final String MOTHER_NAME = "Mary Muthoni",MOTHER_NAME_NEW ="Merit Karimi";
-	final String MOTHER_PHONE = "29314165",MOTHER_PHONE_NEW ="8765456787";
-	final String MOTHER_OCCUP = "Teachers",MOTHER_OCCUP_NEW ="Business woman";
-	final String MOTHER_ID = "65567788",MOTHER_ID_NEW= "7654567",MOTHER_ID_UPDATE="87678";
-	final String MOTHER_EMAIL = "muthoni@gmail.com",MOTHER_EMAIL_NEW="karimimerit@yahoo.com",
-			MOTHER_EMAIL_UPDATE ="meritkarimi@yahoo.com";
+	final String UUID = "C6D5BA33-C95E-BCC3-D951-2A099E5F9230";
+	
+	final String FATHER_NAME = "Peter mwenda",
+			     FATHER_NAME_NEW ="Njeru Mwenda Peter";
+	
+	final String FATHER_PHONE = "718953974",   
+			     FATHER_PHONE_NEW ="765456787654";
+	
+	final String FATHER_OCCUP = "Programmer",
+			     FATHER_OCCUP_NEW="newOccupation";
+	
+	final String FATHER_ID = "28314165",
+			     FATHER_ID_NEW="111111",
+			     FATHER_ID_UPDATE ="11112";
+	
+	final String FATHER_EMAIL = "peter@gmail.com",
+			     FATHER_EMAIL_NEW ="xxxxx@gmail.com",
+			     FATHER_EMAIL_UPDATE ="petermwenda72@gmail.com";
+	
+	final String MOTHER_NAME = "Mary Muthoni",
+			     MOTHER_NAME_NEW ="Joyce Njoki Njuguna";
+	
+	final String MOTHER_PHONE = "254721669956",
+			    MOTHER_PHONE_NEW ="254721669956";
+	
+	final String MOTHER_OCCUP = "Teacher",
+			     MOTHER_OCCUP_NEW ="Human Resource Manager";
+	
+	final String MOTHER_ID = "65567788",
+			     MOTHER_ID_NEW= "7654567",
+			     MOTHER_ID_UPDATE="87678";
+	
+	final String MOTHER_EMAIL = "muthoni@gmail.com",
+			     MOTHER_EMAIL_NEW="njokibryant@gmail.com",
+			     MOTHER_EMAIL_UPDATE ="xxyy@yahoo.com";
 	
 	final String RELATIONSHIP = "Blood Parent",RELATIONSHIP_NEW ="Adoption",RELATIONSHIP_UPDATE="Update";
 	

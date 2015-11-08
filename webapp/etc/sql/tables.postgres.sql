@@ -258,6 +258,21 @@ ALTER TABLE StudentPrimary OWNER TO school;
 
 
 
+-- -------------------
+-- Table StudentPhoto
+----------------------
+CREATE TABLE StudentPhoto (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    StudentUuid text REFERENCES Student(Uuid),
+    Image bytea
+  
+);
+\COPY StudentPhoto(Uuid,StudentUuid,Image) FROM '/tmp/StudentPhoto.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentPhoto OWNER TO school;
+
+
+
 
 
 -- ======================

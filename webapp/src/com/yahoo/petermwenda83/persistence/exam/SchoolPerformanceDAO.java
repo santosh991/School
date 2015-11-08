@@ -25,5 +25,5 @@ public interface SchoolPerformanceDAO {
 	 * 
 	 * @return
 	 */
-	public List<Perfomance>  getAllPerfomance();
+	public List<Perfomance>  getAllPerfomance(String ExamDetailUuid);
 }

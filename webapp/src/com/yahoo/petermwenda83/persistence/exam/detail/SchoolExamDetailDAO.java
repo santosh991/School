@@ -17,7 +17,7 @@ public interface SchoolExamDetailDAO {
 	   * @param SchoolAccountUuid
 	   * @return Exam Details for a School
 	   */
-	public ExamDetail get(String SchoolAccountUuid);
+	public ExamDetail get(String SchoolAccountUuid,String ExamUuid);
 	 /**
 	  * 
 	  * @param SchoolAccountUuid
@@ -25,7 +25,7 @@ public interface SchoolExamDetailDAO {
 	  * @param Year
 	  * @return Exam Details for a School given term and year
 	  */
-	public ExamDetail get(String SchoolAccountUuid,String Term,String Year);
+	public ExamDetail get(String SchoolAccountUuid,String ExamUuid, String Term,String Year);
 	 /**
 	  * 
 	  * @param examDetail
@@ -48,7 +48,7 @@ public interface SchoolExamDetailDAO {
 	  * 
 	  * @return List of all Exam Details for a school
 	  */
-	public List<ExamDetail> getAllExamdetails(String SchoolAccountUuid);
+	public List<ExamDetail> getAllExamdetails(String SchoolAccountUuid,String Term,String Year);
 
 
 }

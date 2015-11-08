@@ -215,7 +215,7 @@ $(window).load(function() {
 
              %>     <li><a href="home.jsp" class="current">Home</a></li>
                      <li><a href="student.jsp">Student</a></li>
-                    <li><a href="#">Exam</a></li>
+                    <li><a href="exam.jsp">Exam</a></li>
                     <li><a href="#">Report</a></li>
                      <li><a href="#">Subject</a></li>
                     <li><a href="#">Money </a></li>

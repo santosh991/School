@@ -35,11 +35,9 @@
                                 }                        
 
                                 if (StringUtils.isNotEmpty(loginErrStr)) {
-                                    out.println("<p style='color:red;'>");
-                                    out.println("<p class=\"error\">");
+                                    out.println("<p style='color:red;'>");                   
                                     out.println("Login error: " + loginErrStr);
-                                    out.println("</p>");
-                                    out.println("</p>");
+                                    out.println("</p>");                                    
                                     session.setAttribute(SessionConstants.ACCOUNT_SCHOOL_LOGIN_ERROR, null);
                                   } 
                             %>

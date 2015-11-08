@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-
 import com.yahoo.petermwenda83.bean.exam.result.Perfomance;
 import com.yahoo.petermwenda83.persistence.DBConnectDAO;
 
@@ -115,16 +114,18 @@ public class PerformanceDAO extends DBConnectDAO implements SchoolPerformanceDAO
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerformanceDAO#getAllPerfomance()
 	 */
-	public List<Perfomance> getAllPerfomance() {
-		List<Perfomance>  list = null;
+	public List<Perfomance> getAllPerfomance(String ExamDetailUuid) {
+		  List<Perfomance>  list = null;
 		 try(   
- 		Connection conn = dbutils.getConnection();
- 		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Perfomance ;");   
- 		ResultSet rset = pstmt.executeQuery();
+ 		   Connection conn = dbutils.getConnection();
+ 		    PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE ExamDetailUuid =?;");   
+ 		
 		) {
- 	
-     list = beanProcessor.toBeanList(rset, Perfomance.class);
-
+			 pstmt.setString(1, ExamDetailUuid); 
+				try(ResultSet rset = pstmt.executeQuery();){
+					 list = beanProcessor.toBeanList(rset, Perfomance.class);
+				}
+    
     } catch(SQLException e){
  	   logger.error("SQL Exception when getting all Perfomance");
        logger.error(ExceptionUtils.getStackTrace(e));

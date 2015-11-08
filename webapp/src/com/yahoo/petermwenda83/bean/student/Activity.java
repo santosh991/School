@@ -54,8 +54,8 @@ public class Activity extends StudentSuper {
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Activity");
-		builder.append("[ id =");
-		builder.append(getId()); 
+		builder.append("[getUuid()");
+		builder.append(getUuid());
 		builder.append(", getStudentUuid() =");
 		builder.append(getStudentUuid());
 		builder.append(", activity =");

@@ -30,6 +30,7 @@ public class ExamDetail extends AllBean{
 
 	private String SchoolAccountUuid;
 	private String ClassRoomUuid;
+	private String ExamUuid;
 	private String SubjectUuid;
 	private String Term;
 	private String Year;
@@ -42,6 +43,7 @@ public class ExamDetail extends AllBean{
         super();
       	SchoolAccountUuid ="";
       	ClassRoomUuid ="";
+      	ExamUuid ="";
       	SubjectUuid ="";
         Term ="";
       	Year ="";
@@ -49,12 +51,14 @@ public class ExamDetail extends AllBean{
 	}
 	
 	
+
 	/**
 	 * @return the schoolAccountUuid
 	 */
 	public String getSchoolAccountUuid() {
 		return SchoolAccountUuid;
 	}
+
 
 
 	/**
@@ -65,21 +69,6 @@ public class ExamDetail extends AllBean{
 	}
 
 
-	/**
-	 * @return the examUuid
-	 */
-	public String getExamUuid() {
-		return getExamUuid();
-	}
-
-
-	/**
-	 * @param examUuid the examUuid to set
-	 */
-	public void setExamUuid(String examUuid) {
-		setExamUuid(examUuid);
-	}
-
 
 	/**
 	 * @return the classRoomUuid
@@ -87,6 +76,7 @@ public class ExamDetail extends AllBean{
 	public String getClassRoomUuid() {
 		return ClassRoomUuid;
 	}
+
 
 
 	/**
@@ -97,12 +87,32 @@ public class ExamDetail extends AllBean{
 	}
 
 
+
+	/**
+	 * @return the examUuid
+	 */
+	public String getExamUuid() {
+		return ExamUuid;
+	}
+
+
+
+	/**
+	 * @param examUuid the examUuid to set
+	 */
+	public void setExamUuid(String examUuid) {
+		ExamUuid = examUuid;
+	}
+
+
+
 	/**
 	 * @return the subjectUuid
 	 */
 	public String getSubjectUuid() {
 		return SubjectUuid;
 	}
+
 
 
 	/**
@@ -113,12 +123,14 @@ public class ExamDetail extends AllBean{
 	}
 
 
+
 	/**
 	 * @return the term
 	 */
 	public String getTerm() {
 		return Term;
 	}
+
 
 
 	/**
@@ -129,12 +141,14 @@ public class ExamDetail extends AllBean{
 	}
 
 
+
 	/**
 	 * @return the year
 	 */
 	public String getYear() {
 		return Year;
 	}
+
 
 
 	/**
@@ -145,12 +159,14 @@ public class ExamDetail extends AllBean{
 	}
 
 
+
 	/**
 	 * @return the outOf
 	 */
 	public int getOutOf() {
 		return OutOf;
 	}
+
 
 
 	/**
@@ -161,6 +177,7 @@ public class ExamDetail extends AllBean{
 	}
 
 
+
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
@@ -168,8 +185,8 @@ public class ExamDetail extends AllBean{
 		builder.append(getUuid());
 		builder.append(", SchoolAccountUuid =");
 		builder.append(SchoolAccountUuid);
-		builder.append(",getExamUuid()=");
-		builder.append(getExamUuid());
+		builder.append(",ExamUuid=");
+		builder.append(ExamUuid);
 		builder.append(", ClassRoomUuid =");
 		builder.append(ClassRoomUuid);
 		builder.append(", SubjectUuid =");

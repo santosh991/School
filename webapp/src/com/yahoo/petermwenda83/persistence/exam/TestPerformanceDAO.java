@@ -85,9 +85,44 @@ public class TestPerformanceDAO {
 	@Test
 	public void testGetAllPerfomance() {
 		store = new PerformanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getAllPerfomance();	
+		List<Perfomance> list = store.getAllPerfomance(EXAM_DETAIL_UUID);	
 		for (Perfomance p : list) {
-			System.out.println(p);
+			//System.out.println(p);
+			String grade;
+			double catAvg = (p.getCat1()+p.getCat2())/2;
+			double paper12 =(p.getPaper1()+p.getPaper2())/2;
+			double paper123 = paper12+p.getPaper3();
+			double marks = paper123+catAvg;
+			
+			if(marks>=80){
+				grade = "A";
+			}else if(marks>=71){
+				grade = "A-";
+			}else if(marks>=65){
+				grade = "B+";
+			}else if(marks>=60){
+				grade = "B";
+			}else if(marks>=55){
+				grade = "B-";
+			}else if(marks>=50){
+				grade = "C+";
+			}else if(marks>=45){
+				grade = "C";
+			}else if(marks>=40){
+				grade = "C-";
+			}else if(marks>=35){
+				grade = "D+";
+			}else if(marks>=30){
+				grade = "D";
+			}else if(marks>=25){
+				grade = "D-";
+			}else{
+				grade = "E";
+			}
+			
+			System.out.println("Marks="+marks+":Grade="+grade);
+			//System.out.println(grade);
+			
 		}
 	}
 

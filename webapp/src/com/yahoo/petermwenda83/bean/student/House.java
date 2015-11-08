@@ -57,8 +57,8 @@ public class House extends StudentSuper  {
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("House");
-		builder.append("[ id =");
-		builder.append(getId()); 
+		builder.append("getUuid()");
+		builder.append(getUuid());
 		builder.append(", getStudentUuid() =");
 		builder.append(getStudentUuid());
 		builder.append(", housename =");
