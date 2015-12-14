@@ -56,8 +56,8 @@
      Perfomance perfomance;
 
     
-     String Term ="";
-     String Year ="";
+     String Term ="ONE";
+     String Year ="2015";
      String ExamDetailUuid ="";
     
    
@@ -84,7 +84,7 @@
 
     ExamDetailDAO examDetailDAO = ExamDetailDAO.getInstance();
     List<ExamDetail> examDetailList = new ArrayList(); 
-    examDetailList = examDetailDAO.getAllExamdetails(accountuuid,Term,Year);
+   
 
     PerformanceDAO performanceDAO = PerformanceDAO.getInstance();
     List<Perfomance> performanceList = new ArrayList(); 
@@ -100,18 +100,8 @@
     
     <div id="tooplate_middle_subpage">
         <h2>Exam Management</h2>
-        <option>
-            <select>select Term</select>
-             <select>One</select>
-              <select>Two</select>
-               <select>Three</select>
-        </option>
-         <option>
-            <select>select Year</select>
-             <select>2015</select>
-              <select>2016</select>
-               <select>2017</select>
-        </option>
+
+            
        
     </div>
 	
@@ -121,21 +111,49 @@
          <div class="col_w900 col_w900_last">
             <div class="col_w580 float_l">
             
-            	<div class="post_box">
-                    
-                  <p>exam</p>
-                    
-                    <div class="cleaner"></div>
-                </div>
-                <div class="post_box">
-                    
-                    <p>exam</p>
-                    <div class="cleaner"></div>
-                </div>
-                <div class="post_box">
-                    <p>exam</p>
-                    <div class="cleaner"></div>
-                </div>
+            <div class="control-group">
+                        <label class="control-label" for="name">Select Term:</label>
+                         <div class="controls">
+                            <select name="YearOfStudy" >
+                                <option value="">Please select one</option> 
+                                <option value="1">ONE</option>
+                                <option value="2">TWO</option>
+                                <option value="3">THREE</option>
+                               
+                                
+                            </select>                           
+                          
+                        </div>
+                    </div> 
+                 
+
+                    <div class="control-group">
+                        <label class="control-label" for="name">Select Year:</label>
+                         <div class="controls">
+                            <select name="YearOfStudy" >
+                                <option value="">Please select one</option> 
+                                <option value="1">2015</option>
+                                <option value="2">2016</option>
+                                <option value="3">2017</option>
+                                <option value="4">2018</option>
+                                
+                            </select>                           
+                          
+                        </div>
+                    </div> 
+
+      <%
+         examDetailList = examDetailDAO.getAllExamdetails(accountuuid,Term,Year);
+        // out.println(examDetailList);
+    
+
+
+      %>
+
+
+
+
+
            	  
             </div>
             

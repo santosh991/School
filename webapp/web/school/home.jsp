@@ -56,7 +56,7 @@
     }
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
-    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
+    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=logout");
 
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);

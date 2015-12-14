@@ -1,0 +1,26 @@
+++++++++ School Management System  ++++++++
+
+users:                                                           Roles
+                                               
+1)Principal/Deputry Principal  --------------------------> super user, assign roles/responsibilities
+2)HOD/CM --                    --------------------------> deal with issues relating to teacher/student-subjects
+3)Teachers --                  --------------------------> exam proccessing,has other roles/responsibilities
+4)Secretary --                 --------------------------> student registragtion,manages student matters like clubs etc
+5)Bursar/Account Clerck        --------------------------> manage pocket money and/or fees
+6)Librarian                    --------------------------> book management
+7)Store keeper                 --------------------------> keeps store records/ manages kitchen issues
+8)Farm Manager                 --------------------------> keeps farm records/ manages farm products etc
+9)Lab Techinician             ---------------------------> keeps lab records/manages lab
+
+
+
+What the system should do?
+1) Register students - captures all students details , give roles to students(Prefects etc)
+2) Register staff: workers(teaching and non teaching staff)
+3) Register subjects, Class-rooms , Domitories(houses)
+4) Register books(enable book borrowing)
+5) Register store items(enable items borrowing)
+6) Register farm items(cassual workers can borrow the items), Register Cassual workers
+7) register School assets
+
+

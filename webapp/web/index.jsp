@@ -53,7 +53,7 @@
       <h1>Login to Your School</h1>
       <form method="post" action="Login">
       <div class="reg_section personal_info">
-      <h3>Enter Details</h3>
+      <h3>School Username</h3>
       <input type="text" name="schoolusername" value="" placeholder="School Username" required="true">
     <!--  <input type="password" name="schoolpassword" value="" placeholder="School Password" required="true"> -->
       </div>
