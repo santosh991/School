@@ -9,13 +9,18 @@ The tables are divided into the following sections:
 2. Subject Management
 3. ClassRoom Management
 4. Student Management
-5. Exam Management
-6. Employee Management
+5. Staff Management
+6. Exam Management
 7. Pocket Money Management
-8. User Management
 
 
-'UUID' stands for a universally unique identifier.
+
+GUID (or UUID) is an acronym for 'Globally Unique Identifier'
+ (or 'Universally Unique Identifier'). It is a 128-bit integer
+  number used to identify resources. The term GUID is generally
+   used by developers working with Microsoft technologies,
+    while UUID is used everywhere else. 
+
 
 ======================
 ======================
@@ -23,17 +28,29 @@ The tables are divided into the following sections:
 ======================
 ======================
 
+
+-- -------------------
+-- Table Status
+-- -------------------
+
+    -Id  (primary key)
+    -Uuid 
+    -Status
+    
+
 -- -------------------
 -- Table SchoolAccount
 -- -------------------
 
     -Id  (primary key)
     -Uuid 
+    -StatusUuid REFERENCES Status(Uuid)
     -SchoolName
     -Username 
     -Password 
     -Mobile 
-    -Email 
+    -Email
+
 
 ======================
 ======================
@@ -44,12 +61,15 @@ The tables are divided into the following sections:
 --------------------
 --Table Subject
 --------------------
-This is to store all Subjects eg English, Kiswahili ete
+
+This is to store all Subjects eg English, Kiswahili etc
+
+
 - Id (primary key)
-- SchoolAccountUuid 
+- SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
 - SubjectCode 
 - SubjectName 
-- SubjectCategory
+- SubjectCategory   // either techinical, Sciences , Humanities ....
 - SysUser
 - RegDate
 
@@ -60,10 +80,24 @@ This is to store all Subjects eg English, Kiswahili ete
 3. School ClassRoom Management
 ======================
 ======================
+
+--------------------
+--Table ClassRoom
+--------------------
+
  - Id (primary key)
  - Uuid 
- - SchoolAccountUuid 
- - RoomName
+ - SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+ - RoomName , FORM 1 N, FORM 1 S ....
+
+ --------------------
+--Table Classes
+--------------------
+
+ - Id (primary key)
+ - Uuid 
+ - SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+ - Name    // FORM 1, FORM 2, FORM 3, FORM 4
 
 
 
@@ -79,33 +113,43 @@ This is to store all Subjects eg English, Kiswahili ete
 -- Table Student
 -- ----------------
 
-    -Id 
+
+
+   - Id (primary key)
     -Uuid
-    -SchoolAccountUuid 
-    -FirstName 
-    -LastName 
-    -SurName 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StatusUuid REFERENCES Status(Uuid)
+    -ClassRoomUuid REFERENCES ClassRoom(Uuid)
+    -FirstName  // baptism name
+    -LastName   // 
+    -SurName    // family name 
     -Gender
     -Admno 
-    -Year 
     -Dob 
     -BcertNo 
+    -County 
+    -Location 
+    -SubLocation 
     -SysUser 
-    -RegDate 
+    -AdmissionDate 
 
 
 
 -- -------------------
--- StudentSubject
+-- StudentSubClassRoom
 -- -------------------
 
-    -Id
+----- form one students are automatically assigned all the subjects during admission
+
+   - Id (primary key)
     -Uuid 
-    -StudentUuid 
-    -subjectUuid 
-    -ClassRoomUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
+    -ClassRoomUuid REFERENCES ClassRoom(Uuid)
+    -SubjectUuid REFERENCES Subject(Uuid)
     -SysUser
     -RegDate 
+
 
 
 
@@ -113,32 +157,24 @@ This is to store all Subjects eg English, Kiswahili ete
 -- StudentHouse
 ----------------------
 
-    -Id
+    -Id (primary key)
     -Uuid 
-    -StudentUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
     -HouseName 
-  
+    -SysUser
+    -RegDate 
 
-
-
--- -------------------
--- Table StudentLocation
-----------------------
-    -Id 
-    -Uuid 
-    -StudentUuid 
-    -County 
-    -Location 
-    -SubLocation 
 
 
 -- -------------------
 -- Table StudentParent
 ----------------------
 
-    -Id 
+    -Id (primary key)
     -Uuid 
-    -StudentUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
     -FatherName 
     -FatherPhone 
     -FatherOccupation
@@ -146,23 +182,12 @@ This is to store all Subjects eg English, Kiswahili ete
     -FatherEmail 
     -MotherName 
     -MotherPhone 
-    -MotherOccupation
-    -MotherEmail 
+    -MotherOccupation 
     -MotherID 
-    -Relationship 
-
-
-
-
--- -------------------
--- Table StudentRelative
-----------------------
-    -Id 
-    -Uuid 
-    -StudentUuid 
+    -MotherEmail 
     -RelativeName 
     -RelativePhone 
-    -NationalID 
+  
 
 
 
@@ -171,35 +196,27 @@ This is to store all Subjects eg English, Kiswahili ete
 -- Table StudentSponsor
 ----------------------
 
-    -Id 
+    -Id (primary key)
     -Uuid 
-    -StudentUuid 
-    -Name 
-    -Phone 
-    -NationalID 
-    -Occupation 
-    -County 
-    -Country 
-
-
-
--- -------------------
--- Table StudentActivity
-----------------------
-
-    -Id 
-    -Uuid 
-    -StudentUuid 
-    -Activity
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
+    -SponsorName 
+    -SponsorPhone 
+    -SponsorEmail
+    -SponsorOccupation 
+    -SponsorCountry 
+    -SponsorCounty 
+    
 
 
 -- -------------------
 -- Table StudentPrimary
 ----------------------
 
-    -Id
+    -Id (primary key)
     -Uuid
-    -StudentUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
     -SchoolName 
     -Index 
     -KcpeYear
@@ -210,116 +227,65 @@ This is to store all Subjects eg English, Kiswahili ete
 -- Table StudentPhoto
 ----------------------
 
-    -Id
+    -Id (primary key)
     -Uuid
-    -StudentUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
     -Image
    
 
 
 
-======================
-======================
-4. School Exam Management
-======================
-======================
+
+
+==================
+==================
+5. Staff Management
+==================
+==================
+
 -- -------------------
--- Table Exam
+-- Table Position 
 -- -------------------
- 
-    -Id 
+    -Id (primary key)
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
     -Uuid
-    -ExamName 
- 
-
-
---------------------
--- Table MainExamDetail
---------------------
-
-    -Id
-    -Uuid 
-    -SchoolAccountUuid 
-    -ExamUuid 
-    -ClassRoomUuid 
-    -SubjectUuid 
-    -Term 
-    -Year 
-    -OutOf
-
-
+    -Position // Principal ,Deputy, Hod, Teacher , ...
+    
 
 -- -------------------
--- Table Perfomance
+-- Table Department 
 -- -------------------
-
-    -Id 
-    -StudentUuid 
-    -ExamDetailUuid 
-    -Cat1 
-    -Cat2 
-    -Cat3 
-    -Paper1 
-    -Paper2 
-    -Paper3 
-    -SysUser 
-    -SubmitDate 
-
-
-
--- -------------------
--- Table Result
--- -------------------
- 
-    -Id 
-    -StudentUuid
-    -ExamDetailUuid 
-    -MPoint 
-    -Grade 
-    -Remark
-    -Position 
-  
-
--- -------------------
--- Table CatResult
--- -------------------
- 
-    -Id 
-    -Uuid 
-    -StudentUuid 
-    -ExamDetailUuid 
-    -CatPoint 
-    -Grade 
-    -Remark 
-    -Position 
-   
-   
-
-
-
-==================
-==================
-4. Employee Management
-==================
-==================
-
-
-    -Id 
+    -Id (primary key)
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
     -Uuid
-    -SchoolAccountUuid 
-    -Category 
-    -Position 
+    -DepartmentName // Science, Languages, Techinicals, Humanities 
+    
+
+-- -------------------
+-- Table Staff 
+-- -------------------
+    -Id (primary key)
+    -Uuid
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StatusUuid REFERENCES Status(Uuid)
+    -Category    // Tecahing Staff, Non-teaching Staff 
+    -PositionUuid REFERENCES Position(Uuid)
+    -UserName
+    -Password
+
 
 
 
 -- -------------------
--- Table EmployeeDetail
+-- Table StaffDetails
 -- -------------------
 
-    -Id 
+    -Id (primary key)
     -Uuid 
-    -EmployeeUuid 
-    -EmployeeNo 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StaffUuid REFERENCES Staff(Uuid)
+    -StaffNo 
     -FirstName 
     -LastName 
     -Surname 
@@ -334,61 +300,175 @@ This is to store all Subjects eg English, Kiswahili ete
     -RegDate 
 
 -- -------------------
--- Table TeacherSubject
+-- Table TeacherSubClass
 -- -------------------
 
-    -Id 
+    -Id (primary key)
     -Uuid 
-    -EmployeeUuid 
-    -SubjectUuid 
-    -ClassRoomUuid
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -TeacherUuid REFERENCES Staff(Uuid)
+    -SubjectUuid REFERENCES Subject(Uuid)
+    -ClassRoomUuid REFERENCES ClassRoom(Uuid)
     -SysUser 
     -AssignDate
 
 
+-- -------------------
+-- Table TeacherDepartment
+-- -------------------
+
+    -Id (primary key)
+    -Uuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -TeacherUuid REFERENCES Staff(Uuid)
+    -DepartmentUuid REFERENCES Department(Uuid)
+    
+
+-- -------------------
+-- Table Duties
+-- -------------------
+
+    -Id (primary key)
+    -Uuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -Duty    // Class Teacher, Games Master, Ass.GM , House Master ....
+   
+
+-- -------------------
+-- Table TeacherDuties
+-- -------------------
+
+    -Id (primary key)
+    -Uuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -TeacherUuid REFERENCES Staff(Uuid)
+    -DutyUuid REFERENCES Duties(Uuid)
+    -SysUser 
+    -AssignDate
+
+-- -------------------
+-- Table ClassTeacher
+-- -------------------
+
+    -Id (primary key)
+    -Uuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -TeacherUuid REFERENCES Staff(Uuid)
+    -ClassRoomUuid REFERENCES ClassRoom(Uuid)
+    
+
+
+
+
+
+// Student - Teacher Responsibilities
+// This will include prefects body management, clubs and societies management
+
+//student portal- login, see your details, submit download and assigments
+
+
+
+
+
+
+======================
+======================
+6. School Exam Management
+======================
+======================
+
+-- -------------------
+-- Table Exam
+-- -------------------
+ 
+    -Id (primary key)
+    -Uuid
+    -ExamName //  paper1, paper2, paper 3, cat1 , cat2, endTerm exam
+ 
+
+
+
+
+-- -------------------
+-- Table Perfomance
+-- -------------------
+
+    -Id (primary key)
+    -Uuid
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -TeacherUuid REFERENCES Staff(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
+    -SubjectUuid REFERENCES Subject(Uuid)
+    -ClassRoomUuid REFERENCES ClassRoom(Uuid)
+    -CatOne                             
+    -CatTwo
+    -EndTerm
+    -PaperOne
+    -PaperTwo
+    -PaperThree
+    -SysUser 
+    -SubmitDate 
+
+
+-- -------------------
+-- Table GradingSystem
+-- -------------------
+
+     -Id (primary key)
+     -Uuid
+     -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+     -GradeAplain
+     -GradeAminus
+     -GradeBplus
+     -GradeBplain
+     -GradeBminus
+     -GradeCplus
+     -GradeCplain
+     -GradeCminus
+     -GradeDplus
+     -GradeDplain
+     -GradeDminus
+     -GradeE
+
+
+-- -------------------
+-- Table StudentExam
+-- -------------------
+     -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+     -StudentUuid REFERENCES Student(Uuid)
+     -ClassRoomUuid REFERENCES ClassRoom(Uuid)
+
+
+
+
+
 
 ==================
 ==================
-5.Pocket Money Management
+8.Pocket Money Management
 ==================
 ==================
 --------------------
 Table Deposit
 -------------------
-    -Id 
+    -Id (primary key)
     -Uuid 
-    -StudentUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
     -Amount 
     -SysUser 
     -DepositeDate 
 
+
+
 --------------------
 Table Withdraw
 -------------------
-    -Id 
+    -Id (primary key)
     -Uuid 
-    -StudentUuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
     -Amount 
     -SysUser 
     -WithdrawDate 
-
-
-
-==================
-==================
-6. User Management
-==================
-==================
---------------------
-Table SystemUser
--------------------
-    -Id 
-    -Uuid 
-    -SchoolAccountUuid 
-    -UserType 
-    -UUserName 
-    -UPassword 
-    
-
-
 

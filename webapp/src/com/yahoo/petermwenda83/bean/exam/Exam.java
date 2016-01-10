@@ -1,85 +1,80 @@
-/**##########################################################
+
 /*************************************************************
- * ##########################################################
- * ##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without the owner's approval.
- * ###################################################
- * ##########################################################
- * ##### School Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+ * Online School Management System                           *
+ * Forth Year Project                                        *
+ * Maasai Mara University                                    *
+ * Bachelor of Science(Computer Science)                     *
+ * Year:2015-2016                                            *
+ * Name: Njeru Mwenda Peter                                  *
+ * ADM NO : BS02/009/2012                                    *
+ *                                                           *
+ *************************************************************/
 package com.yahoo.petermwenda83.bean.exam;
 
-import com.yahoo.petermwenda83.bean.AllBean;
+import com.yahoo.petermwenda83.bean.StorableBean;
 
 /**
+ * An exam in a school
+ * 
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class Exam extends AllBean{
+public class Exam extends StorableBean{
 
-
-	private String ExamUuid;
-	private String ExamName;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2625893752188549331L;
+	private String examName;
+	private String schoolAccountUuid;
+	
 	
 	
 	/**
 	 * 
 	 */
-	protected Exam() {
+	public Exam() {
 		super();
-		ExamName ="";
+		examName ="";
+		schoolAccountUuid ="";
 	}
 	
-	
-	/**
-	 * @return the examUuid
-	 */
-	public String getExamUuid() {
-		return ExamUuid;
-	}
-
-
-	/**
-	 * @param examUuid the examUuid to set
-	 */
-	public void setExamUuid(String examUuid) {
-		ExamUuid = examUuid;
-	}
-
 	/**
 	 * @return the examName
 	 */
 	public String getExamName() {
-		return ExamName;
+		return examName;
 	}
-
 
 	/**
 	 * @param examName the examName to set
 	 */
 	public void setExamName(String examName) {
-		ExamName = examName;
+		this.examName = examName;
 	}
 
+	/**
+	 * @return the schoolAccountUuid
+	 */
+	public String getSchoolAccountUuid() {
+		return schoolAccountUuid;
+	}
+
+	/**
+	 * @param schoolAccountUuid the schoolAccountUuid to set
+	 */
+	public void setSchoolAccountUuid(String schoolAccountUuid) {
+		this.schoolAccountUuid = schoolAccountUuid;
+	}
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Exam [ getUuid() =");
+		builder.append("Exam [ getUuid() = ,");
 		builder.append(getUuid());
-		builder.append(", ExamUuid=");
-		builder.append(ExamUuid);
+		builder.append(", schoolAccountUuid=");
+		builder.append(schoolAccountUuid);
+		builder.append(", examName=");
+		builder.append(examName);
 		builder.append("]");
 		return builder.toString(); 
 		}

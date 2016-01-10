@@ -1,5 +1,5 @@
 /**
- * School Management System
+ * SchoolAccount Management System
  * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
  * copywrite peter&MigwiSoftwares.co.ltd
  */
@@ -16,16 +16,18 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.subject.Subject;
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
+ *
  */
-public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
+public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 
 	private static SubjectDAO subjectDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -61,7 +63,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	}
 	
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.subject.SchoolSubjectDAO#getSubject(com.yahoo.petermwenda83.bean.student.StudentSubject.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
+	 * @see com.yahoo.petermwenda83.persistence.subject.SchoolSubjectDAO#getSubject(com.yahoo.petermwenda83.bean.student.StudentSubClassRoom.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
 	 */
 	@Override
 	public Subject getSubject(String uuid) {
@@ -113,7 +115,7 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
         	
         	
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting an subject with subjectcode: " + subjectcode);
+        	 logger.error("SQL Exception when getting a subject with subjectcode: " + subjectcode);
              logger.error(ExceptionUtils.getStackTrace(e));
         }
         
@@ -214,16 +216,21 @@ public class SubjectDAO extends DBConnectDAO implements SchoolSubjectDAO {
 	 * @see com.yahoo.petermwenda83.persistence.subject.SchoolSubjectDAO#getAllStudent()
 	 */
 	@Override
-	public List<Subject> getAllSubjects() {
+	public List<Subject> getAllSubjects(String schoolAccountUuid ) {
 		List<Subject>  list = null;
 		
 		 try(   
         		Connection conn = dbutils.getConnection();
-        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");   
-        		ResultSet rset = pstmt.executeQuery();
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE SchoolAccountUuid = ?;");   
+        		//ResultSet rset = pstmt.executeQuery();
     		) {
-        	
-            list = beanProcessor.toBeanList(rset, Subject.class);
+			 pstmt.setString(1, schoolAccountUuid);     
+			 try( ResultSet rset = pstmt.executeQuery();){
+	     	       
+				 list = beanProcessor.toBeanList(rset, Subject.class);
+	         	   }
+			
+           
 
         } catch(SQLException e){
         	logger.error("SQL Exception when getting all SubjectUi");

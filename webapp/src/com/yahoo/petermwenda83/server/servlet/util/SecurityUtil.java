@@ -10,7 +10,7 @@
  * ###### the code herein without the owner's approval.
  * ###################################################
  * ##########################################################
- * ##### School Management System ###########################
+ * ##### SchoolAccount Management System ###########################
  * ##### Uses MVC Model, Postgres database, ant for 
  * ##### project management and other technologies.
  * ##### It consist Desktop application and a web

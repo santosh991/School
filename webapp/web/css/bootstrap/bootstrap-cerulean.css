@@ -140,8 +140,8 @@ body {
   font-family: "Ubuntu", Helvetica, Arial, sans-serif;
   font-size: 13px;
   line-height: 18px;
-  color: #555555;
-  background-color: #ffffff;
+  color: #1D1B1A;
+  background-color: rgba(31, 225, 81, 0.1);
   text-shadow:0 -1px 1px rgba(0, 0, 0, 0.2)
 }
 a {
@@ -4268,7 +4268,7 @@ a.badge:hover {
   font-family: 'Karla', sans-serif;
 }
 .navbar .navbar-inner {
-  background-color: #B8c4cc;
+  background-color: #4C4B4D;
 }
 .navbar-inner{
   background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(0,0,0,0.15) 50%, rgba(30,30,30,0) 100%);

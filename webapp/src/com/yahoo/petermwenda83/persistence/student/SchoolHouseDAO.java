@@ -1,25 +1,10 @@
-/**##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without approval of from
- * ###### owner.#############################################
- * ##########################################################
- * ##### School Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+
+
 package com.yahoo.petermwenda83.persistence.student;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.bean.student.House;
+import com.yahoo.petermwenda83.bean.student.StudentHouse;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -32,38 +17,38 @@ public interface SchoolHouseDAO {
 	   /**
 	    * 
 	    * @param house
-	    * @return whether House was got successfully
+	    * @return whether StudentHouse was got successfully
 	    */
-	public House getStudent(String studentuuid);
+	public StudentHouse getHouse(String studentuuid);
 	   
 		/**
 		 * 
 		 * @param studentSuper
-		 * @param house 
+		 * @param studentHouse 
 		 * 
 		 */
-		public boolean putStudent(House house);
+		public boolean putHouse(StudentHouse studentHouse);
 		
 		/**
 		  * 
 		  * @param studentSuper
-		  * @param house
+		  * @param studentHouse
 		  * 
 		  */
-		public boolean editStudent(House house,String studentuuid);
+		public boolean updatetHouse(StudentHouse studentHouse,String studentuuid);
 		
 		/**
 		   * 
 		   * @param studentSuper
-		   * @param house
+		   * @param studentHouse
 		   * 
 		   */
-		public boolean deleteStudent(House house);
+		public boolean deleteHouse(StudentHouse studentHouse);
 		
 		  /**
 	     * 
 	     * @return AllHouses
 	     */
-	  public List<House> getAllHouse();
+	  public List<StudentHouse> getHouseList();
 
 }

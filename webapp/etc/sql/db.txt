@@ -1,25 +1,86 @@
 
+1) we are to create a dabasase 
 
-######sudo ntfsfix /dev/sda4
+    aren't we?
 
-su – postgres
+    let's go.......
 
-1) psql template1
+    open terminal,  ctrl + T 
 
-CREATE USER school WITH PASSWORD 'AllaManO1';
-ALTER ROLE school WITH CREATEDB;
-\q
-psql template1
+    type su, press eneter
+    input your password
 
-CREATE DATABASE  schooldb;
-GRANT ALL PRIVILEGES ON DATABASE  schooldb to  school;
+    right!!!
 
-\q
+    now type ....
+
+    su – postgres
+
+    done!!  i hope ypu are
+
+    type the command below
+
+    psql template1
+
+    spledind!!
+
+    let's create a user, our user is called school, then we give 'him' (yea, him. right!) , a password
+    
+    create user with password
+
+    CREATE USER school WITH PASSWORD 'AllaManO1';
+
+    give him permission to alter our database
+
+    ALTER ROLE school WITH CREATEDB;
+
+    let's quite
+
+    \q
+
+    we go to template1 one more
+
+    psql template1
+
+    (are you tired! i hope you aren't)
+
+    we craete our database now
+
+   CREATE DATABASE  schooldb;
+
+   oh! we grant our user all the prilileges on our database(wah! he can delete the database!)
+
+   GRANT ALL PRIVILEGES ON DATABASE  schooldb to  school;
+
+   we quite one more
+
+   \q
+
+   our last command
+   
+   go to....
+
+   psql template1
+
+   confirm that we created the database
+
+   \l
+
+   who is the user of the database? if not school the do the following 
+
+
+   ALTER DATABASE  schooldb OWNER to  school;
 
 
 
-psql template1
-\l
-ALTER DATABASE  schooldb OWNER to  school;
+   done!! you cab now go a slpeep for you are now a guru( am kidding, you must work)
+
+
+   remember to buy me a cup of tea, 
+
+   how ?  call me
+
+   phone: 254718953974
+   email: mwendapeter72@gmail.com
 
 

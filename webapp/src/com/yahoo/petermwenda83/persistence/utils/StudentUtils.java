@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 
 
@@ -20,7 +20,7 @@ import com.yahoo.petermwenda83.persistence.DBConnectDAO;
  * @author peter
  *
  */
-public class StudentUtils extends DBConnectDAO {
+public class StudentUtils extends GenericDAO {
 	
 	  private static StudentUtils studentUtils;
 	  private final Logger logger = Logger.getLogger(this.getClass());

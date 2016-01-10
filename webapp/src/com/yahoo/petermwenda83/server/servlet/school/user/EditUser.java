@@ -1,6 +1,6 @@
 /**
  * 
- */
+ *//*
 package com.yahoo.petermwenda83.server.servlet.school.user;
 
 import java.io.IOException;
@@ -20,10 +20,10 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 import net.sf.ehcache.CacheManager;
 
-/**
+*//**
  * @author peter
  *
- */
+ *//*
 public class EditUser extends HttpServlet{
 	private static UsresDAO usresDAO;
     public User user = new User();
@@ -33,11 +33,11 @@ public class EditUser extends HttpServlet{
     final String ERROR_EMPTY_FIELDS = "Error! Username OR Position Can't Be Empty .";
     final String SUCCESS_USER_ADDED = "User Added Successfully";
 	
-	/**
+	*//**
     *
     * @param config
     * @throws ServletException
-    */
+    *//*
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
@@ -55,11 +55,11 @@ public class EditUser extends HttpServlet{
        String uuid = StringUtils.trimToEmpty(request.getParameter("uuid"));
        String accountuuid = StringUtils.trimToEmpty(request.getParameter("accountuuid"));
        
-      /* 
+       
        System.out.println(username);
        System.out.println(position);
        System.out.println(uuid);
-       System.out.println(accountuuid);*/
+       System.out.println(accountuuid);
        
        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(position)){
     	   session.setAttribute(SessionConstants.SCHOOL_USER_EDIT_ERROR, ERROR_EMPTY_FIELDS); 
@@ -96,3 +96,4 @@ public class EditUser extends HttpServlet{
    }
 
 }
+*/

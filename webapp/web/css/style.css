@@ -67,14 +67,15 @@ a:hover {
 }
 
 .container {
-  width: 350px;
+  width: 450px;
   margin-left: auto;
   margin-right: auto;
 }
 .reg_section {
-  padding:0;
-  margin: 10px 0;
+  padding:10px;
+  margin: 0px 40px;
   border-bottom: 1px dotted #eee;
+  font-size: 10px;
 }
 .reg_section h3 {
   font-size: 13px;
@@ -109,7 +110,7 @@ a:hover {
   line-height: 40px;
   font-size: 15px;
   font-weight: bold;
-  color:#694551;
+  color:#EF0D58;
   text-align: center;
   border-bottom:1px solid #EDEDED;
   border-radius: 3px 3px 0 0;
@@ -137,7 +138,7 @@ a:hover {
   vertical-align: middle;
 }
 .register p.submit {
-  text-align: right;
+  text-align: center;
 }
 
 .register-help {

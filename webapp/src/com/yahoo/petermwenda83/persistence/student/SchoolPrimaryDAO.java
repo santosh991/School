@@ -1,11 +1,10 @@
-/**
- * 
- */
+
+
 package com.yahoo.petermwenda83.persistence.student;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.bean.student.Primary;
+import com.yahoo.petermwenda83.bean.student.StudentPrimary;
 
 /**
  * @author peter
@@ -15,36 +14,16 @@ public interface SchoolPrimaryDAO {
 	  /**
 	   * 
 	   * @param StudentUuid
-	   * @return Student Primary School Details
+	   * @return Student StudentPrimary SchoolAccount Details
 	   */
-	public Primary get(String StudentUuid);
-	   /**
-	    * 
-	    * @param primary
-	    * @return Whether Student Primary School Details has been put
-	   * successfully 
-	    */
-	public boolean put(Primary primary);
-	  /**
-	   * 
-	   * @param primary
-	   * @param StudentUuid
-	   * @return Whether Student Primary School Details has been 
-	   * successfully edited
-	   */
-	public boolean edit(Primary primary,String StudentUuid);
-	   /**
-	    * 
-	    * @param primary
-	    * @param StudentUuid
-	    * @return Whether Student Primary School Details has been
-	   * successfully deleted
-	    */
-	public boolean delete(Primary primary,String StudentUuid);
-	    /**
-	     * 
-	     * @return List of all Students Primary Details
-	     */
-	public List<Primary> getAllPrimary();
+	public StudentPrimary getPrimary(String StudentUuid);
+	   
+	public boolean putPrimary(StudentPrimary Primary);
+	  
+	public boolean updatePrimary(StudentPrimary Primary);
+	   
+	public boolean deletePrimary(StudentPrimary Primary);
+	   
+	public List<StudentPrimary> getAllPrimary();
 
 }

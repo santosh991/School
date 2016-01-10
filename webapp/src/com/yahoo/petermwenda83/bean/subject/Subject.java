@@ -1,23 +1,30 @@
-/**
- * 
- */
+
+/*************************************************************
+ * Online School Management System                           *
+ * Forth Year Project                                        *
+ * Maasai Mara University                                    *
+ * Bachelor of Science(Computer Science)                     *
+ * Year:2015-2016                                            *
+ * Name: Njeru Mwenda Peter                                  *
+ * ADM NO : BS02/009/2012                                    *
+ *                                                           *
+ *************************************************************/
 package com.yahoo.petermwenda83.bean.subject;
 
 import java.util.Date;
 
-import com.yahoo.petermwenda83.bean.AllBean;
+import com.yahoo.petermwenda83.bean.StorableBean;
 
 /**
- * @author peter
+ * A subject in a SchoolAccount
+ * 
+ *  @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class Subject extends AllBean {
+public class Subject extends StorableBean {
 	
-	  /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String SchoolAccountUuid;
+	  private static final long serialVersionUID = 1L;
+	  private String SchoolAccountUuid;
 	  private String SubjectCode;
 	  private String SubjectName;
 	  private String SubjectCategory;
@@ -123,13 +130,13 @@ public class Subject extends AllBean {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Subject");
-		builder.append("[getId()=");
-		builder.append(getId()); 
+		builder.append("[ Subject, ");
 		builder.append("getUuid()=");
 		builder.append(getUuid()); 
 		builder.append(",SchoolAccountUuid=");
 		builder.append(SchoolAccountUuid);
+		builder.append(",SubjectName=");
+		builder.append(SubjectName);
 		builder.append(",SubjectCode=");
 		builder.append(SubjectCode);
 		builder.append(", SubjectCategory=");

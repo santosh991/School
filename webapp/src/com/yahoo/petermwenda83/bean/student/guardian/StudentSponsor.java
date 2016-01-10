@@ -1,57 +1,53 @@
-/**##########################################################
+
 /*************************************************************
- * ##########################################################
- * ##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without the owner's approval.
- * ###################################################
- * ##########################################################
- * ##### School Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+ * Online School Management System                           *
+ * Forth Year Project                                        *
+ * Maasai Mara University                                    *
+ * Bachelor of Science(Computer Science)                     *
+ * Year:2015-2016                                            *
+ * Name: Njeru Mwenda Peter                                  *
+ * ADM NO : BS02/009/2012                                    *
+ *                                                           *
+ *************************************************************/
 package com.yahoo.petermwenda83.bean.student.guardian;
 
-import com.yahoo.petermwenda83.bean.student.StudentSuper;
+import com.yahoo.petermwenda83.bean.StorableBean;
 /**
+ * A student can have a sponsor
+ * 
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class StudentSponsor extends StudentSuper {
+public class StudentSponsor extends StorableBean  {
 	
-	private String name;
-	private String phone;
-	private String NationalID;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6880639740535565862L;
+	private String studentUuid;
+	private String SponsorName;
+	private String SponsorOccupation;
+	private String SponsorPhone;
+	private String SponsorCountry;
+	private String SponsorCounty;
 	
-	private String occupation;
-	private String county;
-	private String country;
 	public StudentSponsor(){
 		super();
-		 name = "";
-		 NationalID = "";
-		 phone = "";
-		 occupation = "";
-		 county = "";
-		 country = "";
+		 studentUuid = "";
+		 SponsorName = "";
+		 SponsorOccupation = "";
+		 SponsorPhone = "";
+		 SponsorCountry = "";
+		 SponsorCounty = "";
 	}
 	
 	
 
-
 	/**
 	 * @return the studentUuid
 	 */
-	public String getStudentsUuid() {
-		return getStudentUuid();
+	public String getStudentUuid() {
+		return studentUuid;
 	}
 
 
@@ -59,152 +55,119 @@ public class StudentSponsor extends StudentSuper {
 	/**
 	 * @param studentUuid the studentUuid to set
 	 */
-	public void setStudentsUuid(String studentUuid) {
-		setStudentUuid(studentUuid);
+	public void setStudentUuid(String studentUuid) {
+		this.studentUuid = studentUuid;
 	}
 
 
 
 	/**
-	 * @return the name
+	 * @return the sponsorName
 	 */
-	public String getName() {
-		return name;
+	public String getSponsorName() {
+		return SponsorName;
 	}
-
 
 
 
 	/**
-	 * @param name the name to set
+	 * @param sponsorName the sponsorName to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setSponsorName(String sponsorName) {
+		SponsorName = sponsorName;
 	}
-
 
 
 
 	/**
-	 * @return the phone
+	 * @return the sponsorOccupation
 	 */
-	public String getPhone() {
-		return phone;
+	public String getSponsorOccupation() {
+		return SponsorOccupation;
 	}
-
 
 
 
 	/**
-	 * @param phone the phone to set
+	 * @param sponsorOccupation the sponsorOccupation to set
 	 */
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setSponsorOccupation(String sponsorOccupation) {
+		SponsorOccupation = sponsorOccupation;
 	}
-
 
 
 
 	/**
-	 * @return the nationalID
+	 * @return the sponsorPhone
 	 */
-	public String getNationalID() {
-		return NationalID;
+	public String getSponsorPhone() {
+		return SponsorPhone;
 	}
-
 
 
 
 	/**
-	 * @param nationalID the nationalID to set
+	 * @param sponsorPhone the sponsorPhone to set
 	 */
-	public void setNationalID(String nationalID) {
-		NationalID = nationalID;
+	public void setSponsorPhone(String sponsorPhone) {
+		SponsorPhone = sponsorPhone;
 	}
-
 
 
 
 	/**
-	 * @return the occupation
+	 * @return the sponsorCountry
 	 */
-	public String getOccupation() {
-		return occupation;
+	public String getSponsorCountry() {
+		return SponsorCountry;
 	}
-
 
 
 
 	/**
-	 * @param occupation the occupation to set
+	 * @param sponsorCountry the sponsorCountry to set
 	 */
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
+	public void setSponsorCountry(String sponsorCountry) {
+		SponsorCountry = sponsorCountry;
 	}
-
 
 
 
 	/**
-	 * @return the county
+	 * @return the sponsorCounty
 	 */
-	public String getCounty() {
-		return county;
+	public String getSponsorCounty() {
+		return SponsorCounty;
 	}
-
 
 
 
 	/**
-	 * @param county the county to set
+	 * @param sponsorCounty the sponsorCounty to set
 	 */
-	public void setCounty(String county) {
-		this.county = county;
+	public void setSponsorCounty(String sponsorCounty) {
+		SponsorCounty = sponsorCounty;
 	}
-
-
-
-
-	/**
-	 * @return the country
-	 */
-	public String getCountry() {
-		return country;
-	}
-
-
-
-
-	/**
-	 * @param country the country to set
-	 */
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
 
 
 
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("StudentSponsor");
-		builder.append("[ id =");
-		builder.append(getId()); 
-		builder.append(",getStudentsUuid() =");
-		builder.append(getStudentUuid());
-		builder.append(",name = ");
-		builder.append(name);
-		builder.append(", NationalID =");
-		builder.append(NationalID);
-		builder.append(",phone =");
-		builder.append(phone);
-		builder.append(", occupation =");
-		builder.append(occupation);
-		builder.append(", county =");
-		builder.append(county);
-		builder.append(", country =");
-		builder.append(country);
+		builder.append("Student's Sponsor [ getUuid() =");
+		builder.append(getUuid());
+		builder.append(",studentUuid =");
+		builder.append(studentUuid);
+		builder.append(",SponsorName =");
+		builder.append(SponsorName);
+		builder.append(",SponsorOccupation =");
+		builder.append(SponsorOccupation);
+		builder.append(",SponsorPhone =");
+		builder.append(SponsorPhone);
+		builder.append(",SponsorCountry =");
+		builder.append(SponsorCountry);
+		builder.append(",SponsorCounty =");
+		builder.append(SponsorCounty);
 		builder.append("]");
 		return builder.toString(); 
 		} 

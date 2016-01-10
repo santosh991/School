@@ -1,5 +1,5 @@
 /**
- * School Management System
+ * SchoolAccount Management System
  * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
  * copywrite peter&MigwiSoftwares.co.ltd
  */
@@ -52,7 +52,7 @@ public interface SchoolSubjectDAO {
 	 * 
 	 * @return AllSubjects
 	 */
-	public List<Subject> getAllSubjects();
+	public List<Subject> getAllSubjects(String schoolAccountUuid );
 	
 	
 	

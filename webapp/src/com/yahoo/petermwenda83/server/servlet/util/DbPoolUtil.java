@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.persistence.DButils;
+import com.yahoo.petermwenda83.persistence.DBCredentials;
 
 /**
  * Utility dealing with database connection pooling.
@@ -33,7 +33,7 @@ import com.yahoo.petermwenda83.persistence.DButils;
 public class DbPoolUtil extends HttpServlet {
 
 	
-	private static DButils dButils; 
+	private static DBCredentials dBCredentials; 
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
@@ -46,15 +46,15 @@ public class DbPoolUtil extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         
-        dButils = new DButils();
+        dBCredentials = new DBCredentials();
     }
     
     
     /**
      * @return the database credentials class
      */
-    public static DButils getDBCredentials() {
-    	return dButils;
+    public static DBCredentials getDBCredentials() {
+    	return dBCredentials;
     }
     
     
@@ -65,7 +65,7 @@ public class DbPoolUtil extends HttpServlet {
     public void destroy() {
 		logger.info("Now shutting down database pools.");
     	
-		dButils.closeConnections();		
+		dBCredentials.closeConnections();		
 	} 
     
     

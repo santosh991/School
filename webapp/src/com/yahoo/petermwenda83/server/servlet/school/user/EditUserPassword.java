@@ -1,6 +1,6 @@
 /**
  * 
- */
+ *//*
 package com.yahoo.petermwenda83.server.servlet.school.user;
 
 import java.io.IOException;
@@ -21,10 +21,10 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 import net.sf.ehcache.CacheManager;
 
-/**
+*//**
  * @author peter
  *
- */
+ *//*
 public class EditUserPassword extends HttpServlet{
     private static UsresDAO usresDAO;
     public User user = new User();
@@ -34,11 +34,11 @@ public class EditUserPassword extends HttpServlet{
     final String SUCCESS_PASSWORD_EDITED = "Password ediited Successfully.";
 	
 	
-	/**
+	*//**
     *
     * @param config
     * @throws ServletException
-    */
+    *//*
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
@@ -56,10 +56,10 @@ public class EditUserPassword extends HttpServlet{
        String uuid = StringUtils.trimToEmpty(request.getParameter("uuid"));
        String accountuuid = StringUtils.trimToEmpty(request.getParameter("accountuuid"));
        
-       /*System.out.println(password);
+       System.out.println(password);
        System.out.println(password2);
        System.out.println(uuid);
-       System.out.println(accountuuid);*/
+       System.out.println(accountuuid);
       if(StringUtils.isEmpty(password) || StringUtils.isEmpty(password2)){
     	   session.setAttribute(SessionConstants.SCHOOL_USER_EDIT_ERROR, ERROR_EMPTY_FIELDS); 
   	       response.sendRedirect("school/staff.jsp");  
@@ -95,3 +95,4 @@ public class EditUserPassword extends HttpServlet{
    }
 
 }
+*/

@@ -1,5 +1,5 @@
 /**
- * School Management System
+ * SchoolAccount Management System
  * This software belong to Peter Mwenda's and Miwgi Ndungu's Company
  * copywrite peter&MigwiSoftwares.co.ltd
  */
@@ -27,16 +27,18 @@ public class TestSubjectDAO {
 	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
+	
+	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
 
-final String  SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446A2E",
+   final String  SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446A2E",
 		       SUB_UUID_2 = "H0F7EC32-EA25-9D32-8708-2CC132446A2F",
 		       SUB_UUID_3 ="4dcd3ab3-fffa-4083-89d5-c2734e0706a8";
                
-final String SUB_CODE = "ENG",
+   final String SUB_CODE = "ENG",
 		     SUB_CODE_2 = "MATH",
 		     SUB_CODE_3 = "KISW",
 		     SUB_CODE_4 = "CHEMx";
-final String SUB_NAME = "English",
+   final String SUB_NAME = "English",
 		     SUB_NAME_2 = "Mathematics",
 		     SUB_NAME_3 ="Kiswahili", 
 		     SUB_NAME_4 ="Chemistry";
@@ -64,7 +66,7 @@ private SubjectDAO store;
 	/**
 	 * Subject method for {@link com.yahoo.petermwenda83.persistence.subject.SubjectDAO#getSubject(java.lang.String)}.
 	 */
-     @Ignore
+    @Ignore
 	@Test
 	public void testGetSubject() {
 		store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -83,7 +85,7 @@ private SubjectDAO store;
      * Subject method for {@link com.yahoo.petermwenda83.persistence.subject.SubjectDAO#getSubjects(java.lang.String)}.
 	 *
      */
-   // @Ignore
+    @Ignore
  	@Test
      public void testGetSubjects() {
  		store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -152,13 +154,13 @@ private SubjectDAO store;
 	/**
 	 * SubjectUi method for {@link com.yahoo.petermwenda83.persistence.subject.SubjectDAO#getAllStudent()}.
 	 */
-	 @Ignore
+	//@Ignore
 	@Test
 	public void testGetAllStudent() {
 		 store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Subject> list = store.getAllSubjects();	
-		assertEquals(list.size(), 11);
-		System.out.println(list);
+		List<Subject> list = store.getAllSubjects(SCHOOL_UUID);	
+		//assertEquals(list.size(), 11);
+		//System.out.println(list);
 		for (Subject l : list) {
 			System.out.println(l);
 			

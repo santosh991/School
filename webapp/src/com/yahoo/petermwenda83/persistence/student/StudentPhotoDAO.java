@@ -15,13 +15,13 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.StudentPhoto;
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
  * @author peter
  *
  */
-public class StudentPhotoDAO extends DBConnectDAO implements SchoolStudentPhotoDAO {
+public class StudentPhotoDAO extends GenericDAO implements SchoolStudentPhotoDAO {
 
 
 	private static StudentPhotoDAO studentPhotoDAO;

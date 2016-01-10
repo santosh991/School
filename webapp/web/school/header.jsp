@@ -1,19 +1,10 @@
+<!DOCTYPE html>
 
-
-<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
-
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
 
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.Arrays"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.net.URLEncoder"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -21,221 +12,180 @@
 <%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
 
-<%@page import="org.joda.time.MutableDateTime"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-
-
 <%
-  if (session == null) {
-        response.sendRedirect("../index.jsp");
-    }
 
-    String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
-    if (StringUtils.isEmpty(username)) {
-        response.sendRedirect("../index.jsp");
-    }
+     String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
+     String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
 
-    session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
-    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../logout");
+     
 
-    CacheManager mgr = CacheManager.getInstance();
-    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
-    SessionStatistics statistics = new SessionStatistics();
-
-    SchoolAccount school = new SchoolAccount();
-    Element element;
-
-    if ((element = accountsCache.get(username)) != null) {
-        school = (SchoolAccount) element.getObjectValue();
-    }
-
-    String accountuuid = school.getUuid();
-
-    if ((element = statisticsCache.get(accountuuid)) != null) {
-        statistics = (SessionStatistics) element.getObjectValue();
-    }
-
-  
-%>
-
-
-
-
-
-
-
-
+%>                       
 
 <html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>School Management System</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-
-<link href="../css/tooplate_style.css" rel="stylesheet" type="text/css" />
-
-<script language="javascript" type="text/javascript">
-
-function clearText(field)
-{
-    if (field.defaultValue == field.value) field.value = '';
-    else if (field.value == '') field.value = field.defaultValue;
-}
-
-</script>
-
-
-<link rel="stylesheet" href="../css/nivo-slider.css" type="text/css" media="screen" />
-<link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
- <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
-<script src="../js/jquery.min.js" type="text/javascript"></script>
-<script src="../js/jquery.nivo.slider.js" type="text/javascript"></script>
-<script src="../js/searchstudent.js" type="text/javascript"></script>
-
-
-<script type="text/javascript">
-$(window).load(function() {
-	$('#slider').nivoSlider({
-		effect:'random',
-		slices:15,
-		animSpeed:500,
-		pauseTime:3000,
-		startSlide:0, //Set starting Slide (0 index)
-		directionNav:false,
-		directionNavHide:false, //Only show on hover
-		controlNav:false, //1,2,3...
-		controlNavThumbs:false, //Use thumbnails for Control Nav
-		pauseOnHover:true, //Stop animation while hovering
-		manualAdvance:false, //Force manual transitions
-		captionOpacity:0.8, //Universal caption opacity
-		beforeChange: function(){},
-		afterChange: function(){},
-		slideshowEnd: function(){} //Triggers after all slides have been shown
-	});
-});
-</script>
-
-<style type="text/css">
-   input{
-    height: 26px !important;
-   }
-   
- </style>
-
-</head>
-
-<div id="tooplate_header">
-    	
-        <div id="site_title"><h1><a href="#">School Management System</a></h1></div>
+    <head>
         
-        <div id="social_box">
-            <a href="#"><img src="../images/facebook.png" alt="facebook" /></a>
-            <a href="#"><img src="../images/myspace.png" alt="myspace" /></a>
-            <a href="#"><img src="../images/twitter.png" alt="twitter" /></a>
-        </div>
+        <meta charset="utf-8">
+        <title>Fastech School Management System</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content=".">
+        <meta name="author" content="Peter Mwenda" >
         
-        <div class="cleaner"></div>
-    </div>
-    <%      
-       
-                 out.print("You are Logged in as: ");
-                 out.print(request.getSession().getAttribute("user_username")); 
-                 out.print("("+request.getSession().getAttribute("position")+")");
-               
-               if(StringUtils.equals(PropertiesConfig.getConfigValue("POSITION_TEACHER"),"Teacher")){
-
-                      String teacher_home =  (String) PropertiesConfig.getConfigValue("SCHOOL_HOME");
-                      //out.print(teacher_home); 
-                 }
+         <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+         <script src="../js/jquery/jquery-1.7.2.min.js"></script>
          
+         
+        <link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-bottom: 40px;
+            }
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+        </style>
+        <!-- jQuery -->	
+       
+	
+      
+        
+        <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+        <link href="../css/fastech/charisma-app.css" rel="stylesheet">
+        <link href="../css/jquery/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+        <link href='../css/fastech/fullcalendar.css' rel='stylesheet'>
+        <link href='../css/fastech/fullcalendar.print.css' rel='stylesheet'  media='print'>
+        <link href='../css/fastech/chosen.css' rel='stylesheet'>
+        <link href='../css/fastech/uniform.default.css' rel='stylesheet'>
+        <link href='../css/fastech/colorbox.css' rel='stylesheet'>
+        <link href='../css/jquery/jquery.cleditor.css' rel='stylesheet'>
+        <link href='../css/jquery/jquery.noty.css' rel='stylesheet'>
+        <link href='../css/fastech/noty_theme_default.css' rel='stylesheet'>
+        <link href='../css/fastech/elfinder.min.css' rel='stylesheet'>
+        <link href='../css/fastech/elfinder.theme.css' rel='stylesheet'>
+        <link href='../css/jquery/jquery.iphone.toggle.css' rel='stylesheet'>
+        <link href='../css/fastech/opa-icons.css' rel='stylesheet'>
+        <link href='../css/fastech/uploadify.css' rel='stylesheet'>
+        <link href='../css/fastech/template.css' rel='stylesheet'>
+        <link href='../css/fastech/checkpass.css' rel='stylesheet'>
+        <link href='../css/fastech/styles.css' rel='stylesheet'>
 
-
-                  
-
-             %>
-
-    <div id="tooplate_menu">
-        <ul>
-            <%
-            String POSITION =(String) request.getSession().getAttribute("position");
-            String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
-            String pos_Teacher =(String) PropertiesConfig.getConfigValue("POSITION_TEACHER");
-            String pos_HOD =(String) PropertiesConfig.getConfigValue("POSITION_HOD");
-            String pos_CM =(String) PropertiesConfig.getConfigValue("POSITION_CM");
-            String pos_Secretary =(String) PropertiesConfig.getConfigValue("POSITION_SECRETARY");
-            String pos_Bursar =(String) PropertiesConfig.getConfigValue("POSITION_BURSAR");
-
-            if(StringUtils.equals(POSITION,pos_Teacher)){
-
-                   %> 
-                   <li><a href="home.jsp" class="current">Home</a></li>
-                    <li><a href="#">Exams</a></li>
-                    <li><a href="#">Report</a></li>
-                   
-                  <% 
-                 
-             }else if(StringUtils.equals(POSITION,pos_HOD)){
-
-             %>     <li><a href="home.jsp" class="current">Home</a></li>
-                    <li><a href="#">Exam</a></li>
-                    <li><a href="#">Report</a></li>
-                    <li><a href="#">Subject</a></li>
-                  
-                  <% 
-         }else if(StringUtils.equals(POSITION,pos_CM)){
-
-             %>     <li><a href="home.jsp" class="current">Home</a></li>
-                    <li><a href="#">Exam</a></li>
-                    <li><a href="#">Report</a></li>
-                    <li><a href="#">Subject</a></li>
-                  
-                  <% 
-         }else if(StringUtils.equals(POSITION,pos_Secretary)){
-
-             %>     <li><a href="home.jsp" class="current">Home</a></li>
-                    <li><a href="student.jsp">Student</a></li>
-                   
-                  
-                  <% 
-         }
-          else if(StringUtils.equals(POSITION,pos_Bursar)){
-
-             %>     <li><a href="home.jsp" class="current">Home</a></li>
-                    <li><a href="student.jsp">Student</a></li>
-                    <li><a href="#">Money </a></li>
-                   
-                  
-                  <% 
-         }
-          else if(StringUtils.equals(POSITION,pos_Pricipal)){
-
-             %>     <li><a href="home.jsp" class="current">Home</a></li>
-                     <li><a href="student.jsp">Student</a></li>
-                    <li><a href="exam.jsp">Exam</a></li>
-                    <li><a href="#">Report</a></li>
-                     <li><a href="#">Subject</a></li>
-                    <li><a href="#">Money </a></li>
-                    <li><a href="staff.jsp">Staff</a></li>
-                    <li><a href="#">Account</a></li>
-                  
-                  <% 
-         }
-          
-          
-          
-
-
-
-            %>
-                  
-                  
-                   <li class="last"><a href="../index.jsp">Logout(<%=username%>)</a></li>
 
         
-        </ul>    	
-          
-    </div> <!-- end of tooplate_menu -->
+        
+        <!-- The fav icon -->
+        <link rel="shortcut icon" href="img/favicon.ico">
+        
+       
+  
+	
+        
+   
+
+
+    </head>
+
+    <body>
+
+        <!-- topbar starts -->
+        <div class="navbar">
+            <div class="navbar-inner">
+
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                 
+                    
+		    <!-- user dropdown starts -->
+                    <div class="btn-group pull-right" >
+                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-user"></i><span class="hidden-phone"><%=staffUsername%></span>
+                            <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a href="../schoolLogout">Logout</a></li>
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+
+                    <!-- user dropdown ends -->
+                    
+                    
+                    
+                    
+                    
+                    
+                </div>
+                            
+                       <!-- top menu -->        
+                <div id='cssmenu'>
+        <ul>
+            <li class='has-sub' ><a href="#"><span>Student Management</span></a>
+                  <ul>
+                <li><a href="#" ><span>Add Student</span></a></li>
+                <li><a href="#" ><span>Update Student</span></a></li>
+                <li class='last'><a href="#"><span>View Student</span></a></li>
+                </ul>
+               </li>
+            <li class='has-sub'><a href="exam.jsp"><span>Exam Management</span></a></li>
+            <li class='has-sub'><a href='#'><span>Reports Management</span></a></li>
+            <li class='has-sub'><a href='#'><span>Staff Management </span></a></li>
+            <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
+            <li class='has-sub'><a href='#'><span>Admin Settings</span></a></li>
+
+        </ul>
+
+            </div>             
+
+            </div>
+
+        </div>
+        <!-- topbar ends -->
+
+        <div class="container-fluid">
+            <div class="row-fluid">
+
+
+                <!-- left menu starts -->
+                <div class="span2 main-menu-span">
+                    <div class="well nav-collapse sidebar-nav">
+                        <ul class="nav nav-tabs nav-stacked main-menu">
+                            <!--menu to change depending on page requested-->
+                            <li class="nav-header hidden-tablet">Main</li>                                                     
+
+
+                            <li><a class="ajax-link" href="schoolIndex.jsp"><i class="icon-home"></i><span class="hidden-tablet">Home</span></a></li>
+                            <li><a class="ajax-link" href="#"><i class="icon-envelope"></i><span class="hidden-tablet">Subjects</span></a></li>
+                            <li><a class="ajax-link" href="#"><i class="icon-edit"></i><span class="hidden-tablet">House</span></a></li>
+                            <li><a class="ajax-link" href="#"><i class="icon-trash"></i><span class="hidden-tablet">Games</span></a></li>
+                           
+                           <li class="nav-header hidden-tablet">My School</li> 
+                           
+                            <li><a class="ajax-link" href="#"><i class="icon-home"></i><span class="hidden-tablet">Notices</span></a></li>
+                            <li><a class="ajax-link" href="#"><i class="icon-envelope"></i><span class="hidden-tablet">Payments</span></a></li>
+                        </ul>
+                        <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
+                    </div><!--/.well -->
+                </div><!--/span-->
+                <!-- left menu ends -->
+
+                <noscript>
+                <div class="alert alert-block span10">
+                    <h4 class="alert-heading">Warning!</h4>
+                    <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+                </div>
+                </noscript>
+
+                <div id="content" class="span10">
+                    <!-- content starts -->
+

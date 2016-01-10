@@ -29,7 +29,7 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
    
- <servlet>
+    <servlet>
         <servlet-name>CacheInit</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.init.CacheInit</servlet-class>
         <init-param>
@@ -40,100 +40,65 @@
     </servlet>
 
 
+  <servlet>
+        <servlet-name>FontImageGenerator</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.util.FontImageGenerator</servlet-class>
+    </servlet>
 
 
+   <servlet>
+        <servlet-name>ResultUpload</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.upload.ResultUpload</servlet-class>
+    </servlet>
 
-
-    <!-- Start - Account Holder servlets -->
     <servlet>
-        <servlet-name>Login</servlet-name>
+        <servlet-name>UploadFrom34</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.upload.UploadFrom34</servlet-class>
+    </servlet>
+   
+    <servlet>
+        <servlet-name>ClassList</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ClassList</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SchoolLogin</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Login</servlet-class>
     </servlet>
-   <servlet>
-        <servlet-name>Logout</servlet-name>
+
+     <servlet>
+        <servlet-name>SchoolLogout</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Logout</servlet-class>
     </servlet>
 
-   <!-- Start - School management  servlets -->
-   <servlet>
-        <servlet-name>AddStudent</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.student.AddStudent</servlet-class>
-    </servlet>
 
-  <!-- Start - School management  servlets ,User Management-->
-
-   <servlet>
-        <servlet-name>EditUser</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.EditUser</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>EditUserPassword</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.EditUserPassword</servlet-class>
-    </servlet>
+ <!-- start administrator mapping -->
+   
+   <servlet-mapping>
+        <servlet-name>FontImageGenerator</servlet-name>
+        <url-pattern>/fontImageGenerator</url-pattern>
+    </servlet-mapping>
 
 
-
-    <!-- Start - Administrator servlets -->
-    <servlet>
-        <servlet-name>AdminLogin</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.Login</servlet-class>
-    </servlet>
-
-
-
-
-
-
-
-
-
- <!-- Servlet mapping start -->
-    
     <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/Login</url-pattern>
-    </servlet-mapping>
-      
-   <servlet-mapping>
-        <servlet-name>Logout</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
+        <servlet-name>ClassList</servlet-name>
+        <url-pattern>/school/classList</url-pattern>
+    </servlet-mapping> 
 
-
-
-
-
-
-
-    <!-- Servlet mapping school management -->
       <servlet-mapping>
-        <servlet-name>AddStudent</servlet-name>
-        <url-pattern>/addStudent</url-pattern>
-     </servlet-mapping>
-
-
- <!-- Servlet mapping school management ,User Management -->
-   <servlet-mapping>
-        <servlet-name>EditUser</servlet-name>
-        <url-pattern>/editUser</url-pattern>
+        <servlet-name>UploadFrom34</servlet-name>
+        <url-pattern>/school/resultUpload</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>
-        <servlet-name>EditUserPassword</servlet-name>
-        <url-pattern>/editUserPassword</url-pattern>
+        <servlet-name>SchoolLogin</servlet-name>
+        <url-pattern>/schoolLogin</url-pattern>
     </servlet-mapping>
 
-
-
-    <!-- Start - Administrator servlet mapping -->
-    <servlet-mapping>
-        <servlet-name>AdminLogin</servlet-name>
-        <url-pattern>/admin/AdminLogin</url-pattern>      
+     <servlet-mapping>
+        <servlet-name>SchoolLogout</servlet-name>
+        <url-pattern>/schoolLogout</url-pattern>
     </servlet-mapping>
-
-
-
 
 
 

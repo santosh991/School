@@ -12,7 +12,7 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
-  background: #ffffff;
+  background: #0F0F0F;
   border: 1px solid #ece6e8;
   border-bottom: 3px solid #d9ced2;
   -webkit-border-radius: 2px;
@@ -45,10 +45,10 @@
   position: absolute;
   margin: 0;
   padding: 0;
-  list-style-type: none;
-  background: #ffffff;
-  border: 1px solid #ece6e8;
-  border-bottom: 3px solid #d9ced2;
+  list-style-type: none;   
+  background: #5D5356;
+  border: 1px solid #A8999E;
+  border-bottom: 3px solid #6B6466;
   border-top: 0 none;
 }
 #cssmenu > ul li.has-sub ul li {
@@ -67,7 +67,7 @@
 #cssmenu > ul li a {
   display: block;
   padding: 12px 24px 11px 24px;
-  color: #369BD7;
+  color: #AEAFB9;
   text-shadow: 0px 1px 0px #fff;
 }
 #cssmenu > ul li a.active,

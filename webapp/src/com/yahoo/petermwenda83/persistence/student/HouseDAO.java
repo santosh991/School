@@ -10,7 +10,7 @@
  * ###### the code herein without the owner's approval.
  * ###################################################
  * ##########################################################
- * ##### School Management System ###########################
+ * ##### SchoolAccount Management System ###########################
  * ##### Uses MVC Model, Postgres database, ant for 
  * ##### project management and other technologies.
  * ##### It consist Desktop application and a web
@@ -30,14 +30,14 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.student.House;
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.bean.student.StudentHouse;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
+public class HouseDAO extends GenericDAO implements SchoolHouseDAO {
 	private static HouseDAO houseDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
@@ -64,13 +64,13 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
-
-	/**
+/*
+	*//**
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getStudent(java.lang.String)
-	 */
+	 *//*
 	@Override
-	public House getStudent(String studentuuid) {
-		House house = null;
+	public StudentHouse getStudent(String studentuuid) {
+		StudentHouse studentHouse = null;
 		ResultSet rset = null;
 		
 		  try(   Connection conn = dbutils.getConnection();
@@ -80,7 +80,7 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 			  pstmt.setString(1, studentuuid); 
 		         rset = pstmt.executeQuery();
 		     while(rset.next()){
-		    	 house  = beanProcessor.toBean(rset,House.class);
+		    	 studentHouse  = beanProcessor.toBean(rset,StudentHouse.class);
 		   }
 	        	
 			 
@@ -93,14 +93,14 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 		 
 		
 		
-		return house;
+		return studentHouse;
 	}
 
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#putStudent(com.yahoo.petermwenda83.bean.student.House)
-	 */
+	*//**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#putStudent(com.yahoo.petermwenda83.bean.student.StudentHouse)
+	 *//*
 	@Override
-	public boolean putStudent(House house) {
+	public boolean putStudent(StudentHouse studentHouse) {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
@@ -108,14 +108,14 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 			        		+"(Uuid, StudentUuid, Housename) VALUES (?,?,?);");
   		){
 			   
-	            pstmt.setString(1, house.getUuid());
-	            pstmt.setString(2, house.getStudentUuid());
-	            pstmt.setString(3, house.getHousename());
+	            pstmt.setString(1, studentHouse.getUuid());
+	            pstmt.setString(2, studentHouse.getStudentUuid());
+	            pstmt.setString(3, studentHouse.getHousename());
 	           
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to putStudent: "+house);
+			 logger.error("SQL Exception trying to putStudent: "+studentHouse);
              logger.error(ExceptionUtils.getStackTrace(e)); 
              System.out.println(ExceptionUtils.getStackTrace(e));
              success = false;
@@ -126,24 +126,24 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 		return success;
 	}
 
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#editStudent(com.yahoo.petermwenda83.bean.student.House, java.lang.String)
-	 */
+	*//**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#editStudent(com.yahoo.petermwenda83.bean.student.StudentHouse, java.lang.String)
+	 *//*
 	@Override
-	public boolean editStudent(House house, String studentuuid) {
+	public boolean editStudent(StudentHouse studentHouse, String studentuuid) {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
   	PreparedStatement pstmt = conn.prepareStatement("UPDATE Student_House SET Housename=? "
   			+ "WHERE StudentUuid = ?;");
   	) {           			 	            
-	            pstmt.setString(1, house.getHousename());
-	            pstmt.setString(2, house.getStudentUuid());
+	            pstmt.setString(1, studentHouse.getHousename());
+	            pstmt.setString(2, studentHouse.getStudentUuid());
 	           
 	            pstmt.executeUpdate();
 
   } catch (SQLException e) {
-      logger.error("SQL Exception when updating editStudent " + house);
+      logger.error("SQL Exception when updating editStudent " + studentHouse);
       logger.error(ExceptionUtils.getStackTrace(e));
       System.out.println(ExceptionUtils.getStackTrace(e));
       success = false;
@@ -152,11 +152,11 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 		return success;
 	}
 
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#deleteStudent(com.yahoo.petermwenda83.bean.student.House)
-	 */
+	*//**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#deleteStudent(com.yahoo.petermwenda83.bean.student.StudentHouse)
+	 *//*
 	@Override
-	public boolean deleteStudent(House house) {
+	public boolean deleteStudent(StudentHouse studentHouse) {
 		boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
@@ -165,11 +165,11 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 	      		
 	      		){
 	      	
-	      	 pstmt.setString(1, house.getStudentUuid());
+	      	 pstmt.setString(1, studentHouse.getStudentUuid());
 		         pstmt.executeUpdate();
 		     
 	      }catch(SQLException e){
-	      	 logger.error("SQL Exception when deletting house : " +house);
+	      	 logger.error("SQL Exception when deletting house : " +studentHouse);
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	           System.out.println(ExceptionUtils.getStackTrace(e));
 	           success = false;
@@ -179,12 +179,12 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 			return success;
 	}
 
-	/**
+	*//**
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getAllHouse()
-	 */
+	 *//*
 	@Override
-	public List<House> getAllHouse() {
-		List<House> list = null;
+	public List<StudentHouse> getAllHouse() {
+		List<StudentHouse> list = null;
 
 		 try(   
 	  		Connection conn = dbutils.getConnection();
@@ -192,16 +192,46 @@ public class HouseDAO extends DBConnectDAO implements SchoolHouseDAO {
 	  		ResultSet rset = pstmt.executeQuery();
 			) {
 	  	
-	      list = beanProcessor.toBeanList(rset, House.class);
+	      list = beanProcessor.toBeanList(rset, StudentHouse.class);
 
 	  } catch(SQLException e){
-	  	logger.error("SQL Exception when getting all House");
+	  	logger.error("SQL Exception when getting all StudentHouse");
 	     logger.error(ExceptionUtils.getStackTrace(e));
 	     System.out.println(ExceptionUtils.getStackTrace(e)); 
 	  }
 
 		
 		return list;
+	}*/
+
+	@Override
+	public StudentHouse getHouse(String studentuuid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean putHouse(StudentHouse studentHouse) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updatetHouse(StudentHouse studentHouse, String studentuuid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteHouse(StudentHouse studentHouse) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<StudentHouse> getHouseList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

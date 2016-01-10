@@ -17,12 +17,7 @@ public interface SchoolAccountDAO {
 	 * @return
 	 */
 	public SchoolAccount get(String Uuid);
-	/**
-	 * 
-	 * @param SchoolName
-	 * @return the SchoolName
-	 */
-	public SchoolAccount getSchoolBySchoolName(String SchoolName);
+	
 	/**
 	 * 
 	 * @param Username
@@ -32,19 +27,25 @@ public interface SchoolAccountDAO {
 	/**
 	 * 
 	 * @param school
-	 * @return whether School has been added successfully
+	 * @return
+	 */
+	public SchoolAccount getSchool(SchoolAccount school);
+	/**
+	 * 
+	 * @param school
+	 * @return whether SchoolAccount has been added successfully
 	 */
     public boolean put(SchoolAccount school);
     /**
      * 
      * @param school
-     * @return whether School has been updated successfully
+     * @return whether SchoolAccount has been updated successfully
      */
     public boolean update(SchoolAccount school);
     /**
      * 
      * @param school
-     * @return whether School has been deleted successfully
+     * @return whether SchoolAccount has been deleted successfully
      */
     public boolean delete(SchoolAccount school);
     /**

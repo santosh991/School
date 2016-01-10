@@ -1,20 +1,4 @@
-/**##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without approval of from
- * ###### owner.#############################################
- * ##########################################################
- * ##### School Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+
 package com.yahoo.petermwenda83.persistence.student;
 
 import java.sql.Connection;
@@ -32,14 +16,14 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 
 /**
- * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
+public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
      
 
 	private static StudentDAO studentDAO;
@@ -163,7 +147,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getStudentAdmNo(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount, java.lang.String)
 	 */
 	@Override
-	public List<Student> getStudentAdmNo(String schoolaccountUuid, String admno ) {
+	public List<Student> getStudentByAdmNo(String schoolaccountUuid, String admno ) {
 		List<Student> list = new ArrayList<>();
 
         try (
@@ -209,11 +193,11 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	            pstmt.setString(4, student.getLastname());
 	            pstmt.setString(5, student.getSurname());
 	            pstmt.setString(6, student.getAdmno());
-	            pstmt.setString(7, student.getYear());
-	            pstmt.setString(8, student.getDOB());
+	          //  pstmt.setString(7, student.getYear());
+	          //  pstmt.setString(8, student.getDOB());
 	            pstmt.setString(9, student.getBcertno());
 	            pstmt.setString(10, student.getSysUser());
-	            pstmt.setTimestamp(11, new Timestamp(student.getRegDate().getTime()));
+	           // pstmt.setTimestamp(11, new Timestamp(student.getRegDate().getTime()));
 	           
 	            pstmt.executeUpdate();
 			 
@@ -233,7 +217,7 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#editStudents(com.yahoo.petermwenda83.bean.student.Student)
 	 */
 	@Override
-	public boolean editStudents(Student student) {
+	public boolean updateStudents(Student student) {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
@@ -245,11 +229,11 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	            pstmt.setString(1, student.getFirstname());
 	            pstmt.setString(2, student.getLastname());
 	            pstmt.setString(3, student.getSurname());	           
-	            pstmt.setString(4, student.getYear());
-	            pstmt.setString(5, student.getDOB());
+	            //pstmt.setString(4, student.getYear());
+	            //pstmt.setString(5, student.getDOB());
 	            pstmt.setString(6, student.getBcertno());
 	            pstmt.setString(7, student.getSysUser());
-	            pstmt.setTimestamp(8, new Timestamp(student.getRegDate().getTime()));
+	           // pstmt.setTimestamp(8, new Timestamp(student.getRegDate().getTime()));
 	            pstmt.setString(9, student.getAdmno());
 	            pstmt.setString(10, student.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
@@ -297,16 +281,22 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getAllStudents()
 	 */
 	@Override
-	public List<Student> getAllStudents() {
+	public List<Student> getAllStudents(String schoolaccountUuid,String classRoomUuid) {
 	List<Student> list = null;
 
 	 try(   
-  		Connection conn = dbutils.getConnection();
-  		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Student;");   
-  		ResultSet rset = pstmt.executeQuery();
+  		Connection conn = dbutils.getConnection();//ORDER BY Uuid
+  		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid = ? AND classRoomUuid =? ;");   
+  		//ResultSet rset = pstmt.executeQuery();
 		) {
-  	
-      list = beanProcessor.toBeanList(rset, Student.class);
+		 pstmt.setString(1,schoolaccountUuid);
+		 pstmt.setString(2,classRoomUuid);
+		 
+		 try(ResultSet rset = pstmt.executeQuery();){
+				
+			 list = beanProcessor.toBeanList(rset, Student.class);
+			}
+        
 
   } catch(SQLException e){
   	logger.error("SQL Exception when getting all Student");
@@ -351,8 +341,6 @@ public class StudentDAO extends DBConnectDAO implements SchoolStudentDAO {
 	}
 
 
-	
-	
 
 
 }

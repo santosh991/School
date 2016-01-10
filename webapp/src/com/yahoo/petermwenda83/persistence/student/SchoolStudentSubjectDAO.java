@@ -1,25 +1,10 @@
-/**##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without approval of from
- * ###### owner.#############################################
- * ##########################################################
- * ##### School Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+
+
 package com.yahoo.petermwenda83.persistence.student;
 
 import java.util.List;
 
-import com.yahoo.petermwenda83.bean.student.StudentSubject;
+import com.yahoo.petermwenda83.bean.student.StudentSubClassRoom;
 
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
@@ -27,39 +12,15 @@ import com.yahoo.petermwenda83.bean.student.StudentSubject;
  */
 public interface SchoolStudentSubjectDAO {
 	  
-		/**
-		 * 
-		 * @param stusubject
-		 * @return whether StudentSubject was got successfully
-		 */
-		public StudentSubject getStudentSubject(String studentuuid);
-		/**
-		 * 
-		 * @param studentSuper
-		 * @param stusubject
-		 * 
-		 */
-		public boolean putStudentSubject(StudentSubject stusubject);
+		public StudentSubClassRoom getSubRoom(String studentuuid);
 		
-		/**
-		 * 
-		 * @param studentSuper
-		 * @param stusubject
-		 * 
-		 */
-		public boolean  editStudentSubject(StudentSubject stusubject);
-		/**
-		 * 
-		 * @param studentSuper
-		 * @param stusubject
-		 * 
-		 */
-		public boolean deleteStudentSubject(StudentSubject stusubject);
+		public boolean putSubRoom(StudentSubClassRoom SubRoom);
 		
-		   /**
-		    * @return AllStudents
-		    */
-		public List<StudentSubject> getAllStudentSubject();
+		public boolean  updateSubRoom(StudentSubClassRoom SubRoom);
+		
+		public boolean deleteSubRoom(StudentSubClassRoom SubRoom);
+		
+		public List<StudentSubClassRoom> getSubRoomList();
 		
 
 }

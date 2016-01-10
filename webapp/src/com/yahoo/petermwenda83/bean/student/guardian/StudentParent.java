@@ -1,33 +1,32 @@
-/**##########################################################
+
 /*************************************************************
- * ##########################################################
- * ##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without the owner's approval.
- * ###################################################
- * ##########################################################
- * ##### School Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+ * Online School Management System                           *
+ * Forth Year Project                                        *
+ * Maasai Mara University                                    *
+ * Bachelor of Science(Computer Science)                     *
+ * Year:2015-2016                                            *
+ * Name: Njeru Mwenda Peter                                  *
+ * ADM NO : BS02/009/2012                                    *
+ *                                                           *
+ *************************************************************/
 package com.yahoo.petermwenda83.bean.student.guardian;
 
-import com.yahoo.petermwenda83.bean.student.StudentSuper;
+import com.yahoo.petermwenda83.bean.StorableBean;
+
 
 /**
- * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ * Manages Student's Parent/Relative --During admission
+ * 
+ * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class StudentParent extends StudentSuper {
-	private String relationship;
+public class StudentParent extends StorableBean  {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5745863584453493132L;
+	private String studentUuid;
 	private String fathername;
 	private String fatherphone;
 	private String fatheroccupation;
@@ -39,10 +38,12 @@ public class StudentParent extends StudentSuper {
 	private String motheroccupation;
 	private String motherID;
 	private String motherEmail;
+	private String relativeName;
+	private String relativePhone;
 	
 	public StudentParent() {
 		super();
-		relationship = "";
+		 studentUuid = "";
 		 fathername = "";
 		 fatherID = "";
 		 fatherphone ="";
@@ -53,118 +54,89 @@ public class StudentParent extends StudentSuper {
 		 motherphone = "";
 		 motheroccupation = "";
 		 motherEmail = "";
+		 relativeName = "";
+		 relativePhone = "";
 	}
 	
 	
-	
-	public String getFathername() {
-		return fathername;
-	}
-
-
-
-	public void setFathername(String fathername) {
-		this.fathername = fathername;
-	}
-
-
-
-	public String getFatherID() {
-		return fatherID;
-	}
-
-
-
-	public void setFatherID(String fatherID) {
-		this.fatherID = fatherID;
-	}
-
-
-
-	public String getFatherphone() {
-		return fatherphone;
-	}
-
-
-
-	public void setFatherphone(String fatherphone) {
-		this.fatherphone = fatherphone;
-	}
-
-
-
-	public String getFatheroccupation() {
-		return fatheroccupation;
-	}
-
-
-
-	public void setFatheroccupation(String fatheroccupation) {
-		this.fatheroccupation = fatheroccupation;
-	}
-	
-	public String getMothername() {
-		return mothername;
-	}
-
-
-
-	public void setMothername(String mothername) {
-		this.mothername = mothername;
-	}
-
-
-
-	public String getMotherID() {
-		return motherID;
-	}
-
-
-
-	public void setMotherID(String motherID) {
-		this.motherID = motherID;
-	}
-
-
-
-	public String getMotherphone() {
-		return motherphone;
-	}
-
-
-
-	public void setMotherphone(String motherphone) {
-		this.motherphone = motherphone;
-	}
-
-
-
-	public String getMotheroccupation() {
-		return motheroccupation;
-	}
-
-
-
-	public void setMotheroccupation(String motheroccupation) {
-		this.motheroccupation = motheroccupation;
-	}
-
 	/**
 	 * @return the studentUuid
 	 */
-	public String getStudentsUuid() {
-		return getStudentUuid();
+	public String getStudentUuid() {
+		return studentUuid;
 	}
-
 
 
 	/**
 	 * @param studentUuid the studentUuid to set
 	 */
-	public void setStudentsUuid(String studentUuid) {
-		setStudentUuid(studentUuid);
+	public void setStudentUuid(String studentUuid) {
+		this.studentUuid = studentUuid;
 	}
 
+
+	/**
+	 * @return the fathername
+	 */
+	public String getFathername() {
+		return fathername;
+	}
+
+
+	/**
+	 * @param fathername the fathername to set
+	 */
+	public void setFathername(String fathername) {
+		this.fathername = fathername;
+	}
+
+
+	/**
+	 * @return the fatherphone
+	 */
+	public String getFatherphone() {
+		return fatherphone;
+	}
+
+
+	/**
+	 * @param fatherphone the fatherphone to set
+	 */
+	public void setFatherphone(String fatherphone) {
+		this.fatherphone = fatherphone;
+	}
+
+
+	/**
+	 * @return the fatheroccupation
+	 */
+	public String getFatheroccupation() {
+		return fatheroccupation;
+	}
+
+
+	/**
+	 * @param fatheroccupation the fatheroccupation to set
+	 */
+	public void setFatheroccupation(String fatheroccupation) {
+		this.fatheroccupation = fatheroccupation;
+	}
+
+
+	/**
+	 * @return the fatherID
+	 */
+	public String getFatherID() {
+		return fatherID;
+	}
+
+
+	/**
+	 * @param fatherID the fatherID to set
+	 */
+	public void setFatherID(String fatherID) {
+		this.fatherID = fatherID;
+	}
 
 
 	/**
@@ -175,7 +147,6 @@ public class StudentParent extends StudentSuper {
 	}
 
 
-
 	/**
 	 * @param fatherEmail the fatherEmail to set
 	 */
@@ -183,6 +154,69 @@ public class StudentParent extends StudentSuper {
 		this.fatherEmail = fatherEmail;
 	}
 
+
+	/**
+	 * @return the mothername
+	 */
+	public String getMothername() {
+		return mothername;
+	}
+
+
+	/**
+	 * @param mothername the mothername to set
+	 */
+	public void setMothername(String mothername) {
+		this.mothername = mothername;
+	}
+
+
+	/**
+	 * @return the motherphone
+	 */
+	public String getMotherphone() {
+		return motherphone;
+	}
+
+
+	/**
+	 * @param motherphone the motherphone to set
+	 */
+	public void setMotherphone(String motherphone) {
+		this.motherphone = motherphone;
+	}
+
+
+	/**
+	 * @return the motheroccupation
+	 */
+	public String getMotheroccupation() {
+		return motheroccupation;
+	}
+
+
+	/**
+	 * @param motheroccupation the motheroccupation to set
+	 */
+	public void setMotheroccupation(String motheroccupation) {
+		this.motheroccupation = motheroccupation;
+	}
+
+
+	/**
+	 * @return the motherID
+	 */
+	public String getMotherID() {
+		return motherID;
+	}
+
+
+	/**
+	 * @param motherID the motherID to set
+	 */
+	public void setMotherID(String motherID) {
+		this.motherID = motherID;
+	}
 
 
 	/**
@@ -193,7 +227,6 @@ public class StudentParent extends StudentSuper {
 	}
 
 
-
 	/**
 	 * @param motherEmail the motherEmail to set
 	 */
@@ -202,33 +235,45 @@ public class StudentParent extends StudentSuper {
 	}
 
 
-
 	/**
-	 * @return the relationship
+	 * @return the relativeName
 	 */
-	public String getRelationship() {
-		return relationship;
+	public String getRelativeName() {
+		return relativeName;
 	}
 
 
-
 	/**
-	 * @param relationship the relationship to set
+	 * @param relativeName the relativeName to set
 	 */
-	public void setRelationship(String relationship) {
-		this.relationship = relationship;
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
 	}
 
+
+	/**
+	 * @return the relativePhone
+	 */
+	public String getRelativePhone() {
+		return relativePhone;
+	}
+
+
+	/**
+	 * @param relativePhone the relativePhone to set
+	 */
+	public void setRelativePhone(String relativePhone) {
+		this.relativePhone = relativePhone;
+	}
 
 
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("StudentParent");
-		builder.append("[ id =");
-		builder.append(getId()); 
-		builder.append(", getStudentsUuid() = ");
-		builder.append(getStudentUuid());
+		builder.append("Student's Parent [ getUuid() =");
+		builder.append(getUuid());
+		builder.append(", studentUuid = ");
+		builder.append(studentUuid);
 		builder.append(", fathername = ");
 		builder.append(fathername);
 		builder.append(", fatherphone =");
@@ -249,8 +294,10 @@ public class StudentParent extends StudentSuper {
 		builder.append(motherEmail);
 		builder.append(", motherID =");
 		builder.append(motherID);
-		builder.append(", relationship =");
-		builder.append(relationship);
+		builder.append(", relativeName =");
+		builder.append(relativeName);
+		builder.append(", relativePhone =");
+		builder.append(relativePhone);
 		builder.append("]");
 		return builder.toString(); 
 		}

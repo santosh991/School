@@ -24,3 +24,20 @@ What the system should do?
 7) register School assets
 
 
++++todo+++
+apon signin, check the 'cando' List , if the staff is say 
+                          1) a teacher
+
+                          -check the duties register
+                          -if sh/e is a class teacher, note their class ? form classteachers register
+                          -check the teacher subject register, note his/her subject(s) ?
+
+                          if(a class teacher for class ?)
+                            display class exam results if any
+                            can view class list 
+                            the teacher can print
+                            can upload scores for their subject(s) ?
+
+                          if(not a class taecher)
+                          can view class list 
+                          can upload scores for their subject(s) ?

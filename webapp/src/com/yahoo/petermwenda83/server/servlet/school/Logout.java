@@ -48,8 +48,8 @@ public class Logout extends HttpServlet {
         super.init(config);
 
         CacheManager mgr = CacheManager.getInstance();
-        accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
-        statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
+        accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
+        statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
     }
     
 
@@ -80,7 +80,7 @@ public class Logout extends HttpServlet {
 
         if (session != null) {
             // Remove the statistics of this user from cache
-            String username = (String) session.getAttribute(SessionConstants.ACCOUNT_SIGN_IN_KEY);
+            String username = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
             SchoolAccount school = new SchoolAccount();
             
             

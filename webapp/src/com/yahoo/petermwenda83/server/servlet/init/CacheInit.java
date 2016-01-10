@@ -24,7 +24,7 @@ import net.sf.ehcache.config.SizeOfPolicyConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.AllBean;
+import com.yahoo.petermwenda83.bean.StorableBean;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -87,16 +87,16 @@ public class CacheInit extends HttpServlet {
 
         cacheManager = CacheManager.create(config);
 
-        List<? extends AllBean> objList;
+        List<? extends StorableBean> objList;
 
         objList = accountDAO.getAllSchools();
         initCacheByUuid(CacheVariables.CACHE_ACCOUNTS_BY_UUID, objList);
        
 
-        initAccountsCache(CacheVariables.CACHE_ACCOUNTS_BY_USERNAME);
+        initAccountsCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
            
 
-        initGenericCache(CacheVariables.CACHE_STATISTICS_BY_ACCOUNT);
+        initGenericCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
         initGenericCache(CacheVariables.CACHE_ALL_ACCOUNTS_STATISTICS);        
     }
     
@@ -106,7 +106,7 @@ public class CacheInit extends HttpServlet {
      * @param cacheName
      * @param objList
      */
-    private void initCacheByUuid(String cacheName, List<? extends AllBean> objList) {
+    private void initCacheByUuid(String cacheName, List<? extends StorableBean> objList) {
     	Cache cache = null;
         if (!cacheManager.cacheExists(cacheName)) {
             CacheConfiguration cacheConfig = new CacheConfiguration().sizeOfPolicy(sizeOfPolicyConfiguration);
@@ -126,7 +126,7 @@ public class CacheInit extends HttpServlet {
         	cache = mgr.getCache(cacheName);
         }
      
-        for (AllBean b : objList) {
+        for (StorableBean b : objList) {
             cache.put(new Element(b.getUuid(), b)); // UUID as the key            
         }
     }    
@@ -153,7 +153,7 @@ public class CacheInit extends HttpServlet {
 
             List<SchoolAccount> allAccounts = accountDAO.getAllSchools();
 
-            if (StringUtils.equals(cacheName, CacheVariables.CACHE_ACCOUNTS_BY_USERNAME)) {
+            if (StringUtils.equals(cacheName, CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME)) {
                 for (SchoolAccount a : allAccounts) {
                     accountsCache.put(new Element(a.getUsername(), a));		// Username as the key
                 }

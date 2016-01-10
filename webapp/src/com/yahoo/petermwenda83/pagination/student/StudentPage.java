@@ -1,6 +1,14 @@
-/**
- * 
- */
+
+/*************************************************************
+ * Online School Management System                           *
+ * Forth Year Project                                        *
+ * Maasai Mara University                                    *
+ * Bachelor of Science(Computer Science)                     *
+ * Year:2015-2016                                            *
+ * Name: Njeru Mwenda Peter                                  *
+ * ADM NO : BS02/009/2012                                    *
+ *                                                           *
+ *************************************************************/
 package com.yahoo.petermwenda83.pagination.student;
 
 import java.util.ArrayList;
@@ -10,7 +18,9 @@ import com.yahoo.petermwenda83.bean.student.Student;
 
 
 /**
- * @author peter
+ * For student pagination 
+ * 
+ *  @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class StudentPage {

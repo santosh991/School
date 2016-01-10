@@ -15,13 +15,13 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
  * @author peter
  *
  */
-public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
+public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	
 	private static AccountDAO accountDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -74,7 +74,7 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting SchoolAccount with Uuid: " + Uuid);
+     	  logger.error("SQL Exception when getting SchoolAccount with Uuid: " + Uuid);
           logger.error(ExceptionUtils.getStackTrace(e));
           System.out.println(ExceptionUtils.getStackTrace(e));
      }
@@ -83,37 +83,7 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getSchoolBySchoolName(java.lang.String)
-	 */
-	@Override
-	public SchoolAccount getSchoolBySchoolName(String SchoolName) {
-		SchoolAccount school = new SchoolAccount();
-        ResultSet rset = null;
-     try(
-     		 Connection conn = dbutils.getConnection();
-        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SchoolAccount WHERE SchoolName = ?;");       
-     		
-     		){
-     	
-     	 pstmt.setString(1, SchoolName);
-	         rset = pstmt.executeQuery();
-	     while(rset.next()){
 	
-	    	 school  = beanProcessor.toBean(rset,SchoolAccount.class);
-	   }
-     	
-     	
-     	
-     }catch(SQLException e){
-     	 logger.error("SQL Exception when getting SchoolAccount with SchoolName: " + SchoolName);
-          logger.error(ExceptionUtils.getStackTrace(e));
-          System.out.println(ExceptionUtils.getStackTrace(e));
-     }
-     
-		return school; 
-	}
-
 	/* (non-Javadoc)
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getSchoolByUsername(java.lang.String)
 	 */
@@ -137,12 +107,22 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
      	
      	
      }catch(SQLException e){
-     	 logger.error("SQL Exception when getting SchoolAccount with Username: " + Username);
+     	  logger.error("SQL Exception when getting SchoolAccount with Username: " + Username);
           logger.error(ExceptionUtils.getStackTrace(e));
           System.out.println(ExceptionUtils.getStackTrace(e));
      }
      
 		return school; 
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getSchool(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount)
+	 */
+	@Override
+	public SchoolAccount getSchool(SchoolAccount school) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -154,14 +134,15 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SchoolAccount" 
-			        		+"(Uuid,SchoolName,Username,Password,Mobile,Email) VALUES (?,?,?,?,?,?);");
+			        		+"(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,Email) VALUES (?,?,?,?,?,?,?);");
      		){
 	            pstmt.setString(1, school.getUuid());
-	            pstmt.setString(2, school.getSchoolName());
-	            pstmt.setString(3, school.getUsername());
-	            pstmt.setString(4, school.getPassword());
-	            pstmt.setString(5, school.getMobile());
-	            pstmt.setString(6, school.getEmail());
+	            pstmt.setString(2, school.getStatusUuid());
+	            pstmt.setString(3, school.getSchoolName());
+	            pstmt.setString(4, school.getUsername());
+	            pstmt.setString(5, school.getPassword());
+	            pstmt.setString(6, school.getMobile());
+	            pstmt.setString(7, school.getEmail());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -195,9 +176,9 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
 			 
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to update SchoolAccount: "+school);
-            logger.error(ExceptionUtils.getStackTrace(e)); 
-            System.out.println(ExceptionUtils.getStackTrace(e));
-            success = false;
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.println(ExceptionUtils.getStackTrace(e));
+             success = false;
 		 }
 		
 		return success;
@@ -234,6 +215,8 @@ public class AccountDAO extends DBConnectDAO implements SchoolAccountDAO {
 	   
 		return list;
 	}
+
+	
 
 
 }

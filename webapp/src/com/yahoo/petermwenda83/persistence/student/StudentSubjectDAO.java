@@ -7,7 +7,7 @@
  * ###### the code herein without approval of from
  * ###### owner.#############################################
  * ##########################################################
- * ##### School Management System ###########################
+ * ##### SchoolAccount Management System ###########################
  * ##### Uses MVC Model, Postgres database, ant for 
  * ##### project management and other technologies.
  * ##### It consist Desktop application and a web
@@ -27,13 +27,13 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.student.StudentSubject;
-import com.yahoo.petermwenda83.persistence.DBConnectDAO;
+import com.yahoo.petermwenda83.bean.student.StudentSubClassRoom;
+import com.yahoo.petermwenda83.persistence.GenericDAO;
 /**
  * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
-public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubjectDAO {
+public class StudentSubjectDAO extends GenericDAO implements SchoolStudentSubjectDAO {
 	
 	private static StudentSubjectDAO studentSubjectDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -63,11 +63,11 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#getStudent(com.yahoo.petermwenda83.bean.student.StudentSubject)
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#getStudent(com.yahoo.petermwenda83.bean.student.StudentSubClassRoom)
 	 */
-	@Override
-	public StudentSubject getStudentSubject(String StudentUuid) {
-		StudentSubject stusubject = null;
+	/*@Override
+	public StudentSubClassRoom getStudentSubject(String StudentUuid) {
+		StudentSubClassRoom stusubject = null;
 		ResultSet rset = null;
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM studentsubject "
@@ -76,7 +76,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 	            pstmt.setString(1, StudentUuid);
 	            rset = pstmt.executeQuery();
 	                while(rset.next()){
-	                	stusubject  = beanProcessor.toBean(rset,StudentSubject.class);
+	                	stusubject  = beanProcessor.toBean(rset,StudentSubClassRoom.class);
 			         }
 			 
 		 }catch(SQLException e){
@@ -88,11 +88,11 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 		return stusubject;
 	}
 	
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#putStudent(com.yahoo.petermwenda83.bean.student.StudentSubject)
-	 */
+	*//**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#putStudent(com.yahoo.petermwenda83.bean.student.StudentSubClassRoom)
+	 *//*
 	@Override
-	public boolean putStudentSubject(StudentSubject stusubject) {
+	public boolean putStudentSubject(StudentSubClassRoom stusubject) {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
@@ -119,11 +119,11 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 		return success;
 	}
 
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#editStudent(com.yahoo.petermwenda83.bean.student.StudentSubject, java.lang.String)
-	 */
+	*//**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#editStudent(com.yahoo.petermwenda83.bean.student.StudentSubClassRoom, java.lang.String)
+	 *//*
 	@Override
-	public boolean editStudentSubject(StudentSubject stusubject) {
+	public boolean editStudentSubject(StudentSubClassRoom stusubject) {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
@@ -147,11 +147,11 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 		return success;
 	}
 
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#deleteStudentSubject(com.yahoo.petermwenda83.bean.student.StudentSubject)
-	 */
+	*//**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#deleteStudentSubject(com.yahoo.petermwenda83.bean.student.StudentSubClassRoom)
+	 *//*
 	@Override
-	public boolean deleteStudentSubject(StudentSubject stusubject) {
+	public boolean deleteStudentSubject(StudentSubClassRoom stusubject) {
 		  boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
@@ -175,12 +175,12 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
 			return success;
 	}
 
-	/**
+	*//**
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#getAllStudentSubject()
-	 */
+	 *//*
 	@Override
-	public List<StudentSubject> getAllStudentSubject() {
-		List<StudentSubject>  list = null;
+	public List<StudentSubClassRoom> getAllStudentSubject() {
+		List<StudentSubClassRoom>  list = null;
 		
 		 try(   
     		Connection conn = dbutils.getConnection();
@@ -188,7 +188,7 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
     		ResultSet rset = pstmt.executeQuery();
 		) {
     	
-        list = beanProcessor.toBeanList(rset, StudentSubject.class);
+        list = beanProcessor.toBeanList(rset, StudentSubClassRoom.class);
 
     } catch(SQLException e){
     	logger.error("SQL Exception when getting all StudentParent");
@@ -196,6 +196,52 @@ public class StudentSubjectDAO extends DBConnectDAO implements SchoolStudentSubj
         System.out.println(ExceptionUtils.getStackTrace(e));
     }
   
+		
+		return list;
+	}
+*/
+	@Override
+	public StudentSubClassRoom getSubRoom(String studentuuid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean putSubRoom(StudentSubClassRoom SubRoom) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateSubRoom(StudentSubClassRoom SubRoom) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteSubRoom(StudentSubClassRoom SubRoom) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<StudentSubClassRoom> getSubRoomList() {
+		List<StudentSubClassRoom>  list = null;
+		
+		 try(   
+   		Connection conn = dbutils.getConnection();
+   		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM StudentSubClassRoom ;");   
+   		ResultSet rset = pstmt.executeQuery();
+		) {
+   	
+       list = beanProcessor.toBeanList(rset, StudentSubClassRoom.class);
+
+   } catch(SQLException e){
+   	logger.error("SQL Exception when getting all StudentParent");
+       logger.error(ExceptionUtils.getStackTrace(e));
+       System.out.println(ExceptionUtils.getStackTrace(e));
+   }
+ 
 		
 		return list;
 	}

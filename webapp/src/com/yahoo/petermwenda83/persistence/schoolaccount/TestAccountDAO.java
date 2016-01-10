@@ -24,24 +24,29 @@ public class TestAccountDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
-	private String UUID = "B643876D-B90C-435C-B215-CC558D596626",
-			       UUID_NEW ="51D90F63-39AD-409B-9645-7C6F4F7CC76F";
-	private String SCHOOL_NAME ="Chuka Boys",
-			       SCHOOL_NAME_NEW="New School",
-			       SCHOOL_NAME_UPDATE="update School";
+	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD",
+	             SCHOOL_UUID_NEW ="HJKHG56-A0D8-4F27-B9D2-E329619DF055";
 	
-	private String USERNAME ="ChukaB",
-			       USERNAME_NEW ="NewChukaB",
-			       USERNAME_UPDATE ="UpdateChukaB";
+	final String STATUS = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+          
+
+	private String SCHOOL_NAME ="Njuri High School",
+			       SCHOOL_NAME_NEW="New ",
+			       SCHOOL_NAME_UPDATE="update ";
 	
-	private String PASSWORD ="CB",
+	private String USERNAME ="NjuriCOE",
+			       USERNAME_NEW ="New",
+			       USERNAME_UPDATE ="Update";
+	
+	private String PASSWORD ="njuri",
 			       PASSWORD_NEW ="new",
 			       PASSWORD_UPDATE ="update";
 	
-	private String MOBILE ="732425632",
+	private String MOBILE ="254-718953974",
 			       MOBILE_NEW ="77777777",
 			       MOBILE_UPDATE ="999999999";
-	private String EMAIL ="chukab@yahoo.com",
+	
+	private String EMAIL ="njuri@info.co.ke",
 			       EMAIL_NEW ="new@yahoo.com",
 			       EMAIL_UPDATE ="update@yahoo.com";
 	
@@ -49,23 +54,6 @@ public class TestAccountDAO {
 	
 	private AccountDAO store;
 
-	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO#getSchoolBySchoolName(java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testGetSchoolBySchoolName() {
-		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		SchoolAccount s = new SchoolAccount();
-		s = store.getSchoolBySchoolName(SCHOOL_NAME);
-		assertEquals(s.getUuid(),UUID);
-		assertEquals(s.getSchoolName(),SCHOOL_NAME);
-		assertEquals(s.getUsername(),USERNAME);
-		assertEquals(s.getPassword(),PASSWORD);
-		assertEquals(s.getMobile(),MOBILE);
-		assertEquals(s.getEmail(),EMAIL);
-		
-	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO#getSchoolByUsername(java.lang.String)}.
@@ -75,8 +63,8 @@ public class TestAccountDAO {
 	public void testGetSchoolByUsername() {
 		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		SchoolAccount s = new SchoolAccount();
-		s = store.getSchoolBySchoolName(SCHOOL_NAME);
-		assertEquals(s.getUuid(),UUID);
+		s = store.getSchoolByUsername(USERNAME);
+		assertEquals(s.getUuid(),SCHOOL_UUID);
 		assertEquals(s.getSchoolName(),SCHOOL_NAME);
 		assertEquals(s.getUsername(),USERNAME);
 		assertEquals(s.getPassword(),PASSWORD);
@@ -92,7 +80,8 @@ public class TestAccountDAO {
 	public void testPut() {
 		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		SchoolAccount s = new SchoolAccount();
-		s.setUuid(UUID_NEW);
+		s.setUuid(SCHOOL_UUID_NEW);
+		s.setStatusUuid(STATUS);
 		s.setSchoolName(SCHOOL_NAME_NEW);
 		s.setUsername(USERNAME_NEW);
 		s.setPassword(PASSWORD_NEW);
@@ -109,7 +98,7 @@ public class TestAccountDAO {
 	public void testUpdate() {
 		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		SchoolAccount s = new SchoolAccount();
-		s.setUuid(UUID_NEW);
+		s.setUuid(SCHOOL_UUID_NEW);
 		s.setSchoolName(SCHOOL_NAME_UPDATE);
 		s.setUsername(USERNAME_UPDATE);
 		s.setPassword(PASSWORD_UPDATE);
@@ -139,8 +128,6 @@ public class TestAccountDAO {
 		for (SchoolAccount ss : list) {
 			System.out.println(ss);
 		}
-		
-		
 		
 	}
 
