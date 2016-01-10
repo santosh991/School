@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
+import com.yahoo.petermwenda83.bean.exam.StudentExam;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
@@ -63,6 +64,39 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	public PerfomanceDAO(String databaseName, String Host, String databaseUsername, String databasePassword, int databasePort) {
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerformanceObject(java.lang.String)
+	 */
+	@Override
+	public Perfomance getPerformanceObject(String studentUuid) {
+		Perfomance perfomance = null;
+		ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE studentUuid = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, studentUuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 perfomance  = beanProcessor.toBean(rset,Perfomance.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting Perfomance for studentUuid " + studentUuid);
+             logger.error(ExceptionUtils.getStackTrace(e));
+        }
+        
+		return perfomance; 
+	}
+
+	
 
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerformance(java.lang.String)

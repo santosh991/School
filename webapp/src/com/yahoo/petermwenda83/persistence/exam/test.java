@@ -6,11 +6,10 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
-import com.yahoo.petermwenda83.bean.exam.Analyzer;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
-import com.yahoo.petermwenda83.util.performance.comparator.AnalyzerComparator;
 import com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator;
 
 public class test {
@@ -42,7 +41,7 @@ public class test {
 	}
 
 	public static void main(String[] args) {
-		Analyzer a = new Analyzer();
+		
 		
 		System.out.println("starting .....");
 		final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
@@ -54,6 +53,9 @@ public class test {
 		pList = perfomanceDAO.getPerfomanceList(SCHOOL_UUID, FORM_ONE_N);
 		 //Collections.sort(pList, new PerformanceScoreComparator()); 
 	    Collections.sort(pList, new PerformanceScoreComparator().reversed()); 
+	   // System.out.println(pList); 
+		 
+	    
 		pDistinctList = perfomanceDAO.getPerfomanceListDistinct(SCHOOL_UUID, FORM_ONE_N);
 	
 		
@@ -61,45 +63,63 @@ public class test {
 		
 			
 			
-		 
 		
+		List<Perfomance> list = new ArrayList<>();
+		double grandscore = 0;
+		double engscore = 0;
+		double kisscore = 0;
+		double physcore = 0;
 		
-		
-		for(Perfomance s : pList){
-			student = s.getStudentUuid();
-			
-			double cat1 = s.getCatOne();
-			double cat2 = s.getCatTwo();
-			double endterm = s.getEndTerm();
-			double totals = cat1+cat2+endterm;
-			
-		    	if(StringUtils.equals(s.getSubjectUuid(), PHY_UUID)){
-		    		//scoreMap.put(student, totals);
-		    		a.setStudenId(student); 
-		    		a.setPhy(totals); 
-			        }
-		    	 if(StringUtils.equals(s.getSubjectUuid(), ENG_UUID)){
-		    		scoreMap.put(student, totals);
-		    		a.setStudenId(student); 
-		    		a.setEng(totals); 
-		    		
-			        }
-		    	 if(StringUtils.equals(s.getSubjectUuid(), KISWA_UUID)){
-			    	//	scoreMap.put(student, totals);
-			    		a.setStudenId(student); 
-			    		a.setKis(totals);
-				        }
-		    	
-		    	// System.out.println("analyzer for="+a.getStudenId() +",phy score =" +a.getPhy()  +",eng score =" +a.getEng() +",kis score =" +a.getKis() +",total score =" +a.getTotal()); 
-		 		
-		    	
-		   }
-		
-
 		for(Perfomance s : pDistinctList){
-			//System.out.println(s.getStudentUuid());
+			list = perfomanceDAO.getPerformance(SCHOOL_UUID, FORM_ONE_N, s.getStudentUuid());
 			
-				testmap.put(s.getStudentUuid(), scoreMap.get(s.getStudentUuid()));
+			// System.out.println(list); 
+			for(Perfomance pp : list){
+				
+				double cat1 = pp.getCatOne();
+				double cat2 = pp.getCatTwo();
+				double endterm = pp.getEndTerm();
+				double total = (cat1+cat2)/2 +endterm;
+				grandscore +=total;
+				
+				//System.out.println(pp); 
+				 
+				if(StringUtils.equals(pp.getSubjectUuid(), ENG_UUID) ){
+					engscore = total;
+					Double x = Double.parseDouble("")/3;
+					//System.out.println(total); 
+				}
+		    	if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
+		    		physcore = total;
+		    		//System.out.println(total); 
+			        }
+		    	 if(StringUtils.equals(pp.getSubjectUuid(), KISWA_UUID)){
+		    		 kisscore = total;
+		    		// System.out.println(total); 
+				        }
+				
+		    	//System.out.println(engscore+physcore+kisscore); 
+		    	
+				
+				
+		    	
+				
+			}
+			
+			
+			 testmap.put(s.getStudentUuid(), grandscore);
+			 
+			 
+			// System.out.println(grandscore); 
+			 grandscore = 0;
+			
+			 //System.out.println(testmap); 
+			 
+			 
+			 
+			 
+			 
+				
 			
 			
 			}
