@@ -13,10 +13,9 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.bean.staff.TeacherSubClass;
-import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
-import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 
 /**
  * @author peter
@@ -57,13 +56,36 @@ public class TeacherSubClassDAO extends GenericDAO  implements SchoolTeacherSubC
 	public TeacherSubClassDAO(String databaseName, String Host, String databaseUsername, String databasePassword, int databasePort){
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
-	/* (non-Javadoc)
+	
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolTeacherSubClassDAO#getSubjectClass(java.lang.String)
 	 */
 	@Override
 	public TeacherSubClass getSubjectClass(String teacherUuid) {
-		// TODO Auto-generated method stub
-		return null;
+		TeacherSubClass teachersub = new TeacherSubClass();
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TeacherSubClass WHERE teacherUuid = ?;");       
+     		
+     		){
+     	
+     	     pstmt.setString(1, teacherUuid);
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	        	teachersub  = beanProcessor.toBean(rset,TeacherSubClass.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting Staff with TeacherSubClass: " + teacherUuid);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return teachersub; 
 	}
 
 	/* (non-Javadoc)

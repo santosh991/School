@@ -31,17 +31,7 @@ public interface SchoolPerfomanceDAO {
 	 * @return
 	 */
 	public List<Perfomance> getPerformance(String schoolAccountUuid,String classRoomUuid,String studentUuid); 
-	
-	
-	/**
-	 * 
-	 * @param schoolAccountUuid
-	 * @param classRoomUuid
-	 * @param studentUuid
-	 * @return
-	 */
-	public Perfomance getPerformanceObject(String studentUuid);  
-	
+
 	   /**
 	    * 
 	    * @param perfomance
@@ -55,7 +45,12 @@ public interface SchoolPerfomanceDAO {
 	    */
 	public List<Perfomance> getPerfomanceList(String schoolAccountUuid,String classRoomUuid);
 	
-	
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param classRoomUuid
+	 * @return
+	 */
 	public List<Perfomance> getPerfomanceListDistinct(String schoolAccountUuid,String classRoomUuid);
 	
 	/**

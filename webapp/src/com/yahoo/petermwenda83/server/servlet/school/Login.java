@@ -151,7 +151,8 @@ public class Login extends HttpServlet {
 	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_SUCCESS, SessionConstants.SCHOOL_ACCOUNT_LOGIN_SUCCESS); 
 	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_TIME, String.valueOf(new Date().getTime()));
 	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME, staff.getUserName()); 
-	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID, staff.getUuid()); 
+	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID, staff.getUuid());
+	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_POSITION, staffposition);
 	           response.sendRedirect("school/schoolIndex.jsp"); 
             
               }else {

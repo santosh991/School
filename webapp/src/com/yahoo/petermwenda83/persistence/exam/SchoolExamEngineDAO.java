@@ -9,6 +9,9 @@ import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.CatTwo;
 import com.yahoo.petermwenda83.bean.exam.Common;
 import com.yahoo.petermwenda83.bean.exam.EndTerm;
+import com.yahoo.petermwenda83.bean.exam.PaperOne;
+import com.yahoo.petermwenda83.bean.exam.PaperThree;
+import com.yahoo.petermwenda83.bean.exam.PaperTwo;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
 
 /**
@@ -28,6 +31,12 @@ public interface SchoolExamEngineDAO {
 	public List<CatTwo> getcatwoList(String schoolAccountUuid,String classRoomUuid);
 	
 	public List<EndTerm> getendtermList(String schoolAccountUuid,String classRoomUuid);
+	
+	public List<PaperOne> getPaperOneList(String schoolAccountUuid,String classRoomUuid);
+	
+	public List<PaperTwo> getPaperTwoList(String schoolAccountUuid,String classRoomUuid);
+	
+	public List<PaperThree> getpaperThreeList(String schoolAccountUuid,String classRoomUuid);
 
 }
 

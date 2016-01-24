@@ -17,13 +17,18 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.CatTwo;
 import com.yahoo.petermwenda83.bean.exam.EndTerm;
+import com.yahoo.petermwenda83.bean.exam.PaperOne;
+import com.yahoo.petermwenda83.bean.exam.PaperThree;
+import com.yahoo.petermwenda83.bean.exam.PaperTwo;
 import com.yahoo.petermwenda83.bean.exam.StudentExam;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
+import com.yahoo.petermwenda83.bean.staff.TeacherSubClass;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
 import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
+import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 
@@ -40,6 +45,16 @@ public class UploadUtil {
 	private String[] examcodeArray;
 	private List<String> examcodeList;
 	
+	final String FORM1 = "C143978A-E021-4015-BC67-5A00D6C910D1";
+	final String FORM2 = "3E22E428-3155-42F5-B73E-66553ED501C9";
+	final String FORM3 = "A4BFC2BD-262F-4207-99C8-057D6ADF80C7";
+	final String FORM4 = "14E56350-08DA-45CC-97D9-C225AF74A7AD";
+	
+	final String FORMONE = "FORM 1";
+	final String FORMTWO = "FORM 2";
+	final String FORMTHREE = "FORM 3";
+	final String FORMFOUR = "FORM 4";
+	String classesuuid = "";
 	
 	/**
 	 * 
@@ -56,63 +71,74 @@ public class UploadUtil {
 	 * @param file
 	 * @return the feedback of having inspected the file, whether it was proper
 	 */
-	protected String inspectResultFile(File file,String schooluuid,RoomDAO roomDAO,SubjectDAO subjectDAO,StudentExamDAO studentExamDAO,StudentDAO studentDAO) {
+	protected String inspectResultFile(File file,String schooluuid,String staffId,RoomDAO roomDAO,SubjectDAO subjectDAO,TeacherSubClassDAO teacherSubClassDAO,StudentDAO studentDAO) {
 		String feedback = ResultUpload.UPLOAD_SUCCESS;
 		int count = 1;
+		String[] rowTokens,admNotoken = null,ScoreToken = null;
 		
 		String subject = "";
 		String classroom = "";
 		String exam = "";
 		
+		
+		
+		
 		LineIterator lineIterator =  null;
 		try {
 			lineIterator = FileUtils.lineIterator(file, "UTF-8");
+			
 			String filename = file.getName();
 			
 			String [] parts = filename.split("\\.");
 			subject = parts[0];
 			classroom = parts[1]; 
 			exam = parts[2]; 
-		 	//System.out.println(exam);
+		 	//System.out.println("exam="+exam);
 		 	
 		 // Check to see that only valid exam codes have been provided
+			
+			 if(subjectDAO.getSubjects(subject) ==null){
+		    	  return ("subject code \"" + subject + "\" not found! ");
+			    }
+				
+			  if(roomDAO.getroomByRoomName(schooluuid, classroom) ==null){
+				  return ("class code \"" + classroom + "\" not found! ");
+				}
 		    
-		  String code = StringUtils.lowerCase(StringUtils.trimToEmpty(exam) );
+		     String code = StringUtils.lowerCase(StringUtils.trimToEmpty(exam) );
 		    if(!examcodeList.contains(code)) {
-		     return ("Invalid exam code " + code.toUpperCase());
+		     return ("Invalid exam code \"" + code.toUpperCase()+"\"");
 		    	 }
 		    
-		 	
-		  if(roomDAO.getroomByRoomName(schooluuid, classroom) ==null){
-			  return ("class code " + classroom + " not found! ");
-			}
-		  
-	      if(subjectDAO.getSubjects(subject) ==null){
-	    	  return ("subject code " + subject + " not found! ");
-		    }
-	      
-	      
-	      
-			String line;
-			String[] rowTokens,admNotoken,ScoreToken;
 			
+			
+		    String line;
 			while (lineIterator.hasNext()) {
 			     line = lineIterator.nextLine();
+			     //System.out.println(line);
 			     rowTokens = StringUtils.split(line, ',');
+			    // System.out.println("rowTokens"+rowTokens);
 			     
 			     if(rowTokens.length != 2 && line.length() > 0) {
-			    	 return ("Invalid format on line " + count + ": " + line);
+			    	 return ("Invalid format on line \"" + count + "\":   \"" + line+"\"");
 			     }
-			     admNotoken = StringUtils.split(rowTokens[0], ';');
-			     ScoreToken = StringUtils.split(rowTokens[1], ';');
+			     
+			     if(rowTokens!=null){
+			    	 admNotoken = StringUtils.split(rowTokens[0], ';');
+				     ScoreToken = StringUtils.split(rowTokens[1], ';'); 
+				     
+			     }
+			    
 			     
 			     // Check that the scores contain only numbers
+			     if(ScoreToken!=null){
 			     for(String score : ScoreToken) {
 			    	 if(!StringUtils.isNumeric(score)) {
-			    		 return ("Invalid score on line " + count + ": " + line);
+			    		 return ("Invalid score on line \"" + count + "\":   \"" + line+"\"");
 			    	 }
+			       }
 			     }
-			     
+			     if(admNotoken!=null){
 			     for(String admno : admNotoken) {
 			    	 String studentuuid = "";
 			    	 Student student = new Student();
@@ -123,12 +149,29 @@ public class UploadUtil {
 				    		}
 				    		
 				    	}
-			    	 if(studentExamDAO.getStudentExam(schooluuid, studentuuid)==null) {
-			    		 return ("Student with admNo " + admno + " on line " + count + " was not found in Exam Register");
-			    	 }
-			     }
+			    	 
+			    	 if(studentDAO.getStudent(studentuuid)==null) {
+			    		 return ("Student with admNo \"" + admno + "\" on line \"" + count + "\" was not found in the System");
+			    	   }
+			          }
+			       }
 			     
-			     
+			        ClassRoom clss = roomDAO.getroomByRoomName(schooluuid, classroom);
+			        TeacherSubClass ts = teacherSubClassDAO.getSubjectClass(staffId); 
+					Subject sub = subjectDAO.getSubjects(subject);
+					String SUBMITINGsubuuid = sub.getUuid();
+					String MYroomuuid = ts.getClassRoomUuid();
+					String SUBMITTINGclassuuid = clss.getUuid();
+					String MYsubjectuuid = ts.getSubjectUuid();
+					
+					
+			        if(!StringUtils.equals(MYsubjectuuid, SUBMITINGsubuuid) || !StringUtils.equals(MYroomuuid, SUBMITTINGclassuuid)){
+			      
+			        return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
+			        	
+			        }
+
+					
 			     
 			     count++;
 		    }
@@ -181,7 +224,7 @@ public class UploadUtil {
 			while (lineIterator.hasNext()) {
 			     line = lineIterator.nextLine();
 			     rowTokens = StringUtils.split(line, ',');
-			     
+			    
 			     admNotoken = StringUtils.split(rowTokens[0], ';');
 			     ScoreToken = StringUtils.split(rowTokens[1], ';');
 			     
@@ -212,10 +255,20 @@ public class UploadUtil {
 			     
 			    
 			     String classuuid = room.getUuid();
+			     String roomname = room.getRoomName();
 			     String subjectuuid = subjct.getUuid();
 			     
-			    
-			     
+			     if(StringUtils.contains(roomname, FORMONE) ){ 
+                    classesuuid = FORM1;
+			     }else if(StringUtils.contains(roomname, FORMTWO)){
+			    	 classesuuid = FORM2;
+			     }else if(StringUtils.contains(roomname, FORMTHREE)){
+			    	 classesuuid = FORM3;
+			     }else if(StringUtils.contains(roomname, FORMFOUR)){
+			    	 classesuuid = FORM4;
+			     }
+			       
+			   
 			     if((studentExamDAO.getStudentExam(school.getUuid(), studentUuid)) !=null){
 			    	 
 						if(StringUtils.equalsIgnoreCase(exam, "c1")){
@@ -223,7 +276,8 @@ public class UploadUtil {
 							CatOne catOne = new CatOne();
 				            catOne.setSchoolAccountUuid(school.getUuid());
 							catOne.setTeacherUuid(stffID);
-							catOne.setClassRoomUuid(classuuid);  
+							catOne.setClassRoomUuid(classuuid); 
+							catOne.setClassesUuid(classesuuid);
 							catOne.setSubjectUuid(subjectuuid);
 							catOne.setStudentUuid(studentUuid);
 							catOne.setCatOne(score); 
@@ -237,6 +291,7 @@ public class UploadUtil {
 				            catwo.setSchoolAccountUuid(school.getUuid());
 				            catwo.setTeacherUuid(stffID);
 				            catwo.setClassRoomUuid(classuuid);  
+				            catwo.setClassesUuid(classesuuid); 
 				            catwo.setSubjectUuid(subjectuuid);
 				            catwo.setStudentUuid(studentUuid);
 				            catwo.setCatTwo(score); 
@@ -249,6 +304,7 @@ public class UploadUtil {
 					            endterm.setSchoolAccountUuid(school.getUuid());
 					            endterm.setTeacherUuid(stffID);
 					            endterm.setClassRoomUuid(classuuid);  
+					            endterm.setClassesUuid(classesuuid); 
 					            endterm.setSubjectUuid(subjectuuid);
 					            endterm.setStudentUuid(studentUuid);
 					            endterm.setEndTerm(score); 
@@ -256,9 +312,48 @@ public class UploadUtil {
 					            endterm.setYear("2015"); 
 							    examEgineDAO.putScore(endterm);
 						}
+						if(StringUtils.equalsIgnoreCase(exam, "p1")){
+							PaperOne p1 = new PaperOne();
+				            p1.setSchoolAccountUuid(school.getUuid());
+				            p1.setTeacherUuid(stffID);
+				            p1.setClassRoomUuid(classuuid);  
+				            p1.setClassesUuid(classesuuid); 
+				            p1.setSubjectUuid(subjectuuid);
+				            p1.setStudentUuid(studentUuid);
+				            p1.setPaperOne(score); 
+				            p1.setTerm("1");
+				            p1.setYear("2015"); 
+						    examEgineDAO.putScore(p1);
+					}
+						if(StringUtils.equalsIgnoreCase(exam, "p2")){
+							PaperTwo p2 = new PaperTwo();
+				            p2.setSchoolAccountUuid(school.getUuid());
+				            p2.setTeacherUuid(stffID);
+				            p2.setClassRoomUuid(classuuid);
+				            p2.setClassesUuid(classesuuid); 
+				            p2.setSubjectUuid(subjectuuid);
+				            p2.setStudentUuid(studentUuid);
+				            p2.setPaperTwo(score); 
+				            p2.setTerm("1");
+				            p2.setYear("2015"); 
+						    examEgineDAO.putScore(p2);
+					}
+						if(StringUtils.equalsIgnoreCase(exam, "p3")){
+							PaperThree p3 = new PaperThree();
+				            p3.setSchoolAccountUuid(school.getUuid());
+				            p3.setTeacherUuid(stffID);
+				            p3.setClassRoomUuid(classuuid);  
+				            p3.setClassesUuid(classesuuid); 
+				            p3.setSubjectUuid(subjectuuid);
+				            p3.setStudentUuid(studentUuid);
+				            p3.setPaperThree(score); 
+				            p3.setTerm("1");
+				            p3.setYear("2015"); 
+						    examEgineDAO.putScore(p3);
+					}
 					    
-					    
-					   
+					   System.out.println(classesuuid); 
+					   System.out.println(score); 
 			            
 							
 					}else{

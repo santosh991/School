@@ -24,10 +24,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
+import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
 import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
+import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
+import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -62,6 +66,15 @@ public class UploadFrom34 extends HttpServlet {
 	private static ExamEgineDAO examEgineDAO;
 	private static RoomDAO roomDAO;
 	private static SubjectDAO subjectDAO;
+	private static TeacherSubClassDAO teacherSubClassDAO;
+	String classuuid = "";
+	String room = "";
+	
+	
+	final String FORM1 = "FORM 1";
+	final String FORM2 = "FORM 2";
+	final String FORM3 = "FORM 3";
+	final String FORM4 = "FORM 4";
 	/**
     *
     * @param config
@@ -85,13 +98,15 @@ public class UploadFrom34 extends HttpServlet {
        examEgineDAO = ExamEgineDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
        subjectDAO = SubjectDAO.getInstance();
-     
+       teacherSubClassDAO = TeacherSubClassDAO.getInstance();
+       
    }
 	
 	
 	/**
     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  	*/
+	
 	@Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -130,12 +145,9 @@ public class UploadFrom34 extends HttpServlet {
 		while (iter.hasNext()) {
 		    item = iter.next();
 
-		    if (item.isFormField()) {
-		    	
-		        
-		    } else {
+		    if (!item.isFormField()) {
 		    	uploadedFile = processUploadedFile(item);
-		    }
+		    } 
 		}// end 'while (iter.hasNext())'
 				
 	    } catch (FileUploadException e) {
@@ -143,20 +155,21 @@ public class UploadFrom34 extends HttpServlet {
 			logger.error(e);
 	   }
 	       
-       // First we inspect if it is ok
-       String feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,roomDAO, subjectDAO,studentExamDAO,studentDAO);
+       // First we inspect if it is ok   //
+       String feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
 	   session.setAttribute(UPLOAD_FEEDBACK,"<p class='error'>"+feedback+"<p>");
-    	    	
-	   response.sendRedirect("exam.jsp");
-	   
-       // Process the file into the database if it is ok
+    	
+	   response.sendRedirect("examUpload.jsp");
+	          // Process the file into the database if it is ok
        if(StringUtils.equals(feedback, UPLOAD_SUCCESS)) {
     	   uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO, studentExamDAO, studentDAO, roomDAO, subjectDAO);
     	   
        }
+       return;
 	}	
 
-		
+	
+
 	
 	/**
 	 * @param item

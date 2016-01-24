@@ -142,9 +142,7 @@
      
 
 
-    double total = 0;
-    double mean = 0;
-    double score = 0;
+   
 
     double engscore = 0;
     String engscorestr = "";
@@ -189,16 +187,16 @@
     String studename = "";
     String admno = "";
 
-    double cat1 = 0;  
-    double cat2  = 0;
-    double endterm  = 0;
-    double examcattotal  = 0;
+    double total = 0;
+    double mean = 0;
+    double score = 0;
+
+   
     double paper1  = 0;
     double paper2  = 0;
     double paper3  = 0;
-    double catTotals  = 0;
-    double catmean  = 0;
-
+    double examcattotal  = 0;
+    
     
 
     DecimalFormat df = new DecimalFormat("0.00"); 
@@ -245,9 +243,9 @@
 
         <div class="box span12">
         <div class="box-header well" data-original-title>
-        <p> <%=schoolname%> :FORM 1&2 EXAM MANAGEMENT PANEL</p>
-      <!--   <a href="examIndex.jsp" ><span>Form 3&4 Test</span></a>  -->
-         
+          <p> <%=schoolname%> :FORM 3&4 EXAM MANAGEMENT PANEL</p>
+         <!-- <a href="exam.jsp" ><span>Back</span></a>  -->
+
         </div>
         <div class="box-content">
             
@@ -337,87 +335,215 @@
                                            
                                             List<Perfomance> list = new ArrayList<>();
                                             Map<String,Double> grandscoremap = new LinkedHashMap<String,Double>(); 
+                                            double languageScore = 0;
+                                            double scienceScore = 0;
+                                            double humanityScore = 0;
+                                            double techinicalScore = 0;
                                             double grandscore = 0;
                                             double number = 0.0;
-
+                                            
                                              for(Perfomance s : pDistinctList){                              
                                                  list = perfomanceDAO.getPerformance(accountuuid, classroomuuid, s.getStudentUuid());
-
+                                                       
+                                                    engscore = 0;
+                                                    kswscore = 0;
+                                                    matscore = 0;
+                                                    physcore = 0;
+                                                    bioscore = 0;
+                                                    chemscore = 0;
+                                                    bsscore = 0;
+                                                    compscore = 0;
+                                                    agriscore = 0;
+                                                    geoscore = 0;
+                                                    crescore = 0;
+                                                    histscore = 0;
                                                 
                                                  for(Perfomance pp : list){
-                                                    cat1 = pp.getCatOne();
-                                                    cat2 = pp.getCatTwo();
-                                                    endterm = pp.getEndTerm();
-                                                    total = (cat1+cat2)/2 +endterm;
-                                                    grandscore +=total;
                                                    
+                                                   //Languages
+                                                   //Include all the languages
+                                                   if(true){
                                                            if(StringUtils.equals(pp.getSubjectUuid(), ENG_UUID) ){
+                                                              paper1 = pp.getPaperOne(); //out of 60
+                                                              paper2 = pp.getPaperTwo(); //out of 80
+                                                              paper3 = pp.getPaperThree();//out of 60
+                                                              total = (paper1 + paper2 + paper3)/2; 
                                                               engscore = total;
                                                               engscorehash.put(s.getStudentUuid(),engscore);
                                                              }
-                                                          
+                                                            
+
                                                             if(StringUtils.equals(pp.getSubjectUuid(), KISWA_UUID)){
-                                                             kswscore = total;
-                                                             kswscoreMap.put(s.getStudentUuid(),kswscore);
+                                                              paper1 = pp.getPaperOne(); //out of 60
+                                                              paper2 = pp.getPaperTwo(); //out of 80
+                                                              paper3 = pp.getPaperThree();//out of 60
+                                                              total = (paper1 + paper2 + paper3)/2; 
+                                                              kswscore = total;
+                                                              kswscoreMap.put(s.getStudentUuid(),kswscore);
                                                             
                                                                 }
 
-                                                                if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
-                                                               physcore = total;
-                                                               physcoreMap.put(s.getStudentUuid(),physcore);
+                                                             
+                                                            languageScore = (engscore+kswscore); 
+                                                           
+
+                                                         }       
+                                                    //Sciences
+                                                    //Pick best two if the student take the three
+                                                    if(true){
+                                                    double subject1 = 0;
+                                                    double subject2 = 0;
+                                                   
+                                                            if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
+                                                              paper1 = pp.getPaperOne(); //out of 80
+                                                              paper2 = pp.getPaperTwo(); //out of 80
+                                                              paper3 = pp.getPaperThree();//out of 40
+                                                              total = ((paper1 + paper2)/160)*60 + paper3;
+
+                                                              physcore = total;
+                                                              physcoreMap.put(s.getStudentUuid(),physcore);
                                                            
                                                               }
-
-
-                                                                 if(StringUtils.equals(pp.getSubjectUuid(), BIO_UUID)){
-                                                            bioscore = total;
-                                                            bioscoreMap.put(s.getStudentUuid(),bioscore);
+                                                            if(StringUtils.equals(pp.getSubjectUuid(), BIO_UUID)){
+                                                              paper1 = pp.getPaperOne(); //out of 80
+                                                              paper2 = pp.getPaperTwo(); //out of 80
+                                                              paper3 = pp.getPaperThree();//out of 40
+                                                              total = ((paper1 + paper2)/160)*60 + paper3;
+                                                              bioscore = total;
+                                                              bioscoreMap.put(s.getStudentUuid(),bioscore);
                                                            
                                                               }
                                                                if(StringUtils.equals(pp.getSubjectUuid(), CHEM_UUID)){
-                                                            chemscore = total;
-                                                            chemscorehash.put(s.getStudentUuid(),chemscore);
+                                                              paper1 = pp.getPaperOne(); //out of 80
+                                                              paper2 = pp.getPaperTwo(); //out of 80
+                                                              paper3 = pp.getPaperThree();//out of 40
+                                                              total = ((paper1 + paper2)/160)*60 + paper3;
+                                                              chemscore = total;
+                                                              chemscorehash.put(s.getStudentUuid(),chemscore);
                                                            
                                                               }
                                                                if(StringUtils.equals(pp.getSubjectUuid(), MATH_UUID)){
-                                                            matscore = total;
-                                                            matscorehash.put(s.getStudentUuid(),matscore);
+                                                              paper1 = pp.getPaperOne(); //out of 100
+                                                              paper2 = pp.getPaperTwo(); //out of 100
+                                                              total = (paper1 + paper2)/2;
+                                                              matscore = total;
+                                                              matscorehash.put(s.getStudentUuid(),matscore);
                                                            
                                                               }
-                                                               if(StringUtils.equals(pp.getSubjectUuid(), BS_UUID)){
-                                                            bsscore = total;
-                                                            bsscoreMap.put(s.getStudentUuid(),bsscore);
+                                                              if(physcore>bioscore){
+                                                               subject1 = physcore;
+                                                               subject2 = bioscore;
+                                                               if(physcore > chemscore){
+                                                                  subject1 = physcore;
+                                                                  subject2 = chemscore;
+                                                                 }else{
+                                                                   subject1 = chemscore;
+                                                                   subject2 = physcore;
+                                                                 }
+                                                              }else{
+                                                               subject1 = bioscore;
+                                                               subject2 = physcore;
+                                                               if(bioscore > chemscore){
+                                                                  subject1 = bioscore;
+                                                                  subject2 = chemscore;
+                                                                 }else{
+                                                                   subject1 = chemscore;
+                                                                   subject2 = bioscore;
+                                                                 }
+
+                                                              }
+                                                    
+                                                              scienceScore = (subject1+subject2+matscore);
+                                                             
+                                                        }
+                                                    //Techinicals  
+                                                    //Here we pick one subject, the one he/she has performed best, but this subject can be replaced by a science, if the student takes 3 sciences and he/she performed better in the science than in all  the techinicals . 
+                                                    if(true){
+                                                    double bestTechinical = 0;
+                                                            if(StringUtils.equals(pp.getSubjectUuid(), BS_UUID)){
+                                                              paper1 = pp.getPaperOne(); //out of 100
+                                                              paper2 = pp.getPaperTwo(); //out of 100
+                                                              total = (paper1 + paper2)/2;
+                                                              bsscore = total;
+                                                              bsscoreMap.put(s.getStudentUuid(),bsscore);
                                                            
                                                               }
                                                                if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
-                                                            agriscore = total;
-                                                            agriscorehash.put(s.getStudentUuid(),agriscore);
-                                                           
-                                                              }
-                                                               if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
-                                                            geoscore = total;
-                                                            geoscoreMap.put(s.getStudentUuid(),geoscore);
-                                                           
-                                                              }
-                                                               if(StringUtils.equals(pp.getSubjectUuid(), CRE_UUID)){
-                                                            crescore = total;
-                                                            crescorehash.put(s.getStudentUuid(),crescore);
-                                                           
-                                                              }
-                                                               if(StringUtils.equals(pp.getSubjectUuid(), HIST_UUID)){
-                                                            histscore = total;
-                                                            histscoreMap.put(s.getStudentUuid(),histscore);
+                                                              paper1 = pp.getPaperOne(); //out of 80
+                                                              paper2 = pp.getPaperTwo(); //out of 80
+                                                              paper3 = pp.getPaperThree();//out of 40
+                                                              total = (paper1 + paper2)/2 + paper3;
+                                                              agriscore = total;
+                                                              agriscorehash.put(s.getStudentUuid(),agriscore);
                                                            
                                                               }
 
+                                                              if(bsscore>agriscore){
+                                                              bestTechinical = bsscore;
+                                                              }else{
+                                                               bestTechinical = agriscore;
+                                                              }
+       
+                                                               techinicalScore = bestTechinical;
+                                                              
+                                                         }     
+
+                                                    //Humanities
+                                                    //Here we pick only one subject, the one the student has performed best . 
+                                                    if(true){  
+                                                      double bestHumanity = 0;     
+                                                            if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
+                                                              paper1 = pp.getPaperOne(); //out of 100
+                                                              paper2 = pp.getPaperTwo(); //out of 100
+                                                              total = (paper1 + paper2)/2;
+                                                              geoscore = total;                                                 
+                                                              geoscoreMap.put(s.getStudentUuid(),geoscore);
+                                                           
+                                                              }
+                                                           if(StringUtils.equals(pp.getSubjectUuid(), CRE_UUID)){
+                                                              paper1 = pp.getPaperOne(); //out of 100
+                                                              paper2 = pp.getPaperTwo(); //out of 100
+                                                              total = (paper1 + paper2)/2;
+                                                              crescore = total;
+                                                              total=0;
+                                                              crescorehash.put(s.getStudentUuid(),crescore);
+                                                           
+                                                              }
+                                                           if(StringUtils.equals(pp.getSubjectUuid(), HIST_UUID)){
+                                                              paper1 = pp.getPaperOne(); //out of 100
+                                                              paper2 = pp.getPaperTwo(); //out of 100
+                                                              total = (paper1 + paper2)/2;
+                                                              histscore = total;                                              
+                                                              histscoreMap.put(s.getStudentUuid(),histscore);
+                                                           
+                                                              }
+                                                              if(geoscore > crescore){
+                                                                 bestHumanity = geoscore; 
+                                                                  if(geoscore > histscore){
+                                                                    bestHumanity = geoscore; 
+                                                                  }else{
+                                                                    bestHumanity = histscore;
+                                                                  }
+                                                                
+                                                              }else{
+                                                                   bestHumanity = crescore;
+                                                                   if(crescore > histscore){
+                                                                    bestHumanity = crescore; 
+                                                                  }else{
+                                                                    bestHumanity = histscore;
+                                                                  } 
+                                                              }
+                                                            humanityScore = bestHumanity;
+
+                                                        } 
                                              
 
                                                  }
                                                  
-
-
-                                                 grandscoremap.put(s.getStudentUuid(), grandscore);
-       
+                                            
+                                                 grandscore = languageScore+scienceScore+humanityScore+techinicalScore;
+                                                 languageScore = 0; scienceScore = 0; humanityScore = 0;techinicalScore = 0;  
+                                                 grandscoremap.put(s.getStudentUuid(), grandscore);                        
                                                  grandscore = 0;
       
 
@@ -446,13 +572,13 @@
 
                                                      int count = 1;
                                                      int counttwo = 1;
-
+                                                  
                                                     for(Object o : as){
                                                        String items = String.valueOf(o);
                                                        String [] item = items.split("=");
                                                        String uuid = item[0];
                                                        totalz = item[1];
-                                                       mean = Double.parseDouble(totalz)/11;
+                                                       mean = Double.parseDouble(totalz)/7;
 
                                                        studeadmno = studentAdmNoHash.get(uuid);
                                                        studename = studNameHash.get(uuid);         
@@ -589,6 +715,7 @@
                                            counttwo=1;
                                            out.println("<td width=\"3%\" >" + count + "</td>");
                                           }
+                                       
                                         out.println("<td class=\"center\" >" + studeadmno + "</td>");
                                         out.println("<td class=\"center\" >" + studename + "</td>");
 

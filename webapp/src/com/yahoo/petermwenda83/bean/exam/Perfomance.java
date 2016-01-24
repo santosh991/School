@@ -37,7 +37,7 @@ public class Perfomance extends StorableBean{
 	private double paperOne;
 	private double paperTwo;
 	private double paperThree; 
-	private double totals; 
+	//private double totals; 
 	private String term;
 	private String year;
 
@@ -58,7 +58,7 @@ public class Perfomance extends StorableBean{
         paperOne = 0.0;
         paperTwo = 0.0;
         paperThree = 0.0;
-        totals = 0.0;
+        //totals = 0.0;
         term ="";
       	year ="";
       	

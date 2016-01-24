@@ -3,6 +3,8 @@
  */
 package com.yahoo.petermwenda83.persistence.staff;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.junit.Ignore;
@@ -23,14 +25,20 @@ public class TestTeacherSubClassDAO {
 	final int databasePort = 5432;
 	
 	private TeacherSubClassDAO store;
+	
+	final String TEACHER_UUID = "F49DB775-4952-4915-B978-9D9F3E36D6E9";
+	final String SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO#getSubjectClass(java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetSubjectClass() {
 		store = new TeacherSubClassDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		TeacherSubClass t = new TeacherSubClass();
+		t = store.getSubjectClass(TEACHER_UUID); 
+		assertEquals(t.getSubjectUuid(),SUB_UUID);
 	}
 
 	/**
@@ -63,7 +71,7 @@ public class TestTeacherSubClassDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO#getSubjectClassList()}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetSubjectClassList() {
 		store = new TeacherSubClassDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

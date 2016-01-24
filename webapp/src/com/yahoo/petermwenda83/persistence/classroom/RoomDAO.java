@@ -53,8 +53,31 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
 
 	@Override
 	public ClassRoom getroom(String SchoolAccountUuid, String Uuid) {
-		// TODO Auto-generated method stub
-		return null;
+		ClassRoom classRoom = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ClassRoom WHERE SchoolAccountUuid = ? AND Uuid =? ;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, SchoolAccountUuid);
+        	 pstmt.setString(2, Uuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 classRoom  = beanProcessor.toBean(rset,ClassRoom.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting classRoom with Uuid: " + Uuid);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+        //System.out.println(classRoom);
+		return classRoom; 
 	}
 
 	@Override

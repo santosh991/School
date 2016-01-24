@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
-import com.yahoo.petermwenda83.bean.exam.StudentExam;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
@@ -66,36 +65,6 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerformanceObject(java.lang.String)
-	 */
-	@Override
-	public Perfomance getPerformanceObject(String studentUuid) {
-		Perfomance perfomance = null;
-		ResultSet rset = null;
-        try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE studentUuid = ?;");       
-        		
-        		){
-        	
-        	 pstmt.setString(1, studentUuid);
-	         rset = pstmt.executeQuery();
-	     while(rset.next()){
-	
-	    	 perfomance  = beanProcessor.toBean(rset,Perfomance.class);
-	   }
-        	
-        	
-        	
-        }catch(SQLException e){
-        	 logger.error("SQL Exception when getting Perfomance for studentUuid " + studentUuid);
-             logger.error(ExceptionUtils.getStackTrace(e));
-        }
-        
-		return perfomance; 
-	}
-
 	
 
 	/**
@@ -166,7 +135,7 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	@Override
 	public List<Perfomance> getPerfomanceList(String schoolAccountUuid,String classRoomUuid) {
 		List<Perfomance> list = new ArrayList<>();
-        try (//SELECT DISTINCT studentuuid FROM perfomance WHERE classroomuuid = '4DA86139-6A72-4089-8858-6A3A613FDFE6';
+        try (
         		 Connection conn = dbutils.getConnection();
      	         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE"
      	         		+ " SchoolAccountUuid = ? AND classRoomUuid = ? ;"); 
@@ -189,7 +158,7 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
         return list;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerfomanceListDistinct(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -215,7 +184,7 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
         return list;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getClassPerfomanceList(java.lang.String, java.lang.String)
 	 */
 	@Override

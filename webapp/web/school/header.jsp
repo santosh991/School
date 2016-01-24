@@ -5,6 +5,16 @@
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
+
+<%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
+<%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -15,12 +25,60 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%
+<%   
+
+    CacheManager mgr = CacheManager.getInstance();
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
+    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
+    SessionStatistics statistics = new SessionStatistics();
+    String username = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
+    
+
+    SchoolAccount school = new SchoolAccount();
+    Element element;
+   
+
+    String classuuid = "";
+    String room  ="";
+    String staffPosition  ="";
+
+    if ((element = accountsCache.get(username)) != null) {
+        school = (SchoolAccount) element.getObjectValue();
+    }
+
+     String accountuuid = school.getUuid();
 
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     staffPosition = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_POSITION);
+
+     ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
+     RoomDAO roomDAO = RoomDAO.getInstance();
+     
+     if(stffID !=null){  
+     ClassTeacher ct = classTeacherDAO.getClassTeacher(stffID); 
+       if(ct !=null){
+       classuuid = ct.getClassRoomUuid();
+          }
+              }
 
      
+     ClassRoom cr = roomDAO.getroom(accountuuid, classuuid);
+      if(cr !=null){
+      room = cr.getRoomName(); 
+       }
+    final String FORM1 = "FORM 1";
+	final String FORM2 = "FORM 2";
+	final String FORM3 = "FORM 3";
+	final String FORM4 = "FORM 4";
+
+	//out.println("pos"+staffPosition);
+	        String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
+            String pos_Teacher =(String) PropertiesConfig.getConfigValue("POSITION_TEACHER");
+            String pos_HOD =(String) PropertiesConfig.getConfigValue("POSITION_HOD");
+            String pos_CM =(String) PropertiesConfig.getConfigValue("POSITION_CM");
+            String pos_Secretary =(String) PropertiesConfig.getConfigValue("POSITION_SECRETARY");
+            String pos_Bursar =(String) PropertiesConfig.getConfigValue("POSITION_BURSAR");
 
 %>                       
 
@@ -129,20 +187,78 @@
                             
                        <!-- top menu -->        
                 <div id='cssmenu'>
-        <ul>
-            <li class='has-sub' ><a href="#"><span>Student Management</span></a>
+               <ul>
+
+                <!--SECRETARY-->
+
+                  <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
+                <li class='has-sub' ><a href="#"><span>Student Management</span></a>
                   <ul>
                 <li><a href="#" ><span>Add Student</span></a></li>
                 <li><a href="#" ><span>Update Student</span></a></li>
                 <li class='last'><a href="#"><span>View Student</span></a></li>
                 </ul>
-               </li>
-            <li class='has-sub'><a href="exam.jsp"><span>Exam Management</span></a></li>
-            <li class='has-sub'><a href='#'><span>Reports Management</span></a></li>
-            <li class='has-sub'><a href='#'><span>Staff Management </span></a></li>
+                </li>
+                 <%}  %>
+
+               <!--BURSAR/ACCOUNT C-->
+
+
+               <!--CLASS TEACHER-->
+             
+                <%
+               if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
+                 %>
+		       <li class='has-sub'><a href="exam.jsp"><span>Exam Management</span></a></li>
+		        <%
+	            }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
+	            %>
+	            <li class='has-sub'><a href="examIndex.jsp"><span>Exam Management</span></a></li>
+		        <%
+	           }else{
+	          
+		       response.sendRedirect("../index.jsp");
+	           }
+   
+               %>
+           
+            <!--TEACHER-->
+
+             <%  if(StringUtils.equals(staffPosition,pos_Teacher)){ %>
+            <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
+          
+             <% }  %>
+
+
+            <!--CM-CURRICULUM MASTER-->
+
+             <%  if(StringUtils.equals(staffPosition,pos_CM)){ %>
+              <li class='has-sub'><a href='#'><span>Reports</span></a></li>
+              <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
+             <% }  %>
+            
+             <!--HOD-->
+
+
+             <!--DEPUTY PRINCIPAL-->
+
+             <!--PRINCIPAL-->
+
+              <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
+                <li class='has-sub' ><a href="#"><span>Student Management</span></a>
+                  <ul>
+                <li><a href="#" ><span>Add Student</span></a></li>
+                <li><a href="#" ><span>Update Student</span></a></li>
+                <li class='last'><a href="#"><span>View Student</span></a></li>
+                </ul>
+                </li>
+            <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
+            <li class='has-sub'><a href='#'><span>Reports</span></a></li>
             <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
+            <li class='has-sub'><a href='#'><span>Staff Management </span></a></li>
             <li class='has-sub'><a href='#'><span>Admin Settings</span></a></li>
 
+             <% }  %>
         </ul>
 
             </div>             

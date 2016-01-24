@@ -116,11 +116,11 @@
 
       <h1>Login to Your School</h1>
 
-      <form method="POST" action="schoolLogin">
+      <form autocomplete="off" method="POST" action="schoolLogin" >
 
       <div class="reg_section personal_info">
       <h3>School Username</h3>
-      <input type="text" name="schoolusername" value="" placeholder="School Username" >
+      <input type="text" name="schoolusername" value=""  placeholder="School Username" >
       </div>
       <div class="reg_section password">
       <h3>Your Position</h3>
@@ -143,9 +143,9 @@
 
        <div class="reg_section password">
        <h3>Staff Username </h3>
-       <input type="text" name="staffusername" value="" placeholder="Staff username">
+       <input autocomplete="off" type="text" name="staffusername" value="" placeholder="Staff username">
        <h3>Staff Passworld</h3>
-       <input type="password" name="staffpassword" value="" placeholder="Staff passworld">
+       <input type="password" name="staffpassword"  placeholder="Staff passworld" />
 
 
                        <%
@@ -157,7 +157,7 @@
                             <div id="spam-check">
                                 <span id="captchaGuidelines">Type the characters you see in the image below</span><br>
                                 <img id="captcha" src=<% out.println("\"" + fontImageUrl + "\"");%> width="80" height="40" /> <br>
-                                <input type="text" name="captchaAnswer" id="captchaAnswer" size="5" class="input_normal" />
+                                <input type="text" name="captchaAnswer" id="captchaAnswer" size="5" class="input_normal"/>
                                 <input type="hidden" name="captchaHidden" id="captchaHidden"
                                        value=<% out.println("\"" + URLEncoder.encode(encryptedCaptcha, "UTF-8") + "\"");%> />
                             </div>

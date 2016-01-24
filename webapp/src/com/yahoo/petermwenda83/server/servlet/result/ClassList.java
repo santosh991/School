@@ -4,12 +4,18 @@
 package com.yahoo.petermwenda83.server.servlet.result;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.servlet.ServletConfig;
@@ -20,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
@@ -85,6 +92,78 @@ public class ClassList extends HttpServlet{
 	    
 	    HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
 	    HashMap<String, String> studNameHash = new HashMap<String, String>();
+	    
+	    
+	    double total = 0;
+	    double mean = 0;
+	    double score = 0;
+
+	    double engscore = 0;
+	    String engscorestr = "";
+
+	    double kswscore = 0;
+	    String kswscorestr = "";
+
+	    double matscore = 0;
+	    String matscorestr = "";
+
+	    double physcore = 0;
+	    String physcorestr = "";  
+
+	     double bioscore = 0;
+	     String bioscorestr = "";
+
+	     double chemscore = 0;
+	     String chemscorestr = "";
+
+	     double bsscore = 0;
+	     String bsscorestr = "";
+
+	     double compscore = 0;
+	     String compscorestr = "";
+
+	      double agriscore = 0;
+	      String agriscorestr = "";
+
+	      double geoscore = 0;
+	      String geoscorestr = "";
+
+	      double crescore = 0;
+	      String crescorestr = "";
+
+	      double histscore = 0;
+	      String histscorestr = "";
+
+
+	                                       
+	    String grade = "";
+	    String studeadmno = "";
+	    String studename = "";
+	    String admno = "";
+
+	    double cat1 = 0;  
+	    double cat2  = 0;
+	    double endterm  = 0;
+	    double examcattotal  = 0;
+	    double paper1  = 0;
+	    double paper2  = 0;
+	    double paper3  = 0;
+	    double catTotals  = 0;
+	    double catmean  = 0;
+
+	      final String ENG_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
+	      final String KISWA_UUID = "66027e51-b1ad-4b10-8250-63af64d23323";
+	      final String FRE_UUID = "";
+	      final String MATH_UUID = "4f59580d-1a16-4669-9ed5-4b89615d6903";
+	      final String PHY_UUID = "44f23b3c-e066-4b45-931c-0e8073d3a93a";
+	      final String BIO_UUID = "de0c86be-9bcb-4d3b-8098-b06687536c1f";
+	      final String CHEM_UUID = "552c0a24-6038-440f-add5-2dadfb9a23bd";
+	      final String BS_UUID = "e1729cc2-524a-4069-b4a4-be5aec8473fe";
+	      final String COMP_UUID = "";
+	      final String AGR_UUID = "b9bbd718-b32f-4466-ab34-42f544ff900e";
+	      final String GEO_UUID = "0e5dc1c6-f62f-4a36-a1ec-064173332694";
+	      final String CRE_UUID = "f098e943-26fd-4dc0-b6a0-2d02477004a4";
+	      final String HIST_UUID = "c9caf109-c27d-4062-9b9f-ac4268629e27";
 
 	/**
     *
@@ -142,6 +221,8 @@ public class ClassList extends HttpServlet{
 	   
 	   List<Perfomance> perfomanceList = new ArrayList<Perfomance>(); 
 	   perfomanceList = perfomanceDAO.getPerfomanceList(school.getUuid(), classroomuuid);
+	   List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
+	   pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroomuuid);
 	   
 	   List<StudentExam> sutexamList = new ArrayList<StudentExam>(); 
 	   sutexamList = studentExamDAO.getStudentExamList(school.getUuid(),classroomuuid); 
@@ -169,7 +250,7 @@ public class ClassList extends HttpServlet{
            writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
            writer.setPageEvent(event);
 
-           populatePDFDocument(statistics, school,classroomuuid,perfomanceList,sutexamList, context.getRealPath("/images/fastech.png"));
+           populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, context.getRealPath("/images/fastech.png"));
 
        } catch (DocumentException e) {
            logger.error("DocumentException while writing into the document");
@@ -185,10 +266,23 @@ public class ClassList extends HttpServlet{
 
 
    private void populatePDFDocument(SessionStatistics statistics, SchoolAccount school, String classroomuuid, 
-		  List<Perfomance> perfomanceList, List<StudentExam> sutexamList,String realPath) {
+		  List<Perfomance> perfomanceList, List<Perfomance> pDistinctList,String realPath) {
 	   SimpleDateFormat formatter;
        String formattedDate;
        Date date = new Date();
+       Map<String,Double> kswscoreMap = new LinkedHashMap<String,Double>();
+       Map<String,Double> engscorehash = new LinkedHashMap<String,Double>(); 
+       Map<String,Double> physcoreMap = new LinkedHashMap<String,Double>();
+       Map<String,Double> matscorehash = new LinkedHashMap<String,Double>(); 
+       Map<String,Double> bioscoreMap = new LinkedHashMap<String,Double>();
+       Map<String,Double> chemscorehash = new LinkedHashMap<String,Double>(); 
+       Map<String,Double> bsscoreMap = new LinkedHashMap<String,Double>();
+       Map<String,Double> agriscorehash = new LinkedHashMap<String,Double>(); 
+       Map<String,Double> geoscoreMap = new LinkedHashMap<String,Double>();
+       Map<String,Double> crescorehash = new LinkedHashMap<String,Double>(); 
+       Map<String,Double> histscoreMap = new LinkedHashMap<String,Double>();
+       
+       String totalz = "";
        try {
        document.open();
       
@@ -206,6 +300,9 @@ public class ClassList extends HttpServlet{
        formatter = new SimpleDateFormat("dd, MMM yyyy HH:mm z");
        formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
        formattedDate = formatter.format(date);
+       
+       DecimalFormat df = new DecimalFormat("0.00"); 
+       df.setRoundingMode(RoundingMode.DOWN);
 
        // Will create: Report generated by: _name, _date
        preface.add(new Paragraph(PDF_SUBTITLE + school.getSchoolName(), smallBold));
@@ -251,10 +348,6 @@ public class ClassList extends HttpServlet{
        PdfPCell kisHeader = new PdfPCell(new Paragraph("KIS",boldFont));
        kisHeader.setBackgroundColor(baseColor);
        kisHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-      
-       PdfPCell freHeader = new PdfPCell(new Paragraph("FRE",boldFont));
-       freHeader.setBackgroundColor(baseColor);
-       freHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
        
        PdfPCell matHeader = new PdfPCell(new Paragraph("MAT",boldFont));
        matHeader.setBackgroundColor(baseColor);
@@ -292,13 +385,10 @@ public class ClassList extends HttpServlet{
        agrHeader.setBackgroundColor(baseColor);
        agrHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
        
-       PdfPCell comHeader = new PdfPCell(new Paragraph("COM",boldFont));
-       comHeader.setBackgroundColor(baseColor);
-       comHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-       
-       PdfPCell hsHeader = new PdfPCell(new Paragraph("H/S",boldFont));
-       hsHeader.setBackgroundColor(baseColor);
-       hsHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+      
+       PdfPCell totalsHeader = new PdfPCell(new Paragraph("TOTAL",boldFont));
+       totalsHeader.setBackgroundColor(baseColor);
+       totalsHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
        
        PdfPCell meanHeader = new PdfPCell(new Paragraph("MN",boldFont));
        meanHeader.setBackgroundColor(baseColor);
@@ -309,14 +399,14 @@ public class ClassList extends HttpServlet{
        gradeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
       
        
-       PdfPTable myTable = new PdfPTable(19); 
+       PdfPTable myTable = new PdfPTable(17); 
        
         myTable.addCell(CountHeader);
         myTable.addCell(admNoHeader);
         myTable.addCell(nameHeader);
         myTable.addCell(engHeader);
         myTable.addCell(kisHeader);
-        myTable.addCell(freHeader);
+       // myTable.addCell(freHeader);
         myTable.addCell(matHeader);
         myTable.addCell(phyHeader);
         myTable.addCell(cheHeader);
@@ -326,8 +416,8 @@ public class ClassList extends HttpServlet{
         myTable.addCell(geoHeader);
         myTable.addCell(bsHeader);
         myTable.addCell(agrHeader);
-        myTable.addCell(comHeader);
-        myTable.addCell(hsHeader);
+        //myTable.addCell(comHeader);
+        myTable.addCell(totalsHeader);
         myTable.addCell(meanHeader);
         myTable.addCell(gradeHeader);
         
@@ -336,7 +426,7 @@ public class ClassList extends HttpServlet{
        myTable.setWidthPercentage(100); 
        
        
-       myTable.setWidths(new int[]{10,41,50,15,15,15,15,15,15,15,15,15,15,15,15,16,15,20,15});   
+       myTable.setWidths(new int[]{10,41,50,15,15,15,15,15,15,15,15,15,15,16,22,20,15});   
        
      //  leadersTable.setLockedWidth(true); 
        
@@ -344,45 +434,276 @@ public class ClassList extends HttpServlet{
        
        String studeadmno = "";
        String studename = "";
-       int count = 1;
        
-       if(sutexamList !=null){
-       for(StudentExam student : sutexamList){ 
-                     studeadmno = studentAdmNoHash.get(student.getStudentUuid());
-                     studename = studNameHash.get(student.getStudentUuid());   
-                     
-                     
- 		            
- 		            
- 		           myTable.addCell(" "+count++); 
- 		           myTable.addCell(studeadmno);
- 		           myTable.addCell(studename);  
- 		           myTable.addCell("87");  
- 		           myTable.addCell("76");  
- 		           myTable.addCell("66");  
-		           myTable.addCell("65");  
-		           myTable.addCell("88");  
- 		           myTable.addCell("65");  
- 		           myTable.addCell("34");  
-		           myTable.addCell("45");  
-		           myTable.addCell("78");  
- 		           myTable.addCell("55");  
- 		           myTable.addCell("56");  
-		           myTable.addCell("94");  
-		           myTable.addCell("76");  
- 		           myTable.addCell("45");  
- 		           myTable.addCell("43.68");  
-		           myTable.addCell("B"); 
-		          
- 		           
- 		            
- 		          
-                     
-                    
-             }
-      
+       
+       List<Perfomance> list = new ArrayList<>();
+       Map<String,Double> grandscoremap = new LinkedHashMap<String,Double>(); 
+       double grandscore = 0;
+       
+       if(pDistinctList !=null){
+       for(Perfomance p : pDistinctList){ 
+    	   list = perfomanceDAO.getPerformance(school.getUuid(), classroomuuid, p.getStudentUuid());
+    	        
+    	   for(Perfomance pp : list){
+    		   cat1 = pp.getCatOne();
+               cat2 = pp.getCatTwo();
+               endterm = pp.getEndTerm();
+               total = (cat1+cat2)/2 +endterm;
+               grandscore +=total;
+               
+               
+               if(StringUtils.equals(pp.getSubjectUuid(), ENG_UUID) ){
+                   engscore = total;
+                   engscorehash.put(p.getStudentUuid(),engscore);
+                  }
+               
+                 if(StringUtils.equals(pp.getSubjectUuid(), KISWA_UUID)){
+                  kswscore = total;
+                  kswscoreMap.put(p.getStudentUuid(),kswscore);
+                 
+                     }
+
+                     if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
+                    physcore = total;
+                    physcoreMap.put(p.getStudentUuid(),physcore);
+                
+                   }
+
+
+                      if(StringUtils.equals(pp.getSubjectUuid(), BIO_UUID)){
+                 bioscore = total;
+                 bioscoreMap.put(p.getStudentUuid(),bioscore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), CHEM_UUID)){
+                 chemscore = total;
+                 chemscorehash.put(p.getStudentUuid(),chemscore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), MATH_UUID)){
+                 matscore = total;
+                 matscorehash.put(p.getStudentUuid(),matscore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), BS_UUID)){
+                 bsscore = total;
+                 bsscoreMap.put(p.getStudentUuid(),bsscore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
+                 agriscore = total;
+                 agriscorehash.put(p.getStudentUuid(),agriscore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
+                 geoscore = total;
+                 geoscoreMap.put(p.getStudentUuid(),geoscore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), CRE_UUID)){
+                 crescore = total;
+                 crescorehash.put(p.getStudentUuid(),crescore);
+                
+                   }
+                    if(StringUtils.equals(pp.getSubjectUuid(), HIST_UUID)){
+                 histscore = total;
+                 histscoreMap.put(p.getStudentUuid(),histscore);
+                
+                   }
+
+    		   
+    		   
+    	   }
+           
+    	   grandscoremap.put(p.getStudentUuid(), grandscore);
+           grandscore = 0;
+    	   
+    	   
+    	   
+    	   
+         }
+       
+       ArrayList<?> as = new ArrayList(grandscoremap.entrySet());
+       Collections.sort(as,new Comparator(){
+         public int compare(Object o1,Object o2){
+           Map.Entry e1 = (Map.Entry)o1;
+           Map.Entry e2 = (Map.Entry)o2;
+           Double f = (Double)e1.getValue();
+           Double s = (Double)e2.getValue();
+           return s.compareTo(f);
+         }
+       });
+
+
+
+
+        int count = 1;
+     
+       for(Object o : as){
+          String items = String.valueOf(o);
+          String [] item = items.split("=");
+          String uuid = item[0];
+          totalz = item[1];
+          mean = Double.parseDouble(totalz)/11;
+
+          studeadmno = studentAdmNoHash.get(uuid);
+          studename = studNameHash.get(uuid);         
+         
+
+          
+
+          if(engscorehash.get(uuid)!=null){
+            engscore = engscorehash.get(uuid);
+            engscorestr = Double.toString(engscore);
+          }else{
+            engscorestr = "";
+          }
+
+
+          if(kswscoreMap.get(uuid)!=null){
+            kswscore = kswscoreMap.get(uuid);
+            kswscorestr = Double.toString(kswscore);
+          }else{
+            kswscorestr = "";
+          }
+
+
+          if(physcoreMap.get(uuid)!=null){
+            physcore = physcoreMap.get(uuid);
+            physcorestr = Double.toString(physcore);
+          }else{
+            physcorestr = "";
+          }
+
+          if(bioscoreMap.get(uuid)!=null){
+            bioscore = bioscoreMap.get(uuid);
+            bioscorestr = Double.toString(bioscore);
+          }else{
+            bioscorestr = "";
+          }
+
+
+          if(chemscorehash.get(uuid)!=null){
+            chemscore = chemscorehash.get(uuid);
+            chemscorestr = Double.toString(chemscore);
+          }else{
+            chemscorestr = "";
+          }
+
+
+
+          if(matscorehash.get(uuid)!=null){
+            matscore = matscorehash.get(uuid);
+            matscorestr = Double.toString(matscore);
+          }else{
+            matscorestr = "";
+          }
+
+           if(histscoreMap.get(uuid)!=null){
+            histscore = histscoreMap.get(uuid);
+            histscorestr = Double.toString(histscore);
+          }else{
+            histscorestr = "";
+          }
+
+
+          if(crescorehash.get(uuid)!=null){
+            crescore = crescorehash.get(uuid);
+            crescorestr = Double.toString(crescore);
+          }else{
+            crescorestr = "";
+          }
+
+
+          if(geoscoreMap.get(uuid)!=null){
+            geoscore = geoscoreMap.get(uuid);
+            geoscorestr = Double.toString(geoscore);
+          }else{
+            geoscorestr = "";
+          }
+
+
+          if(bsscoreMap.get(uuid)!=null){
+            bsscore = bsscoreMap.get(uuid);
+            bsscorestr = Double.toString(bsscore);
+          }else{
+            bsscorestr = "";
+          }
+
+
+          if(agriscorehash.get(uuid)!=null){
+            agriscore = agriscorehash.get(uuid);
+            agriscorestr = Double.toString(agriscore);
+          }else{
+            agriscorestr = "";
+          }
+          
+          
+          if(mean >= 83){
+              grade = "A";
+          }else if(mean >= 71){
+               grade = "A-";
+          }else if(mean >= 67){
+               grade = "B+";
+          }else if(mean >= 61){
+               grade = "B";
+          }else if(mean >= 55){
+               grade = "B-";
+          }else if(mean >= 47){
+               grade = "C+";
+          }else if(mean >= 42){
+               grade = "C";
+          }else if(mean >= 38){
+               grade = "C-";
+          }else if(mean >= 35){
+               grade = "D+";
+          }else if(mean >= 30){
+               grade = "D";
+          }else if(mean >= 25){
+               grade = "D-";
+          }else{
+               grade = "E";
+          }
+
+          
+          
+          
+        
+           
+          myTable.addCell(" "+count++); 
+          myTable.addCell(studeadmno);
+          myTable.addCell(studename);  
+          myTable.addCell(engscorestr);  
+          myTable.addCell(kswscorestr);  
+          myTable.addCell(matscorestr);  
+          myTable.addCell(physcorestr);  
+          myTable.addCell(chemscorestr);  
+          myTable.addCell(bioscorestr);  
+          myTable.addCell(histscorestr);  
+          myTable.addCell(crescorestr);  
+          myTable.addCell(geoscorestr);  
+          myTable.addCell(bsscorestr);  
+          myTable.addCell(agriscorestr);  
+          myTable.addCell(totalz);  
+          myTable.addCell(df.format(mean));  
+          myTable.addCell(grade);  
+         
+        
+          
+           
+         
+           
+
        }
        
+          
+          
+
+     }
+ 
+    	   
+                    
+          
        
        
        document.add(myTable);  
