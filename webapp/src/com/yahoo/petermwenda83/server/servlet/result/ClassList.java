@@ -426,7 +426,7 @@ public class ClassList extends HttpServlet{
        myTable.setWidthPercentage(100); 
        
        
-       myTable.setWidths(new int[]{10,41,50,15,15,15,15,15,15,15,15,15,15,16,22,20,15});   
+       myTable.setWidths(new int[]{15,41,50,15,15,15,15,15,15,15,15,15,15,16,22,20,15});   
        
      //  leadersTable.setLockedWidth(true); 
        

@@ -61,6 +61,16 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ClassList</servlet-class>
     </servlet>
 
+     <servlet>
+        <servlet-name>Form34List</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.Form34List</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ReportForm</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm</servlet-class>
+    </servlet>
+
     <servlet>
         <servlet-name>SchoolLogin</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Login</servlet-class>
@@ -77,7 +87,7 @@
    <servlet-mapping>
         <servlet-name>FontImageGenerator</servlet-name>
         <url-pattern>/fontImageGenerator</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> 
 
 
     <servlet-mapping>
@@ -85,9 +95,19 @@
         <url-pattern>/school/classList</url-pattern>
     </servlet-mapping> 
 
-      <servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Form34List</servlet-name>
+        <url-pattern>/school/form34List</url-pattern>
+    </servlet-mapping> 
+
+    <servlet-mapping>
         <servlet-name>UploadFrom34</servlet-name>
         <url-pattern>/school/resultUpload</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ReportForm</servlet-name>
+        <url-pattern>/school/reportForm</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>
@@ -106,7 +126,7 @@
 
      
     <session-config>
-        <session-timeout>200</session-timeout>
+        <session-timeout>500</session-timeout>
     </session-config>
 
 

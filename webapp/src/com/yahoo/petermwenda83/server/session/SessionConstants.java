@@ -9,7 +9,7 @@ package com.yahoo.petermwenda83.server.session;
  */
 public class SessionConstants {
 	
-	final public static int SESSION_TIMEOUT = 200; 
+	final public static int SESSION_TIMEOUT = 500; 
 	 //Admin SchoolAccount Management
 	
 	public static final String ACCOUNT_SIGN_IN_ERROR_KEY = "Error Login";
