@@ -91,19 +91,24 @@
            classroomuuid = classTeacher.getClassRoomUuid();
          }
 
+      //languages
       final String ENG_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
       final String KISWA_UUID = "66027e51-b1ad-4b10-8250-63af64d23323";
-      final String FRE_UUID = "";
+      //sciences
       final String MATH_UUID = "4f59580d-1a16-4669-9ed5-4b89615d6903";
       final String PHY_UUID = "44f23b3c-e066-4b45-931c-0e8073d3a93a";
       final String BIO_UUID = "de0c86be-9bcb-4d3b-8098-b06687536c1f";
       final String CHEM_UUID = "552c0a24-6038-440f-add5-2dadfb9a23bd";
+      //techinicals
       final String BS_UUID = "e1729cc2-524a-4069-b4a4-be5aec8473fe";
-      final String COMP_UUID = "";
+      final String COMP_UUID = "F1972BF2-C788-4F41-94FE-FBA1869C92BC";
+      final String H_S = "C1F28FF4-1A18-4552-822A-7A4767643643";
       final String AGR_UUID = "b9bbd718-b32f-4466-ab34-42f544ff900e";
+      //humanities 
       final String GEO_UUID = "0e5dc1c6-f62f-4a36-a1ec-064173332694";
       final String CRE_UUID = "f098e943-26fd-4dc0-b6a0-2d02477004a4";
       final String HIST_UUID = "c9caf109-c27d-4062-9b9f-ac4268629e27";
+      
       
 
 
@@ -122,10 +127,7 @@
      Perfomance perfor;
      HashMap<String, Perfomance> perfomanceHash = new HashMap<String, Perfomance>();
 
-     HashMap<String, String> stuSubHash = new HashMap<String, String>();
-     HashMap<String, Double> engscoreHash = new HashMap<String, Double>();
-     HashMap<String, Double> kiswscoreHash = new HashMap<String, Double>();
-     HashMap<String, Double> physcoreHash = new HashMap<String, Double>();  
+     
 
      PerfomanceDAO perfomanceDAO = PerfomanceDAO.getInstance();
      List<Perfomance> perfomanceList = new ArrayList<Perfomance>(); 
@@ -170,6 +172,9 @@
      double compscore = 0;
      String compscorestr = "";
 
+     double hscscore = 0;
+     String hscscorestr = "";
+
       double agriscore = 0;
       String agriscorestr = "";
 
@@ -203,21 +208,36 @@
 
     DecimalFormat df = new DecimalFormat("0.00"); 
     df.setRoundingMode(RoundingMode.DOWN);
+
+    DecimalFormat rf = new DecimalFormat("0"); 
+    rf.setRoundingMode(RoundingMode.UP);
                                         
     String notNull=null;
     
-    
+   
+    //languages
+    HashMap<String, Double> kiswscoreHash = new HashMap<String, Double>();
     Map<String,Double> kswscoreMap = new LinkedHashMap<String,Double>();
+    HashMap<String, Double> engscoreHash = new HashMap<String, Double>();
     Map<String,Double> engscorehash = new LinkedHashMap<String,Double>(); 
+    
+    //sciences
     Map<String,Double> physcoreMap = new LinkedHashMap<String,Double>();
+    HashMap<String, Double> physcoreHash = new HashMap<String, Double>();  
     Map<String,Double> matscorehash = new LinkedHashMap<String,Double>(); 
     Map<String,Double> bioscoreMap = new LinkedHashMap<String,Double>();
     Map<String,Double> chemscorehash = new LinkedHashMap<String,Double>(); 
+
+    //techinicals
     Map<String,Double> bsscoreMap = new LinkedHashMap<String,Double>();
     Map<String,Double> agriscorehash = new LinkedHashMap<String,Double>(); 
-    Map<String,Double> geoscoreMap = new LinkedHashMap<String,Double>();
+    Map<String,Double> compscoreMap = new LinkedHashMap<String,Double>();
+    Map<String,Double> hscscoreMap = new LinkedHashMap<String,Double>();
+
+    //humanities 
     Map<String,Double> crescorehash = new LinkedHashMap<String,Double>(); 
     Map<String,Double> histscoreMap = new LinkedHashMap<String,Double>();
+    Map<String,Double> geoscoreMap = new LinkedHashMap<String,Double>();
   
     String student = "";
 
@@ -324,9 +344,11 @@
                         <th>GEO</th>
                         <th>B/S</th>
                         <th>AGR</th>
+                        <th>HSC</th>
+                        <th>COM</th> 
                         <th>TOTAL </th>
                         <th>MEAN </th>
-                        <th>GRADE </th>         
+                        <th>GRADE </th>          
                         
                     </tr>
                 </thead>   
@@ -389,12 +411,26 @@
                                                             bsscoreMap.put(s.getStudentUuid(),bsscore);
                                                            
                                                               }
-                                                               if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
+                                                             if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
                                                             agriscore = total;
                                                             agriscorehash.put(s.getStudentUuid(),agriscore);
                                                            
                                                               }
-                                                               if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
+
+
+                                                              if(StringUtils.equals(pp.getSubjectUuid(), H_S)){
+                                                              hscscore = total;
+                                                              hscscoreMap.put(s.getStudentUuid(),hscscore);
+                                                           
+                                                              }if(StringUtils.equals(pp.getSubjectUuid(), COMP_UUID)){
+                                                              compscore = total;
+                                                              compscoreMap.put(s.getStudentUuid(),compscore);
+                                                           
+                                                              } 
+
+
+
+                                                            if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
                                                             geoscore = total;
                                                             geoscoreMap.put(s.getStudentUuid(),geoscore);
                                                            
@@ -462,7 +498,7 @@
 
                                                        if(engscorehash.get(uuid)!=null){
                                                          engscore = engscorehash.get(uuid);
-                                                         engscorestr = Double.toString(engscore);
+                                                         engscorestr = rf.format(engscore);
                                                        }else{
                                                          engscorestr = "";
                                                        }
@@ -470,7 +506,7 @@
 
                                                        if(kswscoreMap.get(uuid)!=null){
                                                          kswscore = kswscoreMap.get(uuid);
-                                                         kswscorestr = Double.toString(kswscore);
+                                                         kswscorestr =  rf.format(kswscore);
                                                        }else{
                                                          kswscorestr = "";
                                                        }
@@ -478,14 +514,14 @@
 
                                                        if(physcoreMap.get(uuid)!=null){
                                                          physcore = physcoreMap.get(uuid);
-                                                         physcorestr = Double.toString(physcore);
+                                                         physcorestr =  rf.format(physcore);
                                                        }else{
                                                          physcorestr = "";
                                                        }
 
                                                        if(bioscoreMap.get(uuid)!=null){
                                                          bioscore = bioscoreMap.get(uuid);
-                                                         bioscorestr = Double.toString(bioscore);
+                                                         bioscorestr =  rf.format(bioscore);
                                                        }else{
                                                          bioscorestr = "";
                                                        }
@@ -493,7 +529,7 @@
 
                                                        if(chemscorehash.get(uuid)!=null){
                                                          chemscore = chemscorehash.get(uuid);
-                                                         chemscorestr = Double.toString(chemscore);
+                                                         chemscorestr =  rf.format(chemscore);
                                                        }else{
                                                          chemscorestr = "";
                                                        }
@@ -502,14 +538,14 @@
 
                                                        if(matscorehash.get(uuid)!=null){
                                                          matscore = matscorehash.get(uuid);
-                                                         matscorestr = Double.toString(matscore);
+                                                         matscorestr =  rf.format(matscore);
                                                        }else{
                                                          matscorestr = "";
                                                        }
 
                                                         if(histscoreMap.get(uuid)!=null){
                                                          histscore = histscoreMap.get(uuid);
-                                                         histscorestr = Double.toString(histscore);
+                                                         histscorestr = rf.format(histscore);
                                                        }else{
                                                          histscorestr = "";
                                                        }
@@ -517,7 +553,7 @@
 
                                                        if(crescorehash.get(uuid)!=null){
                                                          crescore = crescorehash.get(uuid);
-                                                         crescorestr = Double.toString(crescore);
+                                                         crescorestr = rf.format(crescore);
                                                        }else{
                                                          crescorestr = "";
                                                        }
@@ -525,7 +561,7 @@
 
                                                        if(geoscoreMap.get(uuid)!=null){
                                                          geoscore = geoscoreMap.get(uuid);
-                                                         geoscorestr = Double.toString(geoscore);
+                                                         geoscorestr =  rf.format(geoscore);
                                                        }else{
                                                          geoscorestr = "";
                                                        }
@@ -533,7 +569,7 @@
 
                                                        if(bsscoreMap.get(uuid)!=null){
                                                          bsscore = bsscoreMap.get(uuid);
-                                                         bsscorestr = Double.toString(bsscore);
+                                                         bsscorestr =  rf.format(bsscore);
                                                        }else{
                                                          bsscorestr = "";
                                                        }
@@ -541,11 +577,29 @@
 
                                                        if(agriscorehash.get(uuid)!=null){
                                                          agriscore = agriscorehash.get(uuid);
-                                                         agriscorestr = Double.toString(agriscore);
+                                                         agriscorestr = rf.format(agriscore);
                                                        }else{
                                                          agriscorestr = "";
                                                        }
 
+                                                       if(hscscoreMap.get(uuid)!=null){
+                                                         hscscore = hscscoreMap.get(uuid);
+                                                         hscscorestr =  rf.format(hscscore);
+                                                       }else{
+                                                         hscscorestr = "";
+                                                       }
+
+                                                       if(compscoreMap.get(uuid)!=null){
+                                                         compscore = compscoreMap.get(uuid);
+                                                         compscorestr = rf.format(compscore);
+                                                       }else{
+                                                         compscorestr = "";
+                                                       }
+
+
+
+
+                                                       
 
 
 
@@ -603,6 +657,8 @@
                                         out.println("<td class=\"center\">" + geoscorestr + "</td>");
                                         out.println("<td class=\"center\">" + bsscorestr + "</td>");
                                         out.println("<td class=\"center\">" + agriscorestr + "</td>");
+                                        out.println("<td class=\"center\">" + hscscorestr + "</td>");
+                                        out.println("<td class=\"center\">" + compscorestr + "</td>");
              
                                         out.println("<td class=\"center\">" + totalz + "</td>");
                                         out.println("<td class=\"center\">" +df.format(mean) + "</td>"); 
