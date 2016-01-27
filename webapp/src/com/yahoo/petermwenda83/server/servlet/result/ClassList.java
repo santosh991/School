@@ -39,7 +39,6 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -69,7 +68,7 @@ public class ClassList extends HttpServlet{
 
 	    private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
 	    private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-	    private Font normalText = new Font(Font.FontFamily.COURIER, 12);
+	    //private Font normalText = new Font(Font.FontFamily.COURIER, 12);
 	    private Document document;
 	    private PdfWriter writer;
 	    private Cache schoolaccountCache, statisticsCache;
@@ -280,14 +279,11 @@ public class ClassList extends HttpServlet{
        
        
      //languages
-       HashMap<String, Double> kiswscoreHash = new HashMap<String, Double>();
        Map<String,Double> kswscoreMap = new LinkedHashMap<String,Double>();
-       HashMap<String, Double> engscoreHash = new HashMap<String, Double>();
        Map<String,Double> engscorehash = new LinkedHashMap<String,Double>(); 
        
        //sciences
-       Map<String,Double> physcoreMap = new LinkedHashMap<String,Double>();
-       HashMap<String, Double> physcoreHash = new HashMap<String, Double>();  
+       Map<String,Double> physcoreMap = new LinkedHashMap<String,Double>();  
        Map<String,Double> matscorehash = new LinkedHashMap<String,Double>(); 
        Map<String,Double> bioscoreMap = new LinkedHashMap<String,Double>();
        Map<String,Double> chemscorehash = new LinkedHashMap<String,Double>(); 

@@ -158,7 +158,7 @@ private SubjectDAO store;
 	@Test
 	public void testGetAllStudent() {
 		 store = new SubjectDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Subject> list = store.getAllSubjects(SCHOOL_UUID);	
+		List<Subject> list = store.getAllSubjects();	
 		//assertEquals(list.size(), 11);
 		//System.out.println(list);
 		for (Subject l : list) {

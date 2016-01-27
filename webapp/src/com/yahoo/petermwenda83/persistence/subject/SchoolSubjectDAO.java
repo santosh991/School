@@ -52,7 +52,7 @@ public interface SchoolSubjectDAO {
 	 * 
 	 * @return AllSubjects
 	 */
-	public List<Subject> getAllSubjects(String schoolAccountUuid );
+	public List<Subject> getAllSubjects();
 	
 	
 	

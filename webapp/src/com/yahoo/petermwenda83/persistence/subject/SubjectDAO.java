@@ -216,15 +216,15 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	 * @see com.yahoo.petermwenda83.persistence.subject.SchoolSubjectDAO#getAllStudent()
 	 */
 	@Override
-	public List<Subject> getAllSubjects(String schoolAccountUuid ) {
+	public List<Subject> getAllSubjects() {
 		List<Subject>  list = null;
 		
 		 try(   
         		Connection conn = dbutils.getConnection();
-        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE SchoolAccountUuid = ?;");   
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");   
         		//ResultSet rset = pstmt.executeQuery();
     		) {
-			 pstmt.setString(1, schoolAccountUuid);     
+			 //pstmt.setString(1, schoolAccountUuid);     
 			 try( ResultSet rset = pstmt.executeQuery();){
 	     	       
 				 list = beanProcessor.toBeanList(rset, Subject.class);

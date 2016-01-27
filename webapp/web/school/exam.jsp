@@ -313,7 +313,7 @@
                     </fieldset>
                  </form>
                  
-                 <form  class=""   action="reportForm" method="POST" target="_blank">
+                 <form  class=""   action="reportForm12" method="POST" target="_blank">
                     <fieldset>
                    
                     <div class="">        

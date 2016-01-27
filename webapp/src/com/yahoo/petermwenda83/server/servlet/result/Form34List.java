@@ -343,7 +343,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    CountHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
    
    PdfPCell admNoHeader = new PdfPCell(new Paragraph("ADM NO",boldFont));
-  admNoHeader.setBackgroundColor(baseColor);
+   admNoHeader.setBackgroundColor(baseColor);
   
    PdfPCell nameHeader = new PdfPCell(new Paragraph("NAME",boldFont));
    nameHeader.setBackgroundColor(baseColor);
@@ -436,7 +436,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
     myTable.addCell(meanHeader);
     myTable.addCell(gradeHeader);
    
-   myTable.setWidthPercentage(103); 
+    myTable.setWidthPercentage(103); 
    
    
    myTable.setWidths(new int[]{15,30,56,15,15,15,15,15,15,15,15,15,15,15,15,15,25,20,15});   

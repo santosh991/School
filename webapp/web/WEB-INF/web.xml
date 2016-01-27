@@ -56,6 +56,15 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.upload.UploadFrom34</servlet-class>
     </servlet>
    
+
+
+
+
+
+
+
+
+
     <servlet>
         <servlet-name>ClassList</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ClassList</servlet-class>
@@ -70,6 +79,19 @@
         <servlet-name>ReportForm</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm</servlet-class>
     </servlet>
+
+     <servlet>
+        <servlet-name>ReportForm12</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm12</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
 
     <servlet>
         <servlet-name>SchoolLogin</servlet-name>
@@ -90,6 +112,15 @@
     </servlet-mapping> 
 
 
+
+
+
+
+
+
+
+
+
     <servlet-mapping>
         <servlet-name>ClassList</servlet-name>
         <url-pattern>/school/classList</url-pattern>
@@ -100,14 +131,27 @@
         <url-pattern>/school/form34List</url-pattern>
     </servlet-mapping> 
 
-    <servlet-mapping>
-        <servlet-name>UploadFrom34</servlet-name>
-        <url-pattern>/school/resultUpload</url-pattern>
-    </servlet-mapping>
-
      <servlet-mapping>
         <servlet-name>ReportForm</servlet-name>
         <url-pattern>/school/reportForm</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ReportForm12</servlet-name>
+        <url-pattern>/school/reportForm12</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+
+
+
+     <servlet-mapping>
+        <servlet-name>UploadFrom34</servlet-name>
+        <url-pattern>/school/resultUpload</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>
