@@ -87,6 +87,13 @@ public class Form34List extends HttpServlet{
     String schoolusername = "";
     String stffID = "";
     
+   
+    
+    private final String EXAM_FULL_ID = "4BE8AD46-EAE8-4151-BD18-CB23CF904DDB";
+    private final String EXAM_PARTIAL_ID = "1678664C-D955-4FA7-88C2-9461D3F1E782";
+    String examID = "";
+    String examID2 = "";
+  
     HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
     HashMap<String, String> studNameHash = new HashMap<String, String>();
     
@@ -145,6 +152,14 @@ public class Form34List extends HttpServlet{
     double paper1  = 0;
     double paper2  = 0;
     double paper3  = 0;
+    
+    double cat1 = 0;  
+    double cat2  = 0;
+    double endterm  = 0;
+    double catTotals  = 0;
+    double catmean  = 0;
+    double examcattotal  = 0;
+    
     double total  = 0;
     double pmean  = 0;
   //languages
@@ -191,18 +206,29 @@ public void init(ServletConfig config) throws ServletException {
 @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
        throws ServletException, IOException {
+	
    ServletContext context = getServletContext();
    response.setContentType("application/pdf");
    response.setHeader("Content-Disposition", "inline; filename= \" results.pdf \" " );
    
    SchoolAccount school = new SchoolAccount();
-   HttpSession session = request.getSession(false);
+   HttpSession session = request.getSession(false); 
+   
+   examID = StringUtils.trimToEmpty(request.getParameter("examID"));
+  // examID2 = StringUtils.trimToEmpty(request.getParameter("examID2"));
+   //System.out.println(examID);
    
    if(session !=null){
    schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
    stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
    
       }
+   
+   
+   
+   
+   
+   
    net.sf.ehcache.Element element;
    
    element = schoolaccountCache.get(schoolusername);
@@ -476,28 +502,56 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
            histscore = 0;
        
         for(Perfomance pp : list){
-          
+        //System.out.println("examID="+examID);   //EXAM_FULL_ID EXAM_PARTIAL_ID
           //Languages
           //Include all the languages
           if(true){
                   if(StringUtils.equals(pp.getSubjectUuid(), ENG_UUID) ){
+                	  if(StringUtils.equals(examID, EXAM_FULL_ID)){
+                		 // System.out.println("full examID="+examID);
                      paper1 = pp.getPaperOne(); //out of 60
                      paper2 = pp.getPaperTwo(); //out of 80
-                     paper3 = pp.getPaperThree();//out of 60
+                     paper3 = pp.getPaperThree();//out of 60                   
                      total = (paper1 + paper2 + paper3)/2; 
                      engscore = total; 
                      engscorehash.put(s.getStudentUuid(),engscore);
+                	     }
+                	  else {
+                		 // System.out.println("partial examID="+examID);
+                		  cat1 = pp.getCatOne();
+                          cat2 = pp.getCatTwo();
+                          endterm = pp.getEndTerm();
+                          catTotals = cat1 + cat2;
+                          catmean = catTotals/2;
+                          examcattotal = catmean + endterm;
+                          engscore = examcattotal; 
+                          engscorehash.put(s.getStudentUuid(),engscore);
+                		  
+                	     }
                     }
                    
 
                    if(StringUtils.equals(pp.getSubjectUuid(), KISWA_UUID)){
+                	   if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 60
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 60
                      total = (paper1 + paper2 + paper3)/2; 
                      kswscore = total;
                      kswscoreMap.put(s.getStudentUuid(),kswscore);
-                   
+                	       }
+                	   else {
+                 		   cat1 = pp.getCatOne();
+                           cat2 = pp.getCatTwo();
+                           endterm = pp.getEndTerm();
+                           catTotals = cat1 + cat2;
+                           catmean = catTotals/2;
+                           examcattotal = catmean + endterm;
+                           kswscore = examcattotal; 
+                           kswscoreMap.put(s.getStudentUuid(),kswscore);
+                 		  
+                 	     }
+                	   
                        }
 
                     
@@ -512,6 +566,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
            double subjectSmall = 0;
           
                    if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
+                	   if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 80
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 40
@@ -519,32 +574,82 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
                      physcore = total;
                      physcoreMap.put(s.getStudentUuid(),physcore);
-                  
+                	   }
+                	   else {
+                 		   cat1 = pp.getCatOne();
+                           cat2 = pp.getCatTwo();
+                           endterm = pp.getEndTerm();
+                           catTotals = cat1 + cat2;
+                           catmean = catTotals/2;
+                           examcattotal = catmean + endterm;
+                           physcore = examcattotal; 
+                           physcoreMap.put(s.getStudentUuid(),physcore);
+                 		  
+                 	     }
                      }
                    if(StringUtils.equals(pp.getSubjectUuid(), BIO_UUID)){
+                	   if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 80
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 40
                      total = ((paper1 + paper2)/160)*60 + paper3;
                      bioscore = total;
                      bioscoreMap.put(s.getStudentUuid(),bioscore);
+                	   }
+                	   else{
+                 		   cat1 = pp.getCatOne();
+                           cat2 = pp.getCatTwo();
+                           endterm = pp.getEndTerm();
+                           catTotals = cat1 + cat2;
+                           catmean = catTotals/2;
+                           examcattotal = catmean + endterm;
+                           bioscore = examcattotal; 
+                           bioscoreMap.put(s.getStudentUuid(),bioscore);
+                 		  
+                 	     }
                   
                      }
                       if(StringUtils.equals(pp.getSubjectUuid(), CHEM_UUID)){
+                    	  if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 80
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 40
                      total = ((paper1 + paper2)/160)*60 + paper3;
                      chemscore = total;
                      chemscorehash.put(s.getStudentUuid(),chemscore);
+                    	  }
+                    	  else {
+                    		   cat1 = pp.getCatOne();
+                              cat2 = pp.getCatTwo();
+                              endterm = pp.getEndTerm();
+                              catTotals = cat1 + cat2;
+                              catmean = catTotals/2;
+                              examcattotal = catmean + endterm;
+                              chemscore = examcattotal; 
+                              chemscorehash.put(s.getStudentUuid(),chemscore);
+                    		  
+                    	     }
                   
                      }
                       if(StringUtils.equals(pp.getSubjectUuid(), MATH_UUID)){
+                    	  if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 100
                      paper2 = pp.getPaperTwo(); //out of 100
                      total = (paper1 + paper2)/2;
                      matscore = total;
                      matscorehash.put(s.getStudentUuid(),matscore);
+                    	  }
+                    	  else {
+                    		   cat1 = pp.getCatOne();
+                              cat2 = pp.getCatTwo();
+                              endterm = pp.getEndTerm();
+                              catTotals = cat1 + cat2;
+                              catmean = catTotals/2;
+                              examcattotal = catmean + endterm;
+                              matscore = examcattotal; 
+                              matscorehash.put(s.getStudentUuid(),matscore);
+                    		  
+                    	     }
                   
                      }
 
@@ -586,37 +691,89 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
            if(true){
            double bestTechinical = 0;
                    if(StringUtils.equals(pp.getSubjectUuid(), BS_UUID)){
+                	   if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 100
                      paper2 = pp.getPaperTwo(); //out of 100
                      total = (paper1 + paper2)/2;
                      bsscore = total;
                      bsscoreMap.put(s.getStudentUuid(),bsscore);
+                	   }
+                	   else {
+                 		   cat1 = pp.getCatOne();
+                           cat2 = pp.getCatTwo();
+                           endterm = pp.getEndTerm();
+                           catTotals = cat1 + cat2;
+                           catmean = catTotals/2;
+                           examcattotal = catmean + endterm;
+                           bsscore = examcattotal; 
+                           bsscoreMap.put(s.getStudentUuid(),bsscore);
+                 		  
+                 	     }
                   
                      }
                       if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
+                    	  if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 80
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 40
                      total = (paper1 + paper2)/2 + paper3;
                      agriscore = total;
                      agriscorehash.put(s.getStudentUuid(),agriscore);
+                    	  }
+                    	  else {
+                    		   cat1 = pp.getCatOne();
+                              cat2 = pp.getCatTwo();
+                              endterm = pp.getEndTerm();
+                              catTotals = cat1 + cat2;
+                              catmean = catTotals/2;
+                              examcattotal = catmean + endterm;
+                              agriscore = examcattotal; 
+                              agriscorehash.put(s.getStudentUuid(),agriscore);
+                    		  
+                    	     }
                   
                      }     
                      if(StringUtils.equals(pp.getSubjectUuid(), H_S)){
+                    	 if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 80
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 40
                      total = (paper1 + paper2)/2 + paper3;
                      hscscore = total;
                      hscscoreMap.put(s.getStudentUuid(),hscscore);
+                    	 }
+                    	 else {
+                   		   cat1 = pp.getCatOne();
+                             cat2 = pp.getCatTwo();
+                             endterm = pp.getEndTerm();
+                             catTotals = cat1 + cat2;
+                             catmean = catTotals/2;
+                             examcattotal = catmean + endterm;
+                             hscscore = examcattotal; 
+                             hscscoreMap.put(s.getStudentUuid(),hscscore);
+                   		  
+                   	     }
                   
                      }if(StringUtils.equals(pp.getSubjectUuid(), COMP_UUID)){
+                    	 if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 80
                      paper2 = pp.getPaperTwo(); //out of 80
                      paper3 = pp.getPaperThree();//out of 40
                      total = (paper1 + paper2)/2 + paper3;
                      comscore = total;
                      comscoreMap.put(s.getStudentUuid(),comscore);
+                    	 }
+                    	 else {
+                   		   cat1 = pp.getCatOne();
+                             cat2 = pp.getCatTwo();
+                             endterm = pp.getEndTerm();
+                             catTotals = cat1 + cat2;
+                             catmean = catTotals/2;
+                             examcattotal = catmean + endterm;
+                             comscore = examcattotal; 
+                             comscoreMap.put(s.getStudentUuid(),comscore);
+                   		  
+                   	     }
                   
                      } 
                     
@@ -645,28 +802,67 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
            if(true){  
              double bestHumanity = 0;     
                    if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
+                	   if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 100
                      paper2 = pp.getPaperTwo(); //out of 100
                      total = (paper1 + paper2)/2;
                      geoscore = total;                                                 
                      geoscoreMap.put(s.getStudentUuid(),geoscore);
+                	   }
+                	   else {
+                 		   cat1 = pp.getCatOne();
+                           cat2 = pp.getCatTwo();
+                           endterm = pp.getEndTerm();
+                           catTotals = cat1 + cat2;
+                           catmean = catTotals/2;
+                           examcattotal = catmean + endterm;
+                           geoscore = examcattotal; 
+                           geoscoreMap.put(s.getStudentUuid(),geoscore);
+                 		  
+                 	     }
                   
                      }
                   if(StringUtils.equals(pp.getSubjectUuid(), CRE_UUID)){
+                	  if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 100
                      paper2 = pp.getPaperTwo(); //out of 100
                      total = (paper1 + paper2)/2;
                      crescore = total;
-                     total=0;
+                     //total=0;
                      crescorehash.put(s.getStudentUuid(),crescore);
+                	  }
+                	  else {
+                		  cat1 = pp.getCatOne();
+                          cat2 = pp.getCatTwo();
+                          endterm = pp.getEndTerm();
+                          catTotals = cat1 + cat2;
+                          catmean = catTotals/2;
+                          examcattotal = catmean + endterm;
+                          crescore = examcattotal; 
+                          crescorehash.put(s.getStudentUuid(),crescore);
+                		  
+                	     }
                   
                      }
                   if(StringUtils.equals(pp.getSubjectUuid(), HIST_UUID)){
+                	  if(StringUtils.equals(examID, EXAM_FULL_ID)){
                      paper1 = pp.getPaperOne(); //out of 100
                      paper2 = pp.getPaperTwo(); //out of 100
                      total = (paper1 + paper2)/2;
                      histscore = total;                                              
                      histscoreMap.put(s.getStudentUuid(),histscore);
+                	  }
+                	  else {
+                		  cat1 = pp.getCatOne();
+                          cat2 = pp.getCatTwo();
+                          endterm = pp.getEndTerm();
+                          catTotals = cat1 + cat2;
+                          catmean = catTotals/2;
+                          examcattotal = catmean + endterm;
+                          histscore = examcattotal; 
+                          histscoreMap.put(s.getStudentUuid(),histscore);
+                		  
+                	     }
                   
                      }
 

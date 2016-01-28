@@ -302,24 +302,45 @@
                  %>
 
                  <div class="control-group">
+                 <p>Class Performance List</p>
                  <form  class=""   action="form34List" method="POST" target="_blank">
                     <fieldset>
-                   
-                    <div class="">        
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Results</button> 
+                    <div class="control-group">
+                        <label class="control-label" for="name">Exam Type:</label>
+                         <div class="controls">
+                            <select name="examID" >
+                                <option value="">Please select one</option> 
+                                <option value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB">Full Exam</option>
+                                <option value="1678664C-D955-4FA7-88C2-9461D3F1E782">Partial Exam</option>
+                            </select>                           
+                          
+                        </div>
+                    </div> 
+
+                    <div class="">       
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">View</button> 
                     </div>
-                   
                     </fieldset>
                  </form>
-                 
+                 <p>Report Forms</p>
                  <form  class=""   action="reportForm" method="POST" target="_blank">
                     <fieldset>
-                   
-                    <div class="">        
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">ReportForm</button> 
+                     <div class="control-group">
+                        <label class="control-label" for="name">Exam Type:</label>
+                         <div class="controls">
+                            <select name="examID" >
+                                <option value="">Please select one</option> 
+                                <option value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB">Full Exam</option>
+                                <option value="1678664C-D955-4FA7-88C2-9461D3F1E782">Partial Exam</option>
+                            </select>                           
+                          
+                        </div>
+                    </div> 
+                     <div class="">      
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">View</button> 
                     </div>
-                   
                     </fieldset>
+
                  </form>
                  </div>
                 

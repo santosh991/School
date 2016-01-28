@@ -620,7 +620,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               //add to document
        	  // Paragraph school_name = new Paragraph(("SCHOOL NAME: "+school.getSchoolName()));
-       	   Paragraph class_name = new Paragraph(("CLASS : FORM 1 s")); 
+       	   Paragraph class_name = new Paragraph(("CLASS : FORM 1 S")); 
        	   Paragraph year = new Paragraph(("YEAR:  "  + 2016));
        	   Paragraph term = new Paragraph(("TERM: "  + 1));
        	   Paragraph admno = new Paragraph(("ADM NO: "+studentAdmNoHash.get(uuid))); 
