@@ -322,25 +322,26 @@
                     </div>
                     </fieldset>
                  </form>
+
+
                  <p>Report Forms</p>
                  <form  class=""   action="reportForm" method="POST" target="_blank">
-                    <fieldset>
-                     <div class="control-group">
-                        <label class="control-label" for="name">Exam Type:</label>
-                         <div class="controls">
-                            <select name="examID" >
-                                <option value="">Please select one</option> 
-                                <option value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB">Full Exam</option>
-                                <option value="1678664C-D955-4FA7-88C2-9461D3F1E782">Partial Exam</option>
-                            </select>                           
-                          
-                        </div>
-                    </div> 
-                     <div class="">      
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">View</button> 
-                    </div>
-                    </fieldset>
+                     <fieldset>                     
+                     <div class=""> 
+                     <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">View Full</button> 
+                     </div>
+                     </fieldset>
+                 </form>
 
+
+                  <form  class=""   action="reportForm2" method="POST" target="_blank">
+                     <fieldset>
+                     <div class="">  
+                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">View Partial</button> 
+                     </div>
+                     </fieldset>
                  </form>
                  </div>
                 
