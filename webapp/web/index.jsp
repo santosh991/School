@@ -145,7 +145,7 @@
        <h3>Staff Username </h3>
        <input autocomplete="off" type="text" name="staffusername" value="" placeholder="Staff username">
        <h3>Staff Passworld</h3>
-       <input type="password" name="staffpassword"  placeholder="Staff passworld" />
+       <input autocomplete="off" type="password" name="staffpassword"  placeholder="Staff passworld" />
 
 
                        <%

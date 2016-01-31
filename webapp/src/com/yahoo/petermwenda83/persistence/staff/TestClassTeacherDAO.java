@@ -25,9 +25,16 @@ public class TestClassTeacherDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
-	final String TEACHER_UUID = "708D2D79-BD0A-4338-BC75-62A5659A4F56";
-	final String CLASS_ROOM_UUID = "4DA86139-6A72-4089-8858-6A3A613FDFE6";
-	final String UUID = "93521ABA-E702-4F6F-BBA2-79107B2CF327";
+	final String TEACHER_UUID = "708D2D79-BD0A-4338-BC75-62A5659A4F56",
+			     TEACHER_UUID_NEW ="5FC9F25F-7BC4-451F-B718-647HDHS462V",
+			     TEACHER_UUID_UPDATE ="5FC9F25F-7BC4-451F-B718-647HDHS462V";
+	
+	final String CLASS_ROOM_UUID = "4DA86139-6A72-4089-8858-6A3A613FDFE6",
+			     CLASS_ROOM_UUID_NEW ="B6D838A4-9476-428D-9AFF-758BB55FF270" ,
+			     CLASS_ROOM_UUID_UPDATE ="58444390-EFCA-4C4B-9010-577C31499A63";
+	
+	final String UUID = "93521ABA-E702-4F6F-BBA2-79107B2CF327" ,
+			     UUID_NEW ="9AED4FF6-8CA2-4822-A290-8996067E1E04";
 	
 	private ClassTeacherDAO store;
 
@@ -51,6 +58,11 @@ public class TestClassTeacherDAO {
 	@Test
 	public void testPutClassTeacher() {
 		store = new ClassTeacherDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		ClassTeacher c = new ClassTeacher();
+		c.setUuid(UUID_NEW);
+		c.setTeacherUuid(TEACHER_UUID_NEW);
+		c.setClassRoomUuid(CLASS_ROOM_UUID_UPDATE); 
+		assertTrue(store.putClassTeacher(c)); 
 	}
 
 	/**
@@ -60,6 +72,10 @@ public class TestClassTeacherDAO {
 	@Test
 	public void testUpdateClassTeacher() {
 		store = new ClassTeacherDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		ClassTeacher c = new ClassTeacher();
+		c.setTeacherUuid(TEACHER_UUID_NEW);
+		c.setClassRoomUuid(CLASS_ROOM_UUID_UPDATE); 
+		assertTrue(store.updateClassTeacher(c));
 	}
 
 	/**

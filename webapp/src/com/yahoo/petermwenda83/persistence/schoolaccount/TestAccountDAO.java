@@ -93,7 +93,7 @@ public class TestAccountDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO#update(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testUpdate() {
 		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

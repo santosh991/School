@@ -18,6 +18,13 @@ public interface SchoolTeacherSubClassDAO {
 	 * @return
 	 */
 	public TeacherSubClass getSubjectClass(String teacherUuid);
+	
+	/**
+	 * 
+	 * @param teacherUuid
+	 * @return
+	 */
+	public List<TeacherSubClass> getSubjectsANDClassesList(String teacherUuid);
 	 /**
 	  * 
 	  * @param subClass

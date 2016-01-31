@@ -207,18 +207,28 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
        throws ServletException, IOException {
    ServletContext context = getServletContext();
    response.setContentType("application/pdf");
-   response.setHeader("Content-Disposition", "inline; filename= \" results.pdf \" " );
+   //response.setHeader("Content-Disposition", "inline; filename= \" results.pdf \" " );
    
    SchoolAccount school = new SchoolAccount();
    HttpSession session = request.getSession(false);
    
    examID = StringUtils.trimToEmpty(request.getParameter("examID"));
    
+   if(examID == null || session == null){
+		response.sendRedirect("index.jsp");
+	   }else{
+	
+   
    if(session !=null){
    schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
    stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
    
       }
+   
+   String pdf = schoolusername+"results.pdf";
+   response.setHeader("Content-Disposition", "inline; filename= "+pdf );
+   
+   
    net.sf.ehcache.Element element;
    
    element = schoolaccountCache.get(schoolusername);
@@ -275,7 +285,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    
    
    
-   
+     }
    
     }
 

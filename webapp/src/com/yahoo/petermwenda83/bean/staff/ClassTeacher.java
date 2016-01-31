@@ -7,7 +7,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
 
 /**
  * @author peter
- *
+ *  
  */
 public class ClassTeacher extends StorableBean{
 	

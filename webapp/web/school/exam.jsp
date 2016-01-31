@@ -16,6 +16,10 @@
 
 <%@page import="com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator"%>
 
+
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
@@ -142,7 +146,14 @@
      List<StudentExam> sutexamList = new ArrayList<StudentExam>(); 
      sutexamList = studentExamDAO.getStudentExamList(accountuuid,classroomuuid); 
      
-
+     HashMap<String, String> roomHash = new HashMap<String, String>();
+     RoomDAO roomDAO = RoomDAO.getInstance();
+     List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
+     classroomList = roomDAO.getAllRooms(accountuuid); 
+      for(ClassRoom c : classroomList){
+           roomHash.put(c.getUuid() , c.getRoomName());
+            
+            }
 
     double total = 0;
     double mean = 0;
@@ -265,65 +276,35 @@
 
         <div class="box span12">
         <div class="box-header well" data-original-title>
-        <p> <%=schoolname%> :FORM 1&2 EXAM MANAGEMENT PANEL</p>
-      <!--   <a href="examIndex.jsp" ><span>Form 3&4 Test</span></a>  -->
-         
+         <p> <%=schoolname%> :EXAM MANAGEMENT PANEL FOR: <%=roomHash.get(classroomuuid)%></p>
         </div>
         <div class="box-content">
             
-            <%
-                                String uploadErr = "";
-                                String uploadsuccess = "";
+            <div class="sortable row-fluid " id="set-margin">
 
-                                     session = request.getSession(false);
-                                     uploadErr = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_ERROR);
-                                     uploadsuccess = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_SUCCESS); 
-
-                                     if(session != null) {
-                                      uploadErr = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_ERROR);
-                                      uploadsuccess = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_SUCCESS); 
-                                       }                     
-
-                                if (StringUtils.isNotEmpty(uploadErr)) {
-                                    out.println("<p style='color:red;'>");                 
-                                    out.println("error: " + uploadErr);
-                                    out.println("</p>");                                 
-                                    session.setAttribute(SessionConstants.FILE_UPLOAD_ERROR, null);
-                                  } 
-                                   else if (StringUtils.isNotEmpty(uploadsuccess)) {
-                                    out.println("<p style='color:green;'>");                                 
-                                    out.println("success: " + uploadsuccess);
-                                    out.println("</p>");                                   
-                                    session.setAttribute(SessionConstants.FILE_UPLOAD_SUCCESS, null);
-                                  } 
-
-
-
-
-                 %>
-
-                 <div class="control-group">
-                 <form  class=""   action="classList" method="POST" target="_blank">
-                    <fieldset>
-                   
+                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <form  class=""   action="classList" method="POST" target="_blank">
+                    <fieldset>                   
                     <div class="">        
                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Results</button> 
                     </div>
-                   
                     </fieldset>
-                 </form>
-                 
-                 <form  class=""   action="reportForm12" method="POST" target="_blank">
-                    <fieldset>
-                   
+                    </form>
+                    </a>
+
+
+
+                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <form  class=""   action="reportForm12" method="POST" target="_blank">
+                    <fieldset>                   
                     <div class="">        
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">ReportForm</button> 
-                    </div>
-                   
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form</button> 
+                    </div>                   
                     </fieldset>
-                 </form>
-                 </div>
-                
+                    </form>
+                    </a>
+
+                </div>
              
 
             <div>

@@ -19,7 +19,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
  * A subject in a SchoolAccount
  * 
  *  @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
- *
+ * 
  */
 public class Subject extends StorableBean {
 	

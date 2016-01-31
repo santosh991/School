@@ -25,6 +25,8 @@ public class StaffDetails extends Staff{
 	 * 
 	 */
 	private static final long serialVersionUID = 7717234136342401517L;
+	
+	private String staffUuid ; 
 	private String employeeNo ; 
 	private String firstName;
 	private String lastName;
@@ -43,6 +45,7 @@ public class StaffDetails extends Staff{
  */
 	public StaffDetails() {
 		super();
+		staffUuid = "";
 		employeeNo ="";
 		firstName ="";
 		lastName ="";
@@ -58,6 +61,20 @@ public class StaffDetails extends Staff{
 		registrationDate = new Date();
 	}
  
+/**
+ * @return the staffUuid
+ */
+public String getStaffUuid() {
+	return staffUuid;
+}
+
+/**
+ * @param staffUuid the staffUuid to set
+ */
+public void setStaffUuid(String staffUuid) {
+	this.staffUuid = staffUuid;
+}
+
 /**
  * @return the employeeNo
  */
@@ -243,8 +260,8 @@ public void setRegistrationDate(Date registrationDate) {
 @Override
 public String toString(){
 	StringBuilder builder = new StringBuilder();
-	builder.append("Staff Detail [ getUuid() =");
-	builder.append(getUuid());
+	builder.append("Staff Detail [ staffUuid =");
+	builder.append(staffUuid);
 	builder.append(",employeeNo =");
 	builder.append(	employeeNo);
 	builder.append(",firstName =");

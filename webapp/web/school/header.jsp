@@ -67,7 +67,7 @@
       if(cr !=null){
       room = cr.getRoomName(); 
        }
-    final String FORM1 = "FORM 1";
+  final String FORM1 = "FORM 1";
 	final String FORM2 = "FORM 2";
 	final String FORM3 = "FORM 3";
 	final String FORM4 = "FORM 4";
@@ -226,6 +226,7 @@
 
              <%  if(StringUtils.equals(staffPosition,pos_Teacher)){ %>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
+            <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
           
              <% }  %>
 
@@ -252,11 +253,13 @@
                 <li class='last'><a href="#"><span>View Student</span></a></li>
                 </ul>
                 </li>
+            <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
             <li class='has-sub'><a href='#'><span>Reports</span></a></li>
             <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
             <li class='has-sub'><a href='#'><span>Staff Management </span></a></li>
-            <li class='has-sub'><a href='#'><span>Admin Settings</span></a></li>
+            <li class='has-sub'><a href="classTeachers.jsp"><span>Class Teachers </span></a></li>
+            
 
              <% }  %>
         </ul>

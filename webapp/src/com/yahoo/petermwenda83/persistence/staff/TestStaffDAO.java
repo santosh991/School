@@ -3,7 +3,7 @@
  */
 package com.yahoo.petermwenda83.persistence.staff;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -24,24 +24,31 @@ public class TestStaffDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
-	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD",
-		         SCHOOL_UUID_NEW ="3A387B8B-A0D8-4F27-B9D2-E329619DF055";
+	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
+		         
+	final String UUID = "708D2D79-BD0A-4338-BC75-62A5659A4F56",
+			     UUID_NEW = "D976744A-C3FC-4AAC-8F89-BF21A79CC824";
 	
-	final String UUID = "708D2D79-BD0A-4338-BC75-62A5659A4F56";
+	final String CATEGORY = "Teaching",
+			     CATEGORY_NEW = "NEW",
+			     CATEGORY_UPDATE = "UPDATE";
 	
-	final String CATEGORY = "Teaching";
+	final String POSITION_UUID = "C3915245-00EE-4EF4-9898-ACE59683DD60",
+			     POSITION_UUID_NEW = "BDF7F33D-1936-43F3-B14B-8FC3EA3A1265";
 	
-	final String POSITION_UUID = "C3915245-00EE-4EF4-9898-ACE59683DD60";
+	final String  USERNAME = "jane",
+			      USERNAME_NEW = "NEW",
+			      USERNAME_UPDATE = "UPDATE";
 	
-	final String  USERNAME = "demo";
-	
-	final String PASSWORD = "demo";
+	final String PASSWORD = "fe01ce2a7fbac8fafaed7c982a04e229",
+			     PASSWORD_NEW = "NEW",
+			     PASSWORD_UPDATE = "UPDATE";
 	
 	private StaffDAO store;
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.StaffDAO#getStaff(java.lang.String, java.lang.String)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetStaff() {
 		store = new StaffDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -57,6 +64,9 @@ public class TestStaffDAO {
 	@Test
 	public void testGetStaffByUsername() {
 		store = new StaffDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Staff s = new Staff();
+		s.setUuid(UUID);
+		s.setSchoolAccountUuid(SCHOOL_UUID);
 	}
 
 	/**
@@ -66,15 +76,31 @@ public class TestStaffDAO {
 	@Test
 	public void testPutStaff() {
 		store = new StaffDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Staff s = new Staff();
+		s.setUuid(UUID_NEW);
+		s.setSchoolAccountUuid(SCHOOL_UUID);
+		s.setCategory(CATEGORY_NEW);
+		s.setPositionUuid(POSITION_UUID_NEW);
+		s.setUserName(USERNAME_NEW);
+		s.setPassword(PASSWORD_NEW); 
+		assertTrue(store.putStaff(s)); 
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.StaffDAO#updateStaff(com.yahoo.petermwenda83.bean.staff.Staff)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testUpdateStaff() {
 		store = new StaffDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Staff s = new Staff();
+		s.setUuid(UUID_NEW);
+		s.setSchoolAccountUuid(SCHOOL_UUID);
+		s.setCategory(CATEGORY_UPDATE);
+		s.setPositionUuid(POSITION_UUID_NEW);
+		s.setUserName(USERNAME_UPDATE);
+		s.setPassword(PASSWORD_UPDATE); 
+		assertTrue(store.updateStaff(s));  
 	}
 
 	/**

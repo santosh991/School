@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
+import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 
 /**
  * @author peter
@@ -51,10 +53,9 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 
 	
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#get(java.lang.String)
 	 */
-	@Override
 	public SchoolAccount get(String Uuid) {
 		SchoolAccount school = new SchoolAccount();
         ResultSet rset = null;
@@ -84,10 +85,9 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	
 	
 	
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getSchoolByUsername(java.lang.String)
 	 */
-	@Override
 	public SchoolAccount getSchoolByUsername(String Username) {
 		SchoolAccount school = new SchoolAccount();
         ResultSet rset = null;
@@ -125,24 +125,24 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#put(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount)
 	 */
-	@Override
 	public boolean put(SchoolAccount school) {
 		boolean success = true; 
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SchoolAccount" 
-			        		+"(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,Email) VALUES (?,?,?,?,?,?,?);");
+			        		+"(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,Email,CreationDate) VALUES (?,?,?,?,?,?,?,?);");
      		){
 	            pstmt.setString(1, school.getUuid());
 	            pstmt.setString(2, school.getStatusUuid());
 	            pstmt.setString(3, school.getSchoolName());
 	            pstmt.setString(4, school.getUsername());
-	            pstmt.setString(5, school.getPassword());
+	            pstmt.setString(5, SecurityUtil.getMD5Hash(school.getPassword()));
 	            pstmt.setString(6, school.getMobile());
 	            pstmt.setString(7, school.getEmail());
+	            pstmt.setTimestamp(8, new Timestamp(school.getCreationDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -156,10 +156,10 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#update(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount)
 	 */
-	@Override
+	
 	public boolean update(SchoolAccount school) {
 		boolean success = true; 
 		 try(   Connection conn = dbutils.getConnection();
@@ -168,7 +168,7 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
        		){
 	            pstmt.setString(1, school.getSchoolName());
 	            pstmt.setString(2, school.getUsername());
-	            pstmt.setString(3, school.getPassword());
+	            pstmt.setString(3, SecurityUtil.getMD5Hash(school.getPassword()));
 	            pstmt.setString(4, school.getMobile());
 	            pstmt.setString(5, school.getEmail());
 	            pstmt.setString(6, school.getUuid());
@@ -193,10 +193,9 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getAllSchools()
 	 */
-	@Override
 	public List<SchoolAccount> getAllSchools() {
 		 List<SchoolAccount> list =new  ArrayList<>(); 
 		  try(   

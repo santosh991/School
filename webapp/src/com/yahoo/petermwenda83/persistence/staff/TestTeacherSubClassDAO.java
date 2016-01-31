@@ -26,19 +26,45 @@ public class TestTeacherSubClassDAO {
 	
 	private TeacherSubClassDAO store;
 	
-	final String TEACHER_UUID = "F49DB775-4952-4915-B978-9D9F3E36D6E9";
-	final String SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
+	final String TEACHER_UUID = "F49DB775-4952-4915-B978-9D9F3E36D6E9",
+			     TEACHER_UUID_NEW= "";
+	
+	final String SUB_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446",
+			     SUB_UUID_NEW ="0e5dc1c6-f62f-4a36-a1ec-064173332694",
+			     SUB_UUID_UPDATE ="b9bbd718-b32f-4466-ab34-42f544ff900e";
+	
+	final String CLASS_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446",
+		         CLASS_UUID_NEW ="59E5F556-4B04-43B2-8139-E2D39A7836C6",
+		         CLASS_UUID_UPDATE ="7E8BDC36-02E4-45F6-8EC6-AA5B95EA79D0";
+	
+	final String SYS_USER = "Peter",
+		         SYS_USER_NEW = "Peter",
+		         SYS_USER_UPDATE = "kkkk";
+
+    final String RED_DATE = "",
+		         RED_DATE_NEW = "";
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO#getSubjectClass(java.lang.String)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetSubjectClass() {
 		store = new TeacherSubClassDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		TeacherSubClass t = new TeacherSubClass();
 		t = store.getSubjectClass(TEACHER_UUID); 
 		assertEquals(t.getSubjectUuid(),SUB_UUID);
+	}
+	
+	@Ignore
+	@Test
+	public void testGetSubjectsANDClassesList() {
+		store = new TeacherSubClassDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		List<TeacherSubClass> list = store.getSubjectsANDClassesList(TEACHER_UUID); 	
+		for (TeacherSubClass l : list) {
+			System.out.println(l);	
+		}
+		
 	}
 
 	/**
@@ -48,15 +74,27 @@ public class TestTeacherSubClassDAO {
 	@Test
 	public void testPutSubjectClass() {
 		store = new TeacherSubClassDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		TeacherSubClass t = new TeacherSubClass();
+		t.setTeacherUuid(TEACHER_UUID);
+		t.setSubjectUuid(SUB_UUID_NEW);
+		t.setClassRoomUuid(CLASS_UUID_NEW);
+		t.setSysUser(SYS_USER); 
+		assertTrue(store.putSubjectClass(t)); 
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO#updateSubjectClass(com.yahoo.petermwenda83.bean.staff.TeacherSubClass)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testUpdateSubjectClass() {
 		store = new TeacherSubClassDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		TeacherSubClass t = new TeacherSubClass();
+		t.setTeacherUuid(TEACHER_UUID);
+		t.setSubjectUuid(SUB_UUID_UPDATE);
+		t.setClassRoomUuid(CLASS_UUID_UPDATE);
+		t.setSysUser(SYS_USER); 
+		assertTrue(store.updateSubjectClass(t));  
 	}
 
 	/**

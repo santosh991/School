@@ -16,6 +16,10 @@
 
 <%@page import="com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator"%>
 
+
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
@@ -140,7 +144,14 @@
      List<StudentExam> sutexamList = new ArrayList<StudentExam>(); 
      sutexamList = studentExamDAO.getStudentExamList(accountuuid,classroomuuid); 
      
-
+     HashMap<String, String> roomHash = new HashMap<String, String>();
+     RoomDAO roomDAO = RoomDAO.getInstance();
+     List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
+     classroomList = roomDAO.getAllRooms(accountuuid); 
+      for(ClassRoom c : classroomList){
+           roomHash.put(c.getUuid() , c.getRoomName());
+            
+            } 
 
    
     //nanguages
@@ -264,88 +275,60 @@
 
         <div class="box span12">
         <div class="box-header well" data-original-title>
-          <p> <%=schoolname%> :FORM 3&4 EXAM MANAGEMENT PANEL</p>
-         <!-- <a href="exam.jsp" ><span>Back</span></a>  -->
-
+          <p> <%=schoolname%> :EXAM MANAGEMENT PANEL FOR: <%=roomHash.get(classroomuuid)%> (By default we display standard exam) </p>
         </div>
         <div class="box-content">
-            
-            <%
-                                String uploadErr = "";
-                                String uploadsuccess = "";
 
-                                     session = request.getSession(false);
-                                     uploadErr = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_ERROR);
-                                     uploadsuccess = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_SUCCESS); 
+        <div class="sortable row-fluid " id="set-margin">
 
-                                     if(session != null) {
-                                      uploadErr = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_ERROR);
-                                      uploadsuccess = (String) session.getAttribute(SessionConstants.FILE_UPLOAD_SUCCESS); 
-                                       }                     
-
-                                if (StringUtils.isNotEmpty(uploadErr)) {
-                                    out.println("<p style='color:red;'>");                 
-                                    out.println("error: " + uploadErr);
-                                    out.println("</p>");                                 
-                                    session.setAttribute(SessionConstants.FILE_UPLOAD_ERROR, null);
-                                  } 
-                                   else if (StringUtils.isNotEmpty(uploadsuccess)) {
-                                    out.println("<p style='color:green;'>");                                 
-                                    out.println("success: " + uploadsuccess);
-                                    out.println("</p>");                                   
-                                    session.setAttribute(SessionConstants.FILE_UPLOAD_SUCCESS, null);
-                                  } 
-
-
-
-
-                 %>
-
-                 <div class="control-group">
-                 <p>Class Performance List</p>
-                 <form  class=""   action="form34List" method="POST" target="_blank">
-                    <fieldset>
-                    <div class="control-group">
-                        <label class="control-label" for="name">Exam Type:</label>
-                         <div class="controls">
-                            <select name="examID" >
-                                <option value="">Please select one</option> 
-                                <option value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB">Full Exam</option>
-                                <option value="1678664C-D955-4FA7-88C2-9461D3F1E782">Partial Exam</option>
-                            </select>                           
-                          
-                        </div>
-                    </div> 
-
-                    <div class="">       
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">View</button> 
-                    </div>
-                    </fieldset>
-                 </form>
-
-
-                 <p>Report Forms</p>
-                 <form  class=""   action="reportForm" method="POST" target="_blank">
+                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <form  class=""   action="form34List" method="POST" target="_blank">
                      <fieldset>                     
                      <div class=""> 
                      <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">View Full</button> 
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard List</button> 
                      </div>
                      </fieldset>
-                 </form>
+                     </form>
+                    </a>
 
 
-                  <form  class=""   action="reportForm2" method="POST" target="_blank">
+
+                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <form  class=""   action="form34List" method="POST" target="_blank">
                      <fieldset>
                      <div class="">  
                      <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">View Partial</button> 
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard List</button> 
                      </div>
                      </fieldset>
-                 </form>
-                 </div>
-                
-             
+                     </form>
+                    </a>
+
+                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <form  class=""   action="reportForm" method="POST" target="_blank">
+                     <fieldset>                     
+                     <div class=""> 
+                     <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Report</button> 
+                     </div>
+                     </fieldset>
+                     </form>
+                    </a>
+
+                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <form  class=""   action="reportForm2" method="POST" target="_blank">
+                     <fieldset>
+                     <div class="">  
+                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Report</button> 
+                     </div>
+                     </fieldset>
+                     </form>
+                    </a>
+
+                </div>
+           
 
             <div>
             <table class="table table-striped table-bordered bootstrap-datatable datatable">

@@ -109,22 +109,72 @@
     </servlet>
 
 
- <!-- start administrator mapping -->
+
+
+
+
+
+
+
+ <!-- start administrator -->
+
+
+
+
+    <servlet>
+        <servlet-name>AdminLogin</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.AdminLogin</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>AdminLogout</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.AdminLogout</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>AddSchool</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.school.AddSchool</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>UpdateSchool</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.school.UpdateSchool</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddRootUser</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.AddRootUser</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- start mapping -->
+
+
+
+
+
+
+
    
    <servlet-mapping>
         <servlet-name>FontImageGenerator</servlet-name>
         <url-pattern>/fontImageGenerator</url-pattern>
     </servlet-mapping> 
-
-
-
-
-
-
-
-
-
-
 
     <servlet-mapping>
         <servlet-name>ClassList</servlet-name>
@@ -176,6 +226,52 @@
 
 
 
+<!-- start admin mapping -->
+
+
+    <servlet-mapping>
+        <servlet-name>AdminLogin</servlet-name>
+        <url-pattern>/admin/adminLogin</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AdminLogout</servlet-name>
+        <url-pattern>/admin/adminLogout</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddSchool</servlet-name>
+        <url-pattern>/admin/addSchool</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdateSchool</servlet-name>
+        <url-pattern>/admin/updateSchool</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddRootUser</servlet-name>
+        <url-pattern>/admin/addRootUser</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+
+
+
+
+       <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+      </error-page>
+
+       <error-page>
+        <error-code>500</error-code>
+        <location>/500.jsp</location>
+      </error-page>
 
 
      

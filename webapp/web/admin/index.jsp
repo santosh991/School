@@ -1,38 +1,119 @@
 <!DOCTYPE html>
-<html >
-  <head>
-    <meta charset="UTF-8">
-    <title>Admin Login Form</title>
-    
-    
-    
-    
-        <link rel="stylesheet" href="../css/style2.css">
 
-    
-    
-    
-  </head>
+<%@page import="org.apache.commons.lang3.RandomStringUtils"%>
+<%@page import="org.jasypt.util.text.BasicTextEncryptor"%>
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.FontImageGenerator"%>
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 
-  <body>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 
-    <span href="#" class="button" id="toggle-login">Admin Log in</span>
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 
-<div id="login">
-  <div id="triangle"></div>
-  <h1>Log in</h1>
-  <form method="POST" action="AdminLogin">
-    <input type="name" placeholder="Username" name="username" />
-    <input type="password" placeholder="Password" name="password" />
-    <input type="submit" value="Log in" />
-  </form>
-</div>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
-        <script src="js/index.js"></script>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.util.Calendar" %>
 
-    
-    
-    
-  </body>
+
+
+<%
+
+
+    BasicTextEncryptor textEncryptor = new BasicTextEncryptor();   
+    textEncryptor.setPassword(PropertiesConfig.getConfigValue("ENCRYPT_PASSWORD")); 
+      
+    String captcha = RandomStringUtils.randomAlphabetic(4); 
+    String encryptedCaptcha = textEncryptor.encrypt(captcha);
+
+
+%>
+
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="../css/style.css">
+ 
+</head>
+
+<body>
+ <div class="alert alert-info">
+                           
+
+
+
+
+  <div class="container">
+
+                          
+         
+                         <%
+                                String loginErrStr = "";
+                                session = request.getSession(false);
+
+                                if(session != null) {
+                                    loginErrStr = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR);
+                                }                        
+
+                                if (StringUtils.isNotEmpty(loginErrStr)) {
+                                    out.println("<p style='color:red;'>");                   
+                                    out.println("Login error: " + loginErrStr);
+                                    out.println("</p>");                                    
+                                    session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, null);
+                                  } 
+                            %>
+
+
+
+
+
+
+    <section class="register">
+
+
+      <h1>Admin Login</h1>
+
+      <form autocomplete="off" method="POST" action="adminLogin" >
+
+      <div class="reg_section personal_info">
+      <h3>Username</h3>
+      <input type="text" name="username" value=""  placeholder="Username" >
+      </div>
+       <div class="reg_section password">
+       <h3>Passworld</h3>
+       <input autocomplete="off" type="password" name="password"  placeholder="Passworld" />
+
+
+                       <%
+                        String fontImageUrl = "../fontImageGenerator?text=" + URLEncoder.encode(encryptedCaptcha, "UTF-8");
+                        %> 
+                        <div class="field_container">
+                        <div class='wrapper'>
+                    
+                            <div id="spam-check">
+                                <span id="captchaGuidelines">Type the characters you see in the image below</span><br>
+                                <img id="captcha" src=<% out.println("\"" + fontImageUrl + "\"");%> width="80" height="40" /> <br>
+                                <input type="text" name="captchaAnswer" id="captchaAnswer" size="5" class="input_normal"/>
+                                <input type="hidden" name="captchaHidden" id="captchaHidden"
+                                       value=<% out.println("\"" + URLEncoder.encode(encryptedCaptcha, "UTF-8") + "\"");%> />
+                            </div>
+                        </div>
+                      </div>
+
+       </div>
+      
+      <p class="submit"><input type="submit" name="submit" value="Login"></p>
+      </form>
+    </section>
+
+
+  </div>
+
+
+</body>
 </html>

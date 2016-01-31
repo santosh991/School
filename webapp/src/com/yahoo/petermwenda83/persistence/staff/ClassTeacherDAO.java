@@ -18,7 +18,7 @@ import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
  * @author peter
- *
+ * 
  */
 public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO {
 	
@@ -49,10 +49,9 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
 	}
 
     
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#getClassTeacher(java.lang.String)
 	 */
-	@Override
 	public ClassTeacher getClassTeacher(String TeacherUuid) {
 		ClassTeacher classTeacher = new ClassTeacher();
         ResultSet rset = null;
@@ -79,22 +78,51 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
 		return classTeacher; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#putClassTeacher(com.yahoo.petermwenda83.bean.staff.ClassTeacher)
 	 */
-	@Override
 	public boolean putClassTeacher(ClassTeacher Teacher) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		  
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ClassTeacher" 
+			        		+"(Uuid,TeacherUuid,ClassRoomUuid) VALUES (?,?,?);");
+   		){
+	            pstmt.setString(1, Teacher.getUuid());
+	            pstmt.setString(2, Teacher.getTeacherUuid());
+	            pstmt.setString(3, Teacher.getClassRoomUuid());	                      
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+			logger.error("SQL Exception trying to put ClassTeacher: "+Teacher);
+           logger.error(ExceptionUtils.getStackTrace(e)); 
+           System.out.println(ExceptionUtils.getStackTrace(e));
+           success = false;
+		 }	
+		
+		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#updateClassTeacher(com.yahoo.petermwenda83.bean.staff.ClassTeacher)
 	 */
-	@Override
 	public boolean updateClassTeacher(ClassTeacher Teacher) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;		
+		  try (  Connection conn = dbutils.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE ClassTeacher SET ClassRoomUuid=? WHERE TeacherUuid = ?;");
+	) {           			 	            
+	            pstmt.setString(1, Teacher.getClassRoomUuid());
+	            pstmt.setString(2, Teacher.getTeacherUuid());	           
+	            pstmt.executeUpdate();
+
+	} catch (SQLException e) {
+	  logger.error("SQL Exception when updating ClassTeacher " + Teacher);
+	  logger.error(ExceptionUtils.getStackTrace(e));
+	  System.out.println(ExceptionUtils.getStackTrace(e));
+	  success = false;
+	} 
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -106,10 +134,9 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#getClassTeacherList()
 	 */
-	@Override
 	public List<ClassTeacher> getClassTeacherList() {
 		List<ClassTeacher> list = null;
 		 try(   

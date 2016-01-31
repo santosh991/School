@@ -15,10 +15,11 @@ import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
+import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 
 /**
  * @author peter
- *
+ * 
  */
 public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 	
@@ -49,19 +50,38 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 	}
 
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaff(java.lang.String)
 	 */
-	@Override
 	public Staff getStaff(String schoolAccountUuid,String Uuid) {
-		// TODO Auto-generated method stub
-		return null;
+		Staff staff = new Staff();
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Staff WHERE schoolAccountUuid =? AND Uuid = ?;");       
+     		
+     		){
+     	
+     	     pstmt.setString(1, schoolAccountUuid);
+     	     pstmt.setString(2, Uuid);
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	    	 staff  = beanProcessor.toBean(rset,Staff.class);
+	   }
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting Staff with Username: " + Uuid);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return staff; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaffByUsername(java.lang.String)
 	 */
-	@Override
 	public Staff getStaffByUsername(String schoolAccountUuid,String username) {
 		Staff staff = new Staff();
         ResultSet rset = null;
@@ -90,22 +110,60 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 		return staff; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#putStaff(com.yahoo.petermwenda83.bean.staff.Staff)
 	 */
-	@Override
 	public boolean putStaff(Staff staff) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		  
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Staff" 
+			        		+"(Uuid,SchoolAccountUuid,Category,PositionUuid,UserName,Password) VALUES (?,?,?,?,?,?);");
+   		){
+	            pstmt.setString(1, staff.getUuid());
+	            pstmt.setString(2, staff.getSchoolAccountUuid());
+	            pstmt.setString(3, staff.getCategory());
+	            pstmt.setString(4, staff.getPositionUuid());
+	            pstmt.setString(5, staff.getUserName());
+	            pstmt.setString(6, SecurityUtil.getMD5Hash(staff.getPassword()));
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+		   logger.error("SQL Exception trying to put Staff: "+staff);
+           logger.error(ExceptionUtils.getStackTrace(e)); 
+           System.out.println(ExceptionUtils.getStackTrace(e));
+           success = false;
+		 }	
+		
+		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#updateStaff(com.yahoo.petermwenda83.bean.staff.Staff)
 	 */
-	@Override
 	public boolean updateStaff(Staff staff) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		 try(   Connection conn = dbutils.getConnection();
+	      PreparedStatement pstmt = conn.prepareStatement("UPDATE Staff SET Category =?,PositionUuid =?,UserName =?,"
+			+ "Password =? WHERE SchoolAccountUuid = ? AND Uuid =? ;");
+     		){			   
+	            
+	            pstmt.setString(1, staff.getCategory());
+	            pstmt.setString(2, staff.getPositionUuid());
+	            pstmt.setString(3, staff.getUserName());
+	            pstmt.setString(4, SecurityUtil.getMD5Hash(staff.getPassword()));
+	            pstmt.setString(5, staff.getSchoolAccountUuid());
+	            pstmt.setString(6, staff.getUuid());
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+		   logger.error("SQL Exception trying to update Staff: "+staff);
+           logger.error(ExceptionUtils.getStackTrace(e)); 
+           System.out.println(ExceptionUtils.getStackTrace(e));
+           success = false;
+		 }
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -117,10 +175,9 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaffList(java.lang.String)
 	 */
-	@Override
 	public List<Staff> getStaffList(String schoolAccountUuid) {
 		 List<Staff> list = null;
 		 try(   
