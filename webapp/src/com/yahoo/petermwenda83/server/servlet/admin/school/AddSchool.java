@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -94,14 +95,15 @@ public class AddSchool extends HttpServlet{
 		  	   
 	   }else{
 		   SchoolAccount account = new SchoolAccount();
+		   account.setUuid(account.getUuid()); 
 		   account.setStatusUuid(STATUS_ACTIVE_UUID);		   
 		   account.setSchoolName(schoolname); 
 		   account.setUsername(schoolusername);
 		   account.setPassword(schoolpassword);
 		   account.setMobile(schoolphone); 
 		   account.setEmail(schoolemail); 
-		   if(accountDAO.put(account)){
-			   updateStudentCache(account);
+		   updateStudentCache(account);
+		   if(accountDAO.put(account)){			   
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_SUCCESS, SCHOOL_ADD_SUCCESS);
 		   }else{
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, SCHOOL_ADD_ERROR);  
@@ -110,6 +112,7 @@ public class AddSchool extends HttpServlet{
 		  
     	   
        }
+       //session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY, schoolusername);
        session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_PARAM, paramHash);
        response.sendRedirect("addSchool.jsp");
 	   return;
@@ -117,8 +120,9 @@ public class AddSchool extends HttpServlet{
    
    
 
-private void updateStudentCache(SchoolAccount account) {
-	cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(account.getUuid(), account));
+private void updateStudentCache(SchoolAccount accnt) {
+	cacheManager.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME).put(new Element(accnt.getUsername(), accnt));
+	cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(accnt.getUuid(), accnt));
 }
 
 

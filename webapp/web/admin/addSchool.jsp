@@ -38,7 +38,7 @@ if (session == null) {
     }
 
      session.setMaxInactiveInterval(AdminSessionConstants.SESSION_TIMEOUT);
-     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=adminLogout");
+     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=Logout");
 
 
 %>

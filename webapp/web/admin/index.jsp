@@ -5,8 +5,7 @@
 <%@page import="com.yahoo.petermwenda83.server.servlet.util.FontImageGenerator"%>
 <%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 
-<%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
-<%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
+<%@page import="com.yahoo.petermwenda83.server.session.AdminSessionConstants"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
@@ -57,14 +56,14 @@
                                 session = request.getSession(false);
 
                                 if(session != null) {
-                                    loginErrStr = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR);
+                                    loginErrStr = (String) session.getAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY);
                                 }                        
 
                                 if (StringUtils.isNotEmpty(loginErrStr)) {
                                     out.println("<p style='color:red;'>");                   
                                     out.println("Login error: " + loginErrStr);
                                     out.println("</p>");                                    
-                                    session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, null);
+                                    session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY, null);
                                   } 
                             %>
 

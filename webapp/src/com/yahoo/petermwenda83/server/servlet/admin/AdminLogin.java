@@ -66,27 +66,29 @@ public class AdminLogin extends HttpServlet{
          hiddenCaptchaStr = request.getParameter("captchaHidden");
          String captchaAnswer = request.getParameter("captchaAnswer").trim();
          
-        // System.out.println(username);
-        // System.out.println(password);
+      
          
-         if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
-             session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
-             response.sendRedirect("index.jsp");
-         }
-         else if (!StringUtils.equals(password, PropertiesConfig.getConfigValue("ADMIN_PASSWORD"))) {
-             session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY, AdminSessionConstants.ADMIN_SIGN_IN_ERROR_VALUE);
-             response.sendRedirect("index.jsp");
-
-         } else if (!StringUtils.equals(username, PropertiesConfig.getConfigValue("ADMIN_USERNAME"))) {
+          if (!StringUtils.equals(username, PropertiesConfig.getConfigValue("ADMIN_USERNAME"))) {
             session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY, AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY);
             response.sendRedirect("index.jsp");
          
-         } else {
-             session.setAttribute(AdminSessionConstants.ADMIN_SESSION_KEY, "admin");
+         }
+          else if (!StringUtils.equals(password, PropertiesConfig.getConfigValue("ADMIN_PASSWORD"))) {
+             session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY, AdminSessionConstants.ADMIN_SIGN_IN_ERROR_VALUE);
+             response.sendRedirect("index.jsp");
+
+         } else if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
+             session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_ERROR_KEY, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
+             response.sendRedirect("index.jsp");
+         }else {
+             session.setAttribute(AdminSessionConstants.ADMIN_SESSION_KEY, username);
+             session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_KEY, username);
              session.setAttribute(AdminSessionConstants.ADMIN_SIGN_IN_TIME, new Date());
              
             response.sendRedirect("adminIndex.jsp");
+            
          }
+          return;
 	}
 
     @Override

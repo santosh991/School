@@ -1,7 +1,9 @@
 
-
-<%@page import="com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
+<%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+
+
 <%@page import="com.yahoo.petermwenda83.server.session.AdminSessionConstants"%>
 
 
@@ -41,14 +43,30 @@ if (session == null) {
     }
 
      session.setMaxInactiveInterval(AdminSessionConstants.SESSION_TIMEOUT);
-     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=adminLogout");
+     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=Logout");
+
+    CacheManager mgr = CacheManager.getInstance();
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID);
+    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
+    SessionStatistics statistics = new SessionStatistics();
+    
+    Element element;
+    SchoolAccount schoolAccount;
+
+     List keys;
+     List<SchoolAccount> schoolList = new ArrayList(); 
+    keys = accountsCache.getKeys();
+    for (Object key : keys) {
+        element = accountsCache.get(key);
+        schoolAccount = (SchoolAccount) element.getObjectValue();
+        schoolList.add(schoolAccount);
+    }
+   
 
 
-
-
- AccountDAO accountDAO = AccountDAO.getInstance();
- List<SchoolAccount> schoolList = new ArrayList(); 
- schoolList = accountDAO.getAllSchools();
+ //AccountDAO accountDAO = AccountDAO.getInstance();
+ //List<SchoolAccount> schoolList = new ArrayList(); 
+ //schoolList = accountDAO.getAllSchools();
 
 
 %>
@@ -103,7 +121,9 @@ if (session == null) {
                     <tr>
                         <th>*</th>
                         <th>School Name</th>
-                        <th>UserName</th>                
+                        <th>UserName</th> 
+                        <th>Principal</th> 
+                        <th>Students</th>                
                         <th>Mobile</th>
                         <th>Email</th>
                         <th>Status</th>
@@ -117,9 +137,11 @@ if (session == null) {
                          String status = "Active";
                     %>
                     <tr>
-                        <td width="10%"><%=count%></td>
+                        <td width="3%"><%=count%></td>
                          <td class="center"><%=s.getSchoolName()%></td> 
                          <td class="center"><%=s.getUsername()%></td>
+                         <td class="center"><%="peter"%></td>
+                         <td class="center"><%="300"%></td>
                          <td class="center"><%=s.getMobile()%></td>
                          <td class="center"><%=s.getEmail()%></td>  
                           <td class="center"><%=status%></td>  

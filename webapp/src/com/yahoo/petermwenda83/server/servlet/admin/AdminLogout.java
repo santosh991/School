@@ -30,20 +30,29 @@ public class AdminLogout  extends HttpServlet {
    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
 	   
-	   response.sendRedirect("index.jsp");
-		
-		// get current session, and don't create one if it doesn't exist
-	    HttpSession session = request.getSession(false);
-	    if(session != null) {
-	    	session.invalidate();
-	    }  	
-	   
+	   response.sendRedirect("index.jsp");   
+       HttpSession session = request.getSession(false);
+       
+        if (session != null) {
+                 
+          //destroy the session
+          session.invalidate();
+        }
+	   //return;
 	}
-
+   /**
+    * Handles the HTTP <code>GET</code> method.
+    *
+    * @param request servlet request
+    * @param response servlet response
+    * @throws ServletException if a servlet-specific error occurs
+    * @throws IOException if an I/O error occurs
+    */
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response)
+   protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-       processRequest(request, response);
+       doPost(request, response);
    }
+
 
 }

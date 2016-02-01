@@ -123,12 +123,12 @@
 
     <servlet>
         <servlet-name>AdminLogin</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.AdminLogin</servlet-class>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.Login</servlet-class>
     </servlet>
 
      <servlet>
         <servlet-name>AdminLogout</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.AdminLogout</servlet-class>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.admin.Logout</servlet-class>
     </servlet>
 
 
@@ -236,7 +236,7 @@
 
      <servlet-mapping>
         <servlet-name>AdminLogout</servlet-name>
-        <url-pattern>/admin/adminLogout</url-pattern>
+        <url-pattern>/admin/Logout</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>

@@ -91,14 +91,14 @@ public class UpdateSchool extends HttpServlet{
        }else{
     	   
     	   SchoolAccount account =  accountDAO.get(schooluuid); 
+    	  
 		   account.setSchoolName(schoolname); 
 		   account.setUsername(schoolusername);
 		   account.setPassword(schoolpassword); 
 		   account.setMobile(schoolphone); 
 		   account.setEmail(schoolemail); 
-		   if(accountDAO.update(account)){ 
-			   updateStudentCache(account);
-			   System.out.println(account);
+		   updateStudentCache(account);
+		   if(accountDAO.update(account) ){ 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_UPDATE_SUCCESS, SCHOOL_UPDATE_SUCCESS); 
 		   }else{
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_UPDATE_ERROR, SCHOOL_UPDATE_ERROR);  
@@ -108,6 +108,7 @@ public class UpdateSchool extends HttpServlet{
     	    
        }
        
+       //session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY, schoolusername);
        response.sendRedirect("adminIndex.jsp"); 
        return;
        
@@ -115,8 +116,9 @@ public class UpdateSchool extends HttpServlet{
    
    
 
-private void updateStudentCache(SchoolAccount account) {
-	cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(account.getUuid(), account));
+private void updateStudentCache(SchoolAccount accnt) {
+	cacheManager.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME).put(new Element(accnt.getUsername(), accnt));
+	cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(accnt.getUuid(), accnt));
 }
 
 

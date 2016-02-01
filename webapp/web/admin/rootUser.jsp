@@ -43,7 +43,7 @@ if (session == null) {
     }
 
      session.setMaxInactiveInterval(AdminSessionConstants.SESSION_TIMEOUT);
-     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=adminLogout");
+     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=Logout");
 
      PositionDAO positionDAO = PositionDAO.getInstance();
      List<Position> positionList = new ArrayList<Position>(); 
