@@ -285,7 +285,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	List<Student> list = null;
 
 	 try(   
-  		Connection conn = dbutils.getConnection();//ORDER BY Uuid
+  		Connection conn = dbutils.getConnection();
   		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid = ? AND classRoomUuid =? ;");   
   		//ResultSet rset = pstmt.executeQuery();
 		) {
@@ -338,6 +338,30 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	    }
 		
 		return studentList;		
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getAllStudentList(java.lang.String)
+	 */
+	public List<Student> getAllStudentList(String schoolaccountUuid) {
+     List<Student> studentList = new ArrayList<>();
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Student WHERE "
+						+ "SchoolAccountUuid = ?;");
+				) {
+			psmt.setString(1, schoolaccountUuid);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				studentList = beanProcessor.toBeanList(rset, Student.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Student List for school"+schoolaccountUuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return studentList;
 	}
 
 

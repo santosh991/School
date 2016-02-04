@@ -41,11 +41,13 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
+import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
@@ -53,6 +55,7 @@ import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionStatistics;
+import com.yahoo.petermwenda83.server.util.magic.MiddleNumberFor3;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -73,106 +76,63 @@ public class ReportForm2 extends HttpServlet{
 
     private Logger logger;
     
-    //private final String EXAM_FULL_ID = "4BE8AD46-EAE8-4151-BD18-CB23CF904DDB";
-    private final String EXAM_PARTIAL_ID = "1678664C-D955-4FA7-88C2-9461D3F1E782";
-    String examID = "";
-    String examID2 = "";
-    
-    final String PDF_TITLE = "pdf title here";
+    final String PDF_TITLE = "Student Report Form";
     final String PDF_SUBTITLE = "Report Generated For: ";
     final String PDF_BOTTOM_TEXT = "pdf bottom text here";
     
-    private static PerfomanceDAO perfomanceDAO;
-    private static SubjectDAO subjectDAO;
-    private static ClassTeacherDAO classTeacherDAO;
-    private static StudentDAO studentDAO;
+     private static PerfomanceDAO perfomanceDAO;
+     private static SubjectDAO subjectDAO;
+     private static ClassTeacherDAO classTeacherDAO;
+     private static StudentDAO studentDAO;
+     private static RoomDAO roomDAO;
     
-    String classroomuuid = "";
-    String schoolusername = "";
-    String stffID = "";
+      String classroomuuid = "";String schoolusername = "";String stffID = "";
     
-    HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
-    HashMap<String, String> studNameHash = new HashMap<String, String>();
+      HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
+      HashMap<String, String> studNameHash = new HashMap<String, String>();
+      HashMap<String, String> roomHash = new HashMap<String, String>();
     
-    
-  
-   
-    double score = 0;
-
-    double engscore = 0;
-    String engscorestr = "";
-
-    double kswscore = 0;
-    String kswscorestr = "";
-
-    double matscore = 0;
-    String matscorestr = "";
-
-    double physcore = 0;
-    String physcorestr = "";  
-
-     double bioscore = 0;
-     String bioscorestr = "";
-
-     double chemscore = 0;
-     String chemscorestr = "";
-
-     double bsscore = 0;
-     String bsscorestr = "";
-
-      double comscore = 0;
-      String comscorestr = "";
-
-      double hscscore = 0;
-      String hscscorestr = "";
-
-      double agriscore = 0;
-      String agriscorestr = "";
-
-      double geoscore = 0;
-      String geoscorestr = "";
-
-      double crescore = 0;
-      String crescorestr = "";
-
-      double histscore = 0;
-      String histscorestr = "";
+      double score = 0;
+      double engscore = 0;String engscorestr = "";
+      double kswscore = 0;String kswscorestr = "";
+      double matscore = 0;String matscorestr = "";
+      double physcore = 0;String physcorestr = "";  
+      double bioscore = 0;String bioscorestr = "";
+      double chemscore = 0; String chemscorestr = "";
+      double bsscore = 0;String bsscorestr = "";
+      double comscore = 0;String comscorestr = "";
+      double hscscore = 0;String hscscorestr = "";
+      double agriscore = 0;String agriscorestr = "";
+      double geoscore = 0;String geoscorestr = "";
+      double crescore = 0;String crescorestr = "";
+      double histscore = 0; String histscorestr = "";
 
 
                                        
-    String grade = "";
-    String studeadmno = "";
-    String studename = "";
-    String admno = "";
+    String grade = "";String studeadmno = "";String studename = "";String admno = "";
 
-    double cat1 = 0;  
-    double cat2  = 0;
-    double endterm  = 0;
-    double catTotals  = 0;
-    double catmean  = 0;
-    double examcattotal  = 0;
+    double cat1 = 0;  double cat2  = 0;double endterm  = 0;
+    double catTotals  = 0;double catmean  = 0;double examcattotal  = 0;
     
     
-   //languages
+   //Languages
     final String ENG_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
     final String KISWA_UUID = "66027e51-b1ad-4b10-8250-63af64d23323";
-    //sciences
+    //Sciences
     final String MATH_UUID = "4f59580d-1a16-4669-9ed5-4b89615d6903";
     final String PHY_UUID = "44f23b3c-e066-4b45-931c-0e8073d3a93a";
     final String BIO_UUID = "de0c86be-9bcb-4d3b-8098-b06687536c1f";
     final String CHEM_UUID = "552c0a24-6038-440f-add5-2dadfb9a23bd";
-    //techinicals
+    //Technical
     final String BS_UUID = "e1729cc2-524a-4069-b4a4-be5aec8473fe";
     final String COMP_UUID = "F1972BF2-C788-4F41-94FE-FBA1869C92BC";
     final String H_S = "C1F28FF4-1A18-4552-822A-7A4767643643";
     final String AGR_UUID = "b9bbd718-b32f-4466-ab34-42f544ff900e";
-    //humanities 
+    //Humanities 
     final String GEO_UUID = "0e5dc1c6-f62f-4a36-a1ec-064173332694";
     final String CRE_UUID = "f098e943-26fd-4dc0-b6a0-2d02477004a4";
     final String HIST_UUID = "c9caf109-c27d-4062-9b9f-ac4268629e27";
-    
-    //MATH_UUID,PHY_UUID,BIO_UUID,CHEM_UUID,BS_UUID,COMP_UUID,H_S,AGR_UUID,GEO_UUID,CRE_UUID,HIST_UUID
-    
+   
     int position = 1;
     static int Finalposition = 0;
    
@@ -194,6 +154,7 @@ public void init(ServletConfig config) throws ServletException {
    subjectDAO = SubjectDAO.getInstance();
    classTeacherDAO = ClassTeacherDAO.getInstance();
    studentDAO = StudentDAO.getInstance();
+   roomDAO = RoomDAO.getInstance();
 }
 
 /**
@@ -207,18 +168,10 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
        throws ServletException, IOException {
    ServletContext context = getServletContext();
    response.setContentType("application/pdf");
-   //response.setHeader("Content-Disposition", "inline; filename= \" results.pdf \" " );
-   
+  
    SchoolAccount school = new SchoolAccount();
    HttpSession session = request.getSession(false);
-   
-   examID = StringUtils.trimToEmpty(request.getParameter("examID"));
-   
-   if(examID == null || session == null){
-		response.sendRedirect("index.jsp");
-	   }else{
-	
-   
+  
    if(session !=null){
    schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
    stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
@@ -265,6 +218,17 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    		   
            studNameHash.put(stu.getUuid(),formatedFirstname + " " + formatedLastname + " " + formatedsurname +"\n"); 
             }
+          
+          List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
+          classroomList = roomDAO.getAllRooms(school.getUuid()); 
+           for(ClassRoom c : classroomList){
+                roomHash.put(c.getUuid() , c.getRoomName());
+                 }
+           
+          
+          
+          
+          
 
    document = new Document(PageSize.A3, 46, 46, 64, 64);
 
@@ -284,13 +248,18 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    }
    
    
-   
-     }
-   
     }
 
 
 
+/**
+ * @param statistics
+ * @param school
+ * @param classroomuuid
+ * @param perfomanceList
+ * @param pDistinctList
+ * @param realPath
+ */
 private void populatePDFDocument(SessionStatistics statistics, SchoolAccount school, String classroomuuid, 
 	  List<Perfomance> perfomanceList, List<Perfomance> pDistinctList,String realPath) {
 	
@@ -315,9 +284,6 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    Map<String,Double> crescorehash = new LinkedHashMap<String,Double>(); 
    Map<String,Double> histscoreMap = new LinkedHashMap<String,Double>();
    
-   
-  
-   
    String totalz = "";
    try {
    document.open();
@@ -326,8 +292,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    
    Paragraph preface = new Paragraph();
    preface.add(createImage(realPath));
-   // We add one empty line
-  // addEmptyLine(preface, 1);
+  
    // Lets write a big header
    preface.add(new Paragraph(PDF_TITLE, bigFont));
 
@@ -340,26 +305,19 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    DecimalFormat df = new DecimalFormat("0.00"); 
    df.setRoundingMode(RoundingMode.DOWN);
    
-   DecimalFormat rf = new DecimalFormat("0"); 
-   rf.setRoundingMode(RoundingMode.UP);
+   DecimalFormat rf = new DecimalFormat("0.0"); 
+   rf.setRoundingMode(RoundingMode.HALF_UP);
+		
+   DecimalFormat rf2 = new DecimalFormat("0"); 
+   rf2.setRoundingMode(RoundingMode.UP);
 
    // Will create: Report generated by: _name, _date
    preface.add(new Paragraph(PDF_SUBTITLE + school.getSchoolName(), smallBold));
 
    preface.add(new Paragraph(formattedDate, smallBold));
 
-   //addEmptyLine(preface, 1);
-
-  
-
-  // preface.add(new Paragraph(PDF_BOTTOM_TEXT));
-
    preface.setAlignment(Element.ALIGN_RIGHT);
 
-   //document.add(preface);
-
-   // Start a new page
-  // document.newPage();
 
    // step 4
   
@@ -410,13 +368,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    Map<String,Double> hisendtscoreMap = new LinkedHashMap<String,Double>();
    Map<String,Double> creendtscoreMap = new LinkedHashMap<String,Double>();
    
-   
-   
-   
-   
-  
-   
-   
+   MiddleNumberFor3 middle = new MiddleNumberFor3();
    List<Perfomance> list = new ArrayList<>();
    Map<String,Double> grandscoremap = new LinkedHashMap<String,Double>(); 
    double languageScore = 0;
@@ -453,8 +405,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
           //Include all the languages
         	if(true){
                 if(StringUtils.equals(pp.getSubjectUuid(), ENG_UUID) ){
-              	  if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){              		
-                   
+              	  
               		    cat1 = pp.getCatOne();
                         cat2 = pp.getCatTwo();
                         endterm = pp.getEndTerm();
@@ -462,17 +413,21 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                         catmean = catTotals/2;
                         examcattotal = catmean + endterm;
                         engscore = examcattotal; 
+                        
+                        examcattotal = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotal)))));
+                        cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                        cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                        endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                         engscorehash.put(s.getStudentUuid(),examcattotal);
                         engcat1scoreMap.put(s.getStudentUuid(), cat1);
                         engcat2scoreMap.put(s.getStudentUuid(), cat2);
                         engendtscoreMap.put(s.getStudentUuid(), endterm);
                      
-                  }
+                 
                 }
 
                  if(StringUtils.equals(pp.getSubjectUuid(), KISWA_UUID)){
-              	   if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+              	  
                		     cat1 = pp.getCatOne();
                          cat2 = pp.getCatTwo();
                          endterm = pp.getEndTerm();
@@ -480,6 +435,10 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                          catmean = catTotals/2;
                          examcattotal = catmean + endterm;
                          kswscore = examcattotal; 
+                         kswscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(kswscore)))));
+                         cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                         cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                         endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                          kswscoreMap.put(s.getStudentUuid(),kswscore);
                          kiscat1scoreMap.put(s.getStudentUuid(), cat1);                        
                          kiscat2scoreMap.put(s.getStudentUuid(), cat2);
@@ -491,7 +450,6 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                   
                  languageScore = (engscore+kswscore); 
                 
-                 }
               }       
          //Sciences
          //Pick best two if the student take the three
@@ -500,8 +458,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
          double subjectSmall = 0;
         
                  if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
-              	   if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+              	   
                		     cat1 = pp.getCatOne();
                          cat2 = pp.getCatTwo();
                          endterm = pp.getEndTerm();
@@ -509,16 +466,18 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                          catmean = catTotals/2;
                          examcattotal = catmean + endterm;
                          physcore = examcattotal; 
-                        // System.out.println("physcore="+physcore);
+                         physcore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(physcore)))));
+                         cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                         cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                         endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                          physcoreMap.put(s.getStudentUuid(),physcore);
                          phycat1scoreMap.put(s.getStudentUuid(), cat1);                  
                          phycat2scoreMap.put(s.getStudentUuid(), cat2);
                          phyendtscoreMap.put(s.getStudentUuid(), endterm);
-              	     }
+              	   
                    }
                  if(StringUtils.equals(pp.getSubjectUuid(), BIO_UUID)){
-              	   if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+              	   
                		     cat1 = pp.getCatOne();
                          cat2 = pp.getCatTwo();
                          endterm = pp.getEndTerm();
@@ -526,16 +485,18 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                          catmean = catTotals/2;
                          examcattotal = catmean + endterm;
                          bioscore = examcattotal; 
-                        // System.out.println("bioscore="+bioscore);
+                         bioscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(bioscore)))));
+                         cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                         cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                         endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                          bioscoreMap.put(s.getStudentUuid(),bioscore);
                          biocat1scoreMap.put(s.getStudentUuid(), cat1);              
                          biocat2scoreMap.put(s.getStudentUuid(), cat2);
                          bioendtscoreMap.put(s.getStudentUuid(), endterm);
-              	     }
+              	     
                    }
                     if(StringUtils.equals(pp.getSubjectUuid(), CHEM_UUID)){
-                  	  if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+                  	  
                   		    cat1 = pp.getCatOne();
                             cat2 = pp.getCatTwo();
                             endterm = pp.getEndTerm();
@@ -543,15 +504,18 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                             catmean = catTotals/2;
                             examcattotal = catmean + endterm;
                             chemscore = examcattotal; 
+                            chemscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(chemscore)))));
+                            cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                            cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                            endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                             chemscorehash.put(s.getStudentUuid(),chemscore);
                             chemcat1scoreMap.put(s.getStudentUuid(), cat1);                           
                             chemcat2scoreMap.put(s.getStudentUuid(), cat2);
                             chemendtscoreMap.put(s.getStudentUuid(), endterm);
-                  	  }
+                  	  
                    }
                     if(StringUtils.equals(pp.getSubjectUuid(), MATH_UUID)){
-                  	  if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                 
+                  	  
                   		    cat1 = pp.getCatOne();
                             cat2 = pp.getCatTwo();
                             endterm = pp.getEndTerm();
@@ -559,54 +523,30 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                             catmean = catTotals/2;
                             examcattotal = catmean + endterm;
                             matscore = examcattotal; 
+                            matscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(matscore)))));
+                            cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                            cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                            endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                             matscorehash.put(s.getStudentUuid(),matscore);
                             matcat1scoreMap.put(s.getStudentUuid(), cat1);                          
                             matcat2scoreMap.put(s.getStudentUuid(), cat2);
                             matendtscoreMap.put(s.getStudentUuid(), endterm);
-                  	  }
+                  	  
                    }
 
 
-                   if(physcore >= bioscore && physcore >= chemscore){
-							subjectBig = physcore;
-							
-							if(subjectBig>bioscore && bioscore > chemscore){
-								subjectSmall = bioscore;
-							}else{
-								subjectSmall = chemscore;
-							}
-							
-
-						}else if(bioscore >= physcore && bioscore >= chemscore){
-							subjectBig = bioscore;
-							
-							if(subjectBig>physcore && physcore > chemscore){
-								subjectSmall = physcore;
-							}else{
-								subjectSmall = chemscore;
-							}
-							
-						}else if(chemscore >= physcore && chemscore >= bioscore){
-							subjectBig = chemscore;
-							
-							if(subjectBig>physcore && physcore > bioscore){
-								subjectSmall = physcore;
-							}else{
-								subjectSmall = bioscore;
-							}
-						}
-
-                   scienceScore = (subjectBig+subjectSmall+matscore);
+                    subjectBig = Math.max( (Math.max(physcore, bioscore)), Math.max(Math.max(physcore, bioscore), chemscore));
+                    subjectSmall = middle.ComputeMiddle(physcore, bioscore, chemscore);
+					scienceScore = (subjectBig+subjectSmall+matscore);
                     }
              
-         //Techinicals  
+         //Technical 
          //Here we pick one subject, the one he/she has performed best, but this subject can be replaced by a science,
          //if the student takes 3 sciences and he/she performed better in the science than in all  the techinicals . 
          if(true){
          double bestTechinical = 0;
                  if(StringUtils.equals(pp.getSubjectUuid(), BS_UUID)){
-              	   if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                   
+              	   
                		     cat1 = pp.getCatOne();
                          cat2 = pp.getCatTwo();
                          endterm = pp.getEndTerm();
@@ -614,16 +554,18 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                          catmean = catTotals/2;
                          examcattotal = catmean + endterm;
                          bsscore = examcattotal; 
+                         bsscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(bsscore)))));
+                         cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                         cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                         endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                          bsscoreMap.put(s.getStudentUuid(),bsscore);
                          bscat1scoreMap.put(s.getStudentUuid(), cat1);                        
                          bscat2scoreMap.put(s.getStudentUuid(), cat2);
                          bsendtscoreMap.put(s.getStudentUuid(), endterm);
                      
-              	       }
                    }
                     if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
-                  	  if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+                  	  
                   		    cat1 = pp.getCatOne();
                             cat2 = pp.getCatTwo();
                             endterm = pp.getEndTerm();
@@ -631,16 +573,19 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                             catmean = catTotals/2;
                             examcattotal = catmean + endterm;
                             agriscore = examcattotal; 
+                            agriscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(agriscore)))));
+                            cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                            cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                            endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                             agriscorehash.put(s.getStudentUuid(),agriscore);
                             agrcat1scoreMap.put(s.getStudentUuid(), cat1);                         
                             agrcat2scoreMap.put(s.getStudentUuid(), cat2);
                             agrendtscoreMap.put(s.getStudentUuid(), endterm);
-                  	  }
+                  	  
                   	    
                    }     
                    if(StringUtils.equals(pp.getSubjectUuid(), H_S)){
-                  	 if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+                  	 
                  		   cat1 = pp.getCatOne();
                            cat2 = pp.getCatTwo();
                            endterm = pp.getEndTerm();
@@ -648,15 +593,19 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                            catmean = catTotals/2;
                            examcattotal = catmean + endterm;
                            hscscore = examcattotal; 
+                           hscscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(hscscore)))));
+                           cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                           cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                           endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                            hscscoreMap.put(s.getStudentUuid(),hscscore);
                            hsccat1scoreMap.put(s.getStudentUuid(), cat1);                          
                            hsccat2scoreMap.put(s.getStudentUuid(), cat2);
                            hscendtscoreMap.put(s.getStudentUuid(), endterm);
                          
-                  	 }
-                   }if(StringUtils.equals(pp.getSubjectUuid(), COMP_UUID)){
-                  	 if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+                  	 
+                   }
+                   if(StringUtils.equals(pp.getSubjectUuid(), COMP_UUID)){
+                  	
                  		   cat1 = pp.getCatOne();
                            cat2 = pp.getCatTwo();
                            endterm = pp.getEndTerm();
@@ -664,30 +613,20 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                            catmean = catTotals/2;
                            examcattotal = catmean + endterm;
                            comscore = examcattotal; 
+                           comscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(comscore)))));
+                           cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                           cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                           endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                            comscoreMap.put(s.getStudentUuid(),comscore);
                            comcat1scoreMap.put(s.getStudentUuid(), cat1);                           
                            comcat2scoreMap.put(s.getStudentUuid(), cat2);
                            comendtscoreMap.put(s.getStudentUuid(), endterm);
-                  	 }
+                  
                           } 
                   
 
-				       if(bsscore >= agriscore){
-							bestTechinical= bsscore;
-						}else{
-							bestTechinical = agriscore;
-						}
-						
-						
-						if(bestTechinical <= hscscore){
-							bestTechinical = hscscore;
-						}
-						if(bestTechinical <= comscore){
-							bestTechinical = comscore;
-						}
-
-
-                    techinicalScore = bestTechinical;
+                   bestTechinical = Math.max( (Math.max(bsscore, agriscore)), Math.max(hscscore, comscore));
+			       techinicalScore = bestTechinical; 
                    
               }     
 
@@ -696,8 +635,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
          if(true){  
            double bestHumanity = 0;     
                  if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
-              	   if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                  
+              	   
                		     cat1 = pp.getCatOne();
                          cat2 = pp.getCatTwo();
                          endterm = pp.getEndTerm();
@@ -705,15 +643,18 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                          catmean = catTotals/2;
                          examcattotal = catmean + endterm;
                          geoscore = examcattotal; 
+                         geoscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(geoscore)))));
+                         cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                         cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                         endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                          geoscoreMap.put(s.getStudentUuid(),geoscore);
                          geocat1scoreMap.put(s.getStudentUuid(), cat1);                        
                          geocat2scoreMap.put(s.getStudentUuid(), cat2);
                          geoendtscoreMap.put(s.getStudentUuid(), endterm);
-              	         }
+              	        
                    }
                 if(StringUtils.equals(pp.getSubjectUuid(), CRE_UUID)){
-              	  if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-                   
+              	 
               		    cat1 = pp.getCatOne();
                         cat2 = pp.getCatTwo();
                         endterm = pp.getEndTerm();
@@ -721,17 +662,19 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                         catmean = catTotals/2;
                         examcattotal = catmean + endterm;
                         crescore = examcattotal; 
+                        crescore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(crescore)))));
+                        cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                        cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                        endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                         crescorehash.put(s.getStudentUuid(),crescore);
                         crecat1scoreMap.put(s.getStudentUuid(), cat1);                        
                         crecat2scoreMap.put(s.getStudentUuid(), cat2);
                         creendtscoreMap.put(s.getStudentUuid(), endterm);
                        
-              	            }
                 
                    }
                 if(StringUtils.equals(pp.getSubjectUuid(), HIST_UUID)){
-                	
-              	  if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
+                
                    
               		    cat1 = pp.getCatOne();
                         cat2 = pp.getCatTwo();
@@ -740,29 +683,20 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                         catmean = catTotals/2;
                         examcattotal = catmean + endterm;
                         histscore = examcattotal; 
+                        histscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(histscore)))));
+                        cat1 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat1)))));
+                        cat2 = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(cat2)))));
+                        endterm = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(endterm)))));
                         histscoreMap.put(s.getStudentUuid(),histscore);
                         hiscat1scoreMap.put(s.getStudentUuid(), cat1);                       
                         hiscat2scoreMap.put(s.getStudentUuid(), cat2);
                         hisendtscoreMap.put(s.getStudentUuid(), endterm);
                     
-              	     }
+              	    
                    }
 
-
-                   if(geoscore >= crescore){
-							bestHumanity= geoscore;
-						}else{
-							bestHumanity = crescore;
-						}
-						
-						
-						if(bestHumanity <= histscore){
-							bestHumanity = histscore;
-						}
-
-
-
-                 humanityScore = bestHumanity;
+                bestHumanity = Math.max( (Math.max(geoscore, crescore)), Math.max(Math.max(geoscore, crescore), histscore));
+				humanityScore = bestHumanity; 
 
              } 
   
@@ -770,15 +704,9 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
       }
        
         grandscore = languageScore+scienceScore+humanityScore+techinicalScore;
-       // System.out.println("languageScore="+languageScore+",scienceScore="+scienceScore+",humanityScore="+humanityScore+",techinicalScore="+techinicalScore);
         languageScore = 0; scienceScore = 0; humanityScore = 0;techinicalScore = 0;  
         grandscoremap.put(s.getStudentUuid(), grandscore);   
-       
         grandscore = 0;
-
-
-
-
         Finalposition = mycount++;
 
       }
@@ -828,8 +756,6 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
               double mean = 0;
               mean = Double.parseDouble(totalz)/7;  
              
-             
-
               studeadmno = studentAdmNoHash.get(uuid);
               studename = studNameHash.get(uuid);   
 
@@ -844,26 +770,26 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(engscorehash.get(uuid)!=null){
                 engscore = engscorehash.get(uuid);  
-                engscorestr =  rf.format(engscore);
+                engscorestr =  rf2.format(engscore);
 	                
               }else{
                 engscorestr = "";
               }
               if(engcat1scoreMap.get(uuid)!=null){
               	engc1 = engcat1scoreMap.get(uuid); 
-              	engc1str =  rf.format(engc1);
+              	engc1str =  rf2.format(engc1);
               }else{
               	engc1str = " ";
               }
               if(engcat2scoreMap.get(uuid)!=null){
               	engc2 = engcat2scoreMap.get(uuid); 
-              	engc2str =  rf.format(engc2);
+              	engc2str =  rf2.format(engc2);
               }else{
               	engc2str = " ";
               }
               if(engendtscoreMap.get(uuid)!=null){
               	enget = engendtscoreMap.get(uuid);
-              	engetstr = rf.format(enget);
+              	engetstr = rf2.format(enget);
               }else{
               	engetstr = " ";
               }
@@ -872,26 +798,26 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(kswscoreMap.get(uuid)!=null){
                 kswscore = kswscoreMap.get(uuid);               
-                kswscorestr = rf.format(kswscore);
+                kswscorestr = rf2.format(kswscore);
                 
               }else{
                 kswscorestr = "";
               }
               if(kiscat1scoreMap.get(uuid)!=null){
               	kisc1 = kiscat1scoreMap.get(uuid); 
-              	kisc1str = rf.format(kisc1);
+              	kisc1str = rf2.format(kisc1);
               }else{
               	kisc1str = " ";
               }
               if(kiscat2scoreMap.get(uuid)!=null){
               	kisc2 = kiscat2scoreMap.get(uuid);   
-              	kisc2str = rf.format(kisc2);
+              	kisc2str = rf2.format(kisc2);
               }else{
               	kisc2str = " ";
               }
               if(kisendtscoreMap.get(uuid)!=null){
               	kiset = kisendtscoreMap.get(uuid);  
-              	kisetstr = rf.format(kiset);
+              	kisetstr = rf2.format(kiset);
               }else{
               	kisetstr = " ";
               }
@@ -899,51 +825,51 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(physcoreMap.get(uuid)!=null){
                 physcore = physcoreMap.get(uuid);              
-                physcorestr = rf.format(physcore);
+                physcorestr = rf2.format(physcore);
 	                
               }else{
                 physcorestr = "";
               }
               if(phycat1scoreMap.get(uuid)!=null){
               	phyc1 = phycat1scoreMap.get(uuid);   
-              	phyc1str = rf.format(phyc1);
+              	phyc1str = rf2.format(phyc1);
               }else{
               	phyc1str = " ";
               }
               if(phycat2scoreMap.get(uuid)!=null){
               	phyc2 = phycat2scoreMap.get(uuid); 
-              	phyc2str = rf.format(phyc2);
+              	phyc2str = rf2.format(phyc2);
               }else{
               	phyc2str = " ";
               }if(phyendtscoreMap.get(uuid)!=null){
               	phyet = phyendtscoreMap.get(uuid); 
-              	phyetstr = rf.format(phyet);
+              	phyetstr = rf2.format(phyet);
               }else{
               	phyetstr = " ";
               }
 
               if(bioscoreMap.get(uuid)!=null){
                 bioscore = bioscoreMap.get(uuid);              
-                bioscorestr = rf.format(bioscore);
+                bioscorestr = rf2.format(bioscore);
 	                
               }else{
                 bioscorestr = "";
               }
               if(biocat1scoreMap.get(uuid)!=null){
               	bioc1 = biocat1scoreMap.get(uuid); 
-              	bioc1str = rf.format(bioc1);
+              	bioc1str = rf2.format(bioc1);
               }else{
               	bioc1str = " ";
               }
               if(biocat2scoreMap.get(uuid)!=null){
               	bioc2 = biocat2scoreMap.get(uuid); 
-              	bioc2str = rf.format(bioc2);
+              	bioc2str = rf2.format(bioc2);
               }else{
               	bioc2str = " ";
               }
               if(bioendtscoreMap.get(uuid)!=null){
               	bioet = bioendtscoreMap.get(uuid); 
-              	bioetstr = rf.format(bioet);
+              	bioetstr = rf2.format(bioet);
               }else{
               	bioetstr = " ";
               }
@@ -951,26 +877,26 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(chemscorehash.get(uuid)!=null){
                 chemscore = chemscorehash.get(uuid);              
-                chemscorestr = rf.format(chemscore);
+                chemscorestr = rf2.format(chemscore);
 	               
               }else{
                 chemscorestr = "";
               } 
               if(chemcat1scoreMap.get(uuid)!=null){
               	chemc1 = chemcat1scoreMap.get(uuid); 
-              	chemc1str = rf.format(chemc1);
+              	chemc1str = rf2.format(chemc1);
               }else{
               	chemc1str = " ";
               }
               if(chemcat2scoreMap.get(uuid)!=null){
               	chemc2 = chemcat2scoreMap.get(uuid); 
-              	chemc2str = rf.format(chemc2);
+              	chemc2str = rf2.format(chemc2);
               }else{
               	chemc2str = " ";
               }
               if(chemendtscoreMap.get(uuid)!=null){
               	chemet = chemendtscoreMap.get(uuid);  
-              	chemetstr = rf.format(chemet);
+              	chemetstr = rf2.format(chemet);
               }else{
               	chemetstr = " ";
               }
@@ -979,26 +905,26 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(matscorehash.get(uuid)!=null){
                 matscore = matscorehash.get(uuid);              
-                matscorestr = rf.format(matscore);
+                matscorestr = rf2.format(matscore);
                 
               }else{
                 matscorestr = "";
               }
               if(matcat1scoreMap.get(uuid)!=null){
               	matc1 = matcat1scoreMap.get(uuid);   
-              	matc1str = rf.format(matc1);
+              	matc1str = rf2.format(matc1);
               }else{
               	matc1str = " ";
               }
               if(matcat2scoreMap.get(uuid)!=null){
               	matc2 = matcat2scoreMap.get(uuid);  
-              	matc2str = rf.format(matc2);
+              	matc2str = rf2.format(matc2);
               }else{
               	matc2str = " ";
               }
               if(matendtscoreMap.get(uuid)!=null){
               	matet = matendtscoreMap.get(uuid); 
-              	matetstr = rf.format(matet);
+              	matetstr = rf2.format(matet);
               }else{
               	matetstr = " ";
               }
@@ -1007,56 +933,54 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
                if(histscoreMap.get(uuid)!=null){
                 histscore = histscoreMap.get(uuid);              
-                histscorestr = rf.format(histscore);
+                histscorestr = rf2.format(histscore);
                 
               }else{
                 histscorestr = "";
               }
                if(hiscat1scoreMap.get(uuid)!=null){
                	hisc1 = hiscat1scoreMap.get(uuid); 
-               	hisc1str = rf.format(hisc1);
+               	hisc1str = rf2.format(hisc1);
                }else{
                	hisc1str = " ";
                }
                if(hiscat2scoreMap.get(uuid)!=null){
                	hisc2 = hiscat2scoreMap.get(uuid);
-               	hisc2str = rf.format(hisc2);
+               	hisc2str = rf2.format(hisc2);
                }else{
                	hisc2str = " ";
                }
                if(hisendtscoreMap.get(uuid)!=null){
                	hiset = hisendtscoreMap.get(uuid);  
-               	hisetstr = rf.format(hiset);
+               	hisetstr = rf2.format(hiset);
                }else{
                	hisetstr = " ";
                }
                
                
-               
-              
 
               if(crescorehash.get(uuid)!=null){
                 crescore = crescorehash.get(uuid);              
-                crescorestr = rf.format(crescore);
+                crescorestr = rf2.format(crescore);
 	                
               }else{
                 crescorestr = "";
               }
               if(crecat1scoreMap.get(uuid)!=null){
               	crec1 = crecat1scoreMap.get(uuid);  
-              	crec1str = rf.format(crec1);
+              	crec1str = rf2.format(crec1);
               }else{
               	crec1str = " ";
               }
               if(crecat2scoreMap.get(uuid)!=null){
               	crec2 = crecat2scoreMap.get(uuid);  
-              	crec2str = rf.format(crec2);
+              	crec2str = rf2.format(crec2);
               }else{
               	crec2str = " ";
               }
               if(creendtscoreMap.get(uuid)!=null){
               	creet = creendtscoreMap.get(uuid);
-              	creetstr = rf.format(creet);
+              	creetstr = rf2.format(creet);
               }else{
               	creetstr = " ";
               }
@@ -1066,127 +990,119 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(geoscoreMap.get(uuid)!=null){
                 geoscore = geoscoreMap.get(uuid);               
-                geoscorestr = rf.format(geoscore);
+                geoscorestr = rf2.format(geoscore);
                 
               }else{
                 geoscorestr = "";
               }
               if(geocat1scoreMap.get(uuid)!=null){
               	geoc1 = geocat1scoreMap.get(uuid); 
-              	geoc1str = rf.format(geoc1);
+              	geoc1str = rf2.format(geoc1);
               }else{
               	geoc1str = " ";
               }
               if(geocat2scoreMap.get(uuid)!=null){
               	geoc2 = geocat2scoreMap.get(uuid);  
-              	geoc2str = rf.format(geoc2);
+              	geoc2str = rf2.format(geoc2);
               }else{
               	geoc2str = " ";
               }
               if(geoendtscoreMap.get(uuid)!=null){
               	geoet = geoendtscoreMap.get(uuid);  
-              	geoetstr = rf.format(geoet);
+              	geoetstr = rf2.format(geoet);
               }else{
               	geoetstr = " ";
               }
-              
               
               
 
 
               if(bsscoreMap.get(uuid)!=null){
                 bsscore = bsscoreMap.get(uuid);             
-                bsscorestr = rf.format(bsscore);
+                bsscorestr = rf2.format(bsscore);
                 
               }else{
                 bsscorestr = "";
               }
               if(bscat1scoreMap.get(uuid)!=null){
               	bsc1 = bscat1scoreMap.get(uuid);
-              	bsc1str = rf.format(bsc1);
+              	bsc1str = rf2.format(bsc1);
               }else{
               	bsc1str = " ";
               }
               if(bscat2scoreMap.get(uuid)!=null){
               	bsc2 = bscat2scoreMap.get(uuid); 
-              	bsc2str = rf.format(bsc2);
+              	bsc2str = rf2.format(bsc2);
               }else{
               	bsc2str = " ";
               }
               if(bsendtscoreMap.get(uuid)!=null){
               	bset = bsendtscoreMap.get(uuid);  
-              	bsetstr = rf.format(bset);
+              	bsetstr = rf2.format(bset);
               }else{
               	bsetstr = " ";
               }
               
               
-
              
               if(agriscorehash.get(uuid)!=null){
                 agriscore = agriscorehash.get(uuid);              
-                agriscorestr = rf.format(agriscore);
+                agriscorestr = rf2.format(agriscore);
                 
               }else{
                 agriscorestr = "";
               }
               if(agrcat1scoreMap.get(uuid)!=null){
               	agrc1 = agrcat1scoreMap.get(uuid); 
-              	agrc1str = rf.format(agrc1);
+              	agrc1str = rf2.format(agrc1);
               }else{
               	agrc1str = " ";
               }
               if(agrcat2scoreMap.get(uuid)!=null){
               	agrc2 = agrcat2scoreMap.get(uuid); 
-              	agrc2str = rf.format(agrc2);
+              	agrc2str = rf2.format(agrc2);
               }else{
               	agrc2str = " ";
               }
               if(agrendtscoreMap.get(uuid)!=null){
               	agret = agrendtscoreMap.get(uuid); 
-              	agretstr = rf.format(agret);
+              	agretstr = rf2.format(agret);
               }else{
               	agretstr = " ";
               }
               
               
-              
-              
-
               if(hscscoreMap.get(uuid)!=null){
                 hscscore = hscscoreMap.get(uuid);              
-                hscscorestr = rf.format(hscscore);
+                hscscorestr = rf2.format(hscscore);
                 
               }else{
                 hscscorestr = "";
               }
               if(hsccat1scoreMap.get(uuid)!=null){
               	hscc1 = hsccat1scoreMap.get(uuid); 
-              	hscc1str = rf.format(hscc1);
+              	hscc1str = rf2.format(hscc1);
               }else{
               	hscc1str = " ";
               }
               if(hsccat2scoreMap.get(uuid)!=null){
               	hscc2 = hsccat2scoreMap.get(uuid);  
-              	hscc2str = rf.format(hscc2);
+              	hscc2str = rf2.format(hscc2);
               }else{
               	hscc2str = " ";
               }
               if(hscendtscoreMap.get(uuid)!=null){
               	hscet = hscendtscoreMap.get(uuid); 
-              	hscetstr = rf.format(hscet);              	
+              	hscetstr = rf2.format(hscet);              	
               }else{
               	hscetstr = " ";
               }
               
               
-              
-              
-              
 
               if(comscoreMap.get(uuid)!=null){
                 comscore = comscoreMap.get(uuid);               
-                comscorestr = rf.format(comscore);
+                comscorestr = rf2.format(comscore);
 	                
                 
               }else{
@@ -1195,37 +1111,29 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 
               if(comcat1scoreMap.get(uuid)!=null){
               	comc1 = comcat1scoreMap.get(uuid);   
-              	comc1str = rf.format(comc1);
+              	comc1str = rf2.format(comc1);
               }else{
               	comc1str = "";
               }
               
               if(comcat2scoreMap.get(uuid)!=null){
               	comc2 = comcat2scoreMap.get(uuid);  
-              	comc2str = rf.format(comc2);
+              	comc2str = rf2.format(comc2);
               }else{
               	comc2str = "";
               }
               
               if(comendtscoreMap.get(uuid)!=null){
               	comet = comendtscoreMap.get(uuid);  
-              	cometstr = rf.format(comet);
+              	cometstr = rf2.format(comet);
               }else{
               	cometstr = "";
               }
               
-              
-              
-              
-              
-              if(StringUtils.equals(examID, EXAM_PARTIAL_ID)){
-            	  
-            	  
-            	  
-            	  
+            
             	   //add to document
                	  // Paragraph school_name = new Paragraph(("SCHOOL NAME: "+school.getSchoolName()));
-               	   Paragraph class_name = new Paragraph(("CLASS : FORM 3 N")); 
+               	   Paragraph class_name = new Paragraph(("CLASS :"+roomHash.get(classroomuuid))); 
                	   Paragraph year = new Paragraph(("YEAR:  "  + 2016));
                	   Paragraph term = new Paragraph(("TERM: "  + 1));
                	   Paragraph admno = new Paragraph(("ADM NO: "+studentAdmNoHash.get(uuid))); 
@@ -1284,8 +1192,6 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                    
                    int count = 1;
                    for(Subject sub : subList){
-                	   
-                	   
                 	   
                 	   myTable.addCell(" "+count);
                 	  
@@ -1423,9 +1329,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                 	 
                 	   count++;
                    }
-                   
-                   
-                   
+                  
                     Paragraph myposition;
                    
                     if(mean==number){
@@ -1437,9 +1341,6 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                      }
                
                	   Paragraph total = new Paragraph(("MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)));
-               	   
-               	   
-               	   
                	   
                	   Paragraph class_teacher_remarks = new Paragraph(("Class Teacher Remarks:  "+classteacherRemarks(mean)));
                	   
@@ -1454,15 +1355,12 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                	   
                	   
                	   document.add(preface);
-               	   
                	   document.add(class_name);
                	   document.add(year);
                	   document.add(term);
                	   document.add(admno);
                	   document.add(fullname);
-               	   
                	   document.add(emptyline);
-               	 
                    document.add(myTable);  
                    document.add(emptyline);
                	   document.add(myposition);
@@ -1483,32 +1381,12 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
            	    
            	    position++;
             	number=mean;
-            	  
-            	  
-            	  
-            	  
-            	  
-            	  
-            	  
-            	  
-            	  
-   	      
-              }
-              
+            
    }
-   
-      
-      
+    
 
  }
 
-	   
-                
- 
-   
-   
-
- 
    // step 5
    document.close();
 }
@@ -1662,13 +1540,6 @@ private Element createImage(String realPath) {
  return imgLogo;
 }
 
-private Paragraph addEmptyLine(Paragraph paragraph, int number) {
- for (int i = 0; i < number; i++) {
-     paragraph.add(new Paragraph(" "));
- }
- 
- return paragraph;
-}
 
 /**
 *

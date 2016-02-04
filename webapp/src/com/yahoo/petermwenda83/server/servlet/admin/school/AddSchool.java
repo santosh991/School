@@ -29,7 +29,7 @@ public class AddSchool extends HttpServlet{
 	private final String ERROR_EMPTY_SCHOOL_PASSWORD = "School password can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_PHONE = "School phone number can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_EMAIL = "School email address can't be empty";
-	
+	private final String ERROR_SCHOOL_USERNAME_EXIST = "The School username already exists in the system";
 	private final String ERROR_INVALID_EMAIL = "School email address Invalid";
 	
 	private final String SCHOOL_ADD_SUCCESS = "School account created successfully";
@@ -66,7 +66,7 @@ public class AddSchool extends HttpServlet{
        String schoolpassword = StringUtils.trimToEmpty(request.getParameter("schpassword"));
        String schoolphone = StringUtils.trimToEmpty(request.getParameter("schphone"));
        String schoolemail = StringUtils.trimToEmpty(request.getParameter("schemail"));
-       //System.out.println(schoolname);
+      // System.out.println(schoolusername);
     // This is used to store parameter names and values from the form.
 	   	Map<String, String> paramHash = new HashMap<>();    	
 	   	paramHash.put("schoolname", schoolname);
@@ -80,6 +80,9 @@ public class AddSchool extends HttpServlet{
     	   
        }else if(StringUtils.isBlank(schoolusername)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_USERNAME); 
+    	   
+       }else if(accountDAO.getSchoolByUsername(schoolusername) !=null){
+    	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_SCHOOL_USERNAME_EXIST); 
     	   
        }else if(StringUtils.isBlank(schoolpassword)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_PASSWORD); 

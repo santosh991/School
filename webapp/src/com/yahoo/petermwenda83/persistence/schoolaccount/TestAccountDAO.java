@@ -34,7 +34,7 @@ public class TestAccountDAO {
 			       SCHOOL_NAME_NEW="New ",
 			       SCHOOL_NAME_UPDATE="update ";
 	
-	private String USERNAME ="NjuriCOE",
+	private String USERNAME ="njuri",
 			       USERNAME_NEW ="New",
 			       USERNAME_UPDATE ="Update";
 	
@@ -58,7 +58,7 @@ public class TestAccountDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO#getSchoolByUsername(java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetSchoolByUsername() {
 		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -93,7 +93,7 @@ public class TestAccountDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO#update(com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testUpdate() {
 		store = new AccountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

@@ -89,23 +89,19 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolAccountDAO#getSchoolByUsername(java.lang.String)
 	 */
 	public SchoolAccount getSchoolByUsername(String Username) {
-		SchoolAccount school = new SchoolAccount();
+		SchoolAccount school = null;
         ResultSet rset = null;
      try(
      		 Connection conn = dbutils.getConnection();
         	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM SchoolAccount WHERE Username = ?;");       
      		
      		){
-     	
-     	 pstmt.setString(1, Username);
+     	      pstmt.setString(1, Username);
 	         rset = pstmt.executeQuery();
-	     while(rset.next()){
-	
+	           while(rset.next()){
 	    	 school  = beanProcessor.toBean(rset,SchoolAccount.class);
-	   }
-     	
-     	
-     	
+	         }
+     	   	
      }catch(SQLException e){
      	  logger.error("SQL Exception when getting SchoolAccount with Username: " + Username);
           logger.error(ExceptionUtils.getStackTrace(e));

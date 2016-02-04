@@ -7,9 +7,6 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.Perfomance"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.exam.StudentExamDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.exam.StudentExam"%>
-
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
 <%@page import="com.yahoo.petermwenda83.server.servlet.upload.UploadFrom34"%>
@@ -142,9 +139,6 @@
      
      Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
      
-     StudentExamDAO studentExamDAO = StudentExamDAO.getInstance();
-     List<StudentExam> sutexamList = new ArrayList<StudentExam>(); 
-     sutexamList = studentExamDAO.getStudentExamList(accountuuid,classroomuuid); 
      
      HashMap<String, String> roomHash = new HashMap<String, String>();
      RoomDAO roomDAO = RoomDAO.getInstance();

@@ -63,6 +63,10 @@ public interface SchoolStudentDAO {
 	    * @return AllStudents
 	    */
 	public List<Student> getAllStudents(String schoolaccountUuid,String classRoomUuid);
+	
+	
+	
+	public List<Student> getAllStudentList(String schoolaccountUuid);
 	  
 	
 	

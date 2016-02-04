@@ -1,5 +1,15 @@
 
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.staff.StaffDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.staff.Staff"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.staff.StaffDetails"%>
+
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
 
@@ -51,7 +61,7 @@ if (session == null) {
     SessionStatistics statistics = new SessionStatistics();
     
     Element element;
-    SchoolAccount schoolAccount;
+    SchoolAccount schoolAccount = new SchoolAccount();
 
      List keys;
      List<SchoolAccount> schoolList = new ArrayList(); 
@@ -64,9 +74,23 @@ if (session == null) {
    
 
 
- //AccountDAO accountDAO = AccountDAO.getInstance();
- //List<SchoolAccount> schoolList = new ArrayList(); 
- //schoolList = accountDAO.getAllSchools();
+     StudentDAO studentDAO = StudentDAO.getInstance();
+     List<Student> studentList = new ArrayList(); 
+     int studentcount =1;
+
+     String principalUuid = "C3915245-00EE-4EF4-9898-ACE59683DD60";
+
+     String principalUsername = "";
+     String staffname = "";
+     StaffDetails staffDetails = new StaffDetails();
+
+     StaffDAO staffDAO = StaffDAO.getInstance();
+     List<Staff> staffList = new ArrayList(); 
+
+     StaffDetailsDAO staffDetailsDAO = StaffDetailsDAO.getInstance();
+     
+     
+     
 
 
 %>
@@ -133,15 +157,34 @@ if (session == null) {
                 <tbody>
                     <%                                                          
                       int count = 1;
-                       for (SchoolAccount s : schoolList) {
+                         for (SchoolAccount s : schoolList) {
                          String status = "Active";
+
+                         studentList = studentDAO.getAllStudentList(s.getUuid()); 
+                         for(Student st : studentList){
+                             studentcount++;
+                               }
+
+                           staffList = staffDAO.getStaffList(s.getUuid()); 
+                           for(Staff staff : staffList){
+                           if(StringUtils.equals(staff.getPositionUuid(), principalUuid)) {
+                              principalUsername = staff.getUserName();
+                              
+                              staffDetails = staffDetailsDAO.getStaffDetail(staff.getUuid());
+                              if(staffDetails != null) {
+                                  staffname = "("+staffDetails.getSurname()+" "+staffDetails.getFirstName()+" "+staffDetails.getLastName()+")";
+                              }else{
+                                staffname = "No Details Set";
+                              }
+                           }
+                         }     
                     %>
                     <tr>
                         <td width="3%"><%=count%></td>
                          <td class="center"><%=s.getSchoolName()%></td> 
                          <td class="center"><%=s.getUsername()%></td>
-                         <td class="center"><%="peter"%></td>
-                         <td class="center"><%="300"%></td>
+                         <td class="center"><%=principalUsername + " "+staffname+""%></td>
+                         <td class="center"><%=studentcount%></td>
                          <td class="center"><%=s.getMobile()%></td>
                          <td class="center"><%=s.getEmail()%></td>  
                           <td class="center"><%=status%></td>  
@@ -158,8 +201,10 @@ if (session == null) {
                         </td>   
                     </tr>
 
-                    <%
+                    <%     
                            count++;
+                           studentcount = 0;
+                           principalUsername = " ";
                             } 
                     %>
                 </tbody>

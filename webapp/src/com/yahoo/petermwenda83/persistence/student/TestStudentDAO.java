@@ -61,7 +61,7 @@ public class TestStudentDAO {
 	public void testDeleteStudents() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
-	 //@Ignore
+	@Ignore
 	@Test
 	public void testGetAllStudents() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -71,10 +71,20 @@ public class TestStudentDAO {
 		}
 		
 	}
-	 @Ignore
+	@Ignore
 	@Test
 	public void testGetStudentList() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
+	 
+	    @Ignore
+		@Test
+		public void testGetAllStudentList() {
+			store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+			List<Student> list = store.getAllStudentList(SCHOOL_UUID);
+			for (Student l : list) {
+				System.out.println(l);	
+			}
+		}
 
 }
