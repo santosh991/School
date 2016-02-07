@@ -32,11 +32,18 @@ public class TestPerfomanceDAO {
 	final int databasePort = 5432;
 	
 	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
+	
 	final String FORM_ONE_N = "4DA86139-6A72-4089-8858-6A3A613FDFE6";
+	
 	final String STUDENT_UUID = "4F218688-6DE5-4E69-8690-66FBA2F0DC9F";
+	
 	final String FORM_ONE = "C143978A-E021-4015-BC67-5A00D6C910D1";
 	
 	final Double SCORE = 20.0;
+	
+	final String TERM = "1";
+	
+	final String YEAR = "2014";
 	
 	private PerfomanceDAO store;
 
@@ -47,9 +54,11 @@ public class TestPerfomanceDAO {
 	@Test
 	public void testGetPerformanceString() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getPerformance(SCHOOL_UUID, FORM_ONE_N, STUDENT_UUID);
+		List<Perfomance> list = store.getPerformance(SCHOOL_UUID, FORM_ONE_N, STUDENT_UUID,TERM,YEAR);
 		for(Perfomance p : list){
 			System.out.println(p);
+			
+			
 		}
 	}
 
@@ -69,18 +78,18 @@ public class TestPerfomanceDAO {
 	@Test
 	public void testGetPerfomanceList() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getPerfomanceList(SCHOOL_UUID,FORM_ONE_N);
+		List<Perfomance> list = store.getPerfomanceList(SCHOOL_UUID,FORM_ONE_N,TERM,YEAR);
 		for(Perfomance p : list){
 			System.out.println(p);
 		}
 	
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void testGetPerfomanceListDistinct() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getPerfomanceListDistinct(SCHOOL_UUID,FORM_ONE_N);
+		List<Perfomance> list = store.getPerfomanceListDistinct(SCHOOL_UUID,FORM_ONE_N,TERM,YEAR);
 		for(Perfomance p : list){
 			System.out.println(p.getStudentUuid());
 		}
@@ -95,7 +104,7 @@ public class TestPerfomanceDAO {
 	@Test  
 	public void testGetClassPerfomanceList() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getClassPerfomanceList(SCHOOL_UUID,FORM_ONE);
+		List<Perfomance> list = store.getClassPerfomanceList(SCHOOL_UUID,FORM_ONE,TERM,YEAR);
 		for(Perfomance p : list){
 			System.out.println(p);
 		}

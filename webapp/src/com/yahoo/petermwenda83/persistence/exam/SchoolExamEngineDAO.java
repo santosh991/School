@@ -20,23 +20,88 @@ import com.yahoo.petermwenda83.bean.exam.Perfomance;
  */
 public interface SchoolExamEngineDAO {
 	
-    public Common getCommon(String schoolAccountUuid,String classRoomUuid,String studentUuid,String subjectUuid);
-	
-	public boolean Checker(String schoolAccountUuid,String classRoomUuid,String studentUuid,String subjectUuid);
-	
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param classRoomUuid
+	 * @param studentUuid
+	 * @param subjectUuid
+	 * @param Term
+	 * @param Year
+	 * @return
+	 */
+    public Common getCommon(String schoolAccountUuid,String classRoomUuid,String studentUuid,String subjectUuid,String Term,String Year);
+	 /**
+	  * 
+	  * @param schoolAccountUuid
+	  * @param classRoomUuid
+	  * @param studentUuid
+	  * @param subjectUuid
+	  * @param Term
+	  * @param Year
+	  * @return
+	  */
+	public boolean Checker(String schoolAccountUuid,String classRoomUuid,String studentUuid,String subjectUuid,String Term,String Year);
+	 /**
+	  * 
+	  * @param perfomance
+	  * @return
+	  */
 	public boolean putScore(Perfomance perfomance);
-	
-	public List<CatOne> getcatoneList(String schoolAccountUuid,String classRoomUuid);
-	
-	public List<CatTwo> getcatwoList(String schoolAccountUuid,String classRoomUuid);
-	
-	public List<EndTerm> getendtermList(String schoolAccountUuid,String classRoomUuid);
-	
-	public List<PaperOne> getPaperOneList(String schoolAccountUuid,String classRoomUuid);
-	
-	public List<PaperTwo> getPaperTwoList(String schoolAccountUuid,String classRoomUuid);
-	
-	public List<PaperThree> getpaperThreeList(String schoolAccountUuid,String classRoomUuid);
+	 /**
+	  * 
+	  * @param schoolAccountUuid
+	  * @param classRoomUuid
+	  * @param Term
+	  * @param Year
+	  * @return
+	  */
+	public List<CatOne> getcatoneList(String schoolAccountUuid,String classRoomUuid,String Term,String Year);
+	  /**
+	   * 
+	   * @param schoolAccountUuid
+	   * @param classRoomUuid
+	   * @param Term
+	   * @param Year
+	   * @return
+	   */
+	public List<CatTwo> getcatwoList(String schoolAccountUuid,String classRoomUuid,String Term,String Year);
+	  /**
+	   * 
+	   * @param schoolAccountUuid
+	   * @param classRoomUuid
+	   * @param Term
+	   * @param Year
+	   * @return
+	   */
+	public List<EndTerm> getendtermList(String schoolAccountUuid,String classRoomUuid,String Term,String Year);
+	  /**
+	   * 
+	   * @param schoolAccountUuid
+	   * @param classRoomUuid
+	   * @param Term
+	   * @param Year
+	   * @return
+	   */
+	public List<PaperOne> getPaperOneList(String schoolAccountUuid,String classRoomUuid,String Term,String Year);
+	   /**
+	    * 
+	    * @param schoolAccountUuid
+	    * @param classRoomUuid
+	    * @param Term
+	    * @param Year
+	    * @return
+	    */
+	public List<PaperTwo> getPaperTwoList(String schoolAccountUuid,String classRoomUuid,String Term,String Year);
+	   /**
+	    * 
+	    * @param schoolAccountUuid
+	    * @param classRoomUuid
+	    * @param Term
+	    * @param Year
+	    * @return
+	    */
+	public List<PaperThree> getpaperThreeList(String schoolAccountUuid,String classRoomUuid,String Term,String Year);
 
 }
 

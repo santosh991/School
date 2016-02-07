@@ -1,3 +1,5 @@
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
 <%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
@@ -80,6 +82,9 @@
     String accountuuid = school.getUuid();
     String schoolname = school.getSchoolName();
 
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -135,8 +140,8 @@
      List<Perfomance> perfomanceList = new ArrayList<Perfomance>(); 
      List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
 
-     perfomanceList = perfomanceDAO.getPerfomanceList(accountuuid,classroomuuid);
-     pDistinctList = perfomanceDAO.getPerfomanceListDistinct(accountuuid, classroomuuid);
+     perfomanceList = perfomanceDAO.getPerfomanceList(accountuuid,classroomuuid,examConfig.getTerm(),examConfig.getYear());
+     pDistinctList = perfomanceDAO.getPerfomanceListDistinct(accountuuid, classroomuuid,examConfig.getTerm(),examConfig.getYear());
      
      Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
      
@@ -275,7 +280,7 @@
 
         <div class="box span12">
         <div class="box-header well" data-original-title>
-          <p> <%=schoolname%> :EXAM MANAGEMENT PANEL FOR: <%=roomHash.get(classroomuuid)%> (By default we display standard exam) </p>
+        <p>Wellcome to <%=schoolname%> :EXAM MANAGEMENT PANEL FOR: <%=roomHash.get(classroomuuid)%>,TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
 
@@ -371,7 +376,7 @@
                                             double number = 0.0;
                                             
                                              for(Perfomance s : pDistinctList){                              
-                                                 list = perfomanceDAO.getPerformance(accountuuid, classroomuuid, s.getStudentUuid());
+                                list = perfomanceDAO.getPerformance(accountuuid, classroomuuid, s.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
                                                        
                                                     engscore = 0;
                                                     kswscore = 0;

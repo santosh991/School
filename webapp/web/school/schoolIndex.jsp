@@ -23,6 +23,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
+
 
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
@@ -87,6 +90,9 @@
     String accountuuid = school.getUuid();
     String schoolname = school.getSchoolName();
 
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
     if ((element = statisticsCache.get(accountuuid)) != null) {
         statistics = (SessionStatistics) element.getObjectValue();
     }
@@ -144,7 +150,7 @@
 <div class="row-fluid sortable">		
     <div class="box span12">
         <div class="box-header well" data-original-title>
-          <p> <%=schoolname%> : STUDENT MANAGENENT PANEL</p>
+         <p>Wellcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             

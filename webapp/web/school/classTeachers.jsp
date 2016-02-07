@@ -1,5 +1,8 @@
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
+
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
 
@@ -73,6 +76,9 @@
     accountuuid = school.getUuid();
     String schoolname = school.getSchoolName();
 
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -136,7 +142,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-          <p>Personal exam report form</p>
+         <p>Wellcome to <%=schoolname%> :Class Teachers: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             

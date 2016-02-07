@@ -256,7 +256,7 @@
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
             <li class='has-sub'><a href='#'><span>Reports</span></a></li>
-            <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
+            <li class='has-sub'><a href="examConfig.jsp"><span>ExamConfig</span></a></li>
             <li class='has-sub'><a href='#'><span>Staff Management </span></a></li>
             <li class='has-sub'><a href="classTeachers.jsp"><span>Class Teachers </span></a></li>
             

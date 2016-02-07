@@ -71,16 +71,19 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerformance(java.lang.String)
 	 */
 	@Override
-	public List<Perfomance> getPerformance(String schoolAccountUuid,String classRoomUuid,String studentUuid) {
+	public List<Perfomance> getPerformance(String schoolAccountUuid,String classRoomUuid,String studentUuid,String Term,String Year) {
 		List<Perfomance> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ? AND studentUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE SchoolAccountUuid = ? AND"
+     	         		+ " classRoomUuid = ? AND studentUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
          	   pstmt.setString(2, classRoomUuid);  
          	   pstmt.setString(3, studentUuid);  
+         	   pstmt.setString(4, Term); 
+       	       pstmt.setString(5, Year); 
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, Perfomance.class);
@@ -133,18 +136,18 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerfomanceList(java.lang.String)
 	 */
 	@Override
-	public List<Perfomance> getPerfomanceList(String schoolAccountUuid,String classRoomUuid) {
+	public List<Perfomance> getPerfomanceList(String schoolAccountUuid,String classRoomUuid,String Term,String Year) {
 		List<Perfomance> list = new ArrayList<>();
         try (
         		 Connection conn = dbutils.getConnection();
      	         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE"
-     	         		+ " SchoolAccountUuid = ? AND classRoomUuid = ? ;"); 
+     	         		+ " SchoolAccountUuid = ? AND classRoomUuid = ? AND Term = ? AND Year = ?;"); 
         		
-        		 PreparedStatement pstmt2 = conn.prepareStatement("SELECT DISTINCT studentuuid FROM perfomance WHERE"
-        		 		+ " SchoolAccountUuid = ? AND classRoomUuid = ?;");
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid);
+         	   pstmt.setString(3, Term); 
+       	       pstmt.setString(4, Year); 
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, Perfomance.class);
@@ -162,15 +165,17 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerfomanceListDistinct(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<Perfomance> getPerfomanceListDistinct(String schoolAccountUuid, String classRoomUuid) {
+	public List<Perfomance> getPerfomanceListDistinct(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<Perfomance> list = new ArrayList<>();
         try (
         		 Connection conn = dbutils.getConnection();
         		 PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT studentuuid FROM perfomance WHERE"
-        		 		+ " SchoolAccountUuid = ? AND classRoomUuid = ?;");
+        		 		+ " SchoolAccountUuid = ? AND classRoomUuid = ? AND Term = ? AND Year = ?;");
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid);
+         	   pstmt.setString(3, Term); 
+        	   pstmt.setString(4, Year); 
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, Perfomance.class);
@@ -188,16 +193,18 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getClassPerfomanceList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<Perfomance> getClassPerfomanceList(String schoolAccountUuid, String ClassesUuid) {
+	public List<Perfomance> getClassPerfomanceList(String schoolAccountUuid, String ClassesUuid,String Term,String Year) {
 		List<Perfomance> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
      	         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE SchoolAccountUuid = ?"
-     	         		+ " AND ClassesUuid = ?;");    		   
+     	         		+ " AND ClassesUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, ClassesUuid);      
+         	   pstmt.setString(2, ClassesUuid); 
+         	   pstmt.setString(3, Term); 
+         	   pstmt.setString(4, Year); 
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, Perfomance.class);

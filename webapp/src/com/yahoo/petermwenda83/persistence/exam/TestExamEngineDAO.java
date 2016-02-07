@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.CatTwo;
+import com.yahoo.petermwenda83.bean.exam.Common;
 import com.yahoo.petermwenda83.bean.exam.EndTerm;
 import com.yahoo.petermwenda83.bean.exam.PaperOne;
 import com.yahoo.petermwenda83.bean.exam.PaperThree;
@@ -49,7 +50,7 @@ public class TestExamEngineDAO {
 	final String TERM = "1",
 	             TERM_NEW="2";
 	
-	final String YEAR = "2015",
+	final String YEAR = "2014",
 	             YEAR_NEW="2016";
 	
 	final Date SUBMIT_DATE = new Date(new Long("141941056800") );
@@ -60,27 +61,18 @@ public class TestExamEngineDAO {
 	private ExamEgineDAO store;
 
 	/**
-	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO#getCatOne(java.lang.String, java.lang.String, java.lang.String)}.
-	 */
-	@Ignore
-	@Test
-	public void testGetCatOne() {
-		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-	}
-
-	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO#hasCatOne(com.yahoo.petermwenda83.bean.exam.Perfomance, java.lang.Double)}.
 	 */
 	@Ignore
 	@Test
 	public void testChecker() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		/*Common p = new Common();
+		Common p = new Common();
 		p.setSchoolAccountUuid(SCHOOL_UUID);
 		p.setClassRoomUuid(FORM_ONE_N);
 		p.setStudentUuid(STUDENT_UUID);
-		p.setSubjectUuid(SUBJECT_UUID); */
-		assertTrue(store.Checker(SCHOOL_UUID,FORM_ONE_N,STUDENT_UUID,SUBJECT_UUID)); 
+		p.setSubjectUuid(SUBJECT_UUID); 
+		assertTrue(store.Checker(SCHOOL_UUID,FORM_ONE_N,STUDENT_UUID,SUBJECT_UUID, TERM, YEAR)); 
 	}
 
 	/**
@@ -181,10 +173,10 @@ public class TestExamEngineDAO {
 	@Test
 	public void testGetcatoneList() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<CatOne> list = store.getcatoneList(SCHOOL_UUID,FORM_ONE_N);
+		/*List<CatOne> list = store.getcatoneList(SCHOOL_UUID,FORM_ONE_N);
 		for(CatOne p : list){
 			System.out.println(p);
-		}
+		}*/
 	
 	}
 	
@@ -192,10 +184,10 @@ public class TestExamEngineDAO {
 	@Test
 	public void testGetcatwoList() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<CatTwo> list = store.getcatwoList(SCHOOL_UUID,FORM_ONE_N);
+		/*List<CatTwo> list = store.getcatwoList(SCHOOL_UUID,FORM_ONE_N);
 		for(CatTwo p : list){
 			System.out.println(p);
-		}
+		}*/
 	
 	}
 	
@@ -203,10 +195,10 @@ public class TestExamEngineDAO {
 	@Test
 	public void testGetendtermList() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<EndTerm> list = store.getendtermList(SCHOOL_UUID,FORM_ONE_N);
+		/*List<EndTerm> list = store.getendtermList(SCHOOL_UUID,FORM_ONE_N);
 		for(EndTerm p : list){
 			System.out.println(p);
-		}
+		}*/
 	
 	}
 	
@@ -214,10 +206,10 @@ public class TestExamEngineDAO {
 	@Test
 	public void testGetPaperOneList() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<PaperOne> list = store.getPaperOneList(SCHOOL_UUID,FORM_ONE_N);
+		/*List<PaperOne> list = store.getPaperOneList(SCHOOL_UUID,FORM_ONE_N);
 		for(PaperOne p : list){
 			System.out.println(p);
-		}
+		}*/
 	
 	}
 	
@@ -225,10 +217,10 @@ public class TestExamEngineDAO {
 	@Test
 	public void testGetPaperTwoList() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<PaperTwo> list = store.getPaperTwoList(SCHOOL_UUID,FORM_ONE_N);
+		/*List<PaperTwo> list = store.getPaperTwoList(SCHOOL_UUID,FORM_ONE_N);
 		for(PaperTwo p : list){
 			System.out.println(p);
-		}
+		}*/
 	
 	}
 	
@@ -236,11 +228,22 @@ public class TestExamEngineDAO {
 	@Test
 	public void testGetpaperThreeList() {
 		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<PaperThree> list = store.getpaperThreeList(SCHOOL_UUID,FORM_ONE_N);
+		/*List<PaperThree> list = store.getpaperThreeList(SCHOOL_UUID,FORM_ONE_N);
 		for(PaperThree p : list){
 			System.out.println(p);
-		}
+		}*/
 	
 	}
+	
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO#getCatOne(java.lang.String, java.lang.String, java.lang.String)}.
+	 */
+	@Ignore
+	@Test
+	public void testGetCatOne() {
+		store = new ExamEgineDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+	}
+
 
 }

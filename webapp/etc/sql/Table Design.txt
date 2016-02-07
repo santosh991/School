@@ -432,11 +432,14 @@ This is to store all Subjects eg English, Kiswahili etc
 
 
 -- -------------------
--- Table StudentExam
+-- Table ExamConfig
 -- -------------------
+     -Id (primary key)
+     -Uuid
      -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
-     -StudentUuid REFERENCES Student(Uuid)
-     -ClassRoomUuid REFERENCES ClassRoom(Uuid)
+     -Term 
+     -Year
+     -ExamMode
 
 
 

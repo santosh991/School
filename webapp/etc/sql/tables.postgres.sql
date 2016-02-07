@@ -524,20 +524,23 @@ ALTER TABLE GradingSystem OWNER TO school;
 
 
 -- -------------------
--- Table StudentExam
+-- Table ExamConfig
 -- -------------------
- CREATE TABLE  StudentExam (
+ CREATE TABLE  ExamConfig (
     Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
-    StudentUuid text REFERENCES Student(Uuid),
-    ClassRoomUuid text REFERENCES ClassRoom(Uuid)
+    Term text,
+    Year text,
+    Exam text,
+    ExamMode text
    
    
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY StudentExam(SchoolAccountUuid,StudentUuid,ClassRoomUuid) FROM '/tmp/StudentExam.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE StudentExam OWNER TO school;
+\COPY ExamConfig(Uuid,SchoolAccountUuid,Term,Year,Exam,ExamMode) FROM '/tmp/ExamConfig.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE ExamConfig OWNER TO school;
 
 
 

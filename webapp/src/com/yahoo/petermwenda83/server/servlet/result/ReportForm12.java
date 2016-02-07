@@ -42,12 +42,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
+import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
@@ -74,6 +76,7 @@ public class ReportForm12 extends HttpServlet{
     private Cache schoolaccountCache, statisticsCache;
 
     private Logger logger;
+    ExamConfig examConfig;
     
     
     final String PDF_TITLE = "Student Report Form";
@@ -85,6 +88,7 @@ public class ReportForm12 extends HttpServlet{
     private static ClassTeacherDAO classTeacherDAO;
     private static StudentDAO studentDAO;
     private static RoomDAO roomDAO;
+    private static ExamConfigDAO examConfigDAO;
     
     String classroomuuid = "";
     String schoolusername = "";
@@ -194,6 +198,7 @@ public void init(ServletConfig config) throws ServletException {
    classTeacherDAO = ClassTeacherDAO.getInstance();
    studentDAO = StudentDAO.getInstance();
    roomDAO = RoomDAO.getInstance();
+   examConfigDAO = ExamConfigDAO.getInstance();
 }
 
 /**
@@ -223,6 +228,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    if(element !=null){
    school = (SchoolAccount) element.getObjectValue();
       }
+   //,examConfig.getTerm(),examConfig.getYear()
+   examConfig = examConfigDAO.getExamConfig(school.getUuid());
+   
    ClassTeacher classTeacher = classTeacherDAO.getClassTeacher(stffID);
      if(classTeacher !=null){
            classroomuuid = classTeacher.getClassRoomUuid();
@@ -234,9 +242,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    }
    
    List<Perfomance> perfomanceList = new ArrayList<Perfomance>(); 
-   perfomanceList = perfomanceDAO.getPerfomanceList(school.getUuid(), classroomuuid);
+   perfomanceList = perfomanceDAO.getPerfomanceList(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
    List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-   pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroomuuid);
+   pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
     
    
    List<Student> studentList = new ArrayList<Student>(); 
@@ -372,7 +380,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    if(pDistinctList !=null){
 	   int mycount =1;
     for(Perfomance s : pDistinctList){                              
-        list = perfomanceDAO.getPerformance(school.getUuid(), classroomuuid, s.getStudentUuid());
+        list = perfomanceDAO.getPerformance(school.getUuid(), classroomuuid, s.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
               
            engscore = 0;
            kswscore = 0;
@@ -801,11 +809,10 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
               counttwo=1;
               myposition = new Paragraph(("POSITION " +position+ " OUT OF " +Finalposition));
              }
-       
-       	   Paragraph total = new Paragraph(("MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)));
-       	   
-       	   
-       	   
+           
+           Paragraph termYear = new Paragraph(("TERM: " +examConfig.getTerm() + " YEAR: " +examConfig.getYear()));
+           
+       	   Paragraph total = new Paragraph(("MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)));       	   
        	   
        	   Paragraph class_teacher_remarks = new Paragraph(("Class Teacher Remarks:  "+classteacherRemarks(mean)));
        	   
@@ -820,7 +827,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
        	   
        	   
        	   document.add(preface);
-       	   
+       	   document.add(termYear);
        	   document.add(class_name);
        	   document.add(year);
        	   document.add(term);

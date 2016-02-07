@@ -24,6 +24,11 @@ public class AdminSessionConstants {
 	final public static String PRINCIPAL_ADD_ERROR = "Principal add error";
 	final public static String PRINCIPAL_ADD_SUCCESS = "Principal added Successfully";
 	
+	
+	
+	
+	
+	
 
 	public AdminSessionConstants() {
 		// TODO Auto-generated constructor stub 

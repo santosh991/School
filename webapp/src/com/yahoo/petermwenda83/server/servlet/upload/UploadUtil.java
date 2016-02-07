@@ -17,6 +17,7 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.CatTwo;
 import com.yahoo.petermwenda83.bean.exam.EndTerm;
+import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.PaperOne;
 import com.yahoo.petermwenda83.bean.exam.PaperThree;
 import com.yahoo.petermwenda83.bean.exam.PaperTwo;
@@ -26,6 +27,7 @@ import com.yahoo.petermwenda83.bean.staff.TeacherSubClass;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
 import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
 import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
@@ -87,7 +89,7 @@ public class UploadUtil {
 		try {
 			lineIterator = FileUtils.lineIterator(file, "UTF-8");
 			
-			String filename = file.getName();
+			String filename = file.getName().replaceAll("_", " "); 
 			
 			String [] parts = filename.split("\\.");
 			subject = parts[0];
@@ -106,13 +108,14 @@ public class UploadUtil {
 				}
 		    
 		     String code = StringUtils.lowerCase(StringUtils.trimToEmpty(exam) );
-		    if(!examcodeList.contains(code)) {
-		     return ("Invalid exam code \"" + code.toUpperCase()+"\"");
+		        if(!examcodeList.contains(code)) {
+		          return ("Invalid exam code \"" + code.toUpperCase()+"\"");
 		    	 }
 		    
 			
 			
 		    String line;
+		    String examcode = exam;
 			while (lineIterator.hasNext()) {
 			     line = lineIterator.nextLine();
 			     //System.out.println(line);
@@ -133,11 +136,41 @@ public class UploadUtil {
 			     // Check that the scores contain only numbers
 			     if(ScoreToken!=null){
 			     for(String score : ScoreToken) {
+			    	 
 			    	 if(!StringUtils.isNumeric(score)) {
 			    		 return ("Invalid score on line \"" + count + "\":   \"" + line+"\"");
 			    	 }
+			    	 
+			    	 if(StringUtils.equalsIgnoreCase(examcode, "c1") ||
+				    		 StringUtils.equalsIgnoreCase(examcode, "c2")){
+			    		 double thisscore = Double.parseDouble(score);
+				    	 if(thisscore <=0 || thisscore >30) {
+				    		 return ("Invalid cat 1 score on line \"" + count + "\":   \"" + line+"\"");
+				    	 }
+			    	 }
+			    	 
+			    	 if(StringUtils.equalsIgnoreCase(examcode, "et")){
+			    		 double thisscore = Double.parseDouble(score);
+			    		 if(thisscore <=0 || thisscore >70) {
+				    		 return ("Invalid end term score on line \"" + count + "\":   \"" + line+"\"");
+				    	 }
+			    	 }
+			    	 
+			    	 if(StringUtils.equalsIgnoreCase(examcode, "p1") ||
+					    	  StringUtils.equalsIgnoreCase(examcode, "p2") ||
+					    	  StringUtils.equalsIgnoreCase(examcode, "p3")){
+			    		 double thisscore = Double.parseDouble(score);
+			    		 if(thisscore <=0 || thisscore >100) {
+				    		 return ("Invalid paper score on line \"" + count + "\":   \"" + line+"\"");
+				    	 }
+			    	 }		
+			    	 
+			    	 
+			    	 
 			       }
-			     }
+			     }//end if(ScoreToken!=null){
+			     
+			     
 			     if(admNotoken!=null){
 			     for(String admno : admNotoken) {
 			    	 String studentuuid = "";
@@ -160,8 +193,9 @@ public class UploadUtil {
 			        TeacherSubClass ts = teacherSubClassDAO.getSubjectClass(staffId); 
 					Subject sub = subjectDAO.getSubjects(subject);
 					String SUBMITINGsubuuid = sub.getUuid();
-					String MYroomuuid = ts.getClassRoomUuid();
 					String SUBMITTINGclassuuid = clss.getUuid();
+					
+					String MYroomuuid = ts.getClassRoomUuid();					
 					String MYsubjectuuid = ts.getSubjectUuid();
 					
 					
@@ -191,8 +225,8 @@ public class UploadUtil {
 	
 	
 
-	public void saveResults(File uploadedFile,String stffID, SchoolAccount school, ExamEgineDAO examEgineDAO, StudentExamDAO studentExamDAO,
-			StudentDAO studentDAO, RoomDAO roomDAO, SubjectDAO subjectDAO){
+	public void saveResults(File uploadedFile,String stffID, SchoolAccount school, ExamEgineDAO examEgineDAO,
+			StudentDAO studentDAO, RoomDAO roomDAO, SubjectDAO subjectDAO,ExamConfigDAO examConfigDAO){
 		   
             LineIterator lineIterator =  null;
             String studentUuid = "";
@@ -200,8 +234,9 @@ public class UploadUtil {
         	String classroom = "";
         	String exam = "";
         	String Scorestr = "";
+        	ExamConfig  examConfig = examConfigDAO.getExamConfig(school.getUuid());
            
-            String filename = uploadedFile.getName();
+            String filename = uploadedFile.getName().replaceAll("_", " "); ;
 			
 			String [] parts = filename.split("\\.");
 			subject = parts[0];
@@ -228,6 +263,7 @@ public class UploadUtil {
 			     admNotoken = StringUtils.split(rowTokens[0], ';');
 			     ScoreToken = StringUtils.split(rowTokens[1], ';');
 			     
+			     
 			     for(int j=0; j<admNotoken.length; j++ ) {
 			    	String admno = StringUtils.trimToEmpty(admNotoken[j]);
 			    	if(admno !=null){
@@ -235,11 +271,15 @@ public class UploadUtil {
 			    	}
 			    	
 			     }
+			     
+			     score = 0;				  
                  for(int j=0; j<ScoreToken.length; j++ ) {
                 	 Scorestr = ScoreToken[j];
+                	 score = Double.parseDouble(Scorestr);
+                	 
 			     }
 			     
-                 score = Double.parseDouble(Scorestr);
+                 
                  
 			     
 			     if(classroom !=null){
@@ -269,7 +309,7 @@ public class UploadUtil {
 			     }
 			       
 			   
-			     if((studentExamDAO.getStudentExam(school.getUuid(), studentUuid)) !=null){
+			     //System.out.println("score="+score);
 			    	 
 						if(StringUtils.equalsIgnoreCase(exam, "c1")){
 							
@@ -281,9 +321,10 @@ public class UploadUtil {
 							catOne.setSubjectUuid(subjectuuid);
 							catOne.setStudentUuid(studentUuid);
 							catOne.setCatOne(score); 
-							catOne.setTerm("1");
-							catOne.setYear("2015"); 
+							catOne.setTerm(examConfig.getTerm());
+							catOne.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(catOne);	
+						   
 						}
 			            
 						if(StringUtils.equalsIgnoreCase(exam, "c2")){
@@ -295,9 +336,10 @@ public class UploadUtil {
 				            catwo.setSubjectUuid(subjectuuid);
 				            catwo.setStudentUuid(studentUuid);
 				            catwo.setCatTwo(score); 
-				            catwo.setTerm("1");
-				            catwo.setYear("2015"); 
+				            catwo.setTerm(examConfig.getTerm());
+				            catwo.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(catwo);
+						   
 						}
 						if(StringUtils.equalsIgnoreCase(exam, "et")){
 							    EndTerm endterm = new EndTerm();
@@ -308,9 +350,10 @@ public class UploadUtil {
 					            endterm.setSubjectUuid(subjectuuid);
 					            endterm.setStudentUuid(studentUuid);
 					            endterm.setEndTerm(score); 
-					            endterm.setTerm("1");
-					            endterm.setYear("2015"); 
+					            endterm.setTerm(examConfig.getTerm());
+					            endterm.setYear(examConfig.getYear()); 
 							    examEgineDAO.putScore(endterm);
+							   
 						}
 						if(StringUtils.equalsIgnoreCase(exam, "p1")){
 							PaperOne p1 = new PaperOne();
@@ -321,9 +364,10 @@ public class UploadUtil {
 				            p1.setSubjectUuid(subjectuuid);
 				            p1.setStudentUuid(studentUuid);
 				            p1.setPaperOne(score); 
-				            p1.setTerm("1");
-				            p1.setYear("2015"); 
+				            p1.setTerm(examConfig.getTerm());
+				            p1.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(p1);
+						    
 					}
 						if(StringUtils.equalsIgnoreCase(exam, "p2")){
 							PaperTwo p2 = new PaperTwo();
@@ -334,9 +378,10 @@ public class UploadUtil {
 				            p2.setSubjectUuid(subjectuuid);
 				            p2.setStudentUuid(studentUuid);
 				            p2.setPaperTwo(score); 
-				            p2.setTerm("1");
-				            p2.setYear("2015"); 
+				            p2.setTerm(examConfig.getTerm());
+				            p2.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(p2);
+						   
 					}
 						if(StringUtils.equalsIgnoreCase(exam, "p3")){
 							PaperThree p3 = new PaperThree();
@@ -347,29 +392,14 @@ public class UploadUtil {
 				            p3.setSubjectUuid(subjectuuid);
 				            p3.setStudentUuid(studentUuid);
 				            p3.setPaperThree(score); 
-				            p3.setTerm("1");
-				            p3.setYear("2015"); 
+				            p3.setTerm(examConfig.getTerm());
+				            p3.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(p3);
+						   
 					}
 					    
-					   System.out.println(classesuuid); 
-					   System.out.println(score); 
-			            
-							
-					}else{
-	                    
-						StudentExam studentExam = new StudentExam();
-						studentExam.setSchoolAccountUuid(school.getUuid());
-						studentExam.setClassRoomUuid(classuuid);
-						studentExam.setStudentUuid(studentUuid); 
-						if(studentExamDAO.getStudentExam(school.getUuid(), studentUuid) ==null){
-							//studentExamDAO.putStudentExam(studentExam);
-							
-						}
-					}
-			     
-			     
-			     
+					
+						
 			     
 			    
 		    }

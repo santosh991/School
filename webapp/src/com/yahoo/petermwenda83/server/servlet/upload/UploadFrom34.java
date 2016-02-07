@@ -28,6 +28,7 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
 import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
@@ -62,11 +63,12 @@ public class UploadFrom34 extends HttpServlet {
 	private UploadUtil uploadUtil;
 	
 	private static StudentDAO studentDAO;
-	private static StudentExamDAO studentExamDAO;
 	private static ExamEgineDAO examEgineDAO;
 	private static RoomDAO roomDAO;
 	private static SubjectDAO subjectDAO;
 	private static TeacherSubClassDAO teacherSubClassDAO;
+	private static ExamConfigDAO examConfigDAO;
+	
 	String classuuid = "";
 	String room = "";
 	
@@ -94,11 +96,11 @@ public class UploadFrom34 extends HttpServlet {
        CacheManager mgr = CacheManager.getInstance();
        schoolCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
        studentDAO = StudentDAO.getInstance();
-       studentExamDAO = StudentExamDAO.getInstance();
        examEgineDAO = ExamEgineDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
        subjectDAO = SubjectDAO.getInstance();
        teacherSubClassDAO = TeacherSubClassDAO.getInstance();
+       examConfigDAO = ExamConfigDAO.getInstance();
        
    }
 	
@@ -162,7 +164,7 @@ public class UploadFrom34 extends HttpServlet {
 	   response.sendRedirect("examUpload.jsp");
 	          // Process the file into the database if it is ok
        if(StringUtils.equals(feedback, UPLOAD_SUCCESS)) {
-    	   uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO, studentExamDAO, studentDAO, roomDAO, subjectDAO);
+    	   uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO,studentDAO,roomDAO, subjectDAO,examConfigDAO);
     	   
        }
        return;

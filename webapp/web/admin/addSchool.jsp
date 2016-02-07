@@ -63,7 +63,7 @@ if (session == null) {
                             }
                              
 
-                             String addErrStr = "";
+                                String addErrStr = "";
                                 String addsuccessStr = "";
                                 session = request.getSession(false);
                                      addErrStr = (String) session.getAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR);

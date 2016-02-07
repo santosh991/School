@@ -54,12 +54,7 @@ if (session == null) {
        
         <div class="box-content">
 
-         <%
-                                
-
-
-                     %>
-
+        
 
             <form class="form-horizontal" action="updateSchool" method="POST"  >
                 <fieldset>

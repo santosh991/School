@@ -90,6 +90,16 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm12</servlet-class>
     </servlet>
 
+     <servlet>
+        <servlet-name>ExportText</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.expoert.text.ExportText</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>UpdateExamConfig</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.UpdateExamConfig</servlet-class>
+    </servlet>
+
 
 
 
@@ -199,6 +209,16 @@
     <servlet-mapping>
         <servlet-name>ReportForm12</servlet-name>
         <url-pattern>/school/reportForm12</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ExportText</servlet-name>
+        <url-pattern>/school/exportText</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdateExamConfig</servlet-name>
+        <url-pattern>/school/updateExamConfig</url-pattern>
     </servlet-mapping>
 
 

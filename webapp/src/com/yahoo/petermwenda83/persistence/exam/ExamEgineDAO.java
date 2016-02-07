@@ -74,13 +74,14 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getCatOne(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Common getCommon(String schoolAccountUuid, String classRoomUuid, String studentUuid,String subjectUuid) {
+	public Common getCommon(String schoolAccountUuid, String classRoomUuid, String studentUuid,String subjectUuid,String Term,String Year) {
 		Common common = new Common();
 		ResultSet rset = null;
 		try(
 				Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance"
-						+ " WHERE SchoolAccountUuid = ? AND classRoomUuid = ? AND StudentUuid = ?  AND SubjectUuid = ?;");       
+						+ " WHERE SchoolAccountUuid = ? AND classRoomUuid = ? AND StudentUuid = ? "
+						+ " AND SubjectUuid = ? AND Term = ? AND Year = ?;");       
 
 				){
 
@@ -88,6 +89,8 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 			pstmt.setString(2, classRoomUuid); 
 			pstmt.setString(3, studentUuid); 
 			pstmt.setString(4, subjectUuid); 
+			pstmt.setString(5, Term); 
+			pstmt.setString(6, Year); 
 			rset = pstmt.executeQuery();
 			while(rset.next()){
 
@@ -99,6 +102,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 		}catch(SQLException e){
 			logger.error("SQL Exception when getting Common: " + common);
 			logger.error(ExceptionUtils.getStackTrace(e));
+			System.out.println(ExceptionUtils.getStackTrace(e));
 
 		}
 
@@ -109,23 +113,27 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#hasCatOne(com.yahoo.petermwenda83.bean.exam.CatOne)
 	 */
 	@Override
-	public boolean Checker(String schoolAccountUuid,String classRoomUuid,String studentUuid,String subjectUuid) {
+	public boolean Checker(String schoolAccountUuid,String classRoomUuid,String studentUuid,String subjectUuid,String Term,String Year) {
 		boolean studentexist = false;
 		String school = "";
 		String classroom = "";
 		String student = "";
 		String subject = "";
+		String term = "";
+		String year = "";
 		
 		ResultSet rset = null;
 		try(    Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,classRoomUuid,StudentUuid,SubjectUuid FROM Perfomance "
-	        			+ "WHERE SchoolAccountUuid = ? AND classRoomUuid = ? AND StudentUuid = ?  AND SubjectUuid = ?;");
+				PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,classRoomUuid,StudentUuid,SubjectUuid,Term,Year FROM Perfomance "
+	        			+ "WHERE SchoolAccountUuid = ? AND classRoomUuid = ? AND StudentUuid = ?  AND SubjectUuid = ? AND Term = ? AND Year = ?;");
       		){
 
 	            pstmt.setString(1, schoolAccountUuid);
 	            pstmt.setString(2, classRoomUuid);
 	            pstmt.setString(3, studentUuid);
 	            pstmt.setString(4, subjectUuid);
+	            pstmt.setString(5, Term);
+	            pstmt.setString(6, Year);
 	            rset = pstmt.executeQuery();
 	            
 	            if(rset.next()){
@@ -133,11 +141,15 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 					classroom = rset.getString("classRoomUuid");
 					student = rset.getString("StudentUuid");
 					subject = rset.getString("SubjectUuid");
+					term  = rset.getString("Term");
+					year  = rset.getString("Year");
 					
 					studentexist = (school != schoolAccountUuid&&
 							        classroom != classRoomUuid && 
 							        student != studentUuid && 
-							        subject != subjectUuid) ? true : false;
+							        subject != subjectUuid && 
+							        term != Term && 
+							        year != Year) ? true : false;
 					
 				}
 			
@@ -160,7 +172,8 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	@Override
 	public boolean putScore(Perfomance perfomance) {
 		boolean success = true;
-		if(!Checker(perfomance.getSchoolAccountUuid(),perfomance.getClassRoomUuid(),perfomance.getStudentUuid(),perfomance.getSubjectUuid())) {
+		if(!Checker(perfomance.getSchoolAccountUuid(),perfomance.getClassRoomUuid(),
+				perfomance.getStudentUuid(),perfomance.getSubjectUuid(),perfomance.getTerm(),perfomance.getYear())) {
 		try(   Connection conn = dbutils.getConnection();
 				
 				PreparedStatement pstmtCatOne = conn.prepareStatement("INSERT INTO Perfomance"
@@ -387,15 +400,19 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getcatoneList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<CatOne> getcatoneList(String schoolAccountUuid, String classRoomUuid) {
+	public List<CatOne> getcatoneList(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<CatOne> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,classRoomUuid,CatOne,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,"
+     	         		+ "classRoomUuid,CatOne,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ?"
+     	         		+ " AND classRoomUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid);  
+         	   pstmt.setString(3, Term);  
+         	   pstmt.setString(4, Year);  
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, CatOne.class);
@@ -403,6 +420,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
         } catch (SQLException e) {
             logger.error("SQLException when getting List  of CatOne for school" + schoolAccountUuid +" and classroom" +classRoomUuid); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
         return list;
 	}
@@ -411,15 +429,19 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getcatwoList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<CatTwo> getcatwoList(String schoolAccountUuid, String classRoomUuid) {
+	public List<CatTwo> getcatwoList(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<CatTwo> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,classRoomUuid,CatTwo,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,"
+     	         		+ "classRoomUuid,CatTwo,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ?"
+     	         		+ " AND classRoomUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid); 
+         	   pstmt.setString(3, Term);  
+        	   pstmt.setString(4, Year);  
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, CatTwo.class);
@@ -427,6 +449,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
         } catch (SQLException e) {
             logger.error("SQLException when getting List CatTwo for school" + schoolAccountUuid +" and classroom" +classRoomUuid); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
         return list;
 	}
@@ -435,15 +458,19 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getendtermList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<EndTerm> getendtermList(String schoolAccountUuid, String classRoomUuid) {
+	public List<EndTerm> getendtermList(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<EndTerm> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,classRoomUuid,EndTerm,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,"
+     	         		+ "classRoomUuid,EndTerm,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ?"
+     	         		+ " AND classRoomUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid);
+         	   pstmt.setString(3, Term);  
+        	   pstmt.setString(4, Year);  
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, EndTerm.class);
@@ -451,6 +478,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
         } catch (SQLException e) {
             logger.error("SQLException when getting EndTerm List for school" + schoolAccountUuid +" and classroom" +classRoomUuid); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
         return list;
 	}
@@ -459,15 +487,19 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getPaperOneList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<PaperOne> getPaperOneList(String schoolAccountUuid, String classRoomUuid) {
+	public List<PaperOne> getPaperOneList(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<PaperOne> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,classRoomUuid,PaperOne,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,"
+     	         		+ "classRoomUuid,PaperOne,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ?"
+     	         		+ " AND classRoomUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid);  
+         	   pstmt.setString(3, Term);  
+        	   pstmt.setString(4, Year);  
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, PaperOne.class);
@@ -475,6 +507,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
         } catch (SQLException e) {
             logger.error("SQLException when getting PaperOne List for school" + schoolAccountUuid +" and classroom" +classRoomUuid); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
         return list;
 	}
@@ -483,15 +516,19 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getPaperTwoList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<PaperTwo> getPaperTwoList(String schoolAccountUuid, String classRoomUuid) {
+	public List<PaperTwo> getPaperTwoList(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<PaperTwo> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,classRoomUuid,PaperTwo,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,"
+     	         		+ "classRoomUuid,PaperTwo,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? "
+     	         		+ "AND classRoomUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid); 
+         	   pstmt.setString(3, Term);  
+        	   pstmt.setString(4, Year);  
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, PaperTwo.class);
@@ -499,6 +536,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
         } catch (SQLException e) {
             logger.error("SQLException when getting PaperTwo List for school" + schoolAccountUuid +" and classroom" +classRoomUuid); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
         return list;
 	}
@@ -507,15 +545,19 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolExamEngineDAO#getpaperThreeList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<PaperThree> getpaperThreeList(String schoolAccountUuid, String classRoomUuid) {
+	public List<PaperThree> getpaperThreeList(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
 		List<PaperThree> list = new ArrayList<>();
 
         try (
         		 Connection conn = dbutils.getConnection();
-     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,classRoomUuid,PaperThree,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? AND classRoomUuid = ?;");    		   
+     	         PreparedStatement pstmt = conn.prepareStatement("SELECT SchoolAccountUuid,TeacherUuid,StudentUuid,SubjectUuid,"
+     	         		+ "classRoomUuid,PaperThree,Term,Year FROM Perfomance WHERE SchoolAccountUuid = ? "
+     	         		+ "AND classRoomUuid = ? AND Term = ? AND Year = ?;");    		   
      	   ) {
          	   pstmt.setString(1, schoolAccountUuid);      
-         	   pstmt.setString(2, classRoomUuid);      
+         	   pstmt.setString(2, classRoomUuid);  
+         	   pstmt.setString(3, Term);  
+        	   pstmt.setString(4, Year);  
          	   try( ResultSet rset = pstmt.executeQuery();){
      	       
      	       list = beanProcessor.toBeanList(rset, PaperThree.class);
@@ -523,6 +565,7 @@ public class ExamEgineDAO extends GenericDAO implements SchoolExamEngineDAO {
         } catch (SQLException e) {
             logger.error("SQLException when getting PaperThree List for school" + schoolAccountUuid +" and classroom" +classRoomUuid); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
         return list;
 	}

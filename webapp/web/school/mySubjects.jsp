@@ -7,6 +7,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.subject.SubjectDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.subject.Subject"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
+
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
@@ -71,6 +74,9 @@
     String accountuuid = school.getUuid();
     String schoolname = school.getSchoolName();
 
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -86,12 +92,14 @@
      teachersubclassList = teacherSubClassDAO.getSubjectsANDClassesList(stffID); 
      
      HashMap<String, String> subjectHash = new HashMap<String, String>();
+     HashMap<String, String> subjectCodeHash = new HashMap<String, String>();
+     
      SubjectDAO subjectDAO = SubjectDAO.getInstance();
      List<Subject> subjectList = new ArrayList<Subject>(); 
      subjectList = subjectDAO.getAllSubjects(); 
       for(Subject s : subjectList){
-           subjectHash.put(s.getUuid() , s.getSubjectName());
-
+           subjectHash.put(s.getUuid() , s.getSubjectName());  
+           subjectCodeHash.put(s.getUuid() , s.getSubjectCode());
             }
 
 
@@ -131,7 +139,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-          <p>My Subjects</p>
+         <p>Wellcome to <%=schoolname%> :My Subjects: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             
@@ -145,6 +153,9 @@
                         <th>*</th>
                         <th>ClassRoom</th>
                         <th>Subject </th>
+                        <th>Code </th>
+                        <th>Scores </th>
+                        <th>MarkSheet </th>
                         
                     </tr>
                 </thead>   
@@ -157,8 +168,27 @@
                              out.println("<tr>"); 
                              out.println("<td width=\"3%\" >" + count + "</td>"); 
                              out.println("<td class=\"center\">" + roomHash.get(cs.getClassRoomUuid()) + "</td>"); 
-                             out.println("<td class=\"center\">" + subjectHash.get(cs.getSubjectUuid()) + "</td>");         
-                         
+                             out.println("<td class=\"center\">" + subjectHash.get(cs.getSubjectUuid()) + "</td>");  
+                             out.println("<td class=\"center\">" + subjectCodeHash.get(cs.getSubjectUuid()) + "</td>");  
+                             
+                             %> 
+                                <td class="center">
+                                <form name="edit" method="POST" action="viewScores.jsp"> 
+                                <input type="hidden" name="subjectUuid" value="<%=cs.getSubjectUuid()%>">
+                                <input type="hidden" name="classroomUuid" value="<%=cs.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="View" /> 
+                                </form>                          
+                               </td>  
+
+                               <td class="center">
+                                <form name="edit" method="POST" action="exportText" target="_blank"> 
+                                <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">
+                                <input type="hidden" name="classroomuuidToken" value="<%=cs.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 
+                                </form>                          
+                               </td>  
+
+                        <%      
                         count++;
                       } 
                     %>
