@@ -3,6 +3,8 @@
  */
 package com.yahoo.petermwenda83.bean.money;
 
+import java.util.Date;
+
 import com.yahoo.petermwenda83.bean.StorableBean;
 
 /**
@@ -15,15 +17,22 @@ public class PocketMoney extends StorableBean{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+   
+     
+    
 	private String studentUuid;
-	private double Balance;
+	private double amount;
+	private String systemUser;
+	private Date DateCommitted;
 
 	/**
 	 * 
 	 */
 	public PocketMoney() {
 		studentUuid = "";
-		Balance = 0.0;
+		amount = 0.0;
+		systemUser = "";
+		DateCommitted = new Date();
 	}
 	
 	/**
@@ -41,29 +50,57 @@ public class PocketMoney extends StorableBean{
 	}
 
 	/**
-	 * @return the balance
+	 * @return the amount
 	 */
-	public double getBalance() {
-		return Balance;
+	public double getAmount() {
+		return amount;
 	}
 
 	/**
-	 * @param balance the balance to set
+	 * @param amount the amount to set
 	 */
-	public void setBalance(double balance) {
-		Balance = balance;
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	/**
+	 * @return the systemUser
+	 */
+	public String getSystemUser() {
+		return systemUser;
+	}
+
+	/**
+	 * @param systemUser the systemUser to set
+	 */
+	public void setSystemUser(String systemUser) {
+		this.systemUser = systemUser;
+	}
+
+	/**
+	 * @return the dateCommitted
+	 */
+	public Date getDateCommitted() {
+		return DateCommitted;
+	}
+
+	/**
+	 * @param dateCommitted the dateCommitted to set
+	 */
+	public void setDateCommitted(Date dateCommitted) {
+		DateCommitted = dateCommitted;
 	}
 
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Balance");
+		builder.append("Money");
 		builder.append("[getUuid() = ");
 		builder.append(getUuid());
 		builder.append(", studentUuid =");
 		builder.append(studentUuid);
-		builder.append(", Balance =");
-		builder.append(Balance);
+		builder.append(", amount =");
+		builder.append(amount);
 		builder.append("]");
 		return builder.toString(); 
 		}

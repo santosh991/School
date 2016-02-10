@@ -25,7 +25,6 @@ import com.yahoo.petermwenda83.persistence.GenericDAO;
  */
 public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
      
-
 	private static StudentDAO studentDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
@@ -57,24 +56,23 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 */
 	
 	@Override
-	public Student getStudent(String Uuid) {
+	public Student getStudent(String schoolaccountUuid,String Uuid) {
 		Student student = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE schoolaccountUuid =? AND Uuid = ?;");       
         		
         		){
         	
         	 pstmt.setString(1, Uuid);
+        	 pstmt.setString(2, schoolaccountUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
 	    	 student  = beanProcessor.toBean(rset,Student.class);
 	   }
-        	
-        	
-        	
+        		
         }catch(SQLException e){
         	 logger.error("SQL Exception when getting an users with uuid: " + Uuid);
              logger.error(ExceptionUtils.getStackTrace(e));
@@ -88,16 +86,17 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 */
 	
 	@Override
-	public Student getStudents(String admno) {
+	public Student getStudents(String schoolaccountUuid,String admno) {
 		Student student = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE admno = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE schoolaccountUuid =? AND admno = ?;");       
         		
         		){
         	
         	 pstmt.setString(1, admno);
+        	 pstmt.setString(2, schoolaccountUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -122,7 +121,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		List<Student> list = new ArrayList<>();
 
         try (
-        		 Connection conn = dbutils.getConnection();
+        	   Connection conn = dbutils.getConnection();
      	       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid = ? "
      	       		+ "AND firstname ILIKE ?;");    		   
      	   ) {
@@ -134,8 +133,8 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
          	   }
         } catch (SQLException e) {
             logger.error("SQLException when getting Student of " + schoolaccount  +
-            		" and student name '" + firstname +  "'"); 
-             logger.error(ExceptionUtils.getStackTrace(e));
+            " and student name '" + firstname +  "'"); 
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
                 
         Collections.sort(list);
@@ -165,8 +164,8 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
          	   }
         } catch (SQLException e) {
             logger.error("SQLException when getting Student of " + schoolaccountUuid  +
-            		" and student admno '" + admno +  "'");
-             logger.error(ExceptionUtils.getStackTrace(e));
+            " and student admno '" + admno +  "'");
+            logger.error(ExceptionUtils.getStackTrace(e));
         }
                 
         Collections.sort(list);
@@ -183,28 +182,31 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student" 
-			        		+"(Uuid,SchoolAccountUuid, Firstname, Lastname,Surname,Admno,Year,DOB,Bcertno,SysUser,RegDate)"
-			        		+ " VALUES (?,?,?,?,?,?,?,?,?,?);");
+			        		+"(Uuid,SchoolAccountUuid,StatusUuid,ClassRoomUuid,AdmNo,Firstname, Lastname,Surname,"
+			        		+ "Gender,DOB,Bcertno,County,SysUser,AdmissionDate)"
+			        		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		){
 			   
 	            pstmt.setString(1, student.getUuid());
 	            pstmt.setString(2, student.getSchoolAccountUuid());
-	            pstmt.setString(3, student.getFirstname());
-	            pstmt.setString(4, student.getLastname());
-	            pstmt.setString(5, student.getSurname());
-	            pstmt.setString(6, student.getAdmno());
-	          //  pstmt.setString(7, student.getYear());
-	          //  pstmt.setString(8, student.getDOB());
-	            pstmt.setString(9, student.getBcertno());
-	            pstmt.setString(10, student.getSysUser());
-	           // pstmt.setTimestamp(11, new Timestamp(student.getRegDate().getTime()));
-	           
+	            pstmt.setString(3, student.getStatusUuid());
+	            pstmt.setString(4, student.getClassRoomUuid());
+	            pstmt.setString(5, student.getAdmno());
+	            pstmt.setString(6, student.getFirstname());
+	            pstmt.setString(7, student.getLastname());
+	            pstmt.setString(8, student.getSurname());
+	            pstmt.setString(8, student.getGender());
+	            pstmt.setString(9, student.getdOB());
+	            pstmt.setString(10, student.getBcertno());
+	            pstmt.setString(11, student.getCounty());
+	            pstmt.setString(12, student.getSysUser());
+	            pstmt.setTimestamp(13, new Timestamp(student.getAdmissionDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put Student: "+student);
-     logger.error(ExceptionUtils.getStackTrace(e)); 
-     success = false;
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             success = false;
 		 }
 		
 		return success;
@@ -221,21 +223,22 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student  SET Firstname =?," 
-			        +"Lastname =?,Surname =?,Year =?,DOB =?,"
-			        + "Bcertno =?,SysUser =?,RegDate=? WHERE Admno = ? AND SchoolAccountUuid =?; ");
+				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student SET ClassRoomUuid =?, Firstname =?," 
+			        +"Lastname =?,Surname =?,Gender =?,DOB =?,"
+			        + "Bcertno =?,County =?,SysUser=? WHERE Admno = ? AND SchoolAccountUuid = ?; ");
 		){
 			  
-	            pstmt.setString(1, student.getFirstname());
-	            pstmt.setString(2, student.getLastname());
-	            pstmt.setString(3, student.getSurname());	           
-	            //pstmt.setString(4, student.getYear());
-	            //pstmt.setString(5, student.getDOB());
-	            pstmt.setString(6, student.getBcertno());
-	            pstmt.setString(7, student.getSysUser());
-	           // pstmt.setTimestamp(8, new Timestamp(student.getRegDate().getTime()));
-	            pstmt.setString(9, student.getAdmno());
-	            pstmt.setString(10, student.getSchoolAccountUuid());
+			    pstmt.setString(1, student.getClassRoomUuid());
+	            pstmt.setString(2, student.getFirstname());
+	            pstmt.setString(3, student.getLastname());
+	            pstmt.setString(4, student.getSurname());
+	            pstmt.setString(5, student.getGender());
+	            pstmt.setString(6, student.getdOB());
+	            pstmt.setString(7, student.getBcertno());
+	            pstmt.setString(8, student.getCounty());
+	            pstmt.setString(9, student.getSysUser());
+	            pstmt.setString(10, student.getAdmno());
+	            pstmt.setString(11, student.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -257,17 +260,17 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		 boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
-	         	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Student"
-	         	      		+ " WHERE Uuid = ? AND SchoolAccountUuid =?; ");       
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Student"
+	         	     + " WHERE Admno = ? AND SchoolAccountUuid =?; ");       
 	      		
 	      		){
 	      	
-	      	 pstmt.setString(1, student.getUuid());
+	      	 pstmt.setString(1, student.getAdmno());
 	      	 pstmt.setString(2, student.getSchoolAccountUuid());
 		     pstmt.executeUpdate();
 		     
 	      }catch(SQLException e){
-	      	 logger.error("SQL Exception when deletting student : " +student);
+	      	   logger.error("SQL Exception when deletting student : " +student);
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	           System.out.println(ExceptionUtils.getStackTrace(e));
 	           success = false;
@@ -287,7 +290,6 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 try(   
   		Connection conn = dbutils.getConnection();
   		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid = ? AND classRoomUuid =? ;");   
-  		//ResultSet rset = pstmt.executeQuery();
 		) {
 		 pstmt.setString(1,schoolaccountUuid);
 		 pstmt.setString(2,classRoomUuid);
@@ -299,7 +301,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
         
 
   } catch(SQLException e){
-  	logger.error("SQL Exception when getting all Student");
+   	 logger.error("SQL Exception when getting all Student");
      logger.error(ExceptionUtils.getStackTrace(e));
      System.out.println(ExceptionUtils.getStackTrace(e)); 
   }

@@ -2,13 +2,14 @@ package com.yahoo.petermwenda83.persistence.student;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
-import com.yahoo.petermwenda83.bean.student.StudentSubClassRoom;
 
 public class TestStudentDAO {
 	
@@ -19,53 +20,136 @@ public class TestStudentDAO {
 	final int databasePort = 5432;
 	
 	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
-	final String FORM_ONE_N = "4DA86139-6A72-4089-8858-6A3A613FDFE6";
+	
+	final String CLASSROOM_UUID = "4DA86139-6A72-4089-8858-6A3A613FDFE6",
+			     CLASSROOM_UUID_NEW = "4DA86139-6A72-4089-8858-6A3A613FDFE6",
+			     CLASSROOM_UUID_UPDATE = "4DA86139-6A72-4089-8858-6A3A613FDFE6";
+	
+	final String UUID = "";
+	
+	final String STATUS_UUID = "",
+			     STATUS_UUID_NEW = "";
+	
+	final String ADM_NO = "",
+			     ADM_NO_NEW = "",
+			     ADM_NO_UPDATE = "";
+	
+	final String FIRST_NAME = "",
+			     FIRST_NAME_NEW = "",
+			     FIRST_NAME_UPDATE = "";
+	
+	final String LAST_NAME = "",
+			     LAST_NAME_NEW = "",
+			     LAST_NAME_UPDATE = "";
+	
+	final String SURNAME = "",
+			     SURNAME_NEW = "",
+			     SURNAME_UPDATE = "";
+	
+	final String GENDER = "",
+			     GENDER_NEW = "",
+			     GENDER_UPDATE = "";
+	
+	final String DOB = "",
+			     DOB_NEW = "",
+			     DOB_UPDATE = "";
+	
+	final String B_CERT_NO = "",
+			     B_CERT_NO_NEW = "",
+			     B_CERT_NO_UPDATE = "";
+	
+	final String COUNTY = "",
+			     COUNTY_NEW = "",
+			     COUNTY_UPDATE = "";
+	
+	final String SYS_USER = "",
+			     SYS_USER_NEW = "",
+			     SYS_USER_UPDATE = "";
+	
+	final Date ADM_DATE =  new Date();
 	
 	private StudentDAO store;
     
-	 @Ignore
+	@Ignore
 	@Test
 	public void testGetStudent() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Student s = new Student();
+		s = store.getStudent(SCHOOL_UUID,UUID);
+		assertEquals(s.getUuid(),UUID);
 	}
    
-	 @Ignore
+	@Ignore
 	@Test
 	public void testGetStudents() {
-		fail("Not yet implemented");
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 Student s = new Student();
+		 s = store.getStudents(SCHOOL_UUID,ADM_NO);
+		 assertEquals(s.getUuid(),UUID);
 	}
     
-	 @Ignore
+	@Ignore
 	@Test
 	public void testGetStudentByName() {
-		fail("Not yet implemented");
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 SchoolAccount schoolaccount = new SchoolAccount();
+		 schoolaccount.setUuid(SCHOOL_UUID); 
+		 List<Student> list = store.getStudentByName(schoolaccount, FIRST_NAME);
+			for (Student l : list) {
+				System.out.println(l);	
+			}
 	}
     
-	 @Ignore
+	@Ignore
 	@Test
 	public void testGetStudentByAdmNo() {
-		fail("Not yet implemented");
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 SchoolAccount schoolaccount = new SchoolAccount();
+		 schoolaccount.setUuid(SCHOOL_UUID); 
+		 List<Student> list = store.getStudentByAdmNo(SCHOOL_UUID, ADM_NO); 
+			for (Student l : list) {
+				System.out.println(l);	
+			}
 	}
-	 @Ignore
+	@Ignore
 	@Test
 	public void testPutStudents() {
-		fail("Not yet implemented");
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 Student s = new Student();
+		 s.setSchoolAccountUuid(SCHOOL_UUID);
+		 s.setStatusUuid(STATUS_UUID);
+		 
+		 
+		 assertTrue(store.putStudents(s));   
+
 	}
-	 @Ignore
+	@Ignore
 	@Test
 	public void testUpdateStudents() {
-		fail("Not yet implemented");
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 Student s = new Student();
+		 s.setSchoolAccountUuid(SCHOOL_UUID);
+		 s.setStatusUuid(STATUS_UUID);
+		 
+		 
+		 assertTrue(store.updateStudents(s));  
+
 	}
 	 @Ignore
 	@Test
 	public void testDeleteStudents() {
-		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 Student s = new Student();
+		 s.setSchoolAccountUuid(SCHOOL_UUID);
+		 s.setStatusUuid(STATUS_UUID);
+		 assertTrue(store.deleteStudents(s)); 
+
 	}
 	@Ignore
 	@Test
 	public void testGetAllStudents() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Student> list = store.getAllStudents(SCHOOL_UUID,FORM_ONE_N);
+		List<Student> list = store.getAllStudents(SCHOOL_UUID,CLASSROOM_UUID);
 		for (Student l : list) {
 			System.out.println(l);	
 		}
@@ -75,8 +159,15 @@ public class TestStudentDAO {
 	@Test
 	public void testGetStudentList() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		 SchoolAccount schoolaccount = new SchoolAccount();
+		 schoolaccount.setUuid(SCHOOL_UUID);
+		List<Student> list = store.getStudentList(schoolaccount, 0, 15);
+		for (Student l : list) {
+			System.out.println(l);	
+		}
 	}
 	 
+	   
 	    @Ignore
 		@Test
 		public void testGetAllStudentList() {

@@ -16,7 +16,6 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
@@ -63,15 +62,15 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	}
 	
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.subject.SchoolSubjectDAO#getSubject(com.yahoo.petermwenda83.bean.student.StudentSubClassRoom.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
+	 * @see com.yahoo.petermwenda83.persistence.subject.SchoolSubjectDAO#getSubject(com.yahoo.petermwenda83.bean.student.StudentSubject.SubjectUi, com.yahoo.petermwenda83.view.InfoBsic, java.lang.String)
 	 */
 	@Override
 	public Subject getSubject(String uuid) {
 		Subject Subject = null;
         ResultSet rset = null;
         try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE Uuid = ?;");       
+        	Connection conn = dbutils.getConnection();
+           	PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE Uuid = ?;");       
         		
         		){
         	
@@ -80,9 +79,7 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	     while(rset.next()){
 	
 	    	Subject  = beanProcessor.toBean(rset,Subject.class);
-	   }
-        	
-        	
+	    }
         	
         }catch(SQLException e){
         	 logger.error("SQL Exception when getting an subject with uuid: " + uuid);
@@ -100,19 +97,16 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 		Subject Subject = null;
         ResultSet rset = null;
         try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE Subjectcode = ?;");       
+        	Connection conn = dbutils.getConnection();
+           	PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Subject WHERE Subjectcode = ?;");       
         		
         		){
         	
         	 pstmt.setString(1, subjectcode);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
-	
 	    	Subject  = beanProcessor.toBean(rset,Subject.class);
-	   }
-        	
-        	
+	     }
         	
         }catch(SQLException e){
         	 logger.error("SQL Exception when getting a subject with subjectcode: " + subjectcode);
@@ -132,16 +126,15 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 		boolean success = true;
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Subject" 
-			        		+"(Uuid,SchoolAccountUuid,SubjectCode,SubjectName,SubjectCategory,SysUser,RegDate) VALUES (?,?,?,?);");
+			        		+"(Uuid,SubjectCode,SubjectName,SubjectCategory,SysUser,RegDate) VALUES (?,?,?,?,?,?);");
         		){
 			   
 	            pstmt.setString(1, subject.getUuid());
-	            pstmt.setString(2, subject.getSchoolAccountUuid());
-	            pstmt.setString(3, subject.getSubjectCode());
-	            pstmt.setString(4, subject.getSubjectName());
-	            pstmt.setString(5, subject.getSubjectCategory());
-	            pstmt.setString(6, subject.getSysUser());
-	            pstmt.setTimestamp(7, new Timestamp(subject.getRegDate().getTime()));
+	            pstmt.setString(2, subject.getSubjectCode());
+	            pstmt.setString(3, subject.getSubjectName());
+	            pstmt.setString(4, subject.getSubjectCategory());
+	            pstmt.setString(5, subject.getSysUser());
+	            pstmt.setTimestamp(6, new Timestamp(subject.getRegDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -162,16 +155,15 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	public boolean editSubject(Subject subject,String uuid) {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
-        	PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET SubjectCode=?,"
-        			+ "SubjectName=?, SubjectCategory=?,SysUser=?,RegDate=? WHERE SchoolAccountUuid = ? AND  WHERE Uuid = ?;");
+        	   PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET SubjectCode=?,"
+        			+ "SubjectName=?, SubjectCategory=?,SysUser=?,RegDate=? WHERE Uuid = ?;");
         	) { 
 	            pstmt.setString(1, subject.getSubjectCode());
 	            pstmt.setString(2, subject.getSubjectName());
 	            pstmt.setString(3, subject.getSubjectCategory());
 	            pstmt.setString(4, subject.getSysUser());
 	            pstmt.setTimestamp(5, new Timestamp(subject.getRegDate().getTime()));
-	            pstmt.setString(6, subject.getSchoolAccountUuid());
-	            pstmt.setString(7, subject.getUuid());
+	            pstmt.setString(6, subject.getUuid());
                 pstmt.executeUpdate(); 
 
         } catch (SQLException e) {
@@ -193,12 +185,12 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	public boolean deleteStudent(Subject subject) {
 		boolean success = true; 
         try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE SubjectName = ?;");       
+        	Connection conn = dbutils.getConnection();
+           	PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Subject WHERE Uuid = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, subject.getSubjectName());
+        	 pstmt.setString(1, subject.getUuid());
 	         pstmt.executeUpdate();
 	     
         }catch(SQLException e){
@@ -217,14 +209,11 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	 */
 	@Override
 	public List<Subject> getAllSubjects() {
-		List<Subject>  list = null;
-		
+		 List<Subject>  list = null;		
 		 try(   
         		Connection conn = dbutils.getConnection();
-        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");   
-        		//ResultSet rset = pstmt.executeQuery();
-    		) {
-			 //pstmt.setString(1, schoolAccountUuid);     
+        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");          		
+    		) {			     
 			 try( ResultSet rset = pstmt.executeQuery();){
 	     	       
 				 list = beanProcessor.toBeanList(rset, Subject.class);

@@ -155,21 +155,33 @@ ALTER TABLE Student OWNER TO school;
 
 
 -- -------------------
--- StudentSubClassRoom
+-- StudentSubject
 -- -------------------
-CREATE TABLE StudentSubClassRoom (
+CREATE TABLE StudentSubject (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StudentUuid text REFERENCES Student(Uuid),
     SubjectUuid text REFERENCES Subject(Uuid),
-    ClassRoomUuid text REFERENCES ClassRoom(Uuid),
     SysUser text,
     AllocationDate timestamp with time zone DEFAULT now()
 
 );
 
-\COPY StudentSubClassRoom(Uuid,StudentUuid,SubjectUuid,ClassRoomUuid,SysUser,AllocationDate) FROM '/tmp/StudentSubClassRoom.csv' WITH DELIMITER AS '|' CSV HEADER
-ALTER TABLE StudentSubClassRoom OWNER TO school;
+\COPY StudentSubject(Uuid,StudentUuid,SubjectUuid,SysUser,AllocationDate) FROM '/tmp/StudentSubject.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentSubject OWNER TO school;
+
+
+-- -------------------
+-- House
+----------------------
+CREATE TABLE  House (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    HouseName text
+);
+
+\COPY House(Uuid,HouseName) FROM '/tmp/House.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE House OWNER TO school;
 
 
 -- -------------------
@@ -179,14 +191,14 @@ CREATE TABLE  StudentHouse (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StudentUuid text REFERENCES student(uuid),
-    HouseName text,
+    HouseUuid text REFERENCES House(uuid),
     SysUser text,
     DateIn timestamp with time zone DEFAULT now()
 
     
 );
 
-\COPY StudentHouse(Uuid,StudentUuid,HouseName,SysUser,DateIn) FROM '/tmp/StudentHouse.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY StudentHouse(Uuid,StudentUuid,HouseUuid,SysUser,DateIn) FROM '/tmp/StudentHouse.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE StudentHouse OWNER TO school;
 
 
@@ -563,11 +575,11 @@ CREATE TABLE PocketMoney (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StudentUuid text REFERENCES Student(Uuid),
-    Balance float NOT NULL CHECK (Balance>=0)
+    Amount float NOT NULL CHECK (Amount>=0)
    
 
 );
-\COPY PocketMoney(Uuid,StudentUuid,Balance) FROM '/tmp/PocketMoney.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY PocketMoney(Uuid,StudentUuid,Amount) FROM '/tmp/PocketMoney.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE PocketMoney OWNER TO school;
 
 -- -------------------
@@ -578,13 +590,14 @@ CREATE TABLE Deposit (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StudentUuid text REFERENCES Student(Uuid),
-    AmountDeposited float NOT NULL CHECK (AmountDeposited>=0),
-    SysUser text,
-    DepositeDate timestamp with time zone DEFAULT now()
+    Amount float NOT NULL CHECK (Amount>=0),
+    SystemUser text,
+    DateCommitted timestamp with time zone DEFAULT now()
 
 );
-\COPY Deposit(Uuid,StudentUuid,AmountDeposited,SysUser,DepositeDate) FROM '/tmp/Deposit.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Deposit(Uuid,StudentUuid,Amount,SystemUser,DateCommitted) FROM '/tmp/Deposit.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Deposit OWNER TO school;
+
 
 -- -------------------
 -- Table  Withdraw
@@ -594,12 +607,12 @@ CREATE TABLE  Withdraw (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StudentUuid text REFERENCES student(uuid),
-    AmountWithdrawn float NOT NULL CHECK (AmountWithdrawn>=0),
-    SysUser text,
-    WithdrawDate timestamp with time zone DEFAULT now()
+    Amount float NOT NULL CHECK (Amount>=0),
+    SystemUser text,
+    DateCommitted timestamp with time zone DEFAULT now()
 
 );
-\COPY Withdraw(Uuid,StudentUuid,AmountWithdrawn,SysUser,WithdrawDate) FROM '/tmp/Withdraw.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Withdraw(Uuid,StudentUuid,Amount,SystemUser,DateCommitted) FROM '/tmp/Withdraw.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Withdraw OWNER TO school;
 
 

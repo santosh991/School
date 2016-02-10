@@ -28,7 +28,7 @@ public class StudentHouse extends StorableBean  {
 	 */
 	private static final long serialVersionUID = -4883618114808381680L;
 	private String studentUuid;
-	private String housename;
+	private String HouseUuid;
 	private String sysUser;
 	private Date dateIn;
 	/**
@@ -37,10 +37,13 @@ public class StudentHouse extends StorableBean  {
 	public StudentHouse() {
 		super();
 		studentUuid = "";
+		HouseUuid = "";
 		sysUser = "";
 		dateIn  = new Date();//
 	}
 	
+	
+
 	/**
 	 * @return the studentUuid
 	 */
@@ -60,19 +63,19 @@ public class StudentHouse extends StorableBean  {
 
 
 	/**
-	 * @return the housename
+	 * @return the houseUuid
 	 */
-	public String getHousename() {
-		return housename;
+	public String getHouseUuid() {
+		return HouseUuid;
 	}
 
 
 
 	/**
-	 * @param housename the housename to set
+	 * @param houseUuid the houseUuid to set
 	 */
-	public void setHousename(String housename) {
-		this.housename = housename;
+	public void setHouseUuid(String houseUuid) {
+		HouseUuid = houseUuid;
 	}
 
 
@@ -108,7 +111,7 @@ public class StudentHouse extends StorableBean  {
 	 * @param dateIn the dateIn to set
 	 */
 	public void setDateIn(Date dateIn) {
-		this.dateIn = new Date(dateIn.getTime());
+		this.dateIn = dateIn;
 	}
 
 
@@ -121,8 +124,8 @@ public class StudentHouse extends StorableBean  {
 		builder.append(getUuid());
 		builder.append(", studentUuid");
 		builder.append(studentUuid);
-		builder.append(", housename =");
-		builder.append(housename);
+		builder.append(", HouseUuid =");
+		builder.append(HouseUuid);
 		builder.append(", sysUser =");
 		builder.append(sysUser);
 		builder.append(", dateIn =");

@@ -20,6 +20,13 @@ public interface SchoolHouseDAO {
 	    * @return whether StudentHouse was got successfully
 	    */
 	public StudentHouse getHouse(String studentuuid);
+	
+	 /**
+	  * 
+	  * @param HouseUuid
+	  * @return
+	  */
+	public List<StudentHouse> getHouseList(String HouseUuid);
 	   
 		/**
 		 * 
@@ -35,7 +42,7 @@ public interface SchoolHouseDAO {
 		  * @param studentHouse
 		  * 
 		  */
-		public boolean updatetHouse(StudentHouse studentHouse,String studentuuid);
+		public boolean updatetHouse(StudentHouse studentHouse);
 		
 		/**
 		   * 

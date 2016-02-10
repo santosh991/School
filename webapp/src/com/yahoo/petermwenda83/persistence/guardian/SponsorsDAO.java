@@ -1,22 +1,4 @@
-/*************************************************************
- * ##########################################################
- * ##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without the owner's approval.
- * ###################################################
- * ##########################################################
- * ##### SchoolAccount Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
- * 
- */
+
 package com.yahoo.petermwenda83.persistence.guardian;
 
 import java.sql.Connection;
@@ -34,7 +16,7 @@ import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 
 /**
- * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class SponsorsDAO extends GenericDAO implements SchoolSponsorsDAO {
@@ -65,34 +47,139 @@ public class SponsorsDAO extends GenericDAO implements SchoolSponsorsDAO {
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolSponsorsDAO#getSponsor(java.lang.String)
+	 */
 	@Override
 	public StudentSponsor getSponsor(String studentUuid) {
-		// TODO Auto-generated method stub
-		return null;
+		StudentSponsor studentSponsor = null;
+		ResultSet rset = null;
+		
+		  try(   Connection conn = dbutils.getConnection();
+				 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentSponsor"
+						+ " WHERE studentUuid =?;");
+		         ){
+			  pstmt.setString(1, studentUuid); 
+		      rset = pstmt.executeQuery();
+		     while(rset.next()){
+		    	 studentSponsor  = beanProcessor.toBean(rset,StudentSponsor.class);
+		   }
+	        	
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to get StudentSponsor with studentuuid: "+studentUuid);
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.println(ExceptionUtils.getStackTrace(e));
+    
+		 }
+		return studentSponsor;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolSponsorsDAO#putSponsor(com.yahoo.petermwenda83.bean.student.guardian.StudentSponsor)
+	 */
 	@Override
 	public boolean putSponsor(StudentSponsor sponser) {
-		// TODO Auto-generated method stub
-		return false;
+		 boolean success = true;
+			
+		  try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentHouse" 
+			        		+"(Uuid, StudentUuid, SponsorName,SponsorPhone,SponsorOccupation,SponsorCountry,SponsorCounty)"
+			        		+ " VALUES (?,?,?,?,?,?,?);");
+		             ){
+	            pstmt.setString(1, sponser.getUuid());
+	            pstmt.setString(2, sponser.getStudentUuid());
+	            pstmt.setString(3, sponser.getSponsorName());	       
+	            pstmt.setString(4, sponser.getSponsorPhone());
+	            pstmt.setString(5, sponser.getSponsorOccupation());
+	            pstmt.setString(6, sponser.getSponsorCountry());
+	            pstmt.setString(7, sponser.getSponsorCounty());
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to put StudentSponsor"+sponser);
+            logger.error(ExceptionUtils.getStackTrace(e)); 
+            System.out.println(ExceptionUtils.getStackTrace(e));
+           success = false;
+		 }
+		
+		return success;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolSponsorsDAO#updateSponsor(com.yahoo.petermwenda83.bean.student.guardian.StudentSponsor)
+	 */
 	@Override
 	public boolean updateSponsor(StudentSponsor sponsor) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		
+		  try (  Connection conn = dbutils.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE StudentHouse SET SponsorName = ?,SponsorPhone = ?,SponsorOccupation = ?,"
+	             		+ "SponsorCountry =?,SponsorCounty =? WHERE StudentUuid = ?;");
+	               ) {           			 	            
+	            pstmt.setString(1, sponsor.getSponsorName());
+	            pstmt.setString(2, sponsor.getSponsorPhone());
+	            pstmt.setString(3, sponsor.getSponsorOccupation());
+	            pstmt.setString(4, sponsor.getSponsorCountry());
+	            pstmt.setString(5, sponsor.getSponsorCounty());
+	            pstmt.setString(6, sponsor.getStudentUuid());	           
+	            pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      logger.error("SQL Exception when updating update StudentSponsor " + sponsor);
+      logger.error(ExceptionUtils.getStackTrace(e));
+      System.out.println(ExceptionUtils.getStackTrace(e));
+      success = false;
+   } 
+		
+		return success;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolSponsorsDAO#deleteSponsor(com.yahoo.petermwenda83.bean.student.guardian.StudentSponsor)
+	 */
 	@Override
 	public boolean deleteSponsor(StudentSponsor sponser) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+	      try(
+	      		  Connection conn = dbutils.getConnection();
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM StudentSponsor"
+	         	      		+ " WHERE StudentUuid =?;");       
+	      		){
+	      	
+	      	     pstmt.setString(1, sponser.getStudentUuid());
+		         pstmt.executeUpdate();
+	      }catch(SQLException e){
+	      	   logger.error("SQL Exception when deletting StudentSponsor " +sponser);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolSponsorsDAO#getStudentSponsorList()
+	 */
 	@Override
 	public List<StudentSponsor> getStudentSponsorList() {
-		// TODO Auto-generated method stub
-		return null;
+		List<StudentSponsor> list = null;
+		 try(   
+	  		Connection conn = dbutils.getConnection();
+	  		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM StudentSponsor;");   
+	  		ResultSet rset = pstmt.executeQuery();
+			) {
+	  	
+	      list = beanProcessor.toBeanList(rset, StudentSponsor.class);
+
+	  } catch(SQLException e){
+	  	 logger.error("SQL Exception when getting Sponsor List");
+	     logger.error(ExceptionUtils.getStackTrace(e));
+	     System.out.println(ExceptionUtils.getStackTrace(e)); 
+	  }
+	  return list;
 	}
 
 

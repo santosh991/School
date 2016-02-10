@@ -3,6 +3,8 @@
  */
 package com.yahoo.petermwenda83.persistence.classroom;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.junit.Ignore;
@@ -22,9 +24,14 @@ public class TestRoomDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
+	final String UUID = "",
+			     UUID_NEW = "";
+	
 	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
 	
-	final String ROOM_NAME = "FORM 1  N";
+	final String ROOM_NAME = "FORM 1 N",
+			     ROOM_NAME_NEW = "FORM 1  N",
+			     ROOM_NAME_UPDATE= "FORM 1  N";
 	
 	
 	private RoomDAO store;
@@ -36,18 +43,27 @@ public class TestRoomDAO {
 	@Test
 	public void testGetroom() {
 		store = new RoomDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		ClassRoom c = new ClassRoom();
+		c = store.getroom(SCHOOL_UUID, UUID);
+		assertEquals(c.getUuid(),UUID);
+		assertEquals(c.getSchoolAccountUuid(),SCHOOL_UUID);
+		assertEquals(c.getRoomName(),ROOM_NAME);
 		
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.classroom.RoomDAO#putroom(com.yahoo.petermwenda83.bean.classroom.ClassRoom)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testPutroom() {
 		store = new RoomDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		ClassRoom c = new ClassRoom();
-		c = store.getroomByRoomName(SCHOOL_UUID, ROOM_NAME);
+		c.setUuid(UUID_NEW);
+		c.setSchoolAccountUuid(SCHOOL_UUID);
+		c.setRoomName(ROOM_NAME_NEW);
+		assertTrue(store.putroom(c)); 
+		
 	}
 
 	/**
@@ -57,6 +73,11 @@ public class TestRoomDAO {
 	@Test
 	public void testUpdateroom() {
 		store = new RoomDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		ClassRoom c = new ClassRoom();
+		c.setUuid(UUID_NEW);
+		c.setSchoolAccountUuid(SCHOOL_UUID);
+		c.setRoomName(ROOM_NAME_UPDATE);
+		assertTrue(store.updateroom(c));  
 	}
 
 	/**
@@ -66,6 +87,10 @@ public class TestRoomDAO {
 	@Test
 	public void testDeleteroom() {
 		store = new RoomDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		ClassRoom c = new ClassRoom();
+		c.setUuid(UUID_NEW);
+		c.setSchoolAccountUuid(SCHOOL_UUID);
+		assertTrue(store.deleteroom(c)); 
 	}
 
 	/**

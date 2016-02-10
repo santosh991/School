@@ -1,4 +1,4 @@
-package com.yahoo.petermwenda83.server.servlet.expoert.text;
+package com.yahoo.petermwenda83.server.servlet.export.text;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -142,7 +142,7 @@ public class ExportText extends HttpServlet{
 	 	 classCode = roomHash.get(classroomuuidToken).replaceAll(" ", "_");  
 	 	 examCode = examConfig.getExam();
 		   
-		   response.setHeader("Content-Disposition","attachment; filename="+subjectCode+"."+classCode+"."+examCode+".txt");
+		 response.setHeader("Content-Disposition","attachment; filename="+subjectCode+"."+classCode+"."+examCode+".txt");
 		   
 		   try {
 			   

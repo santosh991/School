@@ -150,7 +150,7 @@
 <div class="row-fluid sortable">		
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Wellcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
+         <p>Welcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             

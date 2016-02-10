@@ -11,7 +11,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.yahoo.petermwenda83.bean.classroom.Classes;
-import com.yahoo.petermwenda83.bean.staff.Duties;
 
 /**
  * @author peter
@@ -27,8 +26,12 @@ public class TestClassesDAO {
 	
 	private ClassesDAO store;
 	
-	final String CLASS_UUID = "C143978A-E021-4015-BC67-5A00D6C910D1";
-	final String CLASS_NAME = "FORM 1";
+	final String UUID = "",
+			     UUID_NEW = "";
+	
+	final String CLASS_NAME = "FORM 1",
+			     CLASS_NAME_NEW = "FORM 1",
+			     CLASS_NAME_UPDATE = "FORM 1";
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.classroom.ClassesDAO#getClass(java.lang.String)}.
@@ -38,10 +41,39 @@ public class TestClassesDAO {
 	public void testGetClassString() {
 		store = new ClassesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		Classes c = new Classes();
-		c = store.getClass(CLASS_UUID);
+		c = store.getClass(CLASS_NAME);
 		assertEquals(c.getClassName(),CLASS_NAME);
 	}
-	//@Ignore
+	
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.classroom.ClassesDAO#getClass(java.lang.String)}.
+	 */
+	@Ignore
+	@Test
+	public void testPutClass() {
+		store = new ClassesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Classes c = new Classes();
+		c.setUuid(UUID);
+		c.setClassName(CLASS_NAME_NEW); 
+		assertTrue(store.putClass(c)); 
+		
+	}
+	
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.classroom.ClassesDAO#getClass(java.lang.String)}.
+	 */
+	@Ignore
+	@Test
+	public void testUpdateClass() {
+		store = new ClassesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Classes c = new Classes();
+		c.setUuid(UUID_NEW);
+		c.setClassName(CLASS_NAME_UPDATE); 
+		assertTrue(store.updateClass(c));  
+
+	}
+	
+	@Ignore
 	@Test
 	public void testGetClassList() {
 		store = new ClassesDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

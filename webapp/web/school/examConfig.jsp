@@ -90,7 +90,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Wellcome to <%=schoolname%> :Exam Configuration Panel: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
+         <p>Welcome to <%=schoolname%> :Exam Configuration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
 
@@ -143,7 +143,7 @@
                          <td class="center"><%=examConfig.getExam() %></td>
                          <td class="center"><%=examConfig.getExamMode() %></td>  
                          <td class="center">
-                                <form name="edit" method="POST" action="updateExamConfig.jsp" target="_blank"> 
+                                <form name="edit" method="POST" action="updateExamConfig.jsp" > 
                                 <input type="hidden" name="schoolUuid" value="<%=examConfig.getSchoolAccountUuid()%>">
                                 <input type="hidden" name="term" value="<%=examConfig.getTerm()%>">
                                 <input type="hidden" name="year" value="<%=examConfig.getYear()%>">

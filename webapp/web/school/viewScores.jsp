@@ -193,7 +193,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-           <p>Wellcome to <%=schoolname%> :<%=subjectHash.get(subjectuuid)%> : SCORES FOR : <%=roomHash.get(classroomuuid2)%> : TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
+           <p>Welcome to <%=schoolname%> :<%=subjectHash.get(subjectuuid)%> : SCORES FOR : <%=roomHash.get(classroomuuid2)%> : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
            
         </div>
         <div class="box-content">

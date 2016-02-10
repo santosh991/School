@@ -34,15 +34,19 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 
 public class DBCredentials {
+	
 	private Logger logger = Logger.getLogger(this.getClass());
-    protected String databaseName;
-    protected String Host;
-    protected String databaseUsername;
-    protected String databasePassword;
-    protected int databasePort =5432,dbPoolSize=5;
-    private Connection con;
+	private HikariDataSource datasource;
+	
+	private Connection con;
+	
+	private String databaseName ="",Host ="",databaseUsername ="",databasePassword ="";
     
-    private HikariDataSource datasource;
+	private int databasePort =5432,dbPoolSize=5;
+    
+   
+    
+    
     
 	public DBCredentials() {
 		databaseName = PropertiesConfig.getConfigValue("DATABASE_NAME");
@@ -51,7 +55,7 @@ public class DBCredentials {
 		databasePassword = PropertiesConfig.getConfigValue("DATABASE_PASSWORD");
 		databasePort = Integer.parseInt(PropertiesConfig.getConfigValue("DATABASE_POOL_SIZE"));
 		
-		 initConnection();
+		initConnection();
 	}
 	
 	/**
@@ -61,8 +65,7 @@ public class DBCredentials {
 	 * @param databasePassword
 	 * @param databasePort
 	 */
-	public DBCredentials(String databaseName,String Host,String databaseUsername ,
-			String databasePassword,int databasePort){
+	public DBCredentials(String databaseName,String Host,String databaseUsername,String databasePassword,int databasePort){
 		this.databaseName = databaseName;
 		this.Host = Host;
 		this.databaseUsername = databaseUsername;
@@ -107,10 +110,11 @@ public class DBCredentials {
 	        } catch (ClassNotFoundException e) {
 	            logger.error("ClassNotFoundException when trying to get unpooled JDBC connection");
 	            logger.error(ExceptionUtils.getStackTrace(e));
-	            
+	            System.out.println(ExceptionUtils.getStackTrace(e));
 	        } catch (SQLException ex) {
-	                logger.error("SQLException when trying to get unpooled JDBC connection");
+	            logger.error("SQLException when trying to get unpooled JDBC connection");
 	            logger.error(ExceptionUtils.getStackTrace(ex));
+	            System.out.println(ExceptionUtils.getStackTrace(ex));
 	        }
 
 	        return con;

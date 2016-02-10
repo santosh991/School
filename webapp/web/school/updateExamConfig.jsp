@@ -92,7 +92,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Wellcome to <%=schoolname%> ::Update Exam Configurations: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
+         <p>Welcome to <%=schoolname%>:Update Exam Configurations: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
          <div class="box-content">
 

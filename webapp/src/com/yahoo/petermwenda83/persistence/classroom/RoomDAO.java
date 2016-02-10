@@ -15,8 +15,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
-import com.yahoo.petermwenda83.bean.exam.Exam;
-import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
@@ -51,6 +49,9 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.classroom.SchoolRoomDAO#getroom(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ClassRoom getroom(String SchoolAccountUuid, String Uuid) {
 		ClassRoom classRoom = null;
@@ -76,10 +77,12 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
              logger.error(ExceptionUtils.getStackTrace(e));
              System.out.println(ExceptionUtils.getStackTrace(e));
         }
-        //System.out.println(classRoom);
 		return classRoom; 
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.classroom.SchoolRoomDAO#getroomByRoomName(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ClassRoom getroomByRoomName(String SchoolAccountUuid, String RoomName) {
 		ClassRoom classRoom = null;
@@ -105,28 +108,91 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
              logger.error(ExceptionUtils.getStackTrace(e));
              System.out.println(ExceptionUtils.getStackTrace(e));
         }
-        //System.out.println(classRoom);
 		return classRoom; 
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.classroom.SchoolRoomDAO#putroom(com.yahoo.petermwenda83.bean.classroom.ClassRoom)
+	 */
 	@Override
 	public boolean putroom(ClassRoom room) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		
+		  try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ClassRoom" 
+			        		+"(Uuid, SchoolAccountUuid, RoomName) VALUES (?,?,?);");
+		             ){
+			   
+	            pstmt.setString(1, room.getUuid());
+	            pstmt.setString(2, room.getSchoolAccountUuid());
+	            pstmt.setString(3, room.getRoomName());	       
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+		   logger.error("SQL Exception trying to put ClassRoom "+room);
+           logger.error(ExceptionUtils.getStackTrace(e)); 
+           System.out.println(ExceptionUtils.getStackTrace(e));
+          success = false;
+		 }
+		
+		return success;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.classroom.SchoolRoomDAO#updateroom(com.yahoo.petermwenda83.bean.classroom.ClassRoom)
+	 */
 	@Override
 	public boolean updateroom(ClassRoom room) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;
+		  try (  Connection conn = dbutils.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE ClassRoom SET RoomName = ?, "
+			        + "WHERE SchoolAccountUuid = ? AND Uuid = ?;");
+	               ) {           			 	            
+	            pstmt.setString(1, room.getRoomName());
+	            pstmt.setString(2, room.getSchoolAccountUuid());
+	            pstmt.setString(2, room.getUuid());       
+	            pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      logger.error("SQL Exception when updating update ClassRoom  " + room);
+      logger.error(ExceptionUtils.getStackTrace(e));
+      System.out.println(ExceptionUtils.getStackTrace(e));
+      success = false;
+   } 
+		
+		return success;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.classroom.SchoolRoomDAO#deleteroom(com.yahoo.petermwenda83.bean.classroom.ClassRoom)
+	 */
 	@Override
 	public boolean deleteroom(ClassRoom room) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+	      try(
+	      		  Connection conn = dbutils.getConnection();
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE * FROM ClassRoom"
+	         	      		+ " WHERE Uuid =?;");       
+	      		
+	      		){
+	      	
+	      	     pstmt.setString(1, room.getUuid());
+		         pstmt.executeUpdate();
+		     
+	      }catch(SQLException e){
+	      	   logger.error("SQL Exception when deletting ClassRoom : " +room);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.classroom.SchoolRoomDAO#getAllRooms(java.lang.String)
+	 */
 	@Override
 	public List<ClassRoom> getAllRooms(String SchoolAccountUuid) {
 		List<ClassRoom> list = new ArrayList<>();

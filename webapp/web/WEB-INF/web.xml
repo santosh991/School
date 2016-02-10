@@ -92,8 +92,19 @@
 
      <servlet>
         <servlet-name>ExportText</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.expoert.text.ExportText</servlet-class>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.text.ExportText</servlet-class>
     </servlet>
+
+
+     <servlet>
+        <servlet-name>ExportExcel</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.ExportExcel</servlet-class>
+    </servlet>
+
+
+
+
+
 
      <servlet>
         <servlet-name>UpdateExamConfig</servlet-name>
@@ -215,6 +226,19 @@
         <servlet-name>ExportText</servlet-name>
         <url-pattern>/school/exportText</url-pattern>
     </servlet-mapping>
+
+
+     <servlet-mapping>
+        <servlet-name>ExportExcel</servlet-name>
+        <url-pattern>/school/exportExcel</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+    
 
      <servlet-mapping>
         <servlet-name>UpdateExamConfig</servlet-name>

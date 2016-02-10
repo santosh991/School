@@ -142,7 +142,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Wellcome to <%=schoolname%> :Class Teachers: TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
+         <p>Welcome to <%=schoolname%> :Class Teachers: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             
@@ -172,7 +172,14 @@
                              out.println("<td width=\"3%\" >" + count + "</td>"); 
                              out.println("<td width=\"20%\" class=\"center\">" + staffHash.get(s.getUuid())  + "</td>"); 
                              out.println("<td width=\"15%\" class=\"center\">" + roomHash.get(classHash.get(s.getUuid())) + "</td>");         
-                         
+                               %> 
+                                <td class="center">
+                                <form name="edit" method="POST" action="exportExcel" target="_blank"> 
+                                <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 
+                                </form>                          
+                                </td>  
+                               <%
                         
                               }
                           } count++;

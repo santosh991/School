@@ -11,6 +11,8 @@
  *************************************************************/
 package com.yahoo.petermwenda83.bean.student;
 
+import java.util.Date;
+
 import com.yahoo.petermwenda83.bean.StorableBean;
 
 /**
@@ -19,22 +21,20 @@ import com.yahoo.petermwenda83.bean.StorableBean;
  * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  * 
  */
-public class StudentSubClassRoom extends StorableBean {
+public class StudentSubject extends StorableBean {
 	
 	private static final long serialVersionUID = 1L;
 	private String studentUuid;
 	private String subjectUuid;
-	private String classRoomUuid;
 	private String sysUser;
-	private String allocationDate;
+	private Date allocationDate;
 
-	public StudentSubClassRoom(){
+	public StudentSubject(){
 		   super();
 		   studentUuid = "";
 		   subjectUuid = "";
-		   classRoomUuid = "";
 		   sysUser = "";
-		   allocationDate = "";
+		   allocationDate = new Date();
 	   }
 
 	/**
@@ -66,20 +66,6 @@ public class StudentSubClassRoom extends StorableBean {
 	}
 
 	/**
-	 * @return the classRoomUuid
-	 */
-	public String getClassRoomUuid() {
-		return classRoomUuid;
-	}
-
-	/**
-	 * @param classRoomUuid the classRoomUuid to set
-	 */
-	public void setClassRoomUuid(String classRoomUuid) {
-		this.classRoomUuid = classRoomUuid;
-	}
-
-	/**
 	 * @return the sysUser
 	 */
 	public String getSysUser() {
@@ -93,31 +79,31 @@ public class StudentSubClassRoom extends StorableBean {
 		this.sysUser = sysUser;
 	}
 
+	
+
 	/**
 	 * @return the allocationDate
 	 */
-	public String getAllocationDate() {
+	public Date getAllocationDate() {
 		return allocationDate;
 	}
 
 	/**
 	 * @param allocationDate the allocationDate to set
 	 */
-	public void setAllocationDate(String allocationDate) {
+	public void setAllocationDate(Date allocationDate) {
 		this.allocationDate = allocationDate;
 	}
 
 	@Override
 	public String toString(){
 	StringBuilder builder = new StringBuilder();
-	builder.append("Student's Subject-ClassRoom [ getUuid() =");
+	builder.append("Student Subject[ getUuid() =");
 	builder.append(getUuid());
 	builder.append(", studentUuid =");
 	builder.append(studentUuid);
 	builder.append(", subjectUuid =");
 	builder.append(subjectUuid);
-	builder.append(", classRoomUuid =");
-	builder.append(classRoomUuid);
 	builder.append(", sysUser =");
 	builder.append(sysUser);
 	builder.append(", allocationDate =");
