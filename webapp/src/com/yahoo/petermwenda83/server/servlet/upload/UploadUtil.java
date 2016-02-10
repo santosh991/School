@@ -21,7 +21,6 @@ import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.PaperOne;
 import com.yahoo.petermwenda83.bean.exam.PaperThree;
 import com.yahoo.petermwenda83.bean.exam.PaperTwo;
-import com.yahoo.petermwenda83.bean.exam.StudentExam;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.TeacherSubClass;
 import com.yahoo.petermwenda83.bean.student.Student;
@@ -29,7 +28,6 @@ import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
-import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
 import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
@@ -176,14 +174,14 @@ public class UploadUtil {
 			    	 String studentuuid = "";
 			    	 Student student = new Student();
 			    	 if(admno !=null){
-				    		student = studentDAO.getStudents(admno);
+				    		student = studentDAO.getStudents(schooluuid,admno);
 				    		if(student !=null){
 				    			studentuuid = student.getUuid();
 				    		}
 				    		
 				    	}
 			    	 
-			    	 if(studentDAO.getStudent(studentuuid)==null) {
+			    	 if(studentDAO.getStudent(schooluuid,studentuuid)==null) {
 			    		 return ("Student with admNo \"" + admno + "\" on line \"" + count + "\" was not found in the System");
 			    	   }
 			          }
@@ -267,7 +265,7 @@ public class UploadUtil {
 			     for(int j=0; j<admNotoken.length; j++ ) {
 			    	String admno = StringUtils.trimToEmpty(admNotoken[j]);
 			    	if(admno !=null){
-			    		student = studentDAO.getStudents(admno);
+			    		student = studentDAO.getStudents(school.getUuid(),admno);
 			    	}
 			    	
 			     }

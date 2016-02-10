@@ -83,7 +83,7 @@ public class ParentsDAO extends GenericDAO  implements SchoolParentsDAO {
 			
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentParent" 
-			        		+"(Uuid, StudentUuid,Fathername,Fatherphone,FatherEmail,FatherID,Fatheroccupation,Mothername"
+			        		+"(Uuid, StudentUuid,Fathername,Fatherphone,FatherEmail,FatherID,Fatheroccupation,Mothername,"
 			        		+ "Motherphone,MotherEmail,MotherID,Motheroccupation,RelativeName,RelativePhone) VALUES "
 			        		+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		             ){

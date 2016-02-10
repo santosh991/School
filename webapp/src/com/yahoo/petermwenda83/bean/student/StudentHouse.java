@@ -119,7 +119,7 @@ public class StudentHouse extends StorableBean  {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append(",Student's House");
+		builder.append("Student's House");
 		builder.append("[getUuid() = ");
 		builder.append(getUuid());
 		builder.append(", studentUuid");

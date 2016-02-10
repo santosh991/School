@@ -83,7 +83,7 @@ public class SponsorsDAO extends GenericDAO implements SchoolSponsorsDAO {
 		 boolean success = true;
 			
 		  try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentHouse" 
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentSponsor" 
 			        		+"(Uuid, StudentUuid, SponsorName,SponsorPhone,SponsorOccupation,SponsorCountry,SponsorCounty)"
 			        		+ " VALUES (?,?,?,?,?,?,?);");
 		             ){
@@ -114,7 +114,7 @@ public class SponsorsDAO extends GenericDAO implements SchoolSponsorsDAO {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
-	             PreparedStatement pstmt = conn.prepareStatement("UPDATE StudentHouse SET SponsorName = ?,SponsorPhone = ?,SponsorOccupation = ?,"
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE StudentSponsor SET SponsorName = ?,SponsorPhone = ?,SponsorOccupation = ?,"
 	             		+ "SponsorCountry =?,SponsorCounty =? WHERE StudentUuid = ?;");
 	               ) {           			 	            
 	            pstmt.setString(1, sponsor.getSponsorName());

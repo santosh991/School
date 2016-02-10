@@ -24,14 +24,14 @@ public class TestRoomDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
-	final String UUID = "",
-			     UUID_NEW = "";
+	final String UUID = "4DA86139-6A72-4089-8858-6A3A613FDFE6",
+			     UUID_NEW = "301A678C-1913-454A-8814-884D6613EF93";
 	
 	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
 	
 	final String ROOM_NAME = "FORM 1 N",
-			     ROOM_NAME_NEW = "FORM 1  N",
-			     ROOM_NAME_UPDATE= "FORM 1  N";
+			     ROOM_NAME_NEW = "new",
+			     ROOM_NAME_UPDATE= "update";
 	
 	
 	private RoomDAO store;

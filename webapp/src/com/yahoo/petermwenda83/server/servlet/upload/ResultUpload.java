@@ -29,6 +29,7 @@ import com.yahoo.petermwenda83.bean.exam.CatOne;
 import com.yahoo.petermwenda83.bean.exam.CatTwo;
 import com.yahoo.petermwenda83.bean.exam.EndTerm;
 import com.yahoo.petermwenda83.bean.exam.StudentExam;
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
@@ -36,9 +37,12 @@ import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
 import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
+import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 
 public class ResultUpload extends HttpServlet {
@@ -69,8 +73,9 @@ public class ResultUpload extends HttpServlet {
 	
 	String username = "peter";
 	HttpSession session;
-	
-	
+	private Cache schoolCache;
+	String staffUsername;
+	String schooluuid = "";
 	
 	/**
     *
@@ -91,6 +96,8 @@ public class ResultUpload extends HttpServlet {
        examEgineDAO = ExamEgineDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
        subjectDAO = SubjectDAO.getInstance();
+       CacheManager mgr = CacheManager.getInstance();
+       schoolCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
    }
 	
 	
@@ -105,6 +112,15 @@ public class ResultUpload extends HttpServlet {
 		session = request.getSession(true);
 		boolean isMultpart = ServletFileUpload.isMultipartContent(request);
 		
+		String schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
+		staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
+		String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+		  SchoolAccount school = new SchoolAccount();
+	       Element element;
+	       if ((element = schoolCache.get(schoolusername)) != null) {
+	    	   school = (SchoolAccount) element.getObjectValue();
+	    	   schooluuid = school.getUuid();
+	        }
 	   
         if(!isMultpart){
     	   session.setAttribute(SessionConstants.FILE_UPLOAD_ERROR, "this servlet only handles file upload request"); 
@@ -198,13 +214,13 @@ private File processUploadedFile(FileItem item, String subjectname, String roomn
 				  subjectuuid = subjct.getUuid();
 			       } 
 			
-			if(studentDAO.getStudents(admno) == null){
+			if(studentDAO.getStudents(schooluuid,admno) == null){
 				
 			}else{
 				//check validity
 				InspectToken(admno,score);	
 				
-				student = studentDAO.getStudents(admno);
+				student = studentDAO.getStudents(schooluuid,admno);
 				String studentUuid = student.getUuid();
 		
 				if((studentExamDAO.getStudentExam(SCHOOL_UUID, studentUuid)) !=null){
@@ -290,7 +306,7 @@ private File processUploadedFile(FileItem item, String subjectname, String roomn
 
 private String InspectToken(String admno, Double score) {
 	String feedback = ResultUpload.UPLOAD_SUCCESS;
-	if(studentDAO.getStudents(admno) == null){
+	if(studentDAO.getStudents(schooluuid,admno) == null){
 		return " Admossion Number " +admno+" Not found" ;
 	}if(score <= 0){
 		return " score " +score+" Not allowed" ;

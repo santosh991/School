@@ -61,12 +61,12 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE schoolaccountUuid =? AND Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid =? AND Uuid = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, Uuid);
-        	 pstmt.setString(2, schoolaccountUuid);
+        	 pstmt.setString(1, schoolaccountUuid);
+        	 pstmt.setString(2, Uuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -76,8 +76,9 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
         }catch(SQLException e){
         	 logger.error("SQL Exception when getting an users with uuid: " + Uuid);
              logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
         }
-        
+       
 		return student; 
 	}
 
@@ -91,12 +92,12 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE schoolaccountUuid =? AND admno = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Student WHERE SchoolAccountUuid =? AND admno = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, admno);
-        	 pstmt.setString(2, schoolaccountUuid);
+        	 pstmt.setString(1, schoolaccountUuid);
+        	 pstmt.setString(2, admno);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -108,6 +109,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
         }catch(SQLException e){
         	 logger.error("SQL Exception when getting an users with admno: " + admno);
              logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
         }
         
 		return student; 
@@ -135,6 +137,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
             logger.error("SQLException when getting Student of " + schoolaccount  +
             " and student name '" + firstname +  "'"); 
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
                 
         Collections.sort(list);
@@ -166,6 +169,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
             logger.error("SQLException when getting Student of " + schoolaccountUuid  +
             " and student admno '" + admno +  "'");
             logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
         }
                 
         Collections.sort(list);
@@ -195,17 +199,18 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	            pstmt.setString(6, student.getFirstname());
 	            pstmt.setString(7, student.getLastname());
 	            pstmt.setString(8, student.getSurname());
-	            pstmt.setString(8, student.getGender());
-	            pstmt.setString(9, student.getdOB());
-	            pstmt.setString(10, student.getBcertno());
-	            pstmt.setString(11, student.getCounty());
-	            pstmt.setString(12, student.getSysUser());
-	            pstmt.setTimestamp(13, new Timestamp(student.getAdmissionDate().getTime()));
+	            pstmt.setString(9, student.getGender());
+	            pstmt.setString(10, student.getdOB());
+	            pstmt.setString(11, student.getBcertno());
+	            pstmt.setString(12, student.getCounty());
+	            pstmt.setString(13, student.getSysUser());
+	            pstmt.setTimestamp(14, new Timestamp(student.getAdmissionDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
 			 logger.error("SQL Exception trying to put Student: "+student);
              logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.println(ExceptionUtils.getStackTrace(e));
              success = false;
 		 }
 		
@@ -225,7 +230,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student SET ClassRoomUuid =?, Firstname =?," 
 			        +"Lastname =?,Surname =?,Gender =?,DOB =?,"
-			        + "Bcertno =?,County =?,SysUser=? WHERE Admno = ? AND SchoolAccountUuid = ?; ");
+			        + "Bcertno =?,County =?,SysUser=?,Admno =? WHERE Uuid = ? AND SchoolAccountUuid = ?; ");
 		){
 			  
 			    pstmt.setString(1, student.getClassRoomUuid());
@@ -238,7 +243,8 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	            pstmt.setString(8, student.getCounty());
 	            pstmt.setString(9, student.getSysUser());
 	            pstmt.setString(10, student.getAdmno());
-	            pstmt.setString(11, student.getSchoolAccountUuid());
+	            pstmt.setString(11, student.getUuid());
+	            pstmt.setString(12, student.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

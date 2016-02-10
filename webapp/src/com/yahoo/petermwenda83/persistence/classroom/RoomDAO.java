@@ -145,12 +145,12 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
 	public boolean updateroom(ClassRoom room) {
 		boolean success = true;
 		  try (  Connection conn = dbutils.getConnection();
-	             PreparedStatement pstmt = conn.prepareStatement("UPDATE ClassRoom SET RoomName = ?, "
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE ClassRoom SET RoomName = ?"
 			        + "WHERE SchoolAccountUuid = ? AND Uuid = ?;");
 	               ) {           			 	            
 	            pstmt.setString(1, room.getRoomName());
 	            pstmt.setString(2, room.getSchoolAccountUuid());
-	            pstmt.setString(2, room.getUuid());       
+	            pstmt.setString(3, room.getUuid());       
 	            pstmt.executeUpdate();
 
     } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
 		boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
-	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE * FROM ClassRoom"
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ClassRoom"
 	         	      		+ " WHERE Uuid =?;");       
 	      		
 	      		){

@@ -3,8 +3,6 @@ package com.yahoo.petermwenda83.server.servlet.export.excel;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -27,17 +25,14 @@ import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.guardian.StudentParent;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
-import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.guardian.ParentsDAO;
 import com.yahoo.petermwenda83.persistence.student.HouseDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
-import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 public class ExportExcel extends HttpServlet{
 
@@ -157,14 +152,14 @@ public class ExportExcel extends HttpServlet{
 	                  c15.setCellValue(ch.createRichTextString("Surname"));
 	            XSSFCell c16 = r1.createCell(5);
 	                  c16.setCellValue(ch.createRichTextString("Gender"));
-	            XSSFCell c17 = r1.createCell(6);
-	                  c17.setCellValue(ch.createRichTextString("Class"));
+	           // XSSFCell c17 = r1.createCell(6);
+	                 // c17.setCellValue(ch.createRichTextString("Class"));
         
         
         int i=1;
         //create other rows
           for(Student stu :studentList){ 
-        	 parentList = parentsDAO.getParent(stu.getUuid());
+        	
         	          	  
         	  XSSFRow r = s.createRow(i);
         	  //row number
@@ -177,14 +172,9 @@ public class ExportExcel extends HttpServlet{
         	      
         	 //get phone numbers
         	      XSSFCell c3 = r.createCell(2);
-        	      if(parentList.size()>0){
-        	         for(StudentParent p : parentList){ 
-        		     //Contact contacts = ctDAO.getContact(phone.getContactUuid());      	                     
-        			 // c3.setCellValue(ch.createRichTextString(contacts.getName())); 
-        	         }   
-        			       }
+        	     
         		  //else{ 
-        			  //c3.setCellValue(ch.createRichTextString(stu.getFirstname()));     }        		   	     
+        			 c3.setCellValue(ch.createRichTextString(stu.getFirstname()));        		   	     
         	     
         	      
         	   //get destination   
@@ -200,7 +190,7 @@ public class ExportExcel extends HttpServlet{
         	     c6.setCellValue(ch.createRichTextString(stu.getGender()));
         	              	      
         	      //get message id
-        	  XSSFCell c7 = r.createCell(6); 
+        	  //XSSFCell c7 = r.createCell(6); 
         	       //c7.setCellValue(ch.createRichTextString(log.getUuid())); 
         	  i++;
         	         	  

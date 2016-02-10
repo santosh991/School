@@ -18,18 +18,18 @@ public class TestHouseDAO {
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
-	final String UUID = "",
-			     UUID_NEW = "";
+	final String UUID = "74CFE4DE-BF85-4558-B791-B1D1CBDC892C",
+			     UUID_NEW = "A96EF005-B34E-4ABB-9B26-5B01466CAD91";
 	
-	final String STUDENT_UUID = "";
+	final String STUDENT_UUID = "4F218688-6DE5-4E69-8690-66FBA2F0DC9F";
 	
-	final String HOUSE_UUID = "",
-			     HOUSE_UUID_NEW = "",
-			     HOUSE_UUID_UPDATE = "";
+	final String HOUSE_UUID = "C69AEA6C-AFEF-4AD6-9779-0067C9C77A61",
+			     HOUSE_UUID_NEW = "2A88D2A1-8CD4-4797-86EE-61A9C334C523",
+			     HOUSE_UUID_UPDATE = "5BFFCE33-7FCD-4199-9BFA-A32BABC4D370";
 	
-	final String USER = "",
-			     USER_NEW = "",
-			     USER_UPDATE = "";
+	final String USER = "Peter",
+			     USER_NEW = "new",
+			     USER_UPDATE = "update";
 	
 	final Date DATE_IN = new Date();
 	
