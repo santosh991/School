@@ -83,7 +83,7 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaffByUsername(java.lang.String)
 	 */
 	public Staff getStaffByUsername(String schoolAccountUuid,String username) {
-		Staff staff = new Staff();
+		Staff staff = null;
         ResultSet rset = null;
      try(
      		      Connection conn = dbutils.getConnection();
@@ -107,6 +107,40 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
           System.out.println(ExceptionUtils.getStackTrace(e));
      }
      
+		return staff; 
+	}
+	
+	
+	
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaffByPosition(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Staff getStaffByPosition(String schoolAccountUuid, String PositionUuid) {
+		Staff staff = null;
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Staff WHERE schoolAccountUuid =? AND PositionUuid = ?;");       
+     		
+     		){
+     	
+     	     pstmt.setString(1, schoolAccountUuid);
+     	     pstmt.setString(2, PositionUuid);
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	    	 staff  = beanProcessor.toBean(rset,Staff.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting Staff with PositionUuid: " + PositionUuid);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+        //System.out.println(staff);
 		return staff; 
 	}
 
@@ -201,5 +235,7 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 		
 		return list;
 	}
+
+	
 
 }

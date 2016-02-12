@@ -177,10 +177,11 @@ ALTER TABLE StudentSubject OWNER TO school;
 CREATE TABLE  House (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
     HouseName text
 );
 
-\COPY House(Uuid,HouseName) FROM '/tmp/House.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY House(Uuid,SchoolAccountUuid,HouseName) FROM '/tmp/House.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE House OWNER TO school;
 
 

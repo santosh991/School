@@ -1,10 +1,9 @@
 package com.yahoo.petermwenda83.server.servlet.export.excel;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -14,19 +13,28 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
+import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
+import com.yahoo.petermwenda83.bean.student.House;
 import com.yahoo.petermwenda83.bean.student.Student;
-import com.yahoo.petermwenda83.bean.student.guardian.StudentParent;
+import com.yahoo.petermwenda83.bean.student.StudentHouse;
+import com.yahoo.petermwenda83.bean.student.StudentPrimary;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
-import com.yahoo.petermwenda83.persistence.guardian.ParentsDAO;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.student.StudentHouseDAO;
 import com.yahoo.petermwenda83.persistence.student.HouseDAO;
+import com.yahoo.petermwenda83.persistence.student.PrimaryDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
@@ -36,27 +44,30 @@ import net.sf.ehcache.CacheManager;
 
 public class ExportExcel extends HttpServlet{
 
-    private final String SPREADSHEET_NAME = "Export.xlsx";
+    private final String SPREADSHEET_NAME = ".xlsx";
     private static final long serialVersionUID = 3896751907947782599L;
     private static int pageno;
+    
+    HashMap<String, String> roomHash = new HashMap<String, String>();
+    HashMap<String, String> studentHouseHash = new HashMap<String, String>();
+    HashMap<String, String> houseHash = new HashMap<String, String>();
 
     private Cache schoolaccountCache;
+    ExamConfig examConfig;
+   
 
     private static StudentDAO studentDAO;
-    private static HouseDAO houseDAO;
-    private static ParentsDAO parentsDAO;
+    private static StudentHouseDAO studentHouseDAO;
     private static RoomDAO roomDAO;
-    
-    private SimpleDateFormat dateFormatter;
-    private SimpleDateFormat timezoneFormatter;
-    
+    private static ExamConfigDAO examConfigDAO;
+    private static PrimaryDAO primaryDAO;
+    private static HouseDAO houseDAO;
     private String classroomuuid = "";
     String schoolusername = "";
-    private Logger logger;	
     private ServletOutputStream out;
     
     
-    /**
+    /**  
      *
      * @param config
      * @throws ServletException
@@ -64,14 +75,16 @@ public class ExportExcel extends HttpServlet{
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);       
-        
-        dateFormatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-        timezoneFormatter = new SimpleDateFormat("z");
-	    logger = Logger.getLogger(this.getClass());
 	    CacheManager mgr = CacheManager.getInstance();
 	    schoolaccountCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
+	    
 	    studentDAO = StudentDAO.getInstance();
+	    examConfigDAO = ExamConfigDAO.getInstance();
+	    studentHouseDAO = StudentHouseDAO.getInstance();
+	    primaryDAO = PrimaryDAO.getInstance();
 	    roomDAO = RoomDAO.getInstance();
+	    houseDAO = HouseDAO.getInstance();
+	    studentHouseDAO = StudentHouseDAO.getInstance();
 	    
     }
 
@@ -109,62 +122,175 @@ public class ExportExcel extends HttpServlet{
 	 
 		   }
                
+		    examConfig = examConfigDAO.getExamConfig(school.getUuid());
+		    
+		   
 		    List<Student> studentList = new ArrayList<>();
 	        studentList = studentDAO.getAllStudents(school.getUuid(), classroomuuid);
 	        
-	        
-            String fileName = new StringBuffer(school.getUsername()).append(" ")
-                .append(StringUtils.trimToEmpty(school.getUsername()))
+	        List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
+	          classroomList = roomDAO.getAllRooms(school.getUuid()); 
+	           for(ClassRoom c : classroomList){
+	                roomHash.put(c.getUuid() , c.getRoomName());
+	          }
+	           
+	           List<StudentHouse> studentHouseList = new ArrayList<StudentHouse>(); 
+	               studentHouseList = studentHouseDAO.getHouseList();
+		           for(StudentHouse sh : studentHouseList){
+		        	   studentHouseHash.put(sh.getStudentUuid() , sh.getHouseUuid());
+		          }
+		           
+		        List<House> houseList = new ArrayList<House>(); 
+		        houseList = houseDAO.getHouseList(school.getUuid());
+			           for(House h : houseList){
+			        	   houseHash.put(h.getUuid() , h.getHouseName()); 
+			     }
+	           
+            String fileName = new StringBuffer(StringUtils.trimToEmpty(school.getUsername()))
                 .append(" ")
+                .append(roomHash.get(classroomuuid))
                 .append(SPREADSHEET_NAME)
                 .toString();
 
         response.setHeader("Content-Disposition", "attachment; filename=\""+fileName+"\"");     
-        createExcelSheets(studentList);
+        createExcelSheets(studentList,school);
        }
     
     
     
     /**
      * Returns MS Excel file of the data specified for exporting.
+     * @param school 
      * @param List<IncomingLog>
      * Method create excelSheets and sends them
      ****/    
-    public void createExcelSheets(List<Student>studentList) throws IOException{    	
-    	 List<StudentParent> parentList;
-    	 //String cont = null;
-    	
+    public void createExcelSheets(List<Student>studentList, SchoolAccount school) throws IOException{    	
+    	 
         XSSFWorkbook xf = new XSSFWorkbook();
         XSSFCreationHelper ch =xf.getCreationHelper();
       
         XSSFSheet s =xf.createSheet();
+        s.setColumnWidth(0, 1000); 
+        s.setColumnWidth(1, 2500); 
+        s.setColumnWidth(2, 2500); 
+        s.setColumnWidth(3, 2500); 
+        s.setColumnWidth(4, 2500); 
+        s.setColumnWidth(5, 1500); 
+        s.setColumnWidth(6, 3000); 
+        s.setColumnWidth(7, 4000); 
+        s.setColumnWidth(8, 3000); 
+        s.setColumnWidth(9, 1500); 
+        s.setColumnWidth(10,1500);
+       
+        CellStyle style = xf.createCellStyle();
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        
+        CellStyle style2 = xf.createCellStyle();
+        style2.setAlignment(CellStyle.ALIGN_LEFT);
+        style2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); 
+        style2.setFillPattern(CellStyle.DIAMONDS); 
+        
+        XSSFFont font = xf.createFont();
+        font.setFontName(XSSFFont.DEFAULT_FONT_NAME); 
+        font.setFontHeightInPoints((short)12);
+        font.setColor(IndexedColors.MAROON.getIndex()); 
+        style.setFont(font); 
+        
+        XSSFRow r0 = s.createRow(0);
+        XSSFCell cell = r0.createCell((short) 0);
+	    cell.setCellValue(ch.createRichTextString(school.getSchoolName()+" : "+roomHash.get(classroomuuid)+" Students List,  TERM " + examConfig.getTerm()+"  "+ examConfig.getYear()));
+	    cell.setCellStyle(style);
+	    
+	    s.addMergedRegion(new CellRangeAddress(0,0,10,0));//row from,row to,col from, col to
+       
         //create the first row
-        XSSFRow r1 = s.createRow(0);
+        XSSFRow r1 = s.createRow(1);
   	            XSSFCell c11 = r1.createCell(0);
   	                  c11.setCellValue(ch.createRichTextString("*")); 
+  	                  c11.setCellStyle(style2);
+  	                  
 	            XSSFCell c12 = r1.createCell(1);
-	                  c12.setCellValue(ch.createRichTextString("Admission Number"));
+	                  c12.setCellValue(ch.createRichTextString("Adm No"));
+	                  c12.setCellStyle(style2);
+	                  
 	            XSSFCell c13 = r1.createCell(2);
 	                  c13.setCellValue(ch.createRichTextString("First Name"));
+	                  c13.setCellStyle(style2);
+	                  
 	            XSSFCell c14 = r1.createCell(3);
 	                  c14.setCellValue(ch.createRichTextString("Last Name"));
+	                  c14.setCellStyle(style2);
+	                  
 	            XSSFCell c15 = r1.createCell(4);
 	                  c15.setCellValue(ch.createRichTextString("Surname"));
+	                  c15.setCellStyle(style2);
+	                  
 	            XSSFCell c16 = r1.createCell(5);
 	                  c16.setCellValue(ch.createRichTextString("Gender"));
-	           // XSSFCell c17 = r1.createCell(6);
-	                 // c17.setCellValue(ch.createRichTextString("Class"));
+	                  c16.setCellStyle(style2);
+	                  
+	            XSSFCell c17 = r1.createCell(6);
+	                  c17.setCellValue(ch.createRichTextString("House"));
+	                  c17.setCellStyle(style2);
+	                  
+	            XSSFCell c18 = r1.createCell(7);
+	                  c18.setCellValue(ch.createRichTextString("Primary"));
+	                  c18.setCellStyle(style2);
+	                  
+	            XSSFCell c19 = r1.createCell(8);
+	                  c19.setCellValue(ch.createRichTextString("Index"));
+	                  c19.setCellStyle(style2);
+	                  
+	            XSSFCell c20 = r1.createCell(9);
+	                  c20.setCellValue(ch.createRichTextString("Year"));
+	                  c20.setCellStyle(style2);
+	                  
+	            XSSFCell c21 = r1.createCell(10);
+	                  c21.setCellValue(ch.createRichTextString("Mark"));
+	                  c21.setCellStyle(style2);
+	            
         
-        
-        int i=1;
+        int i=2;
+        int count = 1;
+         
+        String formatedFirstname = "";
+        String formatedLastname = "";
+        String formatedSurname = "";
         //create other rows
-          for(Student stu :studentList){ 
-        	
-        	          	  
+        if(studentList != null){
+          for(Student stu :studentList){
+        	  String schoolname = "";
+        	  String index = "";
+        	  String year = "";
+        	  String mark = "";
+        	  String room = "";
+        	  StudentPrimary primary = primaryDAO.getPrimary(stu.getUuid());
+        	  if(primary !=null){
+        		  schoolname = primary.getSchoolname(); 
+        		  index = primary.getIndex();
+        		  year = primary.getKcpeyear();
+        		  mark = primary.getKcpemark();
+        	  }
+        	 
+        	  if(houseHash.get(studentHouseHash.get(stu.getUuid()))!=null){
+        		  room = houseHash.get(studentHouseHash.get(stu.getUuid()));
+        	  }
+        	  
+        	    String firstNameLowecase = stu.getFirstname().toLowerCase();
+				String lastNameLowecase = stu.getLastname().toLowerCase();
+				String surNameLowecase = stu.getSurname().toLowerCase();
+				formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+				formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+				formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+        	  
+        	  
+        	  
         	  XSSFRow r = s.createRow(i);
         	  //row number
         	  XSSFCell c1 = r.createCell(0);
-        	      c1.setCellValue(i+pageno);
+        	      c1.setCellValue(count+pageno);
         	      
         	    //get message  
         	  XSSFCell c2 = r.createCell(1);        	
@@ -174,27 +300,49 @@ public class ExportExcel extends HttpServlet{
         	      XSSFCell c3 = r.createCell(2);
         	     
         		  //else{ 
-        			 c3.setCellValue(ch.createRichTextString(stu.getFirstname()));        		   	     
+        			 c3.setCellValue(ch.createRichTextString(formatedFirstname));        		   	     
         	     
         	      
         	   //get destination   
         	  XSSFCell c4 = r.createCell(3);
-        	      c4.setCellValue(ch.createRichTextString(stu.getLastname()));
+        	      c4.setCellValue(ch.createRichTextString(formatedLastname));
         	      
         	  //get network name    
         	   XSSFCell c5 = r.createCell(4);
-        	      c5.setCellValue(ch.createRichTextString(stu.getSurname())); 
+        	      c5.setCellValue(ch.createRichTextString(formatedSurname)); 
         	   
         	      //get date 
-        	  XSSFCell c6 = r.createCell(5);         	  
-        	     c6.setCellValue(ch.createRichTextString(stu.getGender()));
+        	  XSSFCell c6 = r.createCell(5);    
+        	  String gender = " ";
+        	  if(StringUtils.equalsIgnoreCase(stu.getGender(), "FEMALE")) {
+        		  gender = "F";
+        	  }else{
+        		  gender = "M";
+        	  }
+        	     c6.setCellValue(ch.createRichTextString(gender));
         	              	      
-        	      //get message id
-        	  //XSSFCell c7 = r.createCell(6); 
-        	       //c7.setCellValue(ch.createRichTextString(log.getUuid())); 
+        	      
+        	  XSSFCell c7 = r.createCell(6); 
+        	       c7.setCellValue(ch.createRichTextString(room)); 
+        	       
+        	  XSSFCell c8 = r.createCell(7); 
+        	       c8.setCellValue(ch.createRichTextString(schoolname)); 
+        	       
+        	  XSSFCell c9 = r.createCell(8); 
+        	       c9.setCellValue(ch.createRichTextString(index)); 
+        	       
+        	  XSSFCell c10 = r.createCell(9); 
+        	       c10.setCellValue(ch.createRichTextString(year)); 
+        	       
+        	  XSSFCell c111 = r.createCell(10); 
+        	       c111.setCellValue(ch.createRichTextString(mark)); 
+        	       
+        	       
+        	       
         	  i++;
-        	         	  
+        	  count++;      	  
           }
+    }
           xf.write(out);
           out.flush();          
           out.close();

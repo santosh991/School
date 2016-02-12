@@ -29,7 +29,7 @@ public class StudentPrimary extends StorableBean {
 	private String schoolname;
 	private String index;
 	private String kcpeyear;
-	private String kcpemarks;
+	private String kcpemark;
 	
 	/**
 	 * 
@@ -40,7 +40,7 @@ public class StudentPrimary extends StorableBean {
 		schoolname ="";
 		index ="";
 		kcpeyear ="";
-		kcpemarks ="";
+		kcpemark ="";
 	}
 
 	/**
@@ -107,26 +107,25 @@ public class StudentPrimary extends StorableBean {
 	}
 
 
-	/**
-	 * @return the kcpemarks
-	 */
-	public String getKcpemarks() {
-		return kcpemarks;
-	}
-
 
 	/**
-	 * @param kcpemarks the kcpemarks to set
+	 * @return the kcpemark
 	 */
-	public void setKcpemarks(String kcpemarks) {
-		this.kcpemarks = kcpemarks;
+	public String getKcpemark() {
+		return kcpemark;
 	}
 
+	/**
+	 * @param kcpemark the kcpemark to set
+	 */
+	public void setKcpemark(String kcpemark) {
+		this.kcpemark = kcpemark;
+	}
 
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append(",Student's Primary Details");
+		builder.append("Primary Detail");
 		builder.append("[getUuid() = ");
 		builder.append(getUuid());
 		builder.append(", studentUuid");
@@ -137,8 +136,8 @@ public class StudentPrimary extends StorableBean {
 		builder.append(index);
 		builder.append(", kcpeyear =");
 		builder.append(kcpeyear);
-		builder.append(", kcpemarks =");
-		builder.append(kcpemarks);
+		builder.append(", kcpemark =");
+		builder.append(kcpemark);
 		builder.append("]");
 		return builder.toString(); 
 		}

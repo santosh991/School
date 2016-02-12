@@ -156,6 +156,7 @@
                         <th>*</th>
                         <th>Teacher</th>
                         <th>Class </th>
+                        <th>Download </th>
                         
                     </tr>
                 </thead>   
@@ -173,7 +174,7 @@
                              out.println("<td width=\"20%\" class=\"center\">" + staffHash.get(s.getUuid())  + "</td>"); 
                              out.println("<td width=\"15%\" class=\"center\">" + roomHash.get(classHash.get(s.getUuid())) + "</td>");         
                                %> 
-                                <td class="center">
+                                <td class="center" width="20%">
                                 <form name="edit" method="POST" action="exportExcel" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 

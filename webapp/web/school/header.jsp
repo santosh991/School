@@ -11,6 +11,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
+
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
@@ -48,6 +51,9 @@
 
      String accountuuid = school.getUuid();
 
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      staffPosition = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_POSITION);
@@ -67,13 +73,13 @@
       if(cr !=null){
       room = cr.getRoomName(); 
        }
-  final String FORM1 = "FORM 1";
-	final String FORM2 = "FORM 2";
-	final String FORM3 = "FORM 3";
-	final String FORM4 = "FORM 4";
+    final String FORM1 = "FORM 1";
+	  final String FORM2 = "FORM 2";
+	  final String FORM3 = "FORM 3";
+	  final String FORM4 = "FORM 4";
 
 	//out.println("pos"+staffPosition);
-	        String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
+	          String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
             String pos_Teacher =(String) PropertiesConfig.getConfigValue("POSITION_TEACHER");
             String pos_HOD =(String) PropertiesConfig.getConfigValue("POSITION_HOD");
             String pos_CM =(String) PropertiesConfig.getConfigValue("POSITION_CM");
@@ -194,22 +200,29 @@
                   <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
                 <li class='has-sub' ><a href="#"><span>Student Management</span></a>
                   <ul>
-                <li><a href="#" ><span>Add Student</span></a></li>
+                <li><a href="addStudent.jsp" ><span>Add Student</span></a></li>
                 <li><a href="#" ><span>Update Student</span></a></li>
-                <li class='last'><a href="#"><span>View Student</span></a></li>
+                <li class='last'><a href="#"><span>Student Roles</span></a></li>
                 </ul>
                 </li>
                  <%}  %>
 
                <!--BURSAR/ACCOUNT C-->
-
+                
+                  <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
+                <li class='has-sub' ><a href="#"><span>Fee Management</span></a>
+                  <ul>
+                <li><a href="#" ><span>Pocket Money</span></a></li>
+                </ul>
+                </li>
+                 <%}  %>
 
                <!--CLASS TEACHER-->
              
                 <%
                if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
                  %>
-		       <li class='has-sub'><a href="exam.jsp"><span>Exam Management</span></a></li>
+		       <li class='has-sub'><a href="exam.jsp"><span>My Class</span></a></li>
 		        <%
 	            }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
 	            %>
@@ -225,7 +238,10 @@
             <!--TEACHER-->
 
              <%  if(StringUtils.equals(staffPosition,pos_Teacher)){ %>
+
+             <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
+             <%} %>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
           
              <% }  %>
@@ -248,16 +264,18 @@
               <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
                 <li class='has-sub' ><a href="#"><span>Student Management</span></a>
                   <ul>
-                <li><a href="#" ><span>Add Student</span></a></li>
+                <li><a href="addStudent.jsp" ><span>Add Student</span></a></li>
                 <li><a href="#" ><span>Update Student</span></a></li>
-                <li class='last'><a href="#"><span>View Student</span></a></li>
+                <li class='last'><a href="#"><span>Student Roles</span></a></li>
                 </ul>
                 </li>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
+            <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
+             <%} %>
             <li class='has-sub'><a href='#'><span>Reports</span></a></li>
             <li class='has-sub'><a href="examConfig.jsp"><span>ExamConfig</span></a></li>
-            <li class='has-sub'><a href='#'><span>Staff Management </span></a></li>
+            <li class='has-sub'><a href="staff.jsp"><span>Staff Management </span></a></li>
             <li class='has-sub'><a href="classTeachers.jsp"><span>Class Teachers </span></a></li>
             
 
@@ -284,6 +302,7 @@
 
 
                             <li><a class="ajax-link" href="schoolIndex.jsp"><i class="icon-home"></i><span class="hidden-tablet">Home</span></a></li>
+                              <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
                             <li><a class="ajax-link" href="#"><i class="icon-envelope"></i><span class="hidden-tablet">Subjects</span></a></li>
                             <li><a class="ajax-link" href="#"><i class="icon-edit"></i><span class="hidden-tablet">House</span></a></li>
                             <li><a class="ajax-link" href="#"><i class="icon-trash"></i><span class="hidden-tablet">Games</span></a></li>
@@ -292,6 +311,7 @@
                            
                             <li><a class="ajax-link" href="#"><i class="icon-home"></i><span class="hidden-tablet">Notices</span></a></li>
                             <li><a class="ajax-link" href="#"><i class="icon-envelope"></i><span class="hidden-tablet">Payments</span></a></li>
+                             <% }  %>
                         </ul>
                         <!--<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>-->
                     </div><!--/.well -->

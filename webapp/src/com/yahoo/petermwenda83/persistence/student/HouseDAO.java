@@ -1,21 +1,4 @@
-/**##########################################################
-/*************************************************************
- * ##########################################################
- * ##########################################################
- * ### This is My Forth Year Project#########################
- * ####### Maasai Mara University############################
- * ####### Year:2015-2016 ###################################
- * ####### Although this software is open source, No one
- * ###### should assume it ownership and copy paste 
- * ###### the code herein without the owner's approval.
- * ###################################################
- * ##########################################################
- * ##### SchoolAccount Management System ###########################
- * ##### Uses MVC Model, Postgres database, ant for 
- * ##### project management and other technologies.
- * ##### It consist Desktop application and a web
- * #### application all sharing the same DB.
- * ##########################################################
+/**
  * 
  */
 package com.yahoo.petermwenda83.persistence.student;
@@ -24,22 +7,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.student.StudentHouse;
+import com.yahoo.petermwenda83.bean.student.House;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
- * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ * @author peter
  *
  */
 public class HouseDAO extends GenericDAO implements SchoolHouseDAO {
-	
+
 	private static HouseDAO houseDAO;
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
@@ -68,133 +50,107 @@ public class HouseDAO extends GenericDAO implements SchoolHouseDAO {
 
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getHouse(java.lang.String)
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getHouse(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public StudentHouse getHouse(String studentuuid) {
-		StudentHouse studentHouse = null;
+	public House getHouse(String schoolUuid, String Uuid) {
+		House house = null;
 		ResultSet rset = null;
 		
 		  try(   Connection conn = dbutils.getConnection();
-				 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentHouse"
-						+ " WHERE StudentUuid =?;");
+				 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM House"
+						+ " WHERE SchoolAccountUuid =? AND Uuid = ?;");
 		         ){
-			  pstmt.setString(1, studentuuid); 
+			  pstmt.setString(1, schoolUuid); 
+			  pstmt.setString(2, Uuid); 
 		      rset = pstmt.executeQuery();
 		     while(rset.next()){
-		    	 studentHouse  = beanProcessor.toBean(rset,StudentHouse.class);
+		    	 house  = beanProcessor.toBean(rset,House.class);
 		   }
 	        	
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to putStudent with studentuuid: "+studentuuid);
+			 logger.error("SQL Exception trying to put House with: "+Uuid);
              logger.error(ExceptionUtils.getStackTrace(e)); 
              System.out.println(ExceptionUtils.getStackTrace(e));
     
 		 }
-		return studentHouse;
+		return house;
 	}
-   
+
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getHouseList(java.lang.String)
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#putHouse(com.yahoo.petermwenda83.bean.student.House)
 	 */
 	@Override
-	public List<StudentHouse> getHouseList(String HouseUuid) {
-		List<StudentHouse> houseList = null ;
-		try(
-				Connection conn = dbutils.getConnection();
-				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM StudentHouse WHERE "
-						+ "HouseUuid = ?;");
-				) {
-			psmt.setString(1, HouseUuid);
-			try(ResultSet rset = psmt.executeQuery();){
-			
-				houseList = beanProcessor.toBeanList(rset, StudentHouse.class);
-			}
-		} catch (SQLException e) {
-			logger.error("SQLException when trying to get a StudentHouse List for "+HouseUuid);
-            logger.error(ExceptionUtils.getStackTrace(e));
-            System.out.println(ExceptionUtils.getStackTrace(e)); 
-	    }
-		
-		return houseList;
-	}
-	
-	
-	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#putHouse(com.yahoo.petermwenda83.bean.student.StudentHouse)
-	 */
-	@Override
-	public boolean putHouse(StudentHouse studentHouse) {
+	public boolean putHouse(House house) {
 		 boolean success = true;
-		
+			
 		  try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentHouse" 
-			        		+"(Uuid, StudentUuid, HouseUuid,SysUser,DateIn) VALUES (?,?,?,?,?);");
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO House" 
+			        		+"(Uuid, SchoolAccountUuid,HouseName) VALUES (?,?,?);");
 		             ){
 			   
-	            pstmt.setString(1, studentHouse.getUuid());
-	            pstmt.setString(2, studentHouse.getStudentUuid());
-	            pstmt.setString(3, studentHouse.getHouseUuid());	       
-	            pstmt.setString(4, studentHouse.getSysUser());
-	            pstmt.setTimestamp(5, new Timestamp(studentHouse.getDateIn().getTime()));
+	            pstmt.setString(1, house.getUuid());
+	            pstmt.setString(2, house.getSchoolAccountUuid());
+	            pstmt.setString(3, house.getHouseName());            
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to putStudent: "+studentHouse);
-             logger.error(ExceptionUtils.getStackTrace(e)); 
-             System.out.println(ExceptionUtils.getStackTrace(e));
-            success = false;
+			 logger.error("SQL Exception trying to put House: "+house);
+            logger.error(ExceptionUtils.getStackTrace(e)); 
+            System.out.println(ExceptionUtils.getStackTrace(e));
+           success = false;
 		 }
 		
 		return success;
 	}
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#updatetHouse(com.yahoo.petermwenda83.bean.student.StudentHouse, java.lang.String)
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#updateHouse(com.yahoo.petermwenda83.bean.student.House)
 	 */
 	@Override
-	public boolean updatetHouse(StudentHouse studentHouse) {
+	public boolean updateHouse(House house) {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
-	             PreparedStatement pstmt = conn.prepareStatement("UPDATE StudentHouse SET HouseUuid = ?,SysUser = ?,DateIn = ? "
-			        + "WHERE StudentUuid = ?;");
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE House SET HouseName = ? "
+			        + "WHERE Uuid = ? AND SchoolAccountUuid =?;");
 	               ) {           			 	            
-	            pstmt.setString(1, studentHouse.getHouseUuid());
-	            pstmt.setString(2, studentHouse.getSysUser());
-	            pstmt.setTimestamp(3, new Timestamp(studentHouse.getDateIn().getTime()));
-	            pstmt.setString(4, studentHouse.getStudentUuid());	           
+			   
+	            pstmt.setString(1, house.getHouseName());  
+	            pstmt.setString(2, house.getUuid());
+	            pstmt.setString(3, house.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 
-      } catch (SQLException e) {
-        logger.error("SQL Exception when updating editStudent " + studentHouse);
-        logger.error(ExceptionUtils.getStackTrace(e));
-        System.out.println(ExceptionUtils.getStackTrace(e));
-        success = false;
-     } 
+    } catch (SQLException e) {
+      logger.error("SQL Exception when updating update House " + house);
+      logger.error(ExceptionUtils.getStackTrace(e));
+      System.out.println(ExceptionUtils.getStackTrace(e));
+      success = false;
+   } 
 		
 		return success;
 	}
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#deleteHouse(com.yahoo.petermwenda83.bean.student.StudentHouse)
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#deleteHouse(com.yahoo.petermwenda83.bean.student.House)
 	 */
 	@Override
-	public boolean deleteHouse(StudentHouse studentHouse) {
+	public boolean deleteHouse(House house) {
 		boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
-	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM StudentHouse"
-	         	      		+ " WHERE StudentUuid =?;");       
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM House"
+	         	      		+ " WHERE Uuid =? AND SchoolAccountUuid =?;");       
 	      		
 	      		){
 	      	
-	      	     pstmt.setString(1, studentHouse.getStudentUuid());
+	      	     pstmt.setString(1, house.getUuid());
+	      	     pstmt.setString(2, house.getSchoolAccountUuid());
 		         pstmt.executeUpdate();
 		     
 	      }catch(SQLException e){
-	      	   logger.error("SQL Exception when deletting house : " +studentHouse);
+	      	   logger.error("SQL Exception when deletting House : " +house);
 	           logger.error(ExceptionUtils.getStackTrace(e));
 	           System.out.println(ExceptionUtils.getStackTrace(e));
 	           success = false;
@@ -205,27 +161,28 @@ public class HouseDAO extends GenericDAO implements SchoolHouseDAO {
 	}
 
 	/**
-	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getHouseList()
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolHouseDAO#getHouseList(java.lang.String)
 	 */
 	@Override
-	public List<StudentHouse> getHouseList() {
-		List<StudentHouse> list = null;
-		 try(   
-	  		Connection conn = dbutils.getConnection();
-	  		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM StudentHouse;");   
-	  		ResultSet rset = pstmt.executeQuery();
-			) {
-	  	
-	      list = beanProcessor.toBeanList(rset, StudentHouse.class);
-
-	  } catch(SQLException e){
-	  	 logger.error("SQL Exception when getting all StudentHouse");
-	     logger.error(ExceptionUtils.getStackTrace(e));
-	     System.out.println(ExceptionUtils.getStackTrace(e)); 
-	  }
-	  return list;
+	public List<House> getHouseList(String schoolUuid) {
+		 List<House> houseList = null;
+			try(
+					Connection conn = dbutils.getConnection();
+					PreparedStatement psmt= conn.prepareStatement("SELECT * FROM House WHERE "
+							+ "SchoolAccountUuid = ?;");
+					) {
+				psmt.setString(1, schoolUuid);
+				try(ResultSet rset = psmt.executeQuery();){
+				
+					houseList = beanProcessor.toBeanList(rset, House.class);
+				}
+			} catch (SQLException e) {
+				logger.error("SQLException when trying to get a House List for school"+schoolUuid);
+	            logger.error(ExceptionUtils.getStackTrace(e));
+	            System.out.println(ExceptionUtils.getStackTrace(e)); 
+		    }
+			
+			return houseList;
 	}
-
-	
 
 }

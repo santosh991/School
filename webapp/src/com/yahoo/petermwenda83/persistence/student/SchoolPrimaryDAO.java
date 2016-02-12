@@ -17,13 +17,28 @@ public interface SchoolPrimaryDAO {
 	   * @return Student StudentPrimary SchoolAccount Details
 	   */
 	public StudentPrimary getPrimary(String StudentUuid);
-	   
+	   /**
+	    * 
+	    * @param Primary
+	    * @return
+	    */
 	public boolean putPrimary(StudentPrimary Primary);
-	  
+	   /**
+	    * 
+	    * @param Primary
+	    * @return
+	    */
 	public boolean updatePrimary(StudentPrimary Primary);
-	   
+	    /**
+	     * 
+	     * @param Primary
+	     * @return
+	     */
 	public boolean deletePrimary(StudentPrimary Primary);
-	   
+	    /**
+	     * 
+	     * @return
+	     */
 	public List<StudentPrimary> getAllPrimary();
 
 }

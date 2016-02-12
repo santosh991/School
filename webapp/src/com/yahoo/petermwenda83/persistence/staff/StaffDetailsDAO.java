@@ -129,7 +129,7 @@ public class StaffDetailsDAO extends GenericDAO implements SchoolStaffDetailsDAO
 		boolean success = true; 
 		 try(   Connection conn = dbutils.getConnection();
 	      PreparedStatement pstmt = conn.prepareStatement("UPDATE StaffDetails SET EmployeeNo =?,FirstName =?,LastName =?,"
-			+ "Surname =?,Gender =? , NhifNo =?, NssfNo =?, Phone =?, dOB =?, NationalID =?, County =?  WHERE StaffUuid = ? ;");
+			+ "Surname =?,Gender =? , NhifNo =?, NssfNo =?, Phone =?, dOB =?, NationalID =?, County =?,SysUser =?  WHERE StaffUuid = ? ;");
       		){
 			    pstmt.setString(1, staffDetail.getEmployeeNo());
 	            pstmt.setString(2, staffDetail.getFirstName());
@@ -141,8 +141,9 @@ public class StaffDetailsDAO extends GenericDAO implements SchoolStaffDetailsDAO
 	            pstmt.setString(8, staffDetail.getPhone());
 	            pstmt.setString(9, staffDetail.getdOB());
 	            pstmt.setString(10, staffDetail.getNationalID());
-	            pstmt.setString(11, staffDetail.getCounty());	           
-	            pstmt.setString(12, staffDetail.getStaffUuid());
+	            pstmt.setString(11, staffDetail.getCounty());
+	            pstmt.setString(12, staffDetail.getSysUser());
+	            pstmt.setString(13, staffDetail.getStaffUuid());	            
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

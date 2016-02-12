@@ -98,7 +98,7 @@
 
      <servlet>
         <servlet-name>ExportExcel</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.ExportExcel</servlet-class>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.excel.ExportExcel</servlet-class>
     </servlet>
 
 
@@ -111,7 +111,15 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.UpdateExamConfig</servlet-class>
     </servlet>
 
+   <servlet>
+        <servlet-name>AddStaff</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AddStaff</servlet-class>
+    </servlet>
 
+     <servlet>
+        <servlet-name>UpdateStaff</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.UpdateStaff</servlet-class>
+    </servlet>
 
 
 
@@ -128,6 +136,8 @@
         <servlet-name>SchoolLogout</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.Logout</servlet-class>
     </servlet>
+
+
 
 
 
@@ -168,6 +178,8 @@
         <servlet-name>AddRootUser</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.AddRootUser</servlet-class>
     </servlet>
+
+    
 
 
 
@@ -243,7 +255,28 @@
      <servlet-mapping>
         <servlet-name>UpdateExamConfig</servlet-name>
         <url-pattern>/school/updateExamConfig</url-pattern>
+    </servlet-mapping>  
+
+
+     <servlet-mapping>
+        <servlet-name>AddStaff</servlet-name>
+        <url-pattern>/school/addStaff</url-pattern>
     </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdateStaff</servlet-name>
+        <url-pattern>/school/updateStaff</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+
+
+
+    
 
 
 

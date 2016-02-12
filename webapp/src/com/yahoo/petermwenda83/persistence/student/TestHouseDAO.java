@@ -1,91 +1,106 @@
+/**
+ * 
+ */
 package com.yahoo.petermwenda83.persistence.student;
-
 import static org.junit.Assert.*;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.yahoo.petermwenda83.bean.student.StudentHouse;
+import com.yahoo.petermwenda83.bean.student.House;
 
+/**
+ * @author peter
+ *
+ */
 public class TestHouseDAO {
 	
+
 	final String databaseName = "schooldb";
 	final String Host = "localhost";
 	final String databaseUsername = "school";
 	final String databasePassword = "AllaManO1";
 	final int databasePort = 5432;
 	
-	final String UUID = "74CFE4DE-BF85-4558-B791-B1D1CBDC892C",
-			     UUID_NEW = "A96EF005-B34E-4ABB-9B26-5B01466CAD91";
-	
-	final String STUDENT_UUID = "4F218688-6DE5-4E69-8690-66FBA2F0DC9F";
-	
-	final String HOUSE_UUID = "C69AEA6C-AFEF-4AD6-9779-0067C9C77A61",
-			     HOUSE_UUID_NEW = "2A88D2A1-8CD4-4797-86EE-61A9C334C523",
-			     HOUSE_UUID_UPDATE = "5BFFCE33-7FCD-4199-9BFA-A32BABC4D370";
-	
-	final String USER = "Peter",
-			     USER_NEW = "new",
-			     USER_UPDATE = "update";
-	
-	final Date DATE_IN = new Date();
 	
 	private HouseDAO store;
+	
+	final String UUID = "C69AEA6C-AFEF-4AD6-9779-0067C9C77A61",
+			     UUID_NEW = "8F41AC10-CEDB-4404-BC32-138DD149F117";
+	
+	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
+	
+	final String HOUSE_NAME = "Suswa",
+			     HOUSE_NAME_NEW = "new",
+			     HOUSE_NAME_UPDATE = "update";
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.HouseDAO#getHouse(java.lang.String, java.lang.String)}.
+	 */
 	@Ignore
 	@Test
 	public void testGetHouse() {
 		store = new HouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		StudentHouse h = new StudentHouse();
-		h = store.getHouse(STUDENT_UUID);
-		assertEquals(h.getStudentUuid(),STUDENT_UUID);
+		House h = new House();
+		h = store.getHouse(SCHOOL_UUID, UUID);
 		assertEquals(h.getUuid(),UUID);
-		assertEquals(h.getHouseUuid(),HOUSE_UUID);
-		assertEquals(h.getSysUser(),USER);
-		//assertEquals(h.getDateIn(),DATE_IN);
-		
+		assertEquals(h.getSchoolAccountUuid(),SCHOOL_UUID);
+		assertEquals(h.getHouseName(),HOUSE_NAME);
 	}
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.HouseDAO#putHouse(com.yahoo.petermwenda83.bean.student.House)}.
+	 */
 	@Ignore
 	@Test
 	public void testPutHouse() {
 		store = new HouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		StudentHouse h = new StudentHouse();
+		House h = new House();
 		h.setUuid(UUID_NEW);
-		h.setStudentUuid(STUDENT_UUID);
-		h.setHouseUuid(HOUSE_UUID_NEW);
-		h.setSysUser(USER_NEW);
-		h.setDateIn(DATE_IN);
+		h.setSchoolAccountUuid(SCHOOL_UUID);
+		h.setHouseName(HOUSE_NAME_NEW);
 		assertTrue(store.putHouse(h)); 
 	}
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.HouseDAO#updateHouse(com.yahoo.petermwenda83.bean.student.House)}.
+	 */
 	@Ignore
 	@Test
-	public void testUpdatetHouse() {
+	public void testUpdateHouse() {
 		store = new HouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		StudentHouse h = new StudentHouse();
+		House h = new House();
 		h.setUuid(UUID_NEW);
-		h.setStudentUuid(STUDENT_UUID);
-		h.setHouseUuid(HOUSE_UUID_UPDATE);
-		h.setSysUser(USER_UPDATE);
-		h.setDateIn(DATE_IN);
-		assertTrue(store.updatetHouse(h));  
+		h.setSchoolAccountUuid(SCHOOL_UUID);
+		h.setHouseName(HOUSE_NAME_UPDATE);
+		assertTrue(store.updateHouse(h));  
 	}
-    @Ignore
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.HouseDAO#deleteHouse(com.yahoo.petermwenda83.bean.student.House)}.
+	 */
+	@Ignore
 	@Test
 	public void testDeleteHouse() {
 		store = new HouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		StudentHouse h = new StudentHouse();
-		h.setStudentUuid(STUDENT_UUID);
-		assertTrue(store.deleteHouse(h));   
+		House h = new House();
+		h.setUuid(UUID_NEW);
+		h.setSchoolAccountUuid(SCHOOL_UUID);
+		assertTrue(store.deleteHouse(h));  
 	}
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.student.HouseDAO#getHouseList(java.lang.String)}.
+	 */
 	@Ignore
 	@Test
 	public void testGetHouseList() {
 		store = new HouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<StudentHouse> list = store.getHouseList();
-		for (StudentHouse l : list) {
-			System.out.println(l);	
+		List<House> list = store.getHouseList(SCHOOL_UUID);
+		for (House h : list) {
+			System.out.println(h);	
 		}
 	}
 

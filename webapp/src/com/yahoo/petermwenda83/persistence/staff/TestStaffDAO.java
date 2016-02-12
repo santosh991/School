@@ -69,6 +69,21 @@ public class TestStaffDAO {
 		s.setSchoolAccountUuid(SCHOOL_UUID);
 	}
 
+	
+
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.StaffDAO#getStaffByUsername(java.lang.String, java.lang.String, java.lang.String)}.
+	 */
+	//@Ignore
+	@Test
+	public void testGetStaffByPosition() {
+		store = new StaffDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		Staff s = new Staff();
+		s = store.getStaffByPosition(SCHOOL_UUID, SCHOOL_UUID);
+		assertEquals(s.getSchoolAccountUuid(),SCHOOL_UUID);
+		//POSITION_UUID
+	}
+
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.StaffDAO#putStaff(com.yahoo.petermwenda83.bean.staff.Staff)}.
 	 */
@@ -89,7 +104,7 @@ public class TestStaffDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.staff.StaffDAO#updateStaff(com.yahoo.petermwenda83.bean.staff.Staff)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testUpdateStaff() {
 		store = new StaffDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

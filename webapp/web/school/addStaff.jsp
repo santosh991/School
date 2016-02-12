@@ -1,102 +1,137 @@
+<%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 
-<%@page import="com.yahoo.petermwenda83.server.session.AdminSessionConstants"%>
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
 <%@page import="com.yahoo.petermwenda83.persistence.staff.PositionDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.Position"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
+
+<%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
+<%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
-<%@page import="org.apache.commons.lang3.math.NumberUtils"%>
 
 
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Calendar"%>
-<%@page import="java.util.ArrayList"%>
-
-<%@page import="java.util.Date"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="java.net.URLEncoder"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 
-<%@ page import="net.sf.ehcache.Cache" %>
-<%@ page import="net.sf.ehcache.CacheManager" %>
-<%@ page import="net.sf.ehcache.Element" %>
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+ <%
+     String accountuuid = "";
 
-<body>
-
-<%
-if (session == null) {
-        response.sendRedirect("index.jsp");
+     if (session == null) {
+       response.sendRedirect("../index.jsp");
+      
     }
 
-    String username = (String) session.getAttribute(AdminSessionConstants.ADMIN_SESSION_KEY);
+    String username = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
     if (StringUtils.isEmpty(username)) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("../index.jsp");
+       
+    }
+     
+    CacheManager mgr = CacheManager.getInstance();
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
+    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
+    SessionStatistics statistics = new SessionStatistics();
+    
+
+    SchoolAccount school = new SchoolAccount();
+    Element element;
+   
+
+    int incount = 0;  // Generic counter
+
+    if ((element = accountsCache.get(username)) != null) {
+        school = (SchoolAccount) element.getObjectValue();
     }
 
-     session.setMaxInactiveInterval(AdminSessionConstants.SESSION_TIMEOUT);
-     response.setHeader("Refresh", AdminSessionConstants.SESSION_TIMEOUT + "; url=Logout");
+    accountuuid = school.getUuid();
+    String schoolname = school.getSchoolName();
+
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
      PositionDAO positionDAO = PositionDAO.getInstance();
      List<Position> positionList = new ArrayList<Position>(); 
      positionList = positionDAO.getPositionList();
 
 
-     AccountDAO accountDAO = AccountDAO.getInstance();
-     List<SchoolAccount> schoolList = new ArrayList(); 
-     schoolList = accountDAO.getAllSchools();
-%>
+    session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
+    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
+   
+   
+     String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
+     String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     
 
- <jsp:include page="header.jsp" />
+ %>
 
-<div class="row-fluid sortable">    
+
+
+
+
+
+<jsp:include page="header.jsp" />
+
+
+
+
+<div class="row-fluid sortable">
+
+
+
+               
+
+
+
     <div class="box span12">
-    <div class="box-header well" data-original-title>
-          <p> <a href="adminIndex.jsp">Back</a> </p>
+        <div class="box-header well" data-original-title>
+         <p>[<a href="staff.jsp">Back</a>]   Welcome to <%=schoolname%> :Staff Registration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
-      
-
         <div class="box-content">
-
-        
-                     <%
-                    HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_PARAM);
+          
+               <%
+                    HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(SessionConstants.STAFF_ADD_PARAM);
 
                         if (paramHash == null) {
                              paramHash = new HashMap<String, String>();
                             }
                              
 
-                             String addErrStr = "";
+                                String addErrStr = "";
                                 String addsuccessStr = "";
                                 session = request.getSession(false);
-                                     addErrStr = (String) session.getAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR);
-                                     addsuccessStr = (String) session.getAttribute(AdminSessionConstants.PRINCIPAL_ADD_SUCCESS); 
+                                     addErrStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_ERROR);
+                                     addsuccessStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_SUCCESS); 
 
                                 if(session != null) {
-                                    addErrStr = (String) session.getAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR);
-                                    addsuccessStr = (String) session.getAttribute(AdminSessionConstants.PRINCIPAL_ADD_SUCCESS);
+                                    addErrStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_ERROR);
+                                    addsuccessStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_SUCCESS);
                                 }                        
 
                                 if (StringUtils.isNotEmpty(addErrStr)) {
                                     out.println("<p style='color:red;'>");                 
                                     out.println("error: " + addErrStr);
                                     out.println("</p>");                                 
-                                    session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, null);
+                                    session.setAttribute(SessionConstants.STAFF_ADD_ERROR, null);
                                   } 
                                    else if (StringUtils.isNotEmpty(addsuccessStr)) {
                                     out.println("<p style='color:green;'>");                                 
                                     out.println("success: " + addsuccessStr);
                                     out.println("</p>");                                   
-                                    session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_SUCCESS, null);
+                                    session.setAttribute(SessionConstants.STAFF_ADD_SUCCESS, null);
                                   } 
 
 
@@ -105,36 +140,43 @@ if (session == null) {
 
 
 
-            <form  class="form-horizontal"   action="addRootUser" method="POST" >
-                <fieldset>
 
-                 <div class="control-group">
-                        <label class="control-label" for="SchoolAccount">School Account:</label>
-                         <div class="controls">
-                            <select name="accountUuid" >
+
+
+
+
+            
+            
+                    <form  class="form-horizontal"   action="addStaff" method="POST" >
+                     <fieldset>
+
+
+
+                   <div class="control-group" id="divid">
+                        <label class="control-label" for="name">Position</label>
+                        <div class="controls">
+                            <select name="Position" >
                                 <option value="">Please select one</option> 
-                               <%
-                                    int acount = 1;
-                                    if (schoolList != null) {
-                                        for (SchoolAccount ac : schoolList) {
+                                 <%
+                                    int count = 1;
+                                    if (positionList != null) {
+                                        for (Position p : positionList) {
                                 %>
-                                <option value="<%= ac.getUuid()%>"><%=ac.getSchoolName()%></option>
+                                <option value="<%= p.getUuid()%>"><%=p.getPosition()%></option>
                                 <%
-                                            acount++;
+                                            count++;
                                         }
                                     }
-                                    %>
-                                
+                                %>
                             </select>                           
                           
                         </div>
                     </div> 
 
-
-                     <div class="control-group">
-                        <label class="control-label" for="Category">Staff Category*:</label>
+                    <div class="control-group">
+                        <label class="control-label" for="Category">Staff*:</label>
                          <div class="controls">
-                            <select name="Category" >
+                            <select name="category" >
                                 <option value="">Please select one</option> 
                                 <option value="Teaching">Teaching</option>
                                 <option value="Non-Teaching">Non-Teaching</option>
@@ -145,46 +187,15 @@ if (session == null) {
                     </div> 
 
 
-                     <div class="control-group">
-                        <label class="control-label" for="Position">Position*:</label>
-                         <div class="controls">
-                            <select name="PositionUuid" >
-                                <option value="">Please select one</option> 
-                               
-                                     <%
-                                    int count = 1;
-                                    if (positionList != null) {
-                                        for (Position p : positionList) {
-                                %>
-                                <option value="<%= p.getUuid()%>"><%=p.getPosition()%></option>
-                                <%
-                                            count++;
-                                        }
-                                    }
-                                    %>
-                            </select>                           
-                          
-                        </div>
-                    </div> 
-
 
                     <div class="control-group">
-                        <label class="control-label" for="name">Principal Username*:</label>
+                        <label class="control-label" for="name">Username*:</label>
                         <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="principalusername" 
-                             value="<%= StringUtils.trimToEmpty(paramHash.get("principalusername")) %>"  >                                    
+                         <input class="input-xlarge focused" id="receiver" type="text" name="username" 
+                            value="<%= StringUtils.trimToEmpty(paramHash.get("username")) %>"  >
+
                         </div>
-                    </div> 
-
-
-                     <div class="control-group">
-                        <label class="control-label" for="name">Principal Password*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="principalpassword" 
-                             value="<%= StringUtils.trimToEmpty(paramHash.get("principalpassword")) %>"  >                                    
-                        </div>
-                    </div> 
-
+                    </div>  
 
                     <div class="control-group">
                         <label class="control-label" for="name">Employee Number:</label>
@@ -283,19 +294,27 @@ if (session == null) {
                     </div>  
 
 
+
+
+
+
+
                     
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
+                        <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                         <input type="hidden" name="systemuser" value="<%=staffUsername%>">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div> 
 
               </fieldset>
               </form>
+       
 
 
- </div>      
-
-
-  </div>
     </div>
-    
-  <jsp:include page="footer.jsp" />
+     </div>
+
+</div>
+
+
+<jsp:include page="footer.jsp" />

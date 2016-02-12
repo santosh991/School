@@ -42,6 +42,22 @@ public class SessionConstants {
 	public static final String SCHOOL_USER_EDIT_SUCCESS = "User Edited Successfully";
 	public static final String SCHOOL_USER_EDIT_ERROR = "User Edit Error";
 	
+	
+	//STAFF Management
+	public static final String STAFF_ADD_SUCCESS = "Staff Added Successfully";
+	public static final String STAFF_ADD_ERROR = "Staff Add Error";
+	public static final String STAFF_ADD_PARAM = "Staff Parameters";
+	public static final String STAFF_UPDATE_SUCCESS = "Staff Updated Successfully";
+	public static final String STAFF_UPDATE_ERROR = "Staff Update Error";
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	   //file upload management
     public static final String FILE_UPLOAD_SUCCESS = "Filed uploaded Successfully";
     public static final String FILE_UPLOAD_ERROR = "Filed upload Error";

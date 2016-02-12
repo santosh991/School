@@ -17,6 +17,8 @@ public interface SchoolStaffDAO {
 	
 	public Staff getStaffByUsername(String schoolAccountUuid,String username);
 	
+	public Staff getStaffByPosition(String schoolAccountUuid,String PositionUuid);
+	
 	public boolean putStaff(Staff staff);
 	
 	public boolean updateStaff(Staff staff);

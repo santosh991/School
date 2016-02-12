@@ -26,11 +26,12 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
-
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
+
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -87,8 +88,9 @@
         school = (SchoolAccount) element.getObjectValue();
     }
 
-    String accountuuid = school.getUuid();
-    String schoolname = school.getSchoolName();
+     String accountuuid = school.getUuid();
+     String schoolname = school.getSchoolName();
+
 
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
@@ -153,9 +155,15 @@
          <p>Welcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
-            
-            
 
+
+                <div id="search_box">
+                <form action="#" method="get">
+                 <input type="text" placeholder="Search By AdmNo" name="q" size="10" id="searchfield" title="searchfield" onkeyup="searchstudents(this.value)" />
+                </form>
+                </div>
+
+              
 
             <div>
             <table class="table table-striped table-bordered bootstrap-datatable ">
