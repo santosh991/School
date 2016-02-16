@@ -35,6 +35,7 @@
 
 
 function handleResponse(request) {
+  //console.log("Migwi"+request.responseText);
         if((request.readyState == 4) && (request.status == 200)) {
              $('.tabledit').remove();
              $('#pagination').hide();   

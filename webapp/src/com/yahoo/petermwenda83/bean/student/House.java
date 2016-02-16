@@ -12,7 +12,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
 public class House extends StorableBean {
 	
 	/**
-	 * 
+	 *  
 	 */
 	private static final long serialVersionUID = -6490144222304400994L;
 	

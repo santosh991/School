@@ -99,6 +99,7 @@
         
          <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
          <script src="../js/jquery/jquery-1.7.2.min.js"></script>
+         <script src="../js/searchstudent.js"></script>
          
          
         <link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
@@ -198,11 +199,12 @@
                 <!--SECRETARY-->
 
                   <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
-                <li class='has-sub' ><a href="#"><span>Student Management</span></a>
+                <li class='has-sub' ><a href="#"><span>Student Registration</span></a>
                   <ul>
-                <li><a href="addStudent.jsp" ><span>Add Student</span></a></li>
-                <li><a href="#" ><span>Update Student</span></a></li>
-                <li class='last'><a href="#"><span>Student Roles</span></a></li>
+                <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
+                <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
+                <li><a href="addHouse.jsp" ><span>Student House</span></a></li>
+                <li class='last'><a href="addSponsor.jsp"><span>Student Sponsor</span></a></li>
                 </ul>
                 </li>
                  <%}  %>
@@ -210,9 +212,9 @@
                <!--BURSAR/ACCOUNT C-->
                 
                   <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
-                <li class='has-sub' ><a href="#"><span>Fee Management</span></a>
+                <li class='has-sub' ><a href="fee.jsp"><span>Fee Management</span></a>
                   <ul>
-                <li><a href="#" ><span>Pocket Money</span></a></li>
+                <li><a href="pocketM.jsp" ><span>Pocket Money</span></a></li>
                 </ul>
                 </li>
                  <%}  %>
@@ -226,7 +228,7 @@
 		        <%
 	            }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
 	            %>
-	            <li class='has-sub'><a href="examIndex.jsp"><span>Exam Management</span></a></li>
+	            <li class='has-sub'><a href="examIndex.jsp"><span>My Class</span></a></li>
 		        <%
 	           }else{
 	          
@@ -250,7 +252,7 @@
             <!--CM-CURRICULUM MASTER-->
 
              <%  if(StringUtils.equals(staffPosition,pos_CM)){ %>
-              <li class='has-sub'><a href='#'><span>Reports</span></a></li>
+              <li class='has-sub'><a href="reports.jsp"><span>Reports</span></a></li>
               <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
              <% }  %>
             
@@ -262,18 +264,19 @@
              <!--PRINCIPAL-->
 
               <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
-                <li class='has-sub' ><a href="#"><span>Student Management</span></a>
+                 <li class='has-sub' ><a href="#"><span>Student Registration</span></a>
                   <ul>
-                <li><a href="addStudent.jsp" ><span>Add Student</span></a></li>
-                <li><a href="#" ><span>Update Student</span></a></li>
-                <li class='last'><a href="#"><span>Student Roles</span></a></li>
+                <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
+                <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
+                 <li><a href="addHouse.jsp" ><span>Student House</span></a></li>
+                <li class='last'><a href="addSponsor.jsp"><span>Student Sponsor</span></a></li>
                 </ul>
                 </li>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
             <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
              <%} %>
-            <li class='has-sub'><a href='#'><span>Reports</span></a></li>
+            <li class='has-sub'><a href="reports.jsp"><span>Reports</span></a></li>
             <li class='has-sub'><a href="examConfig.jsp"><span>ExamConfig</span></a></li>
             <li class='has-sub'><a href="staff.jsp"><span>Staff Management </span></a></li>
             <li class='has-sub'><a href="classTeachers.jsp"><span>Class Teachers </span></a></li>
@@ -305,7 +308,7 @@
                               <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
                             <li><a class="ajax-link" href="#"><i class="icon-envelope"></i><span class="hidden-tablet">Subjects</span></a></li>
                             <li><a class="ajax-link" href="#"><i class="icon-edit"></i><span class="hidden-tablet">House</span></a></li>
-                            <li><a class="ajax-link" href="#"><i class="icon-trash"></i><span class="hidden-tablet">Games</span></a></li>
+                            <li><a class="ajax-link" href="parents.jsp"><i class="icon-trash"></i><span class="hidden-tablet">Parents</span></a></li>
                            
                            <li class="nav-header hidden-tablet">My School</li> 
                            

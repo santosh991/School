@@ -21,6 +21,14 @@ public interface SchoolStudentHouseDAO {
 	    */
 	public StudentHouse getHouse(String studentuuid);
 	
+
+	   /**
+	    * 
+	    * @param house
+	    * @return whether StudentHouse was got successfully
+	    */
+	public StudentHouse getHouseByHoudeId(String HouseUuid,String studentuuid);
+	
 	 /**
 	  * 
 	  * @param HouseUuid

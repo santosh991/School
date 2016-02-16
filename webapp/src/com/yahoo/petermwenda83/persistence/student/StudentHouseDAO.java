@@ -52,7 +52,7 @@ public class StudentHouseDAO extends GenericDAO implements SchoolStudentHouseDAO
 		return studentHouseDAO;
 	}
 	
-	/**
+	/** 
 	 * 
 	 */
 	public StudentHouseDAO() {
@@ -94,6 +94,37 @@ public class StudentHouseDAO extends GenericDAO implements SchoolStudentHouseDAO
 		 }
 		return studentHouse;
 	}
+	
+	
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentHouseDAO#getHouseByHoudeId(java.lang.String)
+	 */
+	@Override
+	public StudentHouse getHouseByHoudeId(String HouseUuid,String studentuuid) {
+		StudentHouse studentHouse = null;
+		ResultSet rset = null;
+		
+		  try(   Connection conn = dbutils.getConnection();
+				 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentHouse"
+						+ " WHERE HouseUuid =? AND studentuuid =?;");
+		         ){
+			  pstmt.setString(1, HouseUuid); 
+			  pstmt.setString(2, studentuuid); 
+		      rset = pstmt.executeQuery();
+		     while(rset.next()){
+		    	 studentHouse  = beanProcessor.toBean(rset,StudentHouse.class);
+		   }
+	        	
+			 
+		 }catch(SQLException e){
+			 logger.error("SQL Exception trying to putStudent with HouseUuid: "+HouseUuid);
+             logger.error(ExceptionUtils.getStackTrace(e)); 
+             System.out.println(ExceptionUtils.getStackTrace(e));
+    
+		 }
+		return studentHouse;
+	}
+
    
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentHouseDAO#getHouseList(java.lang.String)
@@ -226,6 +257,7 @@ public class StudentHouseDAO extends GenericDAO implements SchoolStudentHouseDAO
 	  return list;
 	}
 
+	
 	
 
 }

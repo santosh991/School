@@ -76,7 +76,7 @@ public class TestStudentDAO {
 	public void testGetStudent() {
 		store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		Student s = new Student();
-		s = store.getStudent(SCHOOL_UUID, UUID);
+		s = store.getStudentByuuid(SCHOOL_UUID, UUID);
 		assertEquals(s.getUuid(),UUID);
 		assertEquals(s.getStatusUuid(),STATUS_UUID);
 		assertEquals(s.getSchoolAccountUuid(),SCHOOL_UUID);
@@ -98,7 +98,7 @@ public class TestStudentDAO {
 	public void testGetStudents() {
 		   store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		   Student s = new Student();
-		   s = store.getStudents(SCHOOL_UUID,ADM_NO);
+		   s = store.getStudentByadmNo(SCHOOL_UUID,ADM_NO);
 		    assertEquals(s.getUuid(),UUID);
 			assertEquals(s.getStatusUuid(),STATUS_UUID);
 			assertEquals(s.getSchoolAccountUuid(),SCHOOL_UUID);

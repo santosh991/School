@@ -100,7 +100,7 @@
 <script src="../js/jquery/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="../js/fastech/charisma.js"></script>
-<script src="../js/searchstudent.js"></script>
+
 
 
 

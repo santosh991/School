@@ -174,14 +174,14 @@ public class UploadUtil {
 			    	 String studentuuid = "";
 			    	 Student student = new Student();
 			    	 if(admno !=null){
-				    		student = studentDAO.getStudents(schooluuid,admno);
+				    		student = studentDAO.getStudentByadmNo(schooluuid,admno);
 				    		if(student !=null){
 				    			studentuuid = student.getUuid();
 				    		}
 				    		
 				    	}
 			    	 
-			    	 if(studentDAO.getStudent(schooluuid,studentuuid)==null) {
+			    	 if(studentDAO.getStudentByuuid(schooluuid,studentuuid)==null) {
 			    		 return ("Student with admNo \"" + admno + "\" on line \"" + count + "\" was not found in the System");
 			    	   }
 			          }
@@ -265,7 +265,7 @@ public class UploadUtil {
 			     for(int j=0; j<admNotoken.length; j++ ) {
 			    	String admno = StringUtils.trimToEmpty(admNotoken[j]);
 			    	if(admno !=null){
-			    		student = studentDAO.getStudents(school.getUuid(),admno);
+			    		student = studentDAO.getStudentByadmNo(school.getUuid(),admno);
 			    	}
 			    	
 			     }

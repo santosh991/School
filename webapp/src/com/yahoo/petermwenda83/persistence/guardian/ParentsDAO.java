@@ -32,7 +32,7 @@ public class ParentsDAO extends GenericDAO  implements SchoolParentsDAO {
 		return parentsDAO;
 	}
 	
-	/**
+	/** 
 	 * 
 	 */
 	public ParentsDAO() {

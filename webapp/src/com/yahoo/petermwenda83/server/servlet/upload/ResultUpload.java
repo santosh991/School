@@ -214,13 +214,13 @@ private File processUploadedFile(FileItem item, String subjectname, String roomn
 				  subjectuuid = subjct.getUuid();
 			       } 
 			
-			if(studentDAO.getStudents(schooluuid,admno) == null){
+			if(studentDAO.getStudentByadmNo(schooluuid,admno) == null){
 				
 			}else{
 				//check validity
 				InspectToken(admno,score);	
 				
-				student = studentDAO.getStudents(schooluuid,admno);
+				student = studentDAO.getStudentByadmNo(schooluuid,admno);
 				String studentUuid = student.getUuid();
 		
 				if((studentExamDAO.getStudentExam(SCHOOL_UUID, studentUuid)) !=null){
@@ -306,7 +306,7 @@ private File processUploadedFile(FileItem item, String subjectname, String roomn
 
 private String InspectToken(String admno, Double score) {
 	String feedback = ResultUpload.UPLOAD_SUCCESS;
-	if(studentDAO.getStudents(schooluuid,admno) == null){
+	if(studentDAO.getStudentByadmNo(schooluuid,admno) == null){
 		return " Admossion Number " +admno+" Not found" ;
 	}if(score <= 0){
 		return " score " +score+" Not allowed" ;

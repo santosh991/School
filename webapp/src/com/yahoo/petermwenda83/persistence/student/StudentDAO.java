@@ -56,7 +56,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 */
 	
 	@Override
-	public Student getStudent(String schoolaccountUuid,String Uuid) {
+	public Student getStudentByuuid(String schoolaccountUuid,String Uuid) {
 		Student student = null;
         ResultSet rset = null;
         try(
@@ -87,7 +87,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 */
 	
 	@Override
-	public Student getStudents(String schoolaccountUuid,String admno) {
+	public Student getStudentByadmNo(String schoolaccountUuid,String admno) {
 		Student student = null;
         ResultSet rset = null;
         try(

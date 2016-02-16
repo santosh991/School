@@ -17,13 +17,13 @@ public interface SchoolStudentDAO {
 	 * @param uuid
 	 * @return Student
 	 */
-	public Student getStudent(String schoolaccountUuid,String uuid);
+	public Student getStudentByuuid(String schoolaccountUuid,String uuid);
 	/**
 	 * 
 	 * @param admno
 	 * @return Student
 	 */
-	public Student getStudents(String schoolaccountUuid,String admno);
+	public Student getStudentByadmNo(String schoolaccountUuid,String admno);
 	
 	  
 

@@ -3,6 +3,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
 
 
 
@@ -13,7 +16,7 @@
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 
-
+<%@ page import="java.util.Calendar" %>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
@@ -62,8 +65,10 @@
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
-   
-
+    RoomDAO roomDAO = RoomDAO.getInstance();
+    List<ClassRoom> classList = new ArrayList<ClassRoom>();
+    classList = roomDAO.getAllRooms(accountuuid);
+    
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -72,6 +77,18 @@
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      
+
+    Calendar calendar = Calendar.getInstance();
+    final int DAYS_IN_MONTH = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) + 1;
+    final int DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
+    final int MONTH = calendar.get(Calendar.MONTH) + 1;
+    final int YEAR = calendar.get(Calendar.YEAR)-18;
+    final int YEAR_COUNT = YEAR + 10;
+
+    final int YEAR2 = calendar.get(Calendar.YEAR)-10;
+    final int YEAR_COUNT2 = YEAR2 + 10;
+
+    
 
  %>
 
@@ -95,7 +112,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-   <p>[<a href="schoolIndex.jsp">Back</a>]   Welcome to <%=schoolname%> :Student Registration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+   <p>[<a href="schoolIndex.jsp">Back</a>]  <%=schoolname%> :Student Registration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
           
@@ -135,138 +152,195 @@
                      %>
 
 
+                    <p>Fields marked with a * are compulsory.</p>
+                    <form  class="form-horizontal"   action="addStudentBacic" method="POST" >
+                    <fieldset>
+
+                                     <div class="control-group">
+                                        <label class="control-label" for="Classroom">Classroom*:</label>
+                                         <div class="controls">
+                                            <select name="Classroom" >
+
+                                                <option value="">Please select one</option> 
+                                                 <%
+                                                    int count = 1;
+                                                    if (classList != null) {
+                                                        for (ClassRoom cl : classList) {
+                                                %>
+                                                <option value="<%=cl.getUuid()%>"><%=cl.getRoomName()%></option>
+                                                <%
+                                                            count++;
+                                                        }
+                                                    }
+                                                %>
+                                                
+                                            </select>                           
+                                          
+                                        </div>
+                                    </div> 
 
 
 
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">Admission Number*:</label>
+                                        <div class="controls">
+                                         <input class="input-xlarge focused" id="receiver" type="text" name="admnumber" 
+                                            value="<%= StringUtils.trimToEmpty(paramHash.get("admnumber")) %>"  >
+
+                                        </div>
+                                    </div>  
 
 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">FirstName*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="firstname" 
+                                             value="<%= StringUtils.trimToEmpty(paramHash.get("firstname")) %>"  >                                    
+                                        </div>
+                                    </div> 
 
 
-            
-            
-                    <form  class="form-horizontal"   action="#" method="POST" >
-                     <fieldset>
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">LastName*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="lastname"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("lastname")) %>"  >
+                                        </div>
+                                    </div> 
 
 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">SurName*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="surname"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("surname")) %>"  >
+                                        </div>
+                                    </div> 
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="gender">Gender*:</label>
+                                         <div class="controls">
+                                            <select name="gender" >
+                                                <option value="">Please select one</option> 
+                                                <option value="MALE">Male</option>
+                                                <option value="FEMALE">Female</option>
+                                                
+                                            </select>                           
+                                          
+                                        </div>
+                                    </div> 
+                                     
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">DOB (DD-MM-YYYY)*:</label>
+                                        <div class="controls">
+                                                  <select name="addDay" id="input" style="max-width:5%;">
+                                                        <%
+                                                            for (int j = 1; j < DAYS_IN_MONTH; j++) {
+                                                                if (j == DAY_OF_MONTH) {
+                                                                    out.println("<option selected=\"selected\" value=\"" + j + "\">" + j + "</option>");
+                                                                } else {
+                                                                    out.println("<option value=\"" + j + "\">" + j + "</option>");
+                                                                }
+                                                            }
+                                                        %>
+                                                    </select>
+                                                   <select name="addMonth" id="input" style="max-width:5%;" >
+                                                        <%
+                                                            for (int j = 1; j < 13; j++) {
+                                                                if (j == MONTH) {
+                                                                    out.println("<option selected=\"selected\" value=\"" + j + "\">" + j + "</option>");
+                                                                } else {
+                                                                    out.println("<option value=\"" + j + "\">" + j + "</option>");
+                                                                }
+                                                            }
+                                                        %>
+                                                    </select>
+                                                    <select name="addYear" id="input" style="max-width:8%;">
+                                                        <%
+                                                            for (int j = YEAR; j < YEAR_COUNT; j++) {
+                                                                if (j == YEAR) {
+                                                                    out.println("<option selected=\"selected\" value=\"" + j + "\">" + j + "</option>");
+                                                                } else {
+                                                                    out.println("<option value=\"" + j + "\">" + j + "</option>");
+                                                                }
+                                                            }
+                                                        %>
+                                                    </select>
+                                        </div>
+                                        </div>
 
 
-                    <div class="control-group">
-                        <label class="control-label" for="name">Username*:</label>
-                        <div class="controls">
-                         <input class="input-xlarge focused" id="receiver" type="text" name="username" 
-                            value="<%= StringUtils.trimToEmpty(paramHash.get("username")) %>"  >
+                                    
 
-                        </div>
-                    </div>  
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">Berth Cert*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="BcertNo"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("BcertNo")) %>"  >
+                                        </div>
+                                    </div> 
 
-                    <div class="control-group">
-                        <label class="control-label" for="name">Employee Number:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="employeeNo" 
-                             value="<%= StringUtils.trimToEmpty(paramHash.get("employeeNo")) %>"  >                                    
-                        </div>
-                    </div> 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">County*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="County"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("County")) %>"  >
+                                        </div>
+                                    </div> 
 
+                                   <h3><i class="icon-edit"></i> Primary School Details:</h3>  
 
-                     <div class="control-group">
-                        <label class="control-label" for="name">FirstName*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="firstname" 
-                             value="<%= StringUtils.trimToEmpty(paramHash.get("firstname")) %>"  >                                    
-                        </div>
-                    </div> 
-
-
-                    <div class="control-group">
-                        <label class="control-label" for="name">LastName*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="lastname"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("lastname")) %>"  >
-                        </div>
-                    </div> 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">Primary School*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="primary"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("primary")) %>"  >
+                                        </div>
+                                    </div> 
 
 
-                     <div class="control-group">
-                        <label class="control-label" for="name">SurName*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="surname"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("surname")) %>"  >
-                        </div>
-                    </div> 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">Index Number*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="indexno"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("indexno")) %>"  >
+                                        </div>
+                                    </div> 
 
-                    <div class="control-group">
-                        <label class="control-label" for="gender">Gender*:</label>
-                         <div class="controls">
-                            <select name="gender" >
-                                <option value="">Please select one</option> 
-                                <option value="MALE">Male</option>
-                                <option value="FEMALE">Female</option>
-                                
-                            </select>                           
-                          
-                        </div>
-                    </div> 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">KCPE Year*:</label>
+                                         <div class="controls">
+                                                <select name="addYear" id="input" style="max-width:8%;">
+                                                        <%
+                                                            for (int j = YEAR2; j < YEAR_COUNT2; j++) {
+                                                                if (j == YEAR2) {
+                                                                    out.println("<option selected=\"selected\" value=\"" + j + "\">" + j + "</option>");
+                                                                } else {
+                                                                    out.println("<option value=\"" + j + "\">" + j + "</option>");
+                                                                }
+                                                            }
+                                                        %>
+                                                    </select>
+                                            </div>
+                                    </div> 
 
-                    <div class="control-group">
-                        <label class="control-label" for="name">NHIF NO:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="nhif"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("nhif")) %>"  >
-                        </div>
-                    </div> 
+                                     <div class="control-group">
+                                        <label class="control-label" for="name">KCPE Marks*:</label>
+                                        <div class="controls">
+                                            <input class="input-xlarge focused" id="receiver" type="text" name="kcpemark"
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("kcpemark")) %>"  >
+                                        </div>
+                                    </div> 
 
-                    <div class="control-group">
-                        <label class="control-label" for="name">NSSF NO:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="nssf"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("nssf")) %>"  >
-                        </div>
-                    </div> 
+                                    
 
-                     <div class="control-group">
-                        <label class="control-label" for="name">Phone NO*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="phone"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("phone")) %>"  >
-                        </div>
-                    </div> 
-
-                     <div class="control-group">
-                        <label class="control-label" for="name">ID NO*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="idno"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("idno")) %>"  >
-                        </div>
-                    </div>  
-
-                    <div class="control-group">
-                        <label class="control-label" for="name">County*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="county"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("county")) %>"  >
-                        </div>
-                    </div>  
-
-                    <div class="control-group">
-                        <label class="control-label" for="name">YOB*:</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused" id="receiver" type="text" name="dob"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("dob")) %>"  >
-                        </div>
-                    </div>  
-
-
-
-
-
-
-
-                    
-                    <div class="form-actions">
-                        <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
-                         <input type="hidden" name="systemuser" value="<%=staffUsername%>">
-                        <button type="submit" class="btn btn-primary">Register</button>
-                    </div> 
+                                    
+                                    <div class="form-actions">
+                                        <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                                         <input type="hidden" name="systemuser" value="<%=staffUsername%>">
+                                        <button type="submit" class="btn btn-primary">Register</button>
+                                    </div> 
 
               </fieldset>
               </form>

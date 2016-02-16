@@ -47,6 +47,31 @@ public class TestStudentHouseDAO {
 		//assertEquals(h.getDateIn(),DATE_IN);
 		
 	}
+	
+	@Ignore
+	@Test
+	public void testGetHouseByHoudeId() {
+		store = new StudentHouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		StudentHouse h = new StudentHouse();
+		h = store.getHouseByHoudeId(HOUSE_UUID,STUDENT_UUID); 
+		assertEquals(h.getStudentUuid(),STUDENT_UUID);
+		//assertEquals(h.getUuid(),UUID);
+		//assertEquals(h.getHouseUuid(),HOUSE_UUID);
+		//assertEquals(h.getSysUser(),USER);
+		//assertEquals(h.getDateIn(),DATE_IN);
+		
+	}
+	
+	//@Ignore
+	@Test
+	public void testGetHouseList1() {
+		store = new StudentHouseDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		List<StudentHouse> list = store.getHouseList(HOUSE_UUID);
+		for (StudentHouse l : list) {
+			System.out.println(l);	
+		}
+		
+	}
 	@Ignore
 	@Test
 	public void testPutHouse() {

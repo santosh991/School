@@ -121,6 +121,42 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.UpdateStaff</servlet-class>
     </servlet>
 
+     <servlet>
+        <servlet-name>FindStudentP</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.FindStudentP</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FindStudentH</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.FindStudentH</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FindStudentS</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.FindStudentS</servlet-class>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>AddStudentBacic</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentBacic</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddStudentParent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentParent</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddStudentHouse</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentHouse</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddStudentSponsor</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentSponsor</servlet-class>
+    </servlet>
+
 
 
 
@@ -266,6 +302,43 @@
      <servlet-mapping>
         <servlet-name>UpdateStaff</servlet-name>
         <url-pattern>/school/updateStaff</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>FindStudentP</servlet-name>
+        <url-pattern>/school/findStudentP</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>FindStudentH</servlet-name>
+        <url-pattern>/school/findStudentH</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>FindStudentS</servlet-name>
+        <url-pattern>/school/findStudentS</url-pattern>
+    </servlet-mapping>
+
+
+
+     <servlet-mapping>
+        <servlet-name>AddStudentBacic</servlet-name>
+        <url-pattern>/school/addStudentBacic</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddStudentParent</servlet-name>
+        <url-pattern>/school/addStudentParent</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddStudentHouse</servlet-name>
+        <url-pattern>/school/addStudentHouse</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddStudentSponsor</servlet-name>
+        <url-pattern>/school/addStudentSponsor</url-pattern>
     </servlet-mapping>
 
 

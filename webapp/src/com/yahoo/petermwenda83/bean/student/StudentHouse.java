@@ -23,7 +23,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
  */
 public class StudentHouse extends StorableBean  {
 	
-	/**
+	/** 
 	 * 
 	 */
 	private static final long serialVersionUID = -4883618114808381680L;
@@ -119,16 +119,16 @@ public class StudentHouse extends StorableBean  {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Student's House");
+		builder.append("Student's House,");
 		builder.append("[getUuid() = ");
 		builder.append(getUuid());
-		builder.append(", studentUuid");
+		builder.append(", studentUuid = ");
 		builder.append(studentUuid);
-		builder.append(", HouseUuid =");
+		builder.append(", HouseUuid = ");
 		builder.append(HouseUuid);
-		builder.append(", sysUser =");
+		builder.append(", sysUser = ");
 		builder.append(sysUser);
-		builder.append(", dateIn =");
+		builder.append(", dateIn = ");
 		builder.append(dateIn);
 		builder.append("]");
 		return builder.toString(); 

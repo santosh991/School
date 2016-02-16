@@ -22,7 +22,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
 public class ClassRoom  extends StorableBean{
 	
 	/**
-	 * 
+	 *  
 	 */
 	private static final long serialVersionUID = 6259060888065917342L;
 	private String SchoolAccountUuid;

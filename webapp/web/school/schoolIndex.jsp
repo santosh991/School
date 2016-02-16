@@ -168,7 +168,7 @@
             <div>
             <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
-                    <tr>
+                    <tr >
                         <th>*</th>
                         <th>AdmNO</th>
                         <th>Fullname</th>                
@@ -185,13 +185,13 @@
                         <th>Status</th>
                     </tr>
                 </thead>   
-                <tbody>
+                <tbody class='tablebody'>
                     <%
                     String fullname = "";
                     for(Student s : studentList){
                     fullname = s.getFirstname()+" "+s.getSurname()+" "+s.getLastname();
                     %>
-                    <tr>
+                    <tr class="tabledit">
                          <td width="3%"><%=ussdCount%></td>
                          <td class="center"><%=s.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>

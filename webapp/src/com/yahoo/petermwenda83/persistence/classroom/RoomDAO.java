@@ -35,7 +35,7 @@ public class RoomDAO extends GenericDAO implements SchoolRoomDAO {
 		return roomDAO;
 	}
 	
-	/**
+	/**  
 	 * 
 	 */
 	public RoomDAO() { 

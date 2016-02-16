@@ -34,7 +34,7 @@ public class HouseDAO extends GenericDAO implements SchoolHouseDAO {
 		return houseDAO;
 	}
 	
-	/**
+	/**  
 	 * 
 	 */
 	public HouseDAO() {

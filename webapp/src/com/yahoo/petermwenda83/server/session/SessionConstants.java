@@ -50,6 +50,24 @@ public class SessionConstants {
 	public static final String STAFF_UPDATE_SUCCESS = "Staff Updated Successfully";
 	public static final String STAFF_UPDATE_ERROR = "Staff Update Error";
 	
+	public static final String STUDENT_PARAM = "Student Parameters";
+	
+	public static final String FATHER_MOTHER_PARAM = "Father/Mother Parameters";
+	
+	public static final String PARENT_PARAM = "Parent Parameters";
+	public static final String SPONSOR_PARAM = "Sponor Parameters";
+	public static final String HOUSE_PARAM = "House Parameters";
+	
+	public static final String STUDENT_FIND_ERROR = "student not found";
+	public static final String STUDENT_FIND_SUCCESS = "student found successfully";
+	
+	public static final String FATHER_MOTHER_ADD_ERROR = "Father/Mother add error";
+	public static final String FATHER_MOTHER_ADD_SUCCESS = "Father/Mother add successfully";
+	
+	public static final String HOUSE_ADD_ERROR = "House add error";
+	public static final String HOUSE_ADD_SUCCESS = "House add successfully";
+	
+	
 	
 	
 	
