@@ -27,6 +27,7 @@ import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 public class AddRootUser extends HttpServlet{
 
 	final  String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
+	private String principalId = "";
 	
 	private static StaffDAO staffDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
@@ -77,6 +78,10 @@ public class AddRootUser extends HttpServlet{
        String county = StringUtils.trimToEmpty(request.getParameter("county"));
        String dob = StringUtils.trimToEmpty(request.getParameter("dob"));
        
+       principalId = " ";
+       if(StringUtils.equals(PositionUuid, pos_Pricipal)){
+    	   principalId = pos_Pricipal;
+       }
        //System.out.println("pr="+pos_Pricipal);
     // This is used to store parameter names and values from the form.
 	   	Map<String, String> paramHash = new HashMap<>();    	
@@ -109,7 +114,7 @@ public class AddRootUser extends HttpServlet{
        }else if(StringUtils.isEmpty(principalpassword)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_PASSWORD); 
     	   
-       }else if(staffDAO.getStaffByPosition(accountUuid, pos_Pricipal) !=null){
+       }else if(staffDAO.getStaffByPosition(accountUuid, principalId) !=null){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_PRINCIPAL_EXIST); 
     	   
        }else{

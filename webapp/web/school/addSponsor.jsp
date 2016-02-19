@@ -99,36 +99,87 @@
         <div class="box-content">
           
                <%
-                    HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(SessionConstants.STAFF_ADD_PARAM);
+                    HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(SessionConstants.SPONSOR_PARAM);
 
                         if (paramHash == null) {
                              paramHash = new HashMap<String, String>();
                             }
+
+                      HashMap<String, String> sponsorParamHash = (HashMap<String, String>) session.getAttribute(SessionConstants.STUDENT_SPONSOR_PARAM);
+
+                        if (sponsorParamHash == null) {
+                             sponsorParamHash = new HashMap<String, String>();
+                            }
+                             
                              
 
                                 String addErrStr = "";
                                 String addsuccessStr = "";
+                                String addError = "";
+                                String addsuccess = "";
                                 session = request.getSession(false);
-                                     addErrStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_ERROR);
-                                     addsuccessStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_SUCCESS); 
-
-                                if(session != null) {
-                                    addErrStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_ERROR);
-                                    addsuccessStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_SUCCESS);
-                                }                        
+                                     addErrStr = (String) session.getAttribute(SessionConstants.STUDENT_FIND_ERROR);
+                                     addsuccessStr = (String) session.getAttribute(SessionConstants.STUDENT_FIND_SUCCESS); 
+                                     addError = (String) session.getAttribute(SessionConstants.SPONSOR_ADD_ERROR);
+                                     addsuccess = (String) session.getAttribute(SessionConstants.SPONSOR_ADD_SUCCESS); 
+                    
 
                                 if (StringUtils.isNotEmpty(addErrStr)) {
                                     out.println("<p style='color:red;'>");                 
                                     out.println("error: " + addErrStr);
                                     out.println("</p>");                                 
-                                    session.setAttribute(SessionConstants.STAFF_ADD_ERROR, null);
+                                    session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, null);
                                   } 
                                    else if (StringUtils.isNotEmpty(addsuccessStr)) {
                                     out.println("<p style='color:green;'>");                                 
                                     out.println("success: " + addsuccessStr);
                                     out.println("</p>");                                   
-                                    session.setAttribute(SessionConstants.STAFF_ADD_SUCCESS, null);
+                                    session.setAttribute(SessionConstants.STUDENT_FIND_SUCCESS, null);
                                   } 
+                                  if (StringUtils.isNotEmpty(addError)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + addError);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(addsuccess)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + addsuccess);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.SPONSOR_ADD_SUCCESS, null);
+                                  } 
+
+                           String admNumber =""; 
+                           String firstname ="";
+                           String lastname =""; 
+                           String surname ="";  
+
+                          if(StringUtils.isEmpty(paramHash.get("admNumber"))){
+                           admNumber = " ";
+                          }else{
+                           admNumber = paramHash.get("admNumber"); 
+                           }
+
+                           if(StringUtils.isEmpty(paramHash.get("firstname"))){
+                           firstname = " ";
+                          }else{
+                           firstname = paramHash.get("firstname"); 
+                           }
+
+
+                           if(StringUtils.isEmpty(paramHash.get("lastname"))){
+                           lastname = " ";
+                          }else{
+                           lastname = paramHash.get("lastname"); 
+                           }
+
+
+                           if(StringUtils.isEmpty(paramHash.get("surname"))){
+                           surname = " ";
+                          }else{
+                           surname = paramHash.get("surname"); 
+                           }
+
 
 
                      %>
@@ -149,6 +200,7 @@
                        
                           <!--submit form -->  
                           <div class="form-actions">
+                               <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                               <button type="submit" name="Find" value="Find"   class="btn btn-primary">Find</button> 
                           </div>
 
@@ -164,7 +216,7 @@
                                   <label class="control-label" for="name">Admission Number:</label>
                                   <div class="controls">
                                    <input class="input-xlarge focused" id="receiver" type="text" name="admnumber" 
-                                      value="" readonly >
+                                      value="<%=admNumber%>" readonly >
 
                                   </div>
                               </div>  
@@ -174,7 +226,7 @@
                                   <label class="control-label" for="name">FirstName:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="firstname" 
-                                       value="" readonly >                                    
+                                       value="<%=firstname%>" readonly >                                    
                                   </div>
                               </div> 
 
@@ -183,7 +235,7 @@
                                   <label class="control-label" for="name">LastName:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="lastname"
-                                        value="" readonly >
+                                        value="<%=lastname%>" readonly >
                                   </div>
                               </div> 
 
@@ -191,7 +243,7 @@
                                   <label class="control-label" for="name">SurName:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="surname"
-                                        value=""readonly >
+                                        value="<%=surname%>"readonly >
                                   </div>
                               </div> 
               </fieldset>
@@ -208,7 +260,7 @@
                                   <label class="control-label" for="name">Sponsor Name*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorName"
-                                        value="<%= StringUtils.trimToEmpty(paramHash.get("SponsorName")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorName")) %>"  >
                                   </div>
                               </div> 
 
@@ -216,7 +268,7 @@
                                   <label class="control-label" for="name">Sponsor Phone*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorPhone"
-                                        value="<%= StringUtils.trimToEmpty(paramHash.get("SponsorPhone")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorPhone")) %>"  >
                                   </div>
                               </div> 
 
@@ -224,7 +276,7 @@
                                   <label class="control-label" for="name">Sponsor Occupation*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorOccupation"
-                                        value="<%= StringUtils.trimToEmpty(paramHash.get("SponsorOccupation")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorOccupation")) %>"  >
                                   </div>
                               </div> 
 
@@ -233,7 +285,7 @@
                                   <label class="control-label" for="name">Sponsor Country*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorCountry"
-                                        value="<%= StringUtils.trimToEmpty(paramHash.get("SponsorCountry")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorCountry")) %>"  >
                                   </div>
                               </div> 
 
@@ -241,7 +293,7 @@
                                   <label class="control-label" for="name">Sponsor County*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorCounty"
-                                        value="<%= StringUtils.trimToEmpty(paramHash.get("SponsorCounty")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorCounty")) %>"  >
                                   </div>
                               </div> 
 
@@ -250,8 +302,9 @@
                               
                               
                               <div class="form-actions">
-                                  <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                                   <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                                    <input type="hidden" name="systemuser" value="<%=staffUsername%>">
+                                   <input type="hidden" name="studentUuid" value="<%=StringUtils.trimToEmpty(paramHash.get("studentuuid"))%>">
                                   <button type="submit" class="btn btn-primary">Register</button>
                               </div> 
 

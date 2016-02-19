@@ -87,7 +87,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 */
 	
 	@Override
-	public Student getStudentByadmNo(String schoolaccountUuid,String admno) {
+	public Student getStudentObjByadmNo(String schoolaccountUuid,String admno) {
 		Student student = null;
         ResultSet rset = null;
         try(
@@ -150,7 +150,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	 */
 	@Override
 	public List<Student> getStudentByAdmNo(String schoolaccountUuid, String admno ) {
-		List<Student> list = new ArrayList<>();
+		List<Student> list = null;
 
         try (
         		 Connection conn = dbutils.getConnection();

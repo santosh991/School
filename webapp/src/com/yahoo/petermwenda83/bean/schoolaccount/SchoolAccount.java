@@ -32,6 +32,8 @@ public class SchoolAccount extends StorableBean{
 	private String username;
 	private String password;
 	private String  mobile; 
+	private String postalAddress;
+	private String town;
 	private String  email ;
 	private Date creationDate;
 
@@ -41,6 +43,8 @@ public class SchoolAccount extends StorableBean{
 		username ="";
 		password ="";
 		mobile ="";
+		postalAddress = "";
+		town = "";
 		email ="";
 		creationDate = new Date(); 
 	}
@@ -125,6 +129,38 @@ public class SchoolAccount extends StorableBean{
 		this.mobile = mobile;
 	}
 
+    
+	/**
+	 * @return the postalAddress
+	 */
+	public String getPostalAddress() {
+		return postalAddress;
+	}
+
+
+	/**
+	 * @param postalAddress the postalAddress to set
+	 */
+	public void setPostalAddress(String postalAddress) {
+		this.postalAddress = postalAddress;
+	}
+
+
+	/**
+	 * @return the town
+	 */
+	public String getTown() {
+		return town;
+	}
+
+
+	/**
+	 * @param town the town to set
+	 */
+	public void setTown(String town) {
+		this.town = town;
+	}
+
 
 	/**
 	 * @return the email
@@ -174,6 +210,10 @@ public class SchoolAccount extends StorableBean{
 		builder.append(password);
 		builder.append(",mobile=");
 		builder.append(mobile);
+		builder.append(",postalAddress=");
+		builder.append(postalAddress);
+		builder.append(",town=");
+		builder.append(town);
 		builder.append(",email=");
 		builder.append(email);
 		builder.append(",creationDate=");

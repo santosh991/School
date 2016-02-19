@@ -58,11 +58,13 @@ CREATE TABLE  SchoolAccount (
     Username text,
     Password text,
     Mobile text, 
+    PostalAddress text,
+    Town text,
     Email text,
     CreationDate timestamp with time zone DEFAULT now()
 
 );
-\COPY SchoolAccount(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,Email,CreationDate) FROM '/tmp/SchoolAccount.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY SchoolAccount(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,PostalAddress,Town,Email,CreationDate) FROM '/tmp/SchoolAccount.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE SchoolAccount OWNER TO school;
 
 
@@ -318,12 +320,13 @@ CREATE TABLE Staff (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    StatusUuid text REFERENCES Status(Uuid),
     Category text,
     PositionUuid text REFERENCES Position(Uuid),
     UserName text,
     Password text
 );
-\COPY Staff(Uuid,SchoolAccountUuid,Category,PositionUuid,UserName,Password) FROM '/tmp/Staff.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Staff(Uuid,SchoolAccountUuid,StatusUuid,Category,PositionUuid,UserName,Password) FROM '/tmp/Staff.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Staff OWNER TO school;
 
 

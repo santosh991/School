@@ -174,7 +174,7 @@ public class UploadUtil {
 			    	 String studentuuid = "";
 			    	 Student student = new Student();
 			    	 if(admno !=null){
-				    		student = studentDAO.getStudentByadmNo(schooluuid,admno);
+				    		student = studentDAO.getStudentObjByadmNo(schooluuid,admno);
 				    		if(student !=null){
 				    			studentuuid = student.getUuid();
 				    		}
@@ -265,7 +265,7 @@ public class UploadUtil {
 			     for(int j=0; j<admNotoken.length; j++ ) {
 			    	String admno = StringUtils.trimToEmpty(admNotoken[j]);
 			    	if(admno !=null){
-			    		student = studentDAO.getStudentByadmNo(school.getUuid(),admno);
+			    		student = studentDAO.getStudentObjByadmNo(school.getUuid(),admno);
 			    	}
 			    	
 			     }

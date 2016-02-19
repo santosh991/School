@@ -26,6 +26,12 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.student.PrimaryDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.StudentPrimary"%>
+
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
@@ -99,10 +105,28 @@
         statistics = (SessionStatistics) element.getObjectValue();
     }
 
-
+   
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
      studentList = studentDAO.getStudentList(school , 0 , 15); 
+
+    HashMap<String, String> classroomHash = new HashMap<String, String>();
+    RoomDAO roomDAO = RoomDAO.getInstance();
+    List<ClassRoom> classList = new ArrayList<ClassRoom>();
+    classList = roomDAO.getAllRooms(accountuuid);
+    for(ClassRoom cr : classList){
+       classroomHash.put(cr.getUuid(), cr.getRoomName()); 
+         }
+
+    
+    StudentPrimary studentPrimary = new StudentPrimary();
+    HashMap<String, StudentPrimary> studentPrimaryHash = new HashMap<String, StudentPrimary>();
+    PrimaryDAO primaryDAO = PrimaryDAO.getInstance();
+    List<StudentPrimary> studentPrimaryList = new ArrayList<StudentPrimary>();
+    studentPrimaryList = primaryDAO.getAllPrimary(); 
+       for(StudentPrimary sprimary : studentPrimaryList){
+         studentPrimaryHash.put(sprimary.getStudentUuid(), sprimary); 
+         }
 
        
     //incount = statistics.getAllIncomingCount();
@@ -156,13 +180,6 @@
         </div>
         <div class="box-content">
 
-
-                <div id="search_box">
-                <form action="#" method="get">
-                 <input type="text" placeholder="Search By AdmNo" name="q" size="10" id="searchfield" title="searchfield" onkeyup="searchstudents(this.value)" />
-                </form>
-                </div>
-
               
 
             <div>
@@ -180,7 +197,7 @@
                         <th>Primary</th>
                         <th>Index</th>
                         <th>Marks</th>
-                        <th>House</th>
+                        <th>Year</th>
                         <th>Adm Date</th>
                         <th>Status</th>
                     </tr>
@@ -188,8 +205,52 @@
                 <tbody class='tablebody'>
                     <%
                     String fullname = "";
+                    String formatedFirstname = "";
+                    String formatedLastname = "";
+                    String formatedSurname = "";
+
+                    String status = "";
+                    String primaryschool = "";
+                    String kcpeindex = "";
+                    String kcpemark = "";
+                    String kcpeyear = ""; 
+
+
                     for(Student s : studentList){
-                    fullname = s.getFirstname()+" "+s.getSurname()+" "+s.getLastname();
+                   
+
+                    String firstNameLowecase = s.getFirstname().toLowerCase();
+                    String lastNameLowecase =s.getSurname().toLowerCase();
+                    String surNameLowecase = s.getLastname().toLowerCase();
+
+                    formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+                    formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+                    formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+                    fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
+
+
+
+                    studentPrimary = studentPrimaryHash.get(s.getUuid());
+                    if(studentPrimary !=null){
+                        primaryschool = studentPrimary.getSchoolname();
+                        kcpeindex =  studentPrimary.getIndex();
+                        kcpemark =  studentPrimary.getKcpemark();
+                        kcpeyear =  studentPrimary.getKcpeyear();
+                    }else{
+                        primaryschool = "";
+                        kcpeindex = "";
+                        kcpemark = "";
+                        kcpeyear = "";
+                    }
+
+
+
+                    String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                    if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
+                       status = "Active";
+                    }else{
+                      status = "Inactive";
+                    }
                     %>
                     <tr class="tabledit">
                          <td width="3%"><%=ussdCount%></td>
@@ -198,18 +259,17 @@
                          <td class="center"><%=s.getGender()%></td>
                          <td class="center"><%=s.getdOB()%></td>
                          <td class="center"><%=s.getBcertno()%></td>
-                         <td class="center"><%%></td>
+                         <td class="center"><%=classroomHash.get(s.getClassRoomUuid())%></td>
                          <td class="center"><%=s.getCounty()%></td>
-                         <td class="center"><%%></td>
-                         <td class="center"><%%></td>
-                         <td class="center"><%%></td>
-                         <td class="center"><%%></td>
+                         <td class="center"><%=primaryschool%></td>
+                         <td class="center"><%=kcpeindex%></td>
+                         <td class="center"><%=kcpemark%></td>
+                         <td class="center"><%=kcpeyear%></td>
                          <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>	
-                         <td class="center"><%%></td>					
-                         <td class="center">
-                                                   
-                        </td>      
-
+                         <td class="center"><%=status%></td>
+                         					
+                        
+                      
 
                     </tr>
 

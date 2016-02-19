@@ -1,6 +1,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.GradingSystem"%>
+
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
@@ -60,6 +63,9 @@
 
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
+    GradingSystemDAO gradingSystemDAO = GradingSystemDAO.getInstance();
+    GradingSystem gradingSystem = gradingSystemDAO.getGradingSystem(accountuuid);
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -124,7 +130,7 @@
 
         %>
             
-<div>     
+   
 <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
                     <tr>
@@ -156,9 +162,55 @@
                     </tr>
 
                 </tbody>
+            </table> 
+
+             <h3><i class="icon-edit"></i> Grading System:</h3>  
+            <table class="table table-striped table-bordered bootstrap-datatable ">
+                <thead>
+                    <tr>
+                       
+                        <th>A</th>
+                        <th>A-</th> 
+                        <th>B+</th>                
+                        <th>B</th>
+                        <th>B-</th>
+                        <th>C+</th>
+                        <th>C</th>
+                        <th>C-</th>
+                        <th>D+</th>
+                        <th>D</th>
+                        <th>D-</th>
+                        <th>E</th>
+                    
+                    </tr>
+                </thead>   
+                <tbody>
+                    
+                    <tr>
+                         <td class="center"><%=gradingSystem.getGradeAplain() %></td>
+                         <td class="center"><%=gradingSystem.getGradeAminus() %></td>
+                         <td class="center"><%=gradingSystem.getGradeBplus() %></td>
+                         <td class="center"><%=gradingSystem.getGradeBplain() %></td>  
+                         <td class="center"><%=gradingSystem.getGradeBminus() %></td>
+                         <td class="center"><%=gradingSystem.getGradeCplus() %></td>
+                         <td class="center"><%=gradingSystem.getGradeCplain() %></td>
+                         <td class="center"><%=gradingSystem.getGradeCminus() %></td>  
+                         <td class="center"><%=gradingSystem.getGradeDplus() %></td>
+                         <td class="center"><%=gradingSystem.getGradeDplain() %></td>
+                         <td class="center"><%=gradingSystem.getGradeDminus() %></td>
+                         <td class="center"><%=gradingSystem.getGradeE() %></td>  
+                         <td class="center">
+                                <form name="edit" method="POST" action="" > 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update" /> 
+                                </form>                          
+                         </td>  
+
+                    </tr>
+
+                </tbody>
             </table>  
 
-       </div>   
+      
 
 
     </div>

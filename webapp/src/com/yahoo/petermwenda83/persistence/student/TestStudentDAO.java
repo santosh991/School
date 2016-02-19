@@ -98,7 +98,7 @@ public class TestStudentDAO {
 	public void testGetStudents() {
 		   store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		   Student s = new Student();
-		   s = store.getStudentByadmNo(SCHOOL_UUID,ADM_NO);
+		   s = store.getStudentObjByadmNo(SCHOOL_UUID,ADM_NO);
 		    assertEquals(s.getUuid(),UUID);
 			assertEquals(s.getStatusUuid(),STATUS_UUID);
 			assertEquals(s.getSchoolAccountUuid(),SCHOOL_UUID);

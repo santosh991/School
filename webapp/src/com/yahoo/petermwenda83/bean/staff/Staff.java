@@ -24,6 +24,7 @@ public class Staff extends StorableBean {
 	 */
 	private static final long serialVersionUID = -5760553114204722579L;
 	private String schoolAccountUuid;
+	private String statusUuid;
 	private String category; 
 	private String positionUuid; 
 	private String userName;
@@ -37,6 +38,7 @@ public class Staff extends StorableBean {
 	public Staff() {
 		super();
 		schoolAccountUuid ="";
+		statusUuid ="";
 		category="";
 		positionUuid="";
 		userName="";
@@ -57,6 +59,22 @@ public class Staff extends StorableBean {
 	 */
 	public void setSchoolAccountUuid(String schoolAccountUuid) {
 		this.schoolAccountUuid = schoolAccountUuid;
+	}
+
+    
+	/**
+	 * @return the statusUuid
+	 */
+	public String getStatusUuid() {
+		return statusUuid;
+	}
+
+
+	/**
+	 * @param statusUuid the statusUuid to set
+	 */
+	public void setStatusUuid(String statusUuid) {
+		this.statusUuid = statusUuid;
 	}
 
 
@@ -131,6 +149,8 @@ public class Staff extends StorableBean {
 		builder.append(getUuid());
 		builder.append(", schoolAccountUuid =");
 		builder.append(schoolAccountUuid);
+		builder.append(",statusUuid=");
+		builder.append(statusUuid);
 		builder.append(", category =");
 		builder.append(category);
 		builder.append(", positionUuid =");

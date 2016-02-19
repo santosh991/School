@@ -285,7 +285,8 @@
                     <a data-rel="tooltip" title="" class="well span3 top-block" href="">
                     <form  class=""   action="classList" method="POST" target="_blank">
                     <fieldset>                   
-                    <div class="">        
+                    <div class="">    
+                    <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >     
                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Results</button> 
                     </div>
                     </fieldset>
@@ -297,7 +298,8 @@
                     <a data-rel="tooltip" title="" class="well span3 top-block" href="">
                     <form  class=""   action="reportForm12" method="POST" target="_blank">
                     <fieldset>                   
-                    <div class="">        
+                    <div class="">   
+                    <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >         
                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form</button> 
                     </div>                   
                     </fieldset>

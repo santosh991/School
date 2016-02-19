@@ -152,14 +152,15 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Staff" 
-			        		+"(Uuid,SchoolAccountUuid,Category,PositionUuid,UserName,Password) VALUES (?,?,?,?,?,?);");
+			        		+"(Uuid,SchoolAccountUuid,StatusUuid,Category,PositionUuid,UserName,Password) VALUES (?,?,?,?,?,?,?);");
    		){
 	            pstmt.setString(1, staff.getUuid());
 	            pstmt.setString(2, staff.getSchoolAccountUuid());
-	            pstmt.setString(3, staff.getCategory());
-	            pstmt.setString(4, staff.getPositionUuid());
-	            pstmt.setString(5, staff.getUserName());
-	            pstmt.setString(6, SecurityUtil.getMD5Hash(staff.getPassword()));
+	            pstmt.setString(3, staff.getStatusUuid());
+	            pstmt.setString(4, staff.getCategory());
+	            pstmt.setString(5, staff.getPositionUuid());
+	            pstmt.setString(6, staff.getUserName());
+	            pstmt.setString(7, SecurityUtil.getMD5Hash(staff.getPassword()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -178,16 +179,17 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 	public boolean updateStaff(Staff staff) {
 		boolean success = true; 
 		 try(   Connection conn = dbutils.getConnection();
-	      PreparedStatement pstmt = conn.prepareStatement("UPDATE Staff SET Category =?,PositionUuid =?,UserName =?,"
+	      PreparedStatement pstmt = conn.prepareStatement("UPDATE Staff SET Category =?,PositionUuid =?,StatusUuid =?,UserName =?,"
 			+ "Password =? WHERE SchoolAccountUuid = ? AND Uuid =? ;");
      		){			   
 	            
 	            pstmt.setString(1, staff.getCategory());
 	            pstmt.setString(2, staff.getPositionUuid());
-	            pstmt.setString(3, staff.getUserName());
-	            pstmt.setString(4, SecurityUtil.getMD5Hash(staff.getPassword()));
-	            pstmt.setString(5, staff.getSchoolAccountUuid());
-	            pstmt.setString(6, staff.getUuid());
+	            pstmt.setString(3, staff.getStatusUuid());
+	            pstmt.setString(4, staff.getUserName());
+	            pstmt.setString(5, SecurityUtil.getMD5Hash(staff.getPassword()));
+	            pstmt.setString(6, staff.getSchoolAccountUuid());
+	            pstmt.setString(7, staff.getUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

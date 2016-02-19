@@ -29,17 +29,16 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
  */
 public class AddStudentHouse extends HttpServlet{
 	
-	
-	final String ERROR_EMPTY_HOUSE = "Please select a house.";
-	final String ERROR_STUDENT_HAS_ROOM = "This student has already been assigend a house.";
 	final String ERROR_STUDENT_HAS_ANOTHER_ROOM = "This student has already been assigend another house.";
-	final String ERROR = "Unexpected error occured, find a student first";
-	
+	final String ERROR_STUDENT_HAS_ROOM = "This student has already been assigend a house.";
 	final String HOUSE_ADD_ERROR = "An error occured while assigning student a house";
+	final String ERROR = "Unexpected error occured, find a student first";
 	final String HOUSE_ADD_SUCESS = "House assigned successfully";
+	final String ERROR_EMPTY_HOUSE = "Please select a house.";
 	
-	private static StudentDAO studentDAO;
 	private static StudentHouseDAO studentHouseDAO;
+	private static StudentDAO studentDAO;
+	
 	
 
 	/** 
@@ -60,7 +59,7 @@ public class AddStudentHouse extends HttpServlet{
        HttpSession session = request.getSession(true);
        
        String houseUuid = StringUtils.trimToEmpty(request.getParameter("house"));
-       String systemUser = StringUtils.trimToEmpty(request.getParameter("staffUsername"));
+       String systemUser = StringUtils.trimToEmpty(request.getParameter("systemuser"));
        String studentUuid = StringUtils.trimToEmpty(request.getParameter("studentUuid"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
       

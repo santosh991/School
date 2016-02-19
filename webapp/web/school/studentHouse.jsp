@@ -3,8 +3,11 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.guardian.ParentsDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.student.guardian.StudentParent"%>
+<%@page import="com.yahoo.petermwenda83.persistence.student.StudentHouseDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.StudentHouse"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.student.HouseDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.House"%>
 
 <%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
@@ -82,15 +85,23 @@
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      
-     StudentParent studentParent = new StudentParent();
-     HashMap<String, StudentParent> studentParentHash = new HashMap<String, StudentParent>();
-     ParentsDAO parentsDAO = ParentsDAO.getInstance();
-     List<StudentParent> parentList = new ArrayList<StudentParent>(); 
+     StudentHouse studentHouse = new StudentHouse();
+     HashMap<String, StudentHouse> studentHouseHash = new HashMap<String, StudentHouse>();
+     StudentHouseDAO studentHouseDAO = StudentHouseDAO.getInstance();
+     List<StudentHouse> studenthouseList = new ArrayList<StudentHouse>(); 
 
-     parentList = parentsDAO.getParentList();
-     for(StudentParent stuparent : parentList){
-        studentParentHash.put(stuparent.getStudentUuid(), stuparent);
+     studenthouseList = studentHouseDAO.getHouseList();
+     for(StudentHouse stuhouse : studenthouseList){
+        studentHouseHash.put(stuhouse.getStudentUuid(), stuhouse);
         }
+    
+    HashMap<String, String> houseHash = new HashMap<String, String>();
+    HouseDAO houseDAO = HouseDAO.getInstance();
+    List<House> houseList = new ArrayList<House>();
+    houseList = houseDAO.getHouseList(accountuuid);
+    for(House hh : houseList){
+       houseHash.put(hh.getUuid(),hh.getHouseName());
+       }
     
 
      HashMap<String, String> admNoHash = new HashMap<String, String>();
@@ -101,8 +112,16 @@
        admNoHash.put(s.getUuid(),s.getAdmno());
          }
 
+
     
-        
+
+
+
+     
+
+          //date format
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-dd-MM");
+                             
 
  %>
 
@@ -114,37 +133,26 @@
 <jsp:include page="header.jsp" />
 
 
-
-
 <div class="row-fluid sortable">
 
                
-
-
-
-
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :Parents Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+         <p><a href="">Change House</a>   Welcome to <%=schoolname%> :House Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
-        <div class="box-content">
 
+
+        <div class="box-content">
+        
                 <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
                         <th>*</th>
-                        <th>AdmNo</th>
-                        <th>Father Name</th>
-                        <th>Father Phone</th>
-                        <th>Father Email</th>
-                        <th>Father ID</th>
-                        <th>Father Occu</th>
-                        <th>Mother Name</th>
-                        <th>Mother Phone</th>
-                        <th>Mother Email</th>
-                        <th>Mother ID</th>
-                        <th>Mother Occu</th>
-                        <th>Update</th>
+                        <th>Student AdmNo</th>
+                        <th>House</th>
+                        <th>System User</th>
+                        <th>Date In</th>
+                        <th>House Master</th>
                         
                             
                     </tr>
@@ -154,45 +162,29 @@
                     <%                 
                              
                    
-                         int count = 1;
+                        int count = 1;
                         if(studentList !=null){
                        for(Student ss : studentList) { 
-
-                       for(StudentParent stuparent : parentList){
-                            if(StringUtils.equals(ss.getUuid(),stuparent.getStudentUuid())){
-                                 studentParent = studentParentHash.get(ss.getUuid());
+                                for(StudentHouse stuhouse : studenthouseList){
+                                   if(StringUtils.equals(ss.getUuid(),stuhouse.getStudentUuid())){
+                                        studentHouse = studentHouseHash.get(ss.getUuid());
                              
                              out.println("<tr>"); 
                              out.println("<td width=\"3%\" >" + count + "</td>"); 
-                             out.println("<td width=\"10%\" class=\"center\">" + ss.getAdmno() + "</td>");                            
-                             out.println("<td width=\"13%\" class=\"center\">" + studentParent.getFathername() + "</td>");
-                             out.println("<td width=\"10%\" class=\"center\">" + studentParent.getFatherphone() + "</td>"); 
-                             out.println("<td width=\"12%\" class=\"center\">" + studentParent.getFatherEmail() + "</td>");
-                             out.println("<td width=\"8%\" class=\"center\">" + studentParent.getFatherID() + "</td>");
-                             out.println("<td width=\"15%\" class=\"center\">" + studentParent.getFatheroccupation() + "</td>"); 
-                             out.println("<td width=\"13%\" class=\"center\">" + studentParent.getMothername() + "</td>"); 
-                             out.println("<td width=\"10%\" class=\"center\">" + studentParent.getMotherphone() + "</td>"); 
-                             out.println("<td width=\"12%\" class=\"center\">" + studentParent.getMotherEmail() + "</td>");
-                             out.println("<td width=\"8%\" class=\"center\">" + studentParent.getMotherID() + "</td>"); 
-                             out.println("<td width=\"15%\" class=\"center\">" + studentParent.getMotheroccupation() + "</td>");
-
-                                       %>
-                                <td class="center">
-                                <form name="view" method="POST" action="updateStudentParent"> 
-                                <input type="hidden" name="studentUuid" value="<%=ss.getUuid()%>">
-                                <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
-                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
-                                </form>                          
-                                </td>    
-
-                                       <%
+                             out.println("<td width=\"10%\" class=\"center\">" + ss.getAdmno() + "</td>"); 
+                             out.println("<td width=\"12%\" class=\"center\">" + houseHash.get(studentHouse.getHouseUuid()) + "</td>");
+                             out.println("<td width=\"8%\" class=\"center\">" + studentHouse.getSysUser() + "</td>");
+                             out.println("<td width=\"15%\" class=\"center\">" + dateFormatter.format(studentHouse.getDateIn()) + "</td>"); 
+                             out.println("<td width=\"15%\" class=\"center\">" + " " + "</td>"); 
+ 
+                                     
 
 
                           count++;
+                             }
                           } 
-                         }
-                         }
                      }
+                 }
                     %>
                     
                     </tbody>

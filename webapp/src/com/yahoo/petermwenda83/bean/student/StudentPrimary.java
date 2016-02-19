@@ -21,7 +21,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
  */
 public class StudentPrimary extends StorableBean {
 	
-	/**
+	/**  
 	 * 
 	 */
 	private static final long serialVersionUID = 46794661890236283L;

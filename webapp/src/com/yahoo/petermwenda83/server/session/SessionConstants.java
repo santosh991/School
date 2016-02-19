@@ -51,8 +51,11 @@ public class SessionConstants {
 	public static final String STAFF_UPDATE_ERROR = "Staff Update Error";
 	
 	public static final String STUDENT_PARAM = "Student Parameters";
+	public static final String STUDENT_ADD_ERROR = "Student add error";
+	public static final String STUDENT_ADD_SUCCESS = "Student added successfully";
 	
 	public static final String FATHER_MOTHER_PARAM = "Father/Mother Parameters";
+	public static final String STUDENT_SPONSOR_PARAM = "Father/Mother Parameters";
 	
 	public static final String PARENT_PARAM = "Parent Parameters";
 	public static final String SPONSOR_PARAM = "Sponor Parameters";
@@ -66,6 +69,9 @@ public class SessionConstants {
 	
 	public static final String HOUSE_ADD_ERROR = "House add error";
 	public static final String HOUSE_ADD_SUCCESS = "House add successfully";
+	
+	public static final String SPONSOR_ADD_ERROR = "Sponsor add error";
+	public static final String SPONSOR_ADD_SUCCESS = "Sponsor add successfully";
 	
 	
 	

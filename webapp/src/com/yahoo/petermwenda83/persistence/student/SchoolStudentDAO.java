@@ -23,7 +23,7 @@ public interface SchoolStudentDAO {
 	 * @param admno
 	 * @return Student
 	 */
-	public Student getStudentByadmNo(String schoolaccountUuid,String admno);
+	public Student getStudentObjByadmNo(String schoolaccountUuid,String admno);
 	
 	  
 

@@ -3,12 +3,11 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.guardian.ParentsDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.student.guardian.StudentParent"%>
+<%@page import="com.yahoo.petermwenda83.persistence.guardian.SponsorsDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.guardian.StudentSponsor"%>
 
 <%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
-
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
@@ -82,16 +81,13 @@
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      
-     StudentParent studentParent = new StudentParent();
-     HashMap<String, StudentParent> studentParentHash = new HashMap<String, StudentParent>();
-     ParentsDAO parentsDAO = ParentsDAO.getInstance();
-     List<StudentParent> parentList = new ArrayList<StudentParent>(); 
-
-     parentList = parentsDAO.getParentList();
-     for(StudentParent stuparent : parentList){
-        studentParentHash.put(stuparent.getStudentUuid(), stuparent);
-        }
+     StudentSponsor studentSponsor = new StudentSponsor();
     
+     SponsorsDAO sponsorsDAO = SponsorsDAO.getInstance();
+     List<StudentSponsor> sponsorList = new ArrayList<StudentSponsor>(); 
+     sponsorList = sponsorsDAO.getStudentSponsorList();
+    
+   
 
      HashMap<String, String> admNoHash = new HashMap<String, String>();
      StudentDAO studentDAO = StudentDAO.getInstance();
@@ -101,8 +97,11 @@
        admNoHash.put(s.getUuid(),s.getAdmno());
          }
 
-    
-        
+     
+
+
+     
+                             
 
  %>
 
@@ -125,27 +124,23 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :Parents Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+         <p>Welcome to <%=schoolname%> :Sponsor Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
+            
 
                 <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
                         <th>*</th>
-                        <th>AdmNo</th>
-                        <th>Father Name</th>
-                        <th>Father Phone</th>
-                        <th>Father Email</th>
-                        <th>Father ID</th>
-                        <th>Father Occu</th>
-                        <th>Mother Name</th>
-                        <th>Mother Phone</th>
-                        <th>Mother Email</th>
-                        <th>Mother ID</th>
-                        <th>Mother Occu</th>
+                        <th>Student AdmNo</th>
+                        <th>SponsorName</th>
+                        <th>SponsorPhone</th>
+                        <th>Occupation</th>
+                        <th>Country</th>
+                        <th>County</th>
                         <th>Update</th>
-                        
+                       
                             
                     </tr>
                 </thead>   
@@ -154,50 +149,43 @@
                     <%                 
                              
                    
-                         int count = 1;
+                      
                         if(studentList !=null){
+                        int count = 1;
                        for(Student ss : studentList) { 
-
-                       for(StudentParent stuparent : parentList){
-                            if(StringUtils.equals(ss.getUuid(),stuparent.getStudentUuid())){
-                                 studentParent = studentParentHash.get(ss.getUuid());
-                             
+                          for(StudentSponsor stusponsor : sponsorList){
+                            if(StringUtils.equals(ss.getUuid(),stusponsor.getStudentUuid())){
+       
                              out.println("<tr>"); 
                              out.println("<td width=\"3%\" >" + count + "</td>"); 
-                             out.println("<td width=\"10%\" class=\"center\">" + ss.getAdmno() + "</td>");                            
-                             out.println("<td width=\"13%\" class=\"center\">" + studentParent.getFathername() + "</td>");
-                             out.println("<td width=\"10%\" class=\"center\">" + studentParent.getFatherphone() + "</td>"); 
-                             out.println("<td width=\"12%\" class=\"center\">" + studentParent.getFatherEmail() + "</td>");
-                             out.println("<td width=\"8%\" class=\"center\">" + studentParent.getFatherID() + "</td>");
-                             out.println("<td width=\"15%\" class=\"center\">" + studentParent.getFatheroccupation() + "</td>"); 
-                             out.println("<td width=\"13%\" class=\"center\">" + studentParent.getMothername() + "</td>"); 
-                             out.println("<td width=\"10%\" class=\"center\">" + studentParent.getMotherphone() + "</td>"); 
-                             out.println("<td width=\"12%\" class=\"center\">" + studentParent.getMotherEmail() + "</td>");
-                             out.println("<td width=\"8%\" class=\"center\">" + studentParent.getMotherID() + "</td>"); 
-                             out.println("<td width=\"15%\" class=\"center\">" + studentParent.getMotheroccupation() + "</td>");
+                             out.println("<td width=\"10%\" class=\"center\">" + admNoHash.get(stusponsor.getStudentUuid()) + "</td>"); 
+                             out.println("<td width=\"13%\" class=\"center\">" + stusponsor.getSponsorName() + "</td>");
+                             out.println("<td width=\"13%\" class=\"center\">" + stusponsor.getSponsorPhone() + "</td>"); 
+                             out.println("<td width=\"13%\" class=\"center\">" + stusponsor.getSponsorOccupation() + "</td>");
+                             out.println("<td width=\"13%\" class=\"center\">" + stusponsor.getSponsorCountry() + "</td>");
+                             out.println("<td width=\"13%\" class=\"center\">" + stusponsor.getSponsorCounty() + "</td>"); 
 
-                                       %>
+                             %>
                                 <td class="center">
-                                <form name="view" method="POST" action="updateStudentParent"> 
+                                <form name="view" method="POST" action="updateStudentSponsor"> 
                                 <input type="hidden" name="studentUuid" value="<%=ss.getUuid()%>">
                                 <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
                                 </form>                          
-                                </td>    
-
-                                       <%
+                               </td>    
 
 
-                          count++;
+                             <%
+
+                                count++;
+                               }
+                              }
                           } 
-                         }
-                         }
                      }
                     %>
                     
                     </tbody>
             </table> 
-
 
 
     </div>

@@ -3,6 +3,11 @@
 <%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.student.PrimaryDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.StudentPrimary"%>
 
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
@@ -76,31 +81,92 @@
      List<Student> studentList = new ArrayList(); 
      studentList = studentDAO.getStudentByAdmNo(accountuuid, admno);
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-dd-MM");
+
+
+     HashMap<String, String> classroomHash = new HashMap<String, String>();
+    RoomDAO roomDAO = RoomDAO.getInstance();
+    List<ClassRoom> classList = new ArrayList<ClassRoom>();
+    classList = roomDAO.getAllRooms(accountuuid);
+    for(ClassRoom cr : classList){
+       classroomHash.put(cr.getUuid(), cr.getRoomName()); 
+         }
+
+    
+    StudentPrimary studentPrimary = new StudentPrimary();
+    HashMap<String, StudentPrimary> studentPrimaryHash = new HashMap<String, StudentPrimary>();
+    PrimaryDAO primaryDAO = PrimaryDAO.getInstance();
+    List<StudentPrimary> studentPrimaryList = new ArrayList<StudentPrimary>();
+    studentPrimaryList = primaryDAO.getAllPrimary(); 
+       for(StudentPrimary sprimary : studentPrimaryList){
+         studentPrimaryHash.put(sprimary.getStudentUuid(), sprimary); 
+         }
         
 %>       
                     <%  
-                    int count =1;                                                        
-                       String fullname = "";
+                  int count =1;                                                        
+                   String fullname = "";
+                   String formatedFirstname = "";
+                   String formatedLastname = "";
+                   String formatedSurname = "";
+
+                    String status = "";
+                     String primaryschool = "";
+                      String kcpeindex = "";
+                       String kcpemark = "";
+                        String kcpeyear = ""; 
                        for (Student st : studentList) {
-                           fullname = st.getFirstname()+" "+st.getSurname()+" "+st.getLastname();
-                      
+                          
+
+                    String firstNameLowecase = st.getFirstname().toLowerCase();
+                    String lastNameLowecase =st.getSurname().toLowerCase();
+                    String surNameLowecase = st.getLastname().toLowerCase();
+                    
+                    formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+                    formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+                    formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+                    fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
+
+                    studentPrimary = studentPrimaryHash.get(st.getUuid());
+                    if(studentPrimary !=null){
+                        primaryschool = studentPrimary.getSchoolname();
+                        kcpeindex =  studentPrimary.getIndex();
+                        kcpemark =  studentPrimary.getKcpemark();
+                        kcpeyear =  studentPrimary.getKcpeyear();
+                    }else{
+                        primaryschool = "";
+                        kcpeindex = "";
+                        kcpemark = "";
+                        kcpeyear = "";
+                    }
+
+                    String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                    if(StringUtils.equals(st.getStatusUuid(),statusUuid)){
+                       status = "Active";
+                    }else{
+                      status = "Inactive";
+                    }
                     %>
                     <tr class="tabledit">
-                         <td width="3%"><%=count%></td>
+                        <td width="3%"><%=count%></td>
                          <td class="center"><%=st.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
                          <td class="center"><%=st.getGender()%></td>
                          <td class="center"><%=st.getdOB()%></td>
                          <td class="center"><%=st.getBcertno()%></td>
-                         <td class="center"><%%></td>
+                         <td class="center"><%=classroomHash.get(st.getClassRoomUuid())%></td>
                          <td class="center"><%=st.getCounty()%></td>
-                         <td class="center"><%%></td>
-                         <td class="center"><%%></td>
-                         <td class="center"><%%></td>
-                         <td class="center"><%%></td>
+                         <td class="center"><%=primaryschool%></td>
+                         <td class="center"><%=kcpeindex%></td>
+                         <td class="center"><%=kcpemark%></td>
+                         <td class="center"><%=kcpeyear%></td>
                          <td class="center"><%=dateFormatter.format(st.getAdmissionDate())%></td>    
-                         <td class="center"><%%></td>                   
-                         <td class="center">
+                        <td class="center">
+                                <form name="view" method="POST" action="updateStudentBasic"> 
+                                <input type="hidden" name="studentUuid" value="<%=st.getUuid()%>">
+                                <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
+                                </form>                          
+                               </td>   
                                           
                     </tr>
 

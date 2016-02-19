@@ -79,7 +79,8 @@
 	  final String FORM4 = "FORM 4";
 
 	//out.println("pos"+staffPosition);
-	          String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
+	        String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
+            String pos_DeputyPricipal =(String)  PropertiesConfig.getConfigValue("POSITION_DEPUTY");
             String pos_Teacher =(String) PropertiesConfig.getConfigValue("POSITION_TEACHER");
             String pos_HOD =(String) PropertiesConfig.getConfigValue("POSITION_HOD");
             String pos_CM =(String) PropertiesConfig.getConfigValue("POSITION_CM");
@@ -196,10 +197,10 @@
                 <div id='cssmenu'>
                <ul>
 
-                <!--SECRETARY-->
+                <!--SECRETARY-->  
 
                   <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
-                <li class='has-sub' ><a href="#"><span>Student Registration</span></a>
+                <li class='has-sub' ><a href="studentIndex.jsp"><span>Students</span></a>
                   <ul>
                 <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
                 <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
@@ -212,11 +213,9 @@
                <!--BURSAR/ACCOUNT C-->
                 
                   <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
-                <li class='has-sub' ><a href="fee.jsp"><span>Fee Management</span></a>
-                  <ul>
-                <li><a href="pocketM.jsp" ><span>Pocket Money</span></a></li>
-                </ul>
-                </li>
+                <li class='has-sub' ><a href="fee.jsp"><span>Fee Management</span></a>  </li>
+                <li class='has-sub' ><a href="pocketM.jsp" ><span>Pocket Money</span></a></li>
+              
                  <%}  %>
 
                <!--CLASS TEACHER-->
@@ -258,13 +257,37 @@
             
              <!--HOD-->
 
+              <%  if(StringUtils.equals(staffPosition,pos_HOD)){ %>
+              <li class='has-sub'><a href="reports.jsp"><span>Reports</span></a></li>
+              <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
+             <% }  %>
+
 
              <!--DEPUTY PRINCIPAL-->
+
+              <%  if(StringUtils.equals(staffPosition,pos_DeputyPricipal)){ %>
+              <li class='has-sub' ><a href="studentIndex.jsp"><span>Students</span></a>
+                  <ul>
+                <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
+                <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
+                 <li><a href="addHouse.jsp" ><span>Student House</span></a></li>
+                <li class='last'><a href="addSponsor.jsp"><span>Student Sponsor</span></a></li>
+                </ul>
+                </li>
+            <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
+            <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
+            <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
+             <%} %>
+            <li class='has-sub'><a href="reports.jsp"><span>Reports</span></a></li>
+            <li class='has-sub'><a href="examConfig.jsp"><span>ExamConfig</span></a></li>
+            <li class='has-sub'><a href="staff.jsp"><span>Staff Management </span></a></li>
+            <li class='has-sub'><a href="classTeachers.jsp"><span>Class Teachers </span></a></li>
+             <% }  %>
 
              <!--PRINCIPAL-->
 
               <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
-                 <li class='has-sub' ><a href="#"><span>Student Registration</span></a>
+                 <li class='has-sub' ><a href="studentIndex.jsp"><span>Students</span></a>
                   <ul>
                 <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
                 <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
@@ -306,9 +329,10 @@
 
                             <li><a class="ajax-link" href="schoolIndex.jsp"><i class="icon-home"></i><span class="hidden-tablet">Home</span></a></li>
                               <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
-                            <li><a class="ajax-link" href="#"><i class="icon-envelope"></i><span class="hidden-tablet">Subjects</span></a></li>
-                            <li><a class="ajax-link" href="#"><i class="icon-edit"></i><span class="hidden-tablet">House</span></a></li>
                             <li><a class="ajax-link" href="parents.jsp"><i class="icon-trash"></i><span class="hidden-tablet">Parents</span></a></li>
+                            <li><a class="ajax-link" href="studentSponsor.jsp"><i class="icon-envelope"></i><span class="hidden-tablet">Sponsor</span></a></li>
+                            <li><a class="ajax-link" href="studentHouse.jsp"><i class="icon-edit"></i><span class="hidden-tablet">House</span></a></li>
+                           
                            
                            <li class="nav-header hidden-tablet">My School</li> 
                            

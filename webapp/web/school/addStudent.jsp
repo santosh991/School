@@ -117,7 +117,7 @@
         <div class="box-content">
           
                <%
-                    HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(SessionConstants.STAFF_ADD_PARAM);
+                    HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(SessionConstants.STUDENT_PARAM);
 
                         if (paramHash == null) {
                              paramHash = new HashMap<String, String>();
@@ -127,25 +127,25 @@
                                 String addErrStr = "";
                                 String addsuccessStr = "";
                                 session = request.getSession(false);
-                                     addErrStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_ERROR);
-                                     addsuccessStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_SUCCESS); 
+                                     addErrStr = (String) session.getAttribute(SessionConstants.STUDENT_ADD_ERROR);
+                                     addsuccessStr = (String) session.getAttribute(SessionConstants.STUDENT_ADD_SUCCESS); 
 
                                 if(session != null) {
-                                    addErrStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_ERROR);
-                                    addsuccessStr = (String) session.getAttribute(SessionConstants.STAFF_ADD_SUCCESS);
+                                    addErrStr = (String) session.getAttribute(SessionConstants.STUDENT_ADD_ERROR);
+                                    addsuccessStr = (String) session.getAttribute(SessionConstants.STUDENT_ADD_SUCCESS);
                                 }                        
 
                                 if (StringUtils.isNotEmpty(addErrStr)) {
                                     out.println("<p style='color:red;'>");                 
                                     out.println("error: " + addErrStr);
                                     out.println("</p>");                                 
-                                    session.setAttribute(SessionConstants.STAFF_ADD_ERROR, null);
+                                    session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, null);
                                   } 
                                    else if (StringUtils.isNotEmpty(addsuccessStr)) {
                                     out.println("<p style='color:green;'>");                                 
                                     out.println("success: " + addsuccessStr);
                                     out.println("</p>");                                   
-                                    session.setAttribute(SessionConstants.STAFF_ADD_SUCCESS, null);
+                                    session.setAttribute(SessionConstants.STUDENT_ADD_SUCCESS, null);
                                   } 
 
 
@@ -159,7 +159,7 @@
                                      <div class="control-group">
                                         <label class="control-label" for="Classroom">Classroom*:</label>
                                          <div class="controls">
-                                            <select name="Classroom" >
+                                            <select name="classroomUuid" >
 
                                                 <option value="">Please select one</option> 
                                                  <%
@@ -184,7 +184,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="name">Admission Number*:</label>
                                         <div class="controls">
-                                         <input class="input-xlarge focused" id="receiver" type="text" name="admnumber" 
+                                         <input class="input-xlarge focused" id="receiver" type="text" name="admNO" 
                                             value="<%= StringUtils.trimToEmpty(paramHash.get("admnumber")) %>"  >
 
                                         </div>
@@ -234,7 +234,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="name">DOB (DD-MM-YYYY)*:</label>
                                         <div class="controls">
-                                                  <select name="addDay" id="input" style="max-width:5%;">
+                                                  <select name="dobaddDay" id="input" style="max-width:5%;">
                                                         <%
                                                             for (int j = 1; j < DAYS_IN_MONTH; j++) {
                                                                 if (j == DAY_OF_MONTH) {
@@ -245,7 +245,7 @@
                                                             }
                                                         %>
                                                     </select>
-                                                   <select name="addMonth" id="input" style="max-width:5%;" >
+                                                   <select name="dobaddMonth" id="input" style="max-width:5%;" >
                                                         <%
                                                             for (int j = 1; j < 13; j++) {
                                                                 if (j == MONTH) {
@@ -256,7 +256,7 @@
                                                             }
                                                         %>
                                                     </select>
-                                                    <select name="addYear" id="input" style="max-width:8%;">
+                                                    <select name="dobaddYear" id="input" style="max-width:8%;">
                                                         <%
                                                             for (int j = YEAR; j < YEAR_COUNT; j++) {
                                                                 if (j == YEAR) {
@@ -311,7 +311,7 @@
                                      <div class="control-group">
                                         <label class="control-label" for="name">KCPE Year*:</label>
                                          <div class="controls">
-                                                <select name="addYear" id="input" style="max-width:8%;">
+                                                <select name="kcpeaddYear" id="input" style="max-width:8%;">
                                                         <%
                                                             for (int j = YEAR2; j < YEAR_COUNT2; j++) {
                                                                 if (j == YEAR2) {

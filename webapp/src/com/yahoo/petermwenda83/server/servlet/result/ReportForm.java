@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -43,6 +45,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
@@ -50,6 +53,7 @@ import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
@@ -69,39 +73,34 @@ import net.sf.ehcache.CacheManager;
 public class ReportForm extends HttpServlet{
 
 
-    private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
-    private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-    //private Font normalText = new Font(Font.FontFamily.COURIER, 12);
-    private Document document;
-    private PdfWriter writer;
-    private Cache schoolaccountCache, statisticsCache;
+	    private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
+	    private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+	    private Font normalText = new Font(Font.FontFamily.COURIER, 12);
+	    private Document document;
+	    private PdfWriter writer;
+	    private Cache schoolaccountCache, statisticsCache;
 
-    private Logger logger;
-    ExamConfig examConfig;
-    
-   // private final String EXAM_FULL_ID = "4BE8AD46-EAE8-4151-BD18-CB23CF904DDB";
-    //private final String EXAM_PARTIAL_ID = "1678664C-D955-4FA7-88C2-9461D3F1E782";
-   // String examID = "";
-   // String examID2 = "";
-    
-    final String PDF_TITLE = "Student Report Form";
-    final String PDF_SUBTITLE = "Report Generated For: ";
-    final String PDF_BOTTOM_TEXT = "pdf bottom text here";
-    
-    private static PerfomanceDAO perfomanceDAO;
-    private static SubjectDAO subjectDAO;
-    private static ClassTeacherDAO classTeacherDAO;
-    private static StudentDAO studentDAO;
-    private static RoomDAO roomDAO;
-    private static ExamConfigDAO examConfigDAO;
-    
-    String classroomuuid = "";
-    String schoolusername = "";
-    String stffID = "";
-    
-    HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
-    HashMap<String, String> studNameHash = new HashMap<String, String>();
-    HashMap<String, String> roomHash = new HashMap<String, String>();
+	    private Logger logger;
+	    ExamConfig examConfig;
+	    GradingSystem gradingSystem;
+	    private String PDF_SUBTITLE ="";
+	    private String  firstnamee = "";
+	    
+	     private static PerfomanceDAO perfomanceDAO;
+	     private static SubjectDAO subjectDAO;
+	     private static ClassTeacherDAO classTeacherDAO;
+	     private static StudentDAO studentDAO;
+	     private static RoomDAO roomDAO;
+	     private static ExamConfigDAO examConfigDAO;
+	     private static GradingSystemDAO gradingSystemDAO;
+	    
+	      String classroomuuid = "";String schoolusername = "";String stffID = "";
+	    
+	      HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
+	      HashMap<String, String> firstnameHash = new HashMap<String, String>();
+	      HashMap<String, String> studNameHash = new HashMap<String, String>();
+	      HashMap<String, String> roomHash = new HashMap<String, String>();
+	    
     
     double score = 0;
     double engscore = 0;String engscorestr = "";
@@ -172,6 +171,7 @@ public void init(ServletConfig config) throws ServletException {
    studentDAO = StudentDAO.getInstance();
    roomDAO = RoomDAO.getInstance();
    examConfigDAO = ExamConfigDAO.getInstance();
+   gradingSystemDAO = GradingSystemDAO.getInstance();
 }
 
 /**
@@ -203,8 +203,14 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    if(element !=null){
    school = (SchoolAccount) element.getObjectValue();
       }
-   //,examConfig.getTerm(),examConfig.getYear()
+   
+   PDF_SUBTITLE = "P.O BOX "+school.getPostalAddress()+"\n" 
+           + "Town: "+school.getTown() +" Kenya\n" 
+           + "PHONE: " + school.getMobile()+"\n"
+           + "Email: " + school.getEmail()+"\n"; 
+   
    examConfig = examConfigDAO.getExamConfig(school.getUuid());
+   gradingSystem = gradingSystemDAO.getGradingSystem(school.getUuid());
    
    ClassTeacher classTeacher = classTeacherDAO.getClassTeacher(stffID);
      if(classTeacher !=null){
@@ -233,8 +239,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    		   String formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
    		   String formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
    		   String formatedsurname = surnameLowecase.substring(0,1).toUpperCase()+surnameLowecase.substring(1);
-   		   
            studNameHash.put(stu.getUuid(),formatedFirstname + " " + formatedLastname + " " + formatedsurname +"\n"); 
+           firstnameHash.put(stu.getUuid(), formatedFirstname);
             }
           
           List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
@@ -252,7 +258,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
        PdfUtil event = new PdfUtil();
        writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
        writer.setPageEvent(event);
-
+       
        populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, context.getRealPath("/images/fastech.png"));
 
    } catch (DocumentException e) {
@@ -276,8 +282,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
 	  List<Perfomance> perfomanceList, List<Perfomance> pDistinctList,String realPath) {
 	
    SimpleDateFormat formatter;
-   String formattedDate;
-   Date date = new Date();
+   
    
    Map<String,Double> kswscoreMap = new LinkedHashMap<String,Double>();
    Map<String,Double> engscorehash = new LinkedHashMap<String,Double>(); 
@@ -300,14 +305,10 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    try {
    document.open();
   
-   Paragraph preface = new Paragraph();
-   preface.add(createImage(realPath));
-   // Lets write a big header
-   preface.add(new Paragraph(PDF_TITLE, bigFont));
+// addEmptyLine(preface, 1);
 
-   formatter = new SimpleDateFormat("dd, MMM yyyy HH:mm z");
-  // formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
-   formattedDate = formatter.format(date);
+   formatter = new SimpleDateFormat("dd, MMM yyyy");
+ 
    
    DecimalFormat df = new DecimalFormat("0.00"); 
    df.setRoundingMode(RoundingMode.DOWN);
@@ -318,17 +319,6 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
    DecimalFormat rf2 = new DecimalFormat("0"); 
    rf2.setRoundingMode(RoundingMode.UP);
 
-   // Will create: Report generated by: _name, _date
-   preface.add(new Paragraph(PDF_SUBTITLE + school.getSchoolName(), smallBold));
-
-   preface.add(new Paragraph(formattedDate, smallBold));
-
-   preface.setAlignment(Element.ALIGN_RIGHT);
-   
-   // step 4
-   BaseColor baseColor=new BaseColor(202,225,255);
-   
-   Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
    
    List<Perfomance> list = new ArrayList<>();
    Map<String,Double> grandscoremap = new LinkedHashMap<String,Double>(); 
@@ -577,7 +567,8 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
              
 
               studeadmno = studentAdmNoHash.get(uuid);
-              studename = studNameHash.get(uuid);         
+              studename = studNameHash.get(uuid);  
+              firstnamee = firstnameHash.get(uuid);
              
 
               
@@ -695,16 +686,15 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
               }else{
                 comscorestr = "";
               }   
-             
-              //add to document
-       	  // Paragraph school_name = new Paragraph(("SCHOOL NAME: "+school.getSchoolName()));
-       	   Paragraph class_name = new Paragraph(("CLASS :"+roomHash.get(classroomuuid))); 
-       	   Paragraph year = new Paragraph(("YEAR:  "  + 2016));
-       	   Paragraph term = new Paragraph(("TERM: "  + 1));
-       	   Paragraph admno = new Paragraph(("ADM NO: "+studentAdmNoHash.get(uuid))); 
-       	   Paragraph fullname = new Paragraph(("NAME: "+studNameHash.get(uuid)));
-       	   Paragraph emptyline = new Paragraph(("                              "));
-       	   
+              
+           BaseColor baseColor = new BaseColor(32,178,170);//maroon
+           BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
+           BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
+                        
+           Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+           
+           Paragraph emptyline = new Paragraph(("                              "));
+           
         	//table here
        	   PdfPCell CountHeader = new PdfPCell(new Paragraph("*",boldFont));
        	   CountHeader.setBackgroundColor(baseColor);
@@ -733,9 +723,144 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                myTable.addCell(scoreHeader);
                myTable.addCell(gradeHeader);
                myTable.addCell(remarkHeader);
-               myTable.setWidthPercentage(80); 
+               myTable.setWidthPercentage(100); 
                myTable.setWidths(new int[]{15,60,25,25,80});   
                myTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               String maxscore = "100";
+              
+               
+               String aplain = Integer.toString(gradingSystem.getGradeAplain());
+               String aminus = Integer.toString(gradingSystem.getGradeAminus());
+               
+               String bplus = Integer.toString(gradingSystem.getGradeBplus());
+               String bplain = Integer.toString(gradingSystem.getGradeBplain());
+               String bminus = Integer.toString(gradingSystem.getGradeBminus());
+               
+               String cplus = Integer.toString(gradingSystem.getGradeCplus());
+               String cplain = Integer.toString(gradingSystem.getGradeCplain());
+               String cminus = Integer.toString(gradingSystem.getGradeCminus());
+               
+               String dplus = Integer.toString(gradingSystem.getGradeDplus());
+               String dplain = Integer.toString(gradingSystem.getGradeDplain());
+               String dminus = Integer.toString(gradingSystem.getGradeDminus());
+               
+               String gradeE = Integer.toString(gradingSystem.getGradeE());
+              
+               
+               PdfPCell gradeA = new PdfPCell(new Paragraph(maxscore+"-"+aplain,boldFont));
+               gradeA.setBackgroundColor(baseColor);
+               gradeA.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeAminus = new PdfPCell(new Paragraph(aplain+"-"+aminus,boldFont));
+               gradeAminus.setBackgroundColor(baseColor);
+               gradeAminus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeBplus = new PdfPCell(new Paragraph(aminus+"-"+bplus,boldFont));
+               gradeBplus.setBackgroundColor(baseColor);
+               gradeBplus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeBplain = new PdfPCell(new Paragraph(bplus+"-"+bplain,boldFont));
+               gradeBplain.setBackgroundColor(baseColor);
+               gradeBplain.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeBminus = new PdfPCell(new Paragraph(bplain+"-"+bminus,boldFont));
+               gradeBminus.setBackgroundColor(baseColor);
+               gradeBminus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeCplus = new PdfPCell(new Paragraph(bminus+"-"+cplus,boldFont));
+               gradeCplus.setBackgroundColor(baseColor);
+               gradeCplus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeCplain = new PdfPCell(new Paragraph(cplus+"-"+cplain,boldFont));
+               gradeCplain.setBackgroundColor(baseColor);
+               gradeCplain.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeCminus = new PdfPCell(new Paragraph(cplain+"-"+cminus,boldFont));
+               gradeCminus.setBackgroundColor(baseColor);
+               gradeCminus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeDplus = new PdfPCell(new Paragraph(cminus+"-"+dplus,boldFont));
+               gradeDplus.setBackgroundColor(baseColor);
+               gradeDplus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeDplain = new PdfPCell(new Paragraph(dplus+"-"+dplain,boldFont));
+               gradeDplain.setBackgroundColor(baseColor);
+               gradeDplain.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeDminus = new PdfPCell(new Paragraph(dplain+"-"+dminus,boldFont));
+               gradeDminus.setBackgroundColor(baseColor);
+               gradeDminus.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPCell gradeEE = new PdfPCell(new Paragraph(dminus+"-"+gradeE,boldFont));
+               gradeEE.setBackgroundColor(baseColor);
+               gradeEE.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPTable gradeTable = new PdfPTable(12);  
+               gradeTable.addCell(gradeA);
+               gradeTable.addCell(gradeAminus);
+               gradeTable.addCell(gradeBplus);
+               gradeTable.addCell(gradeBplain);
+               gradeTable.addCell(gradeBminus);
+               gradeTable.addCell(gradeCplus);
+               gradeTable.addCell(gradeCplain);
+               gradeTable.addCell(gradeCminus);
+               gradeTable.addCell(gradeDplus);
+               gradeTable.addCell(gradeDplain);
+               gradeTable.addCell(gradeDminus);
+               gradeTable.addCell(gradeEE);
+               gradeTable.setWidthPercentage(100); 
+               gradeTable.setWidths(new int[]{20,20,20,20,20,25,20,20,20,20,20,20});   
+               gradeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               gradeTable.addCell("A ");
+               gradeTable.addCell("A-");
+               gradeTable.addCell("B+");
+               gradeTable.addCell("B");
+               gradeTable.addCell("B-");
+               gradeTable.addCell("C+");
+               gradeTable.addCell("C");
+               gradeTable.addCell("C-");
+               gradeTable.addCell("D+");
+               gradeTable.addCell("D");
+               gradeTable.addCell("D-");
+               gradeTable.addCell("E");
+               
+               PdfPTable containerTable = new PdfPTable(2);  
+               containerTable.setWidthPercentage(100); 
+               containerTable.setWidths(new int[]{100,100}); 
+               containerTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+              
+               
+               PdfPTable titleTable = new PdfPTable(1);  
+               titleTable.setWidthPercentage(25); 
+               titleTable.setWidths(new int[]{100}); 
+               titleTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+               
+               PdfPTable HeaderTable = new PdfPTable(1);  
+               HeaderTable.setWidthPercentage(50); 
+               HeaderTable.setWidths(new int[]{100});   
+               HeaderTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+                      
+               Paragraph preface = new Paragraph();
+               preface.add(createImage(realPath));
+               preface.add(new Paragraph(school.getSchoolName()  + " ", bigFont));// Student Report Card
+               preface.add(new Paragraph(PDF_SUBTITLE , smallBold));
+              // preface.add(new Paragraph(formattedDate, smallBold));
+               preface.setAlignment(Element.ALIGN_RIGHT);
+              
+              
+                PdfPCell contheader = new PdfPCell(new Paragraph(("TERM " +examConfig.getTerm() + ": YEAR " + examConfig.getYear() +"\n\n" +("CLASS : " + roomHash.get(classroomuuid) +"\n")) +"",boldFont));
+                contheader.setBackgroundColor(Colormagenta);
+                contheader.setHorizontalAlignment(Element.ALIGN_LEFT);
+                
+                PdfPCell bodyheader = new PdfPCell(new Paragraph(("ADMISSION NUMBER : " + studentAdmNoHash.get(uuid) +"\n\n" +("STUDENT NAME : " + studNameHash.get(uuid) +"\n")),boldFont));
+                bodyheader.setBackgroundColor(Colormagenta);
+                bodyheader.setHorizontalAlignment(Element.ALIGN_LEFT);
+                
+                
+                containerTable.addCell(bodyheader);
+                containerTable.addCell(contheader);
            
            
            
@@ -856,43 +981,87 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
               myposition = new Paragraph(("POSITION " +position+ " OUT OF " +Finalposition));
              }
             
-            Paragraph termYear = new Paragraph(("TERM: " +examConfig.getTerm() + " YEAR: " +examConfig.getYear()));
-       
-       	   Paragraph total = new Paragraph(("MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)));
-       	   
-       	   Paragraph class_teacher_remarks = new Paragraph(("Class Teacher Remarks:  "+classteacherRemarks(mean)));
-       	   
-           Paragraph class_teacher_sign = new Paragraph(("Class Teacher Signature :  ________________ "));
+            PdfPCell positionheader = new PdfPCell(new Paragraph(myposition +"\n\n",boldFont));
+            positionheader.setBackgroundColor(Colormagenta);
+            positionheader.setHorizontalAlignment(Element.ALIGN_LEFT);  
+            
+            PdfPCell meanheader = new PdfPCell(new Paragraph(("MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)) +"\n\n",boldFont));
+            meanheader.setBackgroundColor(Colormagenta);
+            meanheader.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            
+            PdfPTable bottomTable = new PdfPTable(2);  
+            bottomTable.setWidthPercentage(100); 
+            bottomTable.setWidths(new int[]{100,100}); 
+            bottomTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            bottomTable.addCell(positionheader);
+            bottomTable.addCell(meanheader); 
+            
+            PdfPTable feeTable = new PdfPTable(2);  
+            feeTable.setWidthPercentage(100); 
+            feeTable.setWidths(new int[]{100,100}); 
+            feeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            
+            double balance = 0.00;
+            double nextfee = 15000.00;
+            Locale locale = new Locale("en","KE"); 
+    		NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+    		
+            PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(balance)+" \n\n Next Term Fee " + nf.format(nextfee) ,boldFont));
+            feeCell.setBackgroundColor(Colorgrey);
+            feeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            PdfPCell DateCell = new PdfPCell(new Paragraph((("Clossing date : " +formatter.format(new Date()))+" \n\n Next Term Opening date :_________________ ")+"\n\n",boldFont));
+            DateCell.setBackgroundColor(Colorgrey);
+            DateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            feeTable.addCell(feeCell);
+            feeTable.addCell(DateCell);
            
-       	   Paragraph principal = new Paragraph(("PRINCIPAL  Mr Karani          : SIGNATURE ________________ "));
-       	   
-           Paragraph clossDate = new Paragraph(("Opening date :_________________ "));
-    	   Paragraph opendate = new Paragraph(("Clossing date : " +formatter.format(new Date())));
-    	   
-       	   Paragraph stamp = new Paragraph(("[ STAMP  _______________ ]      : DATE " +formatter.format(new Date())));
-       	   
-       	   
-       	   document.add(preface);
-       	   document.add(termYear);
-       	   document.add(class_name);
-       	   document.add(year);
-       	   document.add(term);
-       	   document.add(admno);
-       	   document.add(fullname);
+       	    
+            
+            PdfPTable commentTable = new PdfPTable(2);  
+            commentTable.setWidthPercentage(100); 
+            commentTable.setWidths(new int[]{100,100}); 
+            commentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            PdfPCell commentCell = new PdfPCell(new Paragraph("Thanks " + firstnamee + " for the fantastic term, it has been awesome to see you grow "
+            + "and develope, hope you have a wonderful holiday.\nFor your performance, all we can say is ... " + classteacherRemarks(mean)+"\n\n"));
+            commentCell.setBackgroundColor(Colormagenta);
+            commentCell.setColspan(2); 
+            commentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
+            PdfPCell Cell1 = new PdfPCell(new Paragraph("Class Teacher's Signature: _____________________\n\n"
+            		                                      + "Principal's Signature: _____________________\n\n"));
+            		                                              
+            Cell1.setBackgroundColor(Colormagenta);
+            Cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            
+            PdfPCell Cell2 = new PdfPCell(new Paragraph("Date : _____________________\n\n"
+            		                                  + "Date : _____________________\n\n"));
+            Cell2.setBackgroundColor(Colormagenta);
+            Cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            
+            commentTable.addCell(commentCell);
+            commentTable.addCell(Cell1);
+            commentTable.addCell(Cell2);
+           
+       	   document.add(preface);   
        	   document.add(emptyline);
-           document.add(myTable);  
-           document.add(emptyline);
-       	   document.add(myposition);
-       	   document.add(total);
-           document.add(emptyline);
-       	   document.add(class_teacher_remarks);
-           document.add(class_teacher_sign);
-           document.add(emptyline);
-       	   document.add(principal);
-       	   document.add(stamp);
+       	   document.add(containerTable);      	  
        	   document.add(emptyline);
-           document.add(clossDate);
-    	   document.add(opendate);
+           document.add(myTable); 
+           document.add(emptyline);
+           document.add(gradeTable);  
+           document.add(emptyline);
+       	   document.add(bottomTable); 
+           document.add(emptyline);
+           document.add(feeTable);
+       	   document.add(emptyline);  //commentTable
+       	   document.add(commentTable);
+       	   
+       	   
    	       document.newPage();
               
    	    
@@ -919,30 +1088,30 @@ private String classteacherRemarks(double score) {
 	String remarks = "";
 	double mean = score;
 	
-	if(mean >= 83){
-		remarks = "Execellent,let sky be your steping stone.";
-    }else if(mean >= 71){
-    	remarks = "Good work, sky might not be the limit.";
-    }else if(mean >= 67){
+	if(mean >= gradingSystem.getGradeAplain()){
+		remarks = "Execellent work,let sky be your steping stone.";
+    }else if(mean >= gradingSystem.getGradeAminus()){
+    	remarks = "Good work, sky is not the limit.";
+    }else if(mean >= gradingSystem.getGradeBplus()){
     	remarks = "Good work, a little more effort please.";
-    }else if(mean >= 61){
+    }else if(mean >= gradingSystem.getGradeBplain()){
     	remarks = "Good work but, this is not your best.";
-    }else if(mean >= 55){
+    }else if(mean >= gradingSystem.getGradeBminus()){
     	remarks = "An average student, you have the potential.";
-    }else if(mean >= 47){
+    }else if(mean >= gradingSystem.getGradeCplus()){
     	remarks = "Below average, this is not your best.";
-    }else if(mean >= 42){
+    }else if(mean >= gradingSystem.getGradeCplain()){
     	remarks = "Below average, you can do beter than this.";
-    }else if(mean >= 38){
+    }else if(mean >= gradingSystem.getGradeCminus()){
     	remarks = "Below average, you can do beter.";
-    }else if(mean >= 35){
+    }else if(mean >= gradingSystem.getGradeDplus()){
     	remarks = "Below average, put more effort.";
-    }else if(mean >= 30){
+    }else if(mean >= gradingSystem.getGradeDplain()){
     	remarks = "Far below average, please you deserve better.";
-    }else if(mean >= 25){
-    	remarks = "Far much below average...but you deserve beter than this.";
+    }else if(mean >= gradingSystem.getGradeDminus()){
+    	remarks = "Far much below average but you deserve beter than this.";
     }else{
-    	remarks = "This is extremly poor but still....can do beter.";
+    	remarks = "This is extremly poor but still you can do beter.";
     }
 	
 	if(mean ==0){
@@ -956,27 +1125,27 @@ private String computeRemarks(double score) {
 	String remarks = "";
 	double mean = score;
 	
-	if(mean >= 83){
+	if(mean >= gradingSystem.getGradeAplain()){
 		remarks = "Execellent, keep it up.";
-    }else if(mean >= 71){
+    }else if(mean >= gradingSystem.getGradeAminus()){
     	remarks = "Good work, aim higher.";
-    }else if(mean >= 67){
+    }else if(mean >= gradingSystem.getGradeBplus()){
     	remarks = "Good job, aim high.";
-    }else if(mean >= 61){
+    }else if(mean >= gradingSystem.getGradeBplain()){
     	remarks = "well done, aim higher.";
-    }else if(mean >= 55){
+    }else if(mean >= gradingSystem.getGradeBminus()){
     	remarks = "well done, aim high.";
-    }else if(mean >= 47){
+    }else if(mean >= gradingSystem.getGradeCplus()){
     	remarks = "Fair, you can do better.";
-    }else if(mean >= 42){
+    }else if(mean >= gradingSystem.getGradeCplain()){
     	remarks = "Fair, put more effort.";
-    }else if(mean >= 38){
+    }else if(mean >= gradingSystem.getGradeCminus()){
     	remarks = "Fair, you can improve.";
-    }else if(mean >= 35){
+    }else if(mean >= gradingSystem.getGradeDplus()){
     	remarks = "Fair, pull up your socks.";
-    }else if(mean >= 30){
+    }else if(mean >= gradingSystem.getGradeDplain()){
     	remarks = "You can do better than this.";
-    }else if(mean >= 25){
+    }else if(mean >= gradingSystem.getGradeDminus()){
     	remarks = "You can do better than this.";
     }else{
     	remarks = "You can do better than this.";
@@ -995,27 +1164,27 @@ private String computeRemarks(double score) {
  */
 private String computeGrade(double score) {
 	double mean = score;
-	if(mean >= 83){
+	if(mean >= gradingSystem.getGradeAplain()){
         grade = "A";
-    }else if(mean >= 71){
+    }else if(mean >= gradingSystem.getGradeAminus()){
          grade = "A-";
-    }else if(mean >= 67){
+    }else if(mean >= gradingSystem.getGradeBplus()){
          grade = "B+";
-    }else if(mean >= 61){
+    }else if(mean >= gradingSystem.getGradeBplain()){
          grade = "B";
-    }else if(mean >= 55){
+    }else if(mean >= gradingSystem.getGradeBminus()){
          grade = "B-";
-    }else if(mean >= 47){
+    }else if(mean >= gradingSystem.getGradeCplus()){
          grade = "C+";
-    }else if(mean >= 42){
+    }else if(mean >= gradingSystem.getGradeCplain()){
          grade = "C";
-    }else if(mean >= 38){
+    }else if(mean >= gradingSystem.getGradeCminus()){
          grade = "C-";
-    }else if(mean >= 35){
+    }else if(mean >= gradingSystem.getGradeDplus()){
          grade = "D+";
-    }else if(mean >= 30){
+    }else if(mean >= gradingSystem.getGradeDplain()){
          grade = "D";
-    }else if(mean >= 25){
+    }else if(mean >= gradingSystem.getGradeDminus()){
          grade = "D-";
     }else{
          grade = "E";
@@ -1058,13 +1227,7 @@ private Element createImage(String realPath) {
  return imgLogo;
 }
 
-private Paragraph addEmptyLine(Paragraph paragraph, int number) {
- for (int i = 0; i < number; i++) {
-     paragraph.add(new Paragraph(" "));
- }
- 
- return paragraph;
-}
+
 
 /**
 *

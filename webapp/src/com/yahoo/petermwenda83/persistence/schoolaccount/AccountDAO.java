@@ -129,7 +129,7 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 		  
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO SchoolAccount" 
-			        		+"(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,Email,CreationDate) VALUES (?,?,?,?,?,?,?,?);");
+			        		+"(Uuid,StatusUuid,SchoolName,Username,Password,Mobile,PostalAddress,Town,Email,CreationDate) VALUES (?,?,?,?,?,?,?,?,?,?);");
      		){
 	            pstmt.setString(1, school.getUuid());
 	            pstmt.setString(2, school.getStatusUuid());
@@ -137,8 +137,10 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	            pstmt.setString(4, school.getUsername());
 	            pstmt.setString(5, SecurityUtil.getMD5Hash(school.getPassword()));
 	            pstmt.setString(6, school.getMobile());
-	            pstmt.setString(7, school.getEmail());
-	            pstmt.setTimestamp(8, new Timestamp(school.getCreationDate().getTime()));
+	            pstmt.setString(7, school.getPostalAddress());
+	            pstmt.setString(8, school.getTown());
+	            pstmt.setString(9, school.getEmail());
+	            pstmt.setTimestamp(10, new Timestamp(school.getCreationDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -160,14 +162,16 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 		boolean success = true; 
 		 try(   Connection conn = dbutils.getConnection();
 	      PreparedStatement pstmt = conn.prepareStatement("UPDATE SchoolAccount SET SchoolName =?,Username =?,Password =?,"
-			+ "Mobile =?,Email =? WHERE Uuid = ? ;");
+			+ "Mobile =?,PostalAddress =?,Town =?,Email =? WHERE Uuid = ? ;");
        		){
 	            pstmt.setString(1, school.getSchoolName());
 	            pstmt.setString(2, school.getUsername());
 	            pstmt.setString(3, SecurityUtil.getMD5Hash(school.getPassword()));
 	            pstmt.setString(4, school.getMobile());
-	            pstmt.setString(5, school.getEmail());
-	            pstmt.setString(6, school.getUuid());
+	            pstmt.setString(5, school.getPostalAddress());
+	            pstmt.setString(6, school.getTown());
+	            pstmt.setString(7, school.getEmail());
+	            pstmt.setString(8, school.getUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

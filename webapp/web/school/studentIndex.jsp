@@ -1,0 +1,334 @@
+<%
+/**
+  Copyright (c) Fastech Solutions Ltd (Jan 16 2016).
+
+  License
+  THIS PRODUCT is Licensed under the Open Software License (the "License"), Version 3.0 .
+  You may not use this SOFTWARE NOT UNLESS in compliance with the License.
+  You may obtain a copy of the License at: http://opensource.org/licenses/OSL-3.0
+
+  Disclaimer
+  This SOFTWARE PRODUCT is provided BY THE PROVIDER "AS-IS" (The buyer buys the product in whatever condition it presently
+  exist,the buyer accept THE PRODUCT "with all faults").
+  THE PROVIDER  makes no representations or warranties of any kind WHATSOEVER concerning the safety,inaccuracies and other harmful results that may arise out of using THE PRODUCT for non-intended purposes.
+  THE DEVELOPER will not be liable for ANY data loss AND OR any other harm connected with using this PRODUCT contrary to the spesifications provided by THE PROVIDER in the terms and conditions.
+
+ @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+**/
+%>
+
+<%@page import="com.yahoo.petermwenda83.pagination.student.StudentPaginator"%>
+<%@page import="com.yahoo.petermwenda83.pagination.student.StudentPage"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.student.PrimaryDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.StudentPrimary"%>
+
+<%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
+<%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
+<%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
+
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Arrays"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Calendar"%>
+
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+
+<%@page import="net.sf.ehcache.Element"%>
+<%@page import="net.sf.ehcache.Cache"%>
+<%@page import="net.sf.ehcache.CacheManager"%>
+
+<%@page import="org.joda.time.MutableDateTime"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+
+  if (session == null) {
+       response.sendRedirect("../index.jsp");
+       //return;
+    }
+
+    String username = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
+    if (StringUtils.isEmpty(username)) {
+        response.sendRedirect("../index.jsp");
+        //return;
+    }
+
+    session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
+    response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
+    //return;
+
+
+    CacheManager mgr = CacheManager.getInstance();
+    Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
+    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
+    SessionStatistics statistics = new SessionStatistics();
+    
+
+    SchoolAccount school = new SchoolAccount();
+    Element element;
+   
+
+    int incount = 0;  // Generic counter
+
+    if ((element = accountsCache.get(username)) != null) {
+        school = (SchoolAccount) element.getObjectValue();
+    }
+
+     String accountuuid = school.getUuid();
+     String schoolname = school.getSchoolName();
+
+
+    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
+    if ((element = statisticsCache.get(accountuuid)) != null) {
+        statistics = (SessionStatistics) element.getObjectValue();
+    }
+
+   
+     StudentDAO studentDAO = StudentDAO.getInstance();
+     List<Student> studentList = new ArrayList(); 
+     studentList = studentDAO.getStudentList(school , 0 , 15); 
+
+    HashMap<String, String> classroomHash = new HashMap<String, String>();
+    RoomDAO roomDAO = RoomDAO.getInstance();
+    List<ClassRoom> classList = new ArrayList<ClassRoom>();
+    classList = roomDAO.getAllRooms(accountuuid);
+    for(ClassRoom cr : classList){
+       classroomHash.put(cr.getUuid(), cr.getRoomName()); 
+         }
+
+    
+    StudentPrimary studentPrimary = new StudentPrimary();
+    HashMap<String, StudentPrimary> studentPrimaryHash = new HashMap<String, StudentPrimary>();
+    PrimaryDAO primaryDAO = PrimaryDAO.getInstance();
+    List<StudentPrimary> studentPrimaryList = new ArrayList<StudentPrimary>();
+    studentPrimaryList = primaryDAO.getAllPrimary(); 
+       for(StudentPrimary sprimary : studentPrimaryList){
+         studentPrimaryHash.put(sprimary.getStudentUuid(), sprimary); 
+         }
+
+       
+    //incount = statistics.getAllIncomingCount();
+
+
+     int ussdCount = 0;
+     StudentPaginator paginator = new StudentPaginator(accountuuid);
+     StudentPage studentpage;
+
+     studentpage = (StudentPage) session.getAttribute("currentPage");
+        String referrer = request.getHeader("referer");
+        String pageParam = (String) request.getParameter("page");
+
+        // We are to give the first page
+        if (studentpage == null
+                || !StringUtils.endsWith(referrer, "studentIndex.jsp")
+                || StringUtils.equalsIgnoreCase(pageParam, "first")) {
+              studentpage = paginator.getFirstPage();
+
+            //We are to give the last page
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "last")) {
+             studentpage = paginator.getLastPage();
+
+            // We are to give the previous page
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "previous")) {
+            studentpage = paginator.getPrevPage(studentpage);
+
+            // We are to give the next page 
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "next"))  {
+           studentpage = paginator.getNextPage(studentpage);
+        }
+
+        session.setAttribute("currentPage", studentpage);
+        studentList = studentpage.getContents();
+        ussdCount = (studentpage.getPageNum() - 1) * studentpage.getPagesize() + 1;
+      // }
+
+
+ //date format
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-dd-MM");
+    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
+%> 
+<jsp:include page="header.jsp" />
+
+
+
+<div class="row-fluid sortable">    
+    <div class="box span12">
+        <div class="box-header well" data-original-title>
+         <p>Welcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+        </div>
+        <div class="box-content">
+
+
+                <div id="search_box">
+                <form action="#" method="get">
+                 <input type="text" placeholder="Search By AdmNo" name="q" size="10" id="searchfield" title="searchfield" onkeyup="searchstudents(this.value)" />
+                </form>
+                </div>
+
+              
+
+            <div>
+            <table class="table table-striped table-bordered bootstrap-datatable ">
+                <thead>
+                    <tr >
+                        <th>*</th>
+                        <th>AdmNO</th>
+                        <th>Fullname</th>                
+                        <th>Gender</th>
+                        <th>DOB</th>
+                        <th>Bcert</th>
+                        <th>Class</th>
+                        <th>County</th>
+                        <th>Primary</th>
+                        <th>Index</th>
+                        <th>Marks</th>
+                        <th>Year</th>
+                        <th>Adm Date</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>   
+                <tbody class='tablebody'>
+                    <%
+                    String fullname = "";
+                    String formatedFirstname = "";
+                    String formatedLastname = "";
+                    String formatedSurname = "";
+
+                    String status = "";
+                    String primaryschool = "";
+                    String kcpeindex = "";
+                    String kcpemark = "";
+                    String kcpeyear = ""; 
+
+
+                    for(Student s : studentList){
+                   
+
+                    String firstNameLowecase = s.getFirstname().toLowerCase();
+                    String lastNameLowecase =s.getSurname().toLowerCase();
+                    String surNameLowecase = s.getLastname().toLowerCase();
+                    
+                    formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+                    formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+                    formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+                    fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
+
+
+
+                    studentPrimary = studentPrimaryHash.get(s.getUuid());
+                    if(studentPrimary !=null){
+                        primaryschool = studentPrimary.getSchoolname();
+                        kcpeindex =  studentPrimary.getIndex();
+                        kcpemark =  studentPrimary.getKcpemark();
+                        kcpeyear =  studentPrimary.getKcpeyear();
+                    }else{
+                        primaryschool = "";
+                        kcpeindex = "";
+                        kcpemark = "";
+                        kcpeyear = "";
+                    }
+
+
+
+                    String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                    if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
+                       status = "Active";
+                    }else{
+                      status = "Inactive";
+                    }
+                    %>
+                    <tr class="tabledit">
+                         <td width="3%"><%=ussdCount%></td>
+                         <td class="center"><%=s.getAdmno()%></td> 
+                         <td class="center"><%=fullname%></td>
+                         <td class="center"><%=s.getGender()%></td>
+                         <td class="center"><%=s.getdOB()%></td>
+                         <td class="center"><%=s.getBcertno()%></td>
+                         <td class="center"><%=classroomHash.get(s.getClassRoomUuid())%></td>
+                         <td class="center"><%=s.getCounty()%></td>
+                         <td class="center"><%=primaryschool%></td>
+                         <td class="center"><%=kcpeindex%></td>
+                         <td class="center"><%=kcpemark%></td>
+                         <td class="center"><%=kcpeyear%></td>
+                         <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>  
+                         <td class="center">
+                                <form name="view" method="POST" action="updateStudentBasic"> 
+                                <input type="hidden" name="studentUuid" value="<%=s.getUuid()%>">
+                                <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
+                                </form>                          
+                               </td>            
+                        
+                      
+
+                    </tr>
+
+                    <%
+                          ussdCount++;
+                       }
+                            
+                    %>
+                </tbody>
+            </table>  
+
+             <div id="pagination">
+                <form name="pageForm" method="post" action="studentIndex.jsp">                                
+                    <%                                            
+                        if (!studentpage.isFirstPage()) {
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="First" />
+                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                    <%
+                        }
+                    %>
+                    <span class="pageInfo">Page 
+                        <span class="pagePosition currentPage"><%= studentpage.getPageNum()%></span> of 
+                        <span class="pagePosition"><%= studentpage.getTotalPage()%></span>
+                    </span>   
+                    <%
+                        if (!studentpage.isLastPage()) {                        
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
+                        <input class="toolbarBtn" type="submit" name="page" value="Last">
+                    <%
+                       }
+                    %>                                
+                </form>
+            </div>
+
+            </div>
+
+       <br>   <br>   <br>
+
+
+
+
+        </div>
+    </div><!--/span-->
+
+</div><!--/row-->
+
+
+<jsp:include page="footer.jsp" />

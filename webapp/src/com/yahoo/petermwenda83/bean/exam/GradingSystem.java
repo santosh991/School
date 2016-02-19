@@ -20,7 +20,7 @@ import com.yahoo.petermwenda83.bean.StorableBean;
  */
 public class GradingSystem extends StorableBean{
 	
-	/**
+	/**  
 	 * 
 	 */
 	private static final long serialVersionUID = 8278712625087888708L;

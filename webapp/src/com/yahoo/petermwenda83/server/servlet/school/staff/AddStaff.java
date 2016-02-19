@@ -34,6 +34,8 @@ public class AddStaff extends HttpServlet {
 	 */
 	final  String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL"); 
 	final  String pos_Deputy_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_DEPUTY"); 
+	private String principalId = "";
+	private String DeputyprincipalId = ""; 
 	
 	final String ERROR_SELECT_POSITION = "Please select a position"; 
 	final String ERROR_EMPTY_USERNAME = "username can't be empty";
@@ -94,7 +96,16 @@ public class AddStaff extends HttpServlet {
        String sysUser = StringUtils.trimToEmpty(request.getParameter("systemuser"));
        String category = StringUtils.trimToEmpty(request.getParameter("category"));
        String schoolAccountUuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
-      
+       
+       principalId = " ";
+	   DeputyprincipalId = "";
+       if(StringUtils.equals(PositionUuid, pos_Pricipal)){
+    	   principalId = pos_Pricipal;
+       }if(StringUtils.equals(PositionUuid, pos_Deputy_Pricipal)){
+    	   DeputyprincipalId = pos_Deputy_Pricipal;
+       }
+       
+      // System.out.println("[PositionUuid="+PositionUuid +"] \n , [principalId ="+principalId +"] \n and [DeputyprincipalId="+DeputyprincipalId+"] \n");
        // This is used to store parameter names and values from the form.
 	   	Map<String, String> paramHash = new HashMap<>();    	
 	   	paramHash.put("username", username);
@@ -141,14 +152,14 @@ public class AddStaff extends HttpServlet {
        }else if(StringUtils.isEmpty(dob)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_DOB); 
     	   
-       }else if(staffDAO.getStaffByPosition(schoolAccountUuid, pos_Pricipal) !=null){
+       }else if(staffDAO.getStaffByPosition(schoolAccountUuid, principalId) !=null){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_PRINCIPAL_EXIST); 
     	   
-       }else if(staffDAO.getStaffByPosition(schoolAccountUuid, pos_Deputy_Pricipal) !=null){
+       }else if(staffDAO.getStaffByPosition(schoolAccountUuid, DeputyprincipalId) !=null){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_DPRINCIPAL_EXIST); 
     	   
        }else{
-    	   
+    	  
     	   Staff staff = new Staff();
     	   staff.setUuid(staff.getUuid()); 
     	   staff.setCategory(category);

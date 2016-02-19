@@ -15,7 +15,7 @@ import com.yahoo.petermwenda83.bean.student.guardian.StudentSponsor;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 
-/**
+/** 
  * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
@@ -79,7 +79,7 @@ public class SponsorsDAO extends GenericDAO implements SchoolSponsorsDAO {
 	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolSponsorsDAO#putSponsor(com.yahoo.petermwenda83.bean.student.guardian.StudentSponsor)
 	 */
 	@Override
-	public boolean putSponsor(StudentSponsor sponser) {
+	public boolean putSponsor(StudentSponsor sponsor) {
 		 boolean success = true;
 			
 		  try(   Connection conn = dbutils.getConnection();
@@ -87,17 +87,17 @@ public class SponsorsDAO extends GenericDAO implements SchoolSponsorsDAO {
 			        		+"(Uuid, StudentUuid, SponsorName,SponsorPhone,SponsorOccupation,SponsorCountry,SponsorCounty)"
 			        		+ " VALUES (?,?,?,?,?,?,?);");
 		             ){
-	            pstmt.setString(1, sponser.getUuid());
-	            pstmt.setString(2, sponser.getStudentUuid());
-	            pstmt.setString(3, sponser.getSponsorName());	       
-	            pstmt.setString(4, sponser.getSponsorPhone());
-	            pstmt.setString(5, sponser.getSponsorOccupation());
-	            pstmt.setString(6, sponser.getSponsorCountry());
-	            pstmt.setString(7, sponser.getSponsorCounty());
+	            pstmt.setString(1, sponsor.getUuid());
+	            pstmt.setString(2, sponsor.getStudentUuid());
+	            pstmt.setString(3, sponsor.getSponsorName());	       
+	            pstmt.setString(4, sponsor.getSponsorPhone());
+	            pstmt.setString(5, sponsor.getSponsorOccupation());
+	            pstmt.setString(6, sponsor.getSponsorCountry());
+	            pstmt.setString(7, sponsor.getSponsorCounty());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put StudentSponsor"+sponser);
+			 logger.error("SQL Exception trying to put StudentSponsor"+sponsor);
             logger.error(ExceptionUtils.getStackTrace(e)); 
             System.out.println(ExceptionUtils.getStackTrace(e));
            success = false;

@@ -30,31 +30,25 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 public class AddStudentParent extends HttpServlet{
 	
 	
-
-	final String ERROR = "Unexpected error occured, find a student first";
-	
-	final String ERROR_EMPTY_FATHER_NAME = "Father name cant be empty.";
-	final String ERROR_EMPTY_FATHER_PHONE = "Father phone cant be empty.";
-	final String ERROR_EMPTY_FATHER_OCCUPATION = "Father occupation cant be empty.";
-	final String ERROR_EMPTY_FATHER_ID = "Father ID number cant be empty.";
-	final String ERROR_EMPTY_FATHER_EMAIL = "Father email cant be empty.";
-	
-	final String ERROR_EMPTY_MOTHER_NAME = "Mother name cant be empty.";
-	final String ERROR_EMPTY_MOTHER_PHONE = "Mother phone cant be empty.";
-	final String ERROR_EMPTY_MOTHER_OCCUPATION = "Mother occupation cant be empty.";
-	final String ERROR_EMPTY_MOTHER_ID = "Mother ID number cant be empty.";
-	final String ERROR_EMPTY_MOTHER_EMAIL = "Mother email cant be empty.";
-	
+	final String FATHER_MOTHER_ADD_ERROR = "An error occured while saving the details.";
 	final String ERROR_STUDENT_PARENT_EXIST = "Student parent details already exist.";
+	final String ERROR_EMPTY_FATHER_OCCUPATION = "Father occupation cant be empty.";
+	final String ERROR_EMPTY_MOTHER_OCCUPATION = "Mother occupation cant be empty.";
 	final String ERROR_INVALID_FATHER_EMAIL = "Father email address is not valid";
 	final String ERROR_INVALID_MOTHER_EMAIL = "Mother email address is not valid";
-	
-	
-	final String ERROR_EMPTY_RELATIVE_NAME = "Relative name cant be empty.";
 	final String ERROR_EMPTY_RELATIVE_PHONE = "Relative phone cant be empty.";
-	
-	final String FATHER_MOTHER_ADD_ERROR = "An error occured while saving the details.";
+	final String ERROR_EMPTY_MOTHER_ID = "Mother ID number cant be empty.";
+	final String ERROR_EMPTY_FATHER_PHONE = "Father phone cant be empty.";
+	final String ERROR_EMPTY_FATHER_ID = "Father ID number cant be empty.";
+	final String ERROR_EMPTY_RELATIVE_NAME = "Relative name cant be empty.";
+	final String ERROR_EMPTY_FATHER_EMAIL = "Father email cant be empty.";
+	final String ERROR = "Unexpected error occured, find a student first";
+	final String ERROR_EMPTY_MOTHER_PHONE = "Mother phone cant be empty.";
+	final String ERROR_EMPTY_MOTHER_EMAIL = "Mother email cant be empty.";
 	final String FATHER_MOTHER_ADD_SUCCESS = "Details added successfully.";
+	final String ERROR_EMPTY_MOTHER_NAME = "Mother name cant be empty.";
+	final String ERROR_EMPTY_FATHER_NAME = "Father name cant be empty.";
+	
 	
 	
 	private static StudentDAO studentDAO;
@@ -79,21 +73,20 @@ public class AddStudentParent extends HttpServlet{
 
        HttpSession session = request.getSession(true);
        
-       String FatherName = StringUtils.trimToEmpty(request.getParameter("FatherName"));
-       String FatherPhone = StringUtils.trimToEmpty(request.getParameter("FatherPhone"));
        String FatherOccupation = StringUtils.trimToEmpty(request.getParameter("FatherOccupation"));
-       String FatherID = StringUtils.trimToEmpty(request.getParameter("FatherID"));
-       String FatherEmail = StringUtils.trimToEmpty(request.getParameter("FatherEmail"));
-       String MotherName = StringUtils.trimToEmpty(request.getParameter("MotherName"));
-       String MotherPhone = StringUtils.trimToEmpty(request.getParameter("MotherPhone"));
        String MotherOccupation = StringUtils.trimToEmpty(request.getParameter("MotherOccupation"));
-       String MotherID = StringUtils.trimToEmpty(request.getParameter("MotherID"));
-       String MotherEmail = StringUtils.trimToEmpty(request.getParameter("MotherEmail"));
-       String RelativeName = StringUtils.trimToEmpty(request.getParameter("RelativeName"));
        String RelativePhone = StringUtils.trimToEmpty(request.getParameter("RelativePhone"));
+       String RelativeName = StringUtils.trimToEmpty(request.getParameter("RelativeName"));
+       String FatherPhone = StringUtils.trimToEmpty(request.getParameter("FatherPhone"));
+       String FatherEmail = StringUtils.trimToEmpty(request.getParameter("FatherEmail"));
+       String MotherPhone = StringUtils.trimToEmpty(request.getParameter("MotherPhone"));
+       String MotherEmail = StringUtils.trimToEmpty(request.getParameter("MotherEmail"));
        String studentUuid = StringUtils.trimToEmpty(request.getParameter("studentUuid"));
+       String MotherName = StringUtils.trimToEmpty(request.getParameter("MotherName"));
+       String FatherName = StringUtils.trimToEmpty(request.getParameter("FatherName"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
-      
+       String FatherID = StringUtils.trimToEmpty(request.getParameter("FatherID"));
+       String MotherID = StringUtils.trimToEmpty(request.getParameter("MotherID"));
        
        Map<String, String> fatherMotherParamHash = new HashMap<>(); 
        Map<String, String> paramHash = new HashMap<>(); 

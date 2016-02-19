@@ -56,12 +56,12 @@ public class FindStudentH extends HttpServlet{
        if(StringUtils.isBlank(admissionNumber)){
 		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_NO_ADMNO); 
 		   
-	   }else if(studentDAO.getStudentByadmNo(schoolUuid,admissionNumber)==null){ 
+	   }else if(studentDAO.getStudentObjByadmNo(schoolUuid,admissionNumber)==null){ 
 		   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_STUDENT_NOT_FOUND); 
 		  
 	   }else{
 		   
-		   Student student = studentDAO.getStudentByadmNo(schoolUuid, admissionNumber);
+		   Student student = studentDAO.getStudentObjByadmNo(schoolUuid, admissionNumber);
 		   paramHash.put("studentuuid", student.getUuid()); 
 		   paramHash.put("admNumber", student.getAdmno());
 		   paramHash.put("firstname", student.getFirstname()); 
