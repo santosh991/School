@@ -55,6 +55,8 @@ public class AddStaff extends HttpServlet {
 	final String STAFF_ADD_SUCSESS = "Staff added successfully";
 	final String STAFF_ADD_ERROR = " An error occured while adding staff";
 	
+	 private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+	
 	
 	private static StaffDAO staffDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
@@ -166,7 +168,8 @@ public class AddStaff extends HttpServlet {
     	   staff.setPassword(idno);
     	   staff.setPositionUuid(PositionUuid);
     	   staff.setSchoolAccountUuid(schooluuid);
-    	   staff.setUserName(username); 
+    	   staff.setUserName(username);
+    	   staff.setStatusUuid(STATUS_ACTIVE_UUID); 
     	   
     	   StaffDetails staffDetail = new StaffDetails();
     	   staffDetail.setStaffUuid(staff.getUuid()); 

@@ -50,7 +50,7 @@ public class Login extends HttpServlet {
 	 private String hiddenCaptchaStr = "";
 	 private Cache schoolCache, statisticsCache;
 	 private Logger logger;
-     String SchoolAccountUuid;
+    
 
 	/**
     *
@@ -70,7 +70,10 @@ public class Login extends HttpServlet {
   
      }
  
-   @Override
+ /**
+ * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+ */
+@Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
 
@@ -90,82 +93,69 @@ public class Login extends HttpServlet {
        String captchaAnswer = request.getParameter("captchaAnswer").trim();
        
        
-       SchoolAccount school = new SchoolAccount();
-       Element element;
-       if ((element = schoolCache.get(schoolusername)) != null) {
-    	   school = (SchoolAccount) element.getObjectValue();
-    	  SchoolAccountUuid = school.getUuid();
-    	  
-        }
-     
-      
-       
-       if(StringUtils.isEmpty(schoolusername)){
-    	   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, BLANK_FIELDS_NOT_ALLOWED);
-           response.sendRedirect("index.jsp");
-           return;
-    	   
-       }else if(StringUtils.isEmpty(staffposition)){
-    	   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, BLANK_FIELDS_NOT_ALLOWED);
-           response.sendRedirect("index.jsp");
-           return;
-    	   
-       }else if(StringUtils.isEmpty(staffusername)){
-    	   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, BLANK_FIELDS_NOT_ALLOWED);
-           response.sendRedirect("index.jsp");
-           return;
-    	   
-       }else if(StringUtils.isEmpty(staffpassword)){
-    	   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, BLANK_FIELDS_NOT_ALLOWED);
-           response.sendRedirect("index.jsp");
-           return;
-    	   
-       }else{
-    	   
-    	   
-    	   
-    	   if (school != null) {
-    		   Staff staff = staffDAO.getStaffByUsername(SchoolAccountUuid, staffusername);
+    	   SchoolAccount school = new SchoolAccount();
+           Element element;
+           if ((element = schoolCache.get(schoolusername)) != null) {
+        	   school = (SchoolAccount) element.getObjectValue();
+        	  
+            }
+           
+           if(school!=null){
+
+        	  Staff staff = null;
+    		  if(staffDAO.getStaffByUsername(school.getUuid(), staffusername) !=null){
+    			   staff = staffDAO.getStaffByUsername(school.getUuid(), staffusername);
+    		   }
     		   
-               if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
+    		   if(staffDAO.getStaffByUsername(school.getUuid(), staffusername)==null){
+    			   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ERROR_WRONG_USER_DETAIL); 
+    			   response.sendRedirect("index.jsp");
+                   
+    		   }
+    		   
+    		    else  if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
                    session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
                    response.sendRedirect("index.jsp");
-                   return;
+                   
                }
               
                else if(!StringUtils.equals(staffposition, staff.getPositionUuid())){ 
             	 session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ERROR_WRONG_USER_DETAIL);
             	 response.sendRedirect("index.jsp");
-                 return;
+                 
                }
                
               else{
             	   
                
     	       if (StringUtils.equals(SecurityUtil.getMD5Hash(staffpassword), staff.getPassword())) {
-        	   //System.out.println("staff password="+SecurityUtil.getMD5Hash(staffpassword));
         	   
         	   updateCache(school.getUuid());
+        	 
 	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_ACCOUNTUUID, school.getUuid());
-	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY, schoolusername);
+	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY, school.getUsername());
 	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_SUCCESS, SessionConstants.SCHOOL_ACCOUNT_LOGIN_SUCCESS); 
 	           session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_TIME, String.valueOf(new Date().getTime()));
 	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME, staff.getUserName()); 
 	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID, staff.getUuid());
 	           request.getSession().setAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_POSITION, staffposition);
 	           response.sendRedirect("school/schoolIndex.jsp"); 
-            
+	           
               }else {
              session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ERROR_WRONG_USER_DETAIL);
              response.sendRedirect("index.jsp");
-             return;
+            
                    } 
                  }
   	   
+           
+           }else{
+        	   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ERROR_WRONG_USER_DETAIL);
+               response.sendRedirect("index.jsp");
            }
       	   
-        }
-     
+         
+      
    }
    
    
@@ -189,12 +179,18 @@ public class Login extends HttpServlet {
        return valid;
 }
 
+/**
+ * @param accountuuid
+ */
 private void updateCache(String accountuuid) {
 	   SessionStatistics statistics = SessionStatisticsFactory.getSessionStatistics(accountuuid);
        statisticsCache.put(new Element(accountuuid, statistics));
 	
 }
 
+/**
+ * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+ */
 @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {

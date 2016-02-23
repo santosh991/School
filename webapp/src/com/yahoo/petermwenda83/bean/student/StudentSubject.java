@@ -37,7 +37,7 @@ public class StudentSubject extends StorableBean {
 		   allocationDate = new Date();
 	   }
 
-	/**
+	/**    
 	 * @return the studentUuid
 	 */
 	public String getStudentUuid() {

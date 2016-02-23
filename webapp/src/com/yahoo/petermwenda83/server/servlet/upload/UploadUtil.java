@@ -188,22 +188,16 @@ public class UploadUtil {
 			       }
 			     
 			        ClassRoom clss = roomDAO.getroomByRoomName(schooluuid, classroom);
-			        TeacherSubClass ts = teacherSubClassDAO.getSubjectClass(staffId); 
-					Subject sub = subjectDAO.getSubjects(subject);
-					String SUBMITINGsubuuid = sub.getUuid();
-					String SUBMITTINGclassuuid = clss.getUuid();
+			        TeacherSubClass ts = new TeacherSubClass();  
+			        ts.setClassRoomUuid(clss.getUuid());
+			        ts.setTeacherUuid(staffId);
+			        Subject sub = subjectDAO.getSubjects(subject);
+			        ts.setSubjectUuid(sub.getUuid()); 
 					
-					String MYroomuuid = ts.getClassRoomUuid();					
-					String MYsubjectuuid = ts.getSubjectUuid();
-					
-					
-			        if(!StringUtils.equals(MYsubjectuuid, SUBMITINGsubuuid) || !StringUtils.equals(MYroomuuid, SUBMITTINGclassuuid)){
-			      
-			        return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
-			        	
-			        }
-
-					
+					if(teacherSubClassDAO.getSubjectClass(ts) ==null){
+						return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
+					}
+			       
 			     
 			     count++;
 		    }

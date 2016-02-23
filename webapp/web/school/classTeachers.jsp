@@ -142,7 +142,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :Class Teachers: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+         <p> [<a href="addclassTecaher.jsp"> add</a> ] Welcome to <%=schoolname%> :Class Teachers: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             

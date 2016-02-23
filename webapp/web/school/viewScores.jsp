@@ -220,7 +220,20 @@
 				   List<Perfomance> list = new ArrayList<>();
 
                   if(studentList !=null){                 
-                   for(Student s : studentList){     
+                   for(Student s : studentList){
+                        cat1 = 0; 
+                        cat1str = "";
+                        cat2  = 0;
+                        cat2str = "";
+                        endterm  = 0;
+                        endtermstr = "";
+                        paper1  = 0;
+                        paper1str = "";
+                        paper2  = 0;
+                        paper2str = "";
+                        paper3  = 0;
+                        paper3str = "";
+
                     list = perfomanceDAO.getPerformance(accountuuid, classroomuuid2, s.getUuid(),examConfig.getTerm(),examConfig.getYear());                                
 
                                 paper1 = 0;paper2 = 0;paper3 = 0;

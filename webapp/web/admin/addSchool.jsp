@@ -139,6 +139,24 @@ if (session == null) {
                               value="<%= StringUtils.trimToEmpty(paramHash.get("schoolemail")) %>"  >
                         </div>
                     </div> 
+
+
+                     <div class="control-group">
+                        <label class="control-label" for="name">School Postal Address*:</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="text" name="postaladdress"
+                              value="<%= StringUtils.trimToEmpty(paramHash.get("schoolpostaladdress")) %>"  >
+                        </div>
+                    </div> 
+
+
+                     <div class="control-group">
+                        <label class="control-label" for="name">School Home Town*:</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused" id="receiver" type="text" name="hometown"
+                              value="<%= StringUtils.trimToEmpty(paramHash.get("schoolhometown")) %>"  >
+                        </div>
+                    </div> 
                     
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Save</button>

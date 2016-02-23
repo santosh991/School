@@ -50,6 +50,10 @@ public class SessionConstants {
 	public static final String STAFF_UPDATE_SUCCESS = "Staff Updated Successfully";
 	public static final String STAFF_UPDATE_ERROR = "Staff Update Error";
 	
+	public static final String STAFF_FIND_ERROR = "Staff Find Error";
+	public static final String STAFF_FIND_SUCCESS = "Staff found Successfully";
+	public static final String STAFF_PARAM = "Staff param";
+	
 	public static final String STUDENT_PARAM = "Student Parameters";
 	public static final String STUDENT_ADD_ERROR = "Student add error";
 	public static final String STUDENT_ADD_SUCCESS = "Student added successfully";
@@ -74,6 +78,11 @@ public class SessionConstants {
 	public static final String SPONSOR_ADD_SUCCESS = "Sponsor add successfully";
 	
 	
+	public static final String GRADE_PARAM = "Grade scale Parameters";
+	public static final String GRADE_ADD_ERROR = "Grade add error";
+	public static final String GRADE_ADD_SUCCESS = "Grade add successfully";
+	
+	
 	
 	
 	
@@ -88,6 +97,7 @@ public class SessionConstants {
 	
     final public static String EXAM_CONFIG_UPDATE_ERROR = "Exam Config update error";
 	final public static String EXAM_CONFIG_UPDATE_SUCCESS = "Exam Config update Successfully";
+	final public static String EXAM_CONFIG_UPDATE_PARAM = "Exam Config Parameters";
 	/**
 	 * 
 	 */

@@ -96,7 +96,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :Exam Configuration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+         <p> [<a href="addExamconfg.jsp">AddConfig</a> ] [<a href="addGradingScale.jsp">AddScale</a> ]  Welcome to <%=schoolname%> :Exam Configuration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
 
@@ -139,6 +139,7 @@
                         <th>Year</th> 
                         <th>Exam</th>                
                         <th>Exam Mode</th>
+                        <th>Action</th>
                     </tr>
                 </thead>   
                 <tbody>
@@ -181,6 +182,7 @@
                         <th>D</th>
                         <th>D-</th>
                         <th>E</th>
+                        <th>Action</th>
                     
                     </tr>
                 </thead>   

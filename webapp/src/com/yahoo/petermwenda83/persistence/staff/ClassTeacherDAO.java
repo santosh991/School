@@ -52,8 +52,8 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#getClassTeacher(java.lang.String)
 	 */
-	public ClassTeacher getClassTeacher(String TeacherUuid) {
-		ClassTeacher classTeacher = new ClassTeacher();
+	public ClassTeacher getClassTeacherByteacherId(String TeacherUuid) {
+		ClassTeacher classTeacher =null;
         ResultSet rset = null;
      try(
      		      Connection conn = dbutils.getConnection();
@@ -77,7 +77,36 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
      
 		return classTeacher; 
 	}
-
+    
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#getClassTeacherByclassId(java.lang.String)
+	 */
+	@Override
+	public ClassTeacher getClassTeacherByclassId(String ClassRoomUuid) {
+		ClassTeacher classTeacher =null;
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ClassTeacher WHERE ClassRoomUuid = ?;");       
+     		
+     		){
+     	     pstmt.setString(1, ClassRoomUuid);
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	        	classTeacher  = beanProcessor.toBean(rset,ClassTeacher.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting classTeacher with ClassRoomUuid: " + ClassRoomUuid);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return classTeacher; 
+	}
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolClassTeacherDAO#putClassTeacher(com.yahoo.petermwenda83.bean.staff.ClassTeacher)
 	 */
@@ -159,5 +188,7 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
 		
 		return list;
 	}
+
+	
 
 }

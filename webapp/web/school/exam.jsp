@@ -93,7 +93,7 @@
      String classroomuuid = "";
 
      ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
-     ClassTeacher classTeacher = classTeacherDAO.getClassTeacher(stffID);
+     ClassTeacher classTeacher = classTeacherDAO.getClassTeacherByteacherId(stffID);
      if(classTeacher !=null){
            classroomuuid = classTeacher.getClassRoomUuid();
          }

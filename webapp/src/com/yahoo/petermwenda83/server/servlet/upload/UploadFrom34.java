@@ -24,14 +24,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
-import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
-import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
-import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;

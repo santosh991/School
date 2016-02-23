@@ -17,7 +17,7 @@ public interface SchoolStudentSubjectDAO {
 	     * @param studentSub
 	     * @return
 	     */
-	    public StudentSubject getsubject(StudentSubject studentSub);
+	    public StudentSubject getsubject(String studentuuid,String SubjectUuid);
 	    /**
 	     * 
 	     * @param studentuuid

@@ -94,6 +94,20 @@ if (session == null) {
                         </div>
                     </div>
 
+                    <div class="control-group">
+                        <label class="control-label" for="postaladdress">School Postal Address</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused"  name="postaladdress" type="text" value="<%=request.getParameter("postaladdress")%>">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="hometown">School Home Town*</label>
+                        <div class="controls">
+                            <input class="input-xlarge focused"  name="hometown" type="text" value="<%=request.getParameter("hometown")%>">
+                        </div>
+                    </div>
+
                    
                     <div class="form-actions">
                         <input type="hidden" name="schooluuid" value="<%=request.getParameter("schooluuid")%>">

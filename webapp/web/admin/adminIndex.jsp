@@ -150,6 +150,8 @@ if (session == null) {
                         <th>Students</th>                
                         <th>Mobile</th>
                         <th>Email</th>
+                        <th>Postal address</th>
+                        <th>Home Town</th>
                         <th>Status</th>
                         <th>actions</th>
                     </tr>
@@ -160,6 +162,7 @@ if (session == null) {
                          for (SchoolAccount s : schoolList) {
                          String status = "Active";
 
+
                          studentList = studentDAO.getAllStudentList(s.getUuid()); 
                          for(Student st : studentList){
                              studentcount++;
@@ -167,14 +170,16 @@ if (session == null) {
 
                            staffList = staffDAO.getStaffList(s.getUuid()); 
                            for(Staff staff : staffList){
+
                            if(StringUtils.equals(staff.getPositionUuid(), principalUuid)) {
                               principalUsername = staff.getUserName();
                               
                               staffDetails = staffDetailsDAO.getStaffDetail(staff.getUuid());
                               if(staffDetails != null) {
+                                 staffname = "";
                                   staffname = "("+staffDetails.getSurname()+" "+staffDetails.getFirstName()+" "+staffDetails.getLastName()+")";
                               }else{
-                                staffname = "No Details Set";
+                                staffname = "";
                               }
                            }
                          }     
@@ -187,14 +192,18 @@ if (session == null) {
                          <td class="center"><%=studentcount%></td>
                          <td class="center"><%=s.getMobile()%></td>
                          <td class="center"><%=s.getEmail()%></td>  
-                          <td class="center"><%=status%></td>  
+                         <td class="center"><%=s.getPostalAddress()%></td>
+                         <td class="center"><%=s.getTown()%></td>  
+                         <td class="center"><%=status%></td>  
                          <td class="center">
                                 <form name="edit" method="POST" action="editSchool.jsp"> 
                                 <input type="hidden" name="schoolname" value="<%=s.getSchoolName()%>">
                                 <input type="hidden" name="username" value="<%=s.getUsername()%>">
-                                 <input type="hidden" name="password" value="<%=s.getPassword()%>">
+                                <input type="hidden" name="password" value="<%=s.getPassword()%>">
                                 <input type="hidden" name="mobile" value="<%=s.getMobile()%>">
                                 <input type="hidden" name="email" value="<%=s.getEmail()%>">
+                                <input type="hidden" name="postaladdress" value="<%=s.getPostalAddress()%>">
+                                <input type="hidden" name="hometown" value="<%=s.getTown()%>">
                                 <input type="hidden" name="schooluuid" value="<%=s.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Edit" /> 
                                 </form>                          

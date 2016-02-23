@@ -197,7 +197,7 @@ public class Form34List extends HttpServlet{
 			 examConfig = examConfigDAO.getExamConfig(school.getUuid());
 			 gradingSystem = gradingSystemDAO.getGradingSystem(school.getUuid());
 			 
-			ClassTeacher classTeacher = classTeacherDAO.getClassTeacher(stffID);
+			ClassTeacher classTeacher = classTeacherDAO.getClassTeacherByteacherId(stffID);
 			if(classTeacher !=null){
 				classroomuuid = classTeacher.getClassRoomUuid();
 			}

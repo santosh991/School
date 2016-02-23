@@ -28,6 +28,8 @@ public class UpdateSchool extends HttpServlet{
 	private final String ERROR_UNEXPECTED_ERROR = "Unexpected error occured";
 	private final String ERROR_EMPTY_SCHOOL_PHONE = "School phone number can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_EMAIL = "School email address can't be empty";
+	private final String ERROR_EMPTY_POSTAL_ADDRESS = "School postal address can't be empty";
+	private final String ERROR_EMPTY_TOWN = "School home town address can't be empty";
 	
 	private final String ERROR_INVALID_EMAIL = "School email address can't be empty";
 	
@@ -65,6 +67,8 @@ public class UpdateSchool extends HttpServlet{
        String schoolphone = StringUtils.trimToEmpty(request.getParameter("mobile"));
        String schoolemail = StringUtils.trimToEmpty(request.getParameter("email"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
+       String schoolpostaladdress = StringUtils.trimToEmpty(request.getParameter("postaladdress"));
+       String schoolhometown = StringUtils.trimToEmpty(request.getParameter("hometown"));
     
       
        if(StringUtils.isBlank(schoolname)){
@@ -85,7 +89,13 @@ public class UpdateSchool extends HttpServlet{
        }else if(!emailValidator.isValid(schoolemail)){		     
 		   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_INVALID_EMAIL);  
 		  	   
-	   }else if(StringUtils.isBlank(schooluuid)){
+	   }else if(StringUtils.isBlank(schoolpostaladdress)){
+    	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_POSTAL_ADDRESS); 
+    	   
+       }else if(StringUtils.isBlank(schoolhometown)){
+    	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_TOWN); 
+    	   
+       }else if(StringUtils.isBlank(schooluuid)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_UPDATE_ERROR, ERROR_UNEXPECTED_ERROR); 
     	   
        }else{
@@ -97,6 +107,8 @@ public class UpdateSchool extends HttpServlet{
 		   account.setPassword(schoolpassword); 
 		   account.setMobile(schoolphone); 
 		   account.setEmail(schoolemail); 
+		   account.setPostalAddress(schoolpostaladdress); 
+		   account.setTown(schoolhometown); 
 		   updateStudentCache(account);
 		   if(accountDAO.update(account) ){ 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_UPDATE_SUCCESS, SCHOOL_UPDATE_SUCCESS); 

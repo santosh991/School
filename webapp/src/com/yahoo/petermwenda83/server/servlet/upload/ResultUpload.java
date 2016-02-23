@@ -34,7 +34,6 @@ import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamEgineDAO;
-import com.yahoo.petermwenda83.persistence.exam.StudentExamDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -57,7 +56,6 @@ public class ResultUpload extends HttpServlet {
 	
 	private Logger logger;
 	private static StudentDAO studentDAO;
-	private static StudentExamDAO studentExamDAO;
 	private static ExamEgineDAO examEgineDAO;
 	private static RoomDAO roomDAO;
 	private static SubjectDAO subjectDAO;
@@ -92,7 +90,6 @@ public class ResultUpload extends HttpServlet {
        factory.setRepository(repository);
        CacheManager.getInstance();
        studentDAO = StudentDAO.getInstance();
-       studentExamDAO = StudentExamDAO.getInstance();
        examEgineDAO = ExamEgineDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
        subjectDAO = SubjectDAO.getInstance();
@@ -223,7 +220,7 @@ private File processUploadedFile(FileItem item, String subjectname, String roomn
 				student = studentDAO.getStudentObjByadmNo(schooluuid,admno);
 				String studentUuid = student.getUuid();
 		
-				if((studentExamDAO.getStudentExam(SCHOOL_UUID, studentUuid)) !=null){
+				
 		            
 					if(StringUtils.equalsIgnoreCase(examtype, "c1")){
 						CatOne catOne = new CatOne();
@@ -266,19 +263,7 @@ private File processUploadedFile(FileItem item, String subjectname, String roomn
 				    
 				   
 		            
-						
-				}else{
-                    
-					StudentExam studentExam = new StudentExam();
-					studentExam.setSchoolAccountUuid(SCHOOL_UUID);
-					studentExam.setClassRoomUuid(FORM_ONE_N);
-					studentExam.setStudentUuid(studentUuid); 
-					if(studentExamDAO.getStudentExam(SCHOOL_UUID, studentUuid) ==null){
-						studentExamDAO.putStudentExam(studentExam);
-						
-					}
-					
-				}
+				
 				
 			}
 			

@@ -61,7 +61,7 @@ public class TeacherSubClassDAO extends GenericDAO  implements SchoolTeacherSubC
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolTeacherSubClassDAO#getSubjectClass(java.lang.String)
 	 */
 	public TeacherSubClass getSubjectClass(String teacherUuid) {
-		TeacherSubClass teachersub = new TeacherSubClass();
+		TeacherSubClass teachersub = null;
         ResultSet rset = null;
      try(
      		      Connection conn = dbutils.getConnection();
@@ -87,6 +87,40 @@ public class TeacherSubClassDAO extends GenericDAO  implements SchoolTeacherSubC
 		return teachersub; 
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolTeacherSubClassDAO#getSubjectClass(com.yahoo.petermwenda83.bean.staff.TeacherSubClass)
+	 */
+	@Override
+	public TeacherSubClass getSubjectClass(TeacherSubClass subClass) {
+		TeacherSubClass teachersub = null;
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TeacherSubClass WHERE teacherUuid = ?"
+        	      		+ "AND SubjectUuid =? AND ClassRoomUuid =? ;");       
+     		
+     		){
+     	
+     	     pstmt.setString(1, subClass.getTeacherUuid());
+     	     pstmt.setString(2, subClass.getSubjectUuid());
+     	     pstmt.setString(3, subClass.getClassRoomUuid());
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	        	teachersub  = beanProcessor.toBean(rset,TeacherSubClass.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting  TeacherSubClass: " + subClass);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return teachersub; 
+	}
 	
 	
 	/**
@@ -197,6 +231,8 @@ public class TeacherSubClassDAO extends GenericDAO  implements SchoolTeacherSubC
 		
 		return list;
 	}
+
+	
 
 	
 }

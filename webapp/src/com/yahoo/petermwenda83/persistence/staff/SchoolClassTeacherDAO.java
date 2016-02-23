@@ -18,7 +18,14 @@ public interface SchoolClassTeacherDAO {
 	 * @param TeacherUuid
 	 * @return
 	 */
-	public ClassTeacher getClassTeacher(String TeacherUuid);
+	public ClassTeacher getClassTeacherByteacherId(String TeacherUuid);
+	
+	/**
+	 * 
+	 * @param TeacherUuid
+	 * @return
+	 */
+	public ClassTeacher getClassTeacherByclassId(String ClassRoomUuid);
 	 /**
 	  * 
 	  * @param Teacher

@@ -42,6 +42,8 @@ public class AddRootUser extends HttpServlet{
     
     final String ERROR_PRINCIPAL_NOT_ADDED = "Principal add error";
     final String SUCCESS_PRINCIPAL_ADDED = "Principal Added Successfully";
+    
+    private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	/**
     *
@@ -82,8 +84,7 @@ public class AddRootUser extends HttpServlet{
        if(StringUtils.equals(PositionUuid, pos_Pricipal)){
     	   principalId = pos_Pricipal;
        }
-       //System.out.println("pr="+pos_Pricipal);
-    // This is used to store parameter names and values from the form.
+     
 	   	Map<String, String> paramHash = new HashMap<>();    	
 	   	paramHash.put("principalusername", principalusername);
 	   	paramHash.put("principalpassword", principalpassword);
@@ -125,6 +126,7 @@ public class AddRootUser extends HttpServlet{
     	   staff.setPositionUuid(PositionUuid); 
     	   staff.setUserName(principalusername); 
     	   staff.setPassword(principalpassword); 
+    	   staff.setStatusUuid(STATUS_ACTIVE_UUID); 
     	   
     	   StaffDetails staffDetail = new StaffDetails();
     	   staffDetail.setStaffUuid(staff.getUuid()); 

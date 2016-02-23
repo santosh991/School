@@ -135,7 +135,7 @@
 
     <div class="box span12">
         <div class="box-header well" data-original-title>
-         <p>[<a href="addStaff.jsp">Add staff</a>] Welcome to <%=schoolname%> :Staff Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
+         <p>[<a href="addStaff.jsp">Add staff</a>]-[<a href="teacherSubjects.jsp">AssignSubject</a>] Welcome to <%=schoolname%> :Staff Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
             
@@ -244,14 +244,14 @@
                                 <input type="hidden" name="staffuuid" value="<%=s.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="View" /> 
                                 </form>                          
-                               </td>   
+                                </td>   
 
                                 <td class="center">
                                 <form name="update" method="POST" action="updateStaff.jsp"> 
                                 <input type="hidden" name="staffuuid" value="<%=s.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="update" id="submit" value="Update" /> 
                                 </form>                          
-                               </td>   
+                                </td>   
 
 
 

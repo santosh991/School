@@ -33,7 +33,7 @@ public class StudentSubjectDAO extends GenericDAO implements SchoolStudentSubjec
 		return studentSubjectDAO;
 	}
 	
-	/**
+	/**  
 	 * 
 	 */
 	public StudentSubjectDAO() { 
@@ -52,7 +52,7 @@ public class StudentSubjectDAO extends GenericDAO implements SchoolStudentSubjec
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentSubjectDAO#getsubject(com.yahoo.petermwenda83.bean.student.StudentSubject)
 	 */
 	@Override
-	public StudentSubject getsubject(StudentSubject studentSub) {
+	public StudentSubject getsubject(String studentuuid,String SubjectUuid) {
 		StudentSubject studentsub = null;
         ResultSet rset = null;
         try(
@@ -61,8 +61,8 @@ public class StudentSubjectDAO extends GenericDAO implements SchoolStudentSubjec
         		
         		){
         	
-        	 pstmt.setString(1, studentSub.getStudentUuid());
-        	 pstmt.setString(2, studentSub.getSubjectUuid());
+        	 pstmt.setString(1, studentuuid);
+        	 pstmt.setString(2, SubjectUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -70,10 +70,10 @@ public class StudentSubjectDAO extends GenericDAO implements SchoolStudentSubjec
 	   }
         		
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting StudentSubject: " + studentSub);
+        	 logger.error("SQL Exception when getting Subjects for student " +studentuuid +"with SubjectUuid"+SubjectUuid);
              logger.error(ExceptionUtils.getStackTrace(e));
         }
-        System.out.println(studentsub);
+       
 		return studentsub; 
 	}
 

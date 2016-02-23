@@ -1,6 +1,7 @@
 package com.yahoo.petermwenda83.server.servlet.admin.school;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
@@ -29,6 +34,8 @@ public class AddSchool extends HttpServlet{
 	private final String ERROR_EMPTY_SCHOOL_PASSWORD = "School password can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_PHONE = "School phone number can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_EMAIL = "School email address can't be empty";
+	private final String ERROR_EMPTY_POSTAL_ADDRESS = "School postal address can't be empty";
+	private final String ERROR_EMPTY_TOWN = "School home town address can't be empty";
 	private final String ERROR_SCHOOL_USERNAME_EXIST = "The School username already exists in the system";
 	private final String ERROR_INVALID_EMAIL = "School email address Invalid";
 	
@@ -39,6 +46,8 @@ public class AddSchool extends HttpServlet{
 	private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	private static AccountDAO accountDAO;
 	private CacheManager cacheManager;
+	private static ExamConfigDAO examConfigDAO;
+	private static GradingSystemDAO gradingSystemDAO;
 
 
 	/**   
@@ -52,6 +61,8 @@ public class AddSchool extends HttpServlet{
        emailValidator = EmailValidator.getInstance();
        accountDAO = AccountDAO.getInstance();
        cacheManager = CacheManager.getInstance();
+       examConfigDAO = ExamConfigDAO.getInstance();
+       gradingSystemDAO = GradingSystemDAO.getInstance();
    }
    
    
@@ -66,7 +77,9 @@ public class AddSchool extends HttpServlet{
        String schoolpassword = StringUtils.trimToEmpty(request.getParameter("schpassword"));
        String schoolphone = StringUtils.trimToEmpty(request.getParameter("schphone"));
        String schoolemail = StringUtils.trimToEmpty(request.getParameter("schemail"));
-      // System.out.println(schoolusername);
+       String schoolpostaladdress = StringUtils.trimToEmpty(request.getParameter("postaladdress"));
+       String schoolhometown = StringUtils.trimToEmpty(request.getParameter("hometown"));
+     
     // This is used to store parameter names and values from the form.
 	   	Map<String, String> paramHash = new HashMap<>();    	
 	   	paramHash.put("schoolname", schoolname);
@@ -74,6 +87,8 @@ public class AddSchool extends HttpServlet{
 	   	paramHash.put("schoolpassword", schoolpassword);
 	   	paramHash.put("schoolphone", schoolphone);
 	   	paramHash.put("schoolemail", schoolemail);
+		paramHash.put("schoolpostaladdress", schoolpostaladdress);
+	   	paramHash.put("schoolhometown", schoolhometown);
       
        if(StringUtils.isBlank(schoolname)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_NAME); 
@@ -96,7 +111,13 @@ public class AddSchool extends HttpServlet{
        }else if(!emailValidator.isValid(schoolemail)){		     
 		   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_INVALID_EMAIL);  
 		  	   
-	   }else{
+	   }else if(StringUtils.isBlank(schoolpostaladdress)){
+    	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_POSTAL_ADDRESS); 
+    	   
+       }else if(StringUtils.isBlank(schoolhometown)){
+    	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_TOWN); 
+    	   
+       }else{
 		   SchoolAccount account = new SchoolAccount();
 		   account.setUuid(account.getUuid()); 
 		   account.setStatusUuid(STATUS_ACTIVE_UUID);		   
@@ -105,8 +126,42 @@ public class AddSchool extends HttpServlet{
 		   account.setPassword(schoolpassword);
 		   account.setMobile(schoolphone); 
 		   account.setEmail(schoolemail); 
+		   account.setPostalAddress(schoolpostaladdress); 
+		   account.setTown(schoolhometown); 
 		   updateStudentCache(account);
-		   if(accountDAO.put(account)){			   
+		   
+		   Calendar calendar = Calendar.getInstance();
+		   final int YEAR = calendar.get(Calendar.YEAR);
+		   ExamConfig examConfig = new ExamConfig();
+    	   examConfig.setSchoolAccountUuid(account.getUuid());
+    	   examConfig.setTerm("1");
+    	   examConfig.setYear(""+YEAR);
+    	   examConfig.setExam("C1");
+    	   examConfig.setExamMode("ON"); 
+    	   
+    	   GradingSystem gradingSystem = new GradingSystem();
+    	   gradingSystem.setSchoolAccountUuid(account.getUuid()); 
+    	   gradingSystem.setGradeAplain(Integer.parseInt("83"));
+    	   gradingSystem.setGradeAminus(Integer.parseInt("79"));
+    	   gradingSystem.setGradeBplus(Integer.parseInt("75"));
+    	   gradingSystem.setGradeBplain(Integer.parseInt("67"));
+    	   gradingSystem.setGradeBminus(Integer.parseInt("54"));
+    	   gradingSystem.setGradeCplus(Integer.parseInt("50"));
+    	   gradingSystem.setGradeCplain(Integer.parseInt("45"));
+    	   gradingSystem.setGradeCminus(Integer.parseInt("40"));
+    	   gradingSystem.setGradeDplus(Integer.parseInt("35"));
+    	   gradingSystem.setGradeDplain(Integer.parseInt("30"));
+    	   gradingSystem.setGradeDminus(Integer.parseInt("25"));
+    	   gradingSystem.setGradeE(Integer.parseInt("0")); 
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   
+		   if(accountDAO.put(account) &&examConfigDAO.putExamConfig(examConfig)&&gradingSystemDAO.putGradingSystem(gradingSystem)){			   
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_SUCCESS, SCHOOL_ADD_SUCCESS);
 		   }else{
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, SCHOOL_ADD_ERROR);  
@@ -115,7 +170,7 @@ public class AddSchool extends HttpServlet{
 		  
     	   
        }
-       //session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY, schoolusername);
+      
        session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_PARAM, paramHash);
        response.sendRedirect("addSchool.jsp");
 	   return;

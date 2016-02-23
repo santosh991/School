@@ -212,40 +212,13 @@
               <form  class="form-horizontal"   action="" method="POST" >
               <fieldset>
 
-                              <div class="control-group">
-                                  <label class="control-label" for="name">Admission Number:</label>
-                                  <div class="controls">
-                                   <input class="input-xlarge focused" id="receiver" type="text" name="admnumber" 
-                                      value="<%=admNumber%>" readonly >
-
-                                  </div>
-                              </div>  
-
-
                                <div class="control-group">
-                                  <label class="control-label" for="name">FirstName:</label>
-                                  <div class="controls">
-                                      <input class="input-xlarge focused" id="receiver" type="text" name="firstname" 
-                                       value="<%=firstname%>" readonly >                                    
-                                  </div>
-                              </div> 
-
-
-                              <div class="control-group">
-                                  <label class="control-label" for="name">LastName:</label>
-                                  <div class="controls">
-                                      <input class="input-xlarge focused" id="receiver" type="text" name="lastname"
-                                        value="<%=lastname%>" readonly >
-                                  </div>
-                              </div> 
-
-                               <div class="control-group">
-                                  <label class="control-label" for="name">SurName:</label>
-                                  <div class="controls">
-                                      <input class="input-xlarge focused" id="receiver" type="text" name="surname"
-                                        value="<%=surname%>"readonly >
-                                  </div>
-                              </div> 
+                                    <label class="control-label" for="name">Student:</label>
+                                    <div class="controls">
+                                    <input class="input-xlarge focused" id="receiver" type="text" name="" 
+                                        value="<%=admNumber + " (" + firstname +" "+ lastname +" " + surname +")"%>" readonly >
+                                    </div>
+                                </div>  
               </fieldset>
               </form>      
 

@@ -46,7 +46,7 @@ public class TestClassTeacherDAO {
 	public void testGetClassTeacher() {
 		store = new ClassTeacherDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		ClassTeacher c = new ClassTeacher();
-		c = store.getClassTeacher(TEACHER_UUID);
+		//c = store.getClassTeacher(TEACHER_UUID);
 		assertEquals(c.getClassRoomUuid(),CLASS_ROOM_UUID);
 		assertEquals(c.getUuid(),UUID);
 	}

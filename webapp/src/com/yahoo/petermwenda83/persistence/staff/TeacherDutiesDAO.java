@@ -83,8 +83,25 @@ public class TeacherDutiesDAO extends GenericDAO implements SchoolTeacherDutiesD
 	 */
 	@Override
 	public boolean putTeacherDuties(TeacherDuties teacherDuty) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+		  
+		 try(   Connection conn = dbutils.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO TeacherDuties" 
+			        		+"(Uuid,TeacherUuid,DutyUuid) VALUES (?,?,?);");
+  		){
+	            pstmt.setString(1, teacherDuty.getUuid());
+	            pstmt.setString(2, teacherDuty.getTeacherUuid());
+	            pstmt.setString(3, teacherDuty.getDutyUuid());	                      
+	            pstmt.executeUpdate();
+			 
+		 }catch(SQLException e){
+			logger.error("SQL Exception trying to put TeacherDuties: "+teacherDuty);
+          logger.error(ExceptionUtils.getStackTrace(e)); 
+          System.out.println(ExceptionUtils.getStackTrace(e));
+          success = false;
+		 }	
+		
+		return success;
 	}
 
 	/* (non-Javadoc)
@@ -92,8 +109,23 @@ public class TeacherDutiesDAO extends GenericDAO implements SchoolTeacherDutiesD
 	 */
 	@Override
 	public boolean updateTeacherDuties(TeacherDuties teacherDuty) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true;		
+		  try (  Connection conn = dbutils.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE TeacherDuties SET DutyUuid=? WHERE TeacherUuid = ?;");
+	) {           			 	            
+			    pstmt.setString(1, teacherDuty.getUuid());
+	            pstmt.setString(2, teacherDuty.getTeacherUuid());
+	            pstmt.setString(3, teacherDuty.getDutyUuid());	     	           
+	            pstmt.executeUpdate();
+
+	} catch (SQLException e) {
+	  logger.error("SQL Exception when updating TeacherDuties " + teacherDuty);
+	  logger.error(ExceptionUtils.getStackTrace(e));
+	  System.out.println(ExceptionUtils.getStackTrace(e));
+	  success = false;
+	} 
+		
+		return success;
 	}
 
 	/* (non-Javadoc)

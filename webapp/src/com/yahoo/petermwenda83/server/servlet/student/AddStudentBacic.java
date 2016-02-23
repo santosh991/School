@@ -18,8 +18,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.StudentPrimary;
+import com.yahoo.petermwenda83.bean.student.StudentSubject;
 import com.yahoo.petermwenda83.persistence.student.PrimaryDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
+import com.yahoo.petermwenda83.persistence.student.StudentSubjectDAO;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 
@@ -54,6 +56,7 @@ public class AddStudentBacic extends HttpServlet{
 	
 	private static StudentDAO studentDAO;
 	private static PrimaryDAO primaryDAO;
+	private static StudentSubjectDAO studentSubjectDAO;
 	
 
 	/**  
@@ -66,6 +69,7 @@ public class AddStudentBacic extends HttpServlet{
        super.init(config);
        studentDAO = StudentDAO.getInstance();
        primaryDAO = PrimaryDAO.getInstance();
+       studentSubjectDAO = StudentSubjectDAO.getInstance();
    }
    
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -179,6 +183,12 @@ public class AddStudentBacic extends HttpServlet{
 		   sprimary.setIndex(indexno);
 		   sprimary.setKcpemark(kcpemark);
 		   sprimary.setKcpeyear(kcpeaddYear); 
+		   
+		   StudentSubject sb = new StudentSubject(); 
+ 	       //sb.setStudentUuid(studentid);
+ 		   //sb.setSubjectUuid(subjectId[i]); 
+ 		   //sb.setSysUser(systemuser);
+ 		   //studentSubjectDAO.putstudentSub(sb);
 		   
 		   if(studentDAO.putStudents(student) && primaryDAO.putPrimary(sprimary)){  
 			   session.setAttribute(SessionConstants.STUDENT_ADD_SUCCESS, STUDENT_ADD_SUCCESS);  

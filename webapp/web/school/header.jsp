@@ -44,15 +44,20 @@
     String classuuid = "";
     String room  ="";
     String staffPosition  ="";
+    String accountuuid = "";
 
     if ((element = accountsCache.get(username)) != null) {
         school = (SchoolAccount) element.getObjectValue();
     }
 
-     String accountuuid = school.getUuid();
-
-    ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
-    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+   if(school !=null){ 
+     accountuuid = school.getUuid();
+   }
+     
+      ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance(); 
+      ExamConfig  examConfig = examConfigDAO.getExamConfig(accountuuid);
+       
+   
 
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
@@ -62,7 +67,7 @@
      RoomDAO roomDAO = RoomDAO.getInstance();
      
      if(stffID !=null){  
-     ClassTeacher ct = classTeacherDAO.getClassTeacher(stffID); 
+     ClassTeacher ct = classTeacherDAO.getClassTeacherByteacherId(stffID); 
        if(ct !=null){
        classuuid = ct.getClassRoomUuid();
           }
@@ -73,7 +78,7 @@
       if(cr !=null){
       room = cr.getRoomName(); 
        }
-    final String FORM1 = "FORM 1";
+      final String FORM1 = "FORM 1";
 	  final String FORM2 = "FORM 2";
 	  final String FORM3 = "FORM 3";
 	  final String FORM4 = "FORM 4";
@@ -253,6 +258,7 @@
              <%  if(StringUtils.equals(staffPosition,pos_CM)){ %>
               <li class='has-sub'><a href="reports.jsp"><span>Reports</span></a></li>
               <li class='has-sub'><a href='#'><span>Subjects</span></a></li>
+              <li class='has-sub'><a href="studentSubjects.jsp"><span>Student-Subjects</span></a></li>
              <% }  %>
             
              <!--HOD-->
@@ -275,6 +281,7 @@
                 </ul>
                 </li>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
+            <li class='has-sub'><a href="studentSubjects.jsp"><span>Student-Subjects</span></a></li>
             <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
              <%} %>
@@ -296,6 +303,7 @@
                 </ul>
                 </li>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
+            <li class='has-sub'><a href="studentSubjects.jsp"><span>Student-Subjects</span></a></li>
             <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
             <li class='has-sub'><a href="examUpload.jsp"><span>Upload Exam</span></a></li>
              <%} %>

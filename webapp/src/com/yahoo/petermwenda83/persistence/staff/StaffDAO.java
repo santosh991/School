@@ -54,7 +54,7 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaff(java.lang.String)
 	 */
 	public Staff getStaff(String schoolAccountUuid,String Uuid) {
-		Staff staff = new Staff();
+		Staff staff = null;
         ResultSet rset = null;
      try(
      		      Connection conn = dbutils.getConnection();

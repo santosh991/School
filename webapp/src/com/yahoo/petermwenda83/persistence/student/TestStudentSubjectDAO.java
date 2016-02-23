@@ -52,7 +52,7 @@ public class TestStudentSubjectDAO {
 		 StudentSubject sb = new StudentSubject();
 		 sb.setStudentUuid(STUDENT_UUID);
 		 sb.setSubjectUuid(SUBJECT_UUID); 
-		 sb = store.getsubject(sb);
+		 //sb = store.getsubject(sb);
 	
 		
 	}

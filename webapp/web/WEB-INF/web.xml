@@ -158,6 +158,50 @@
     </servlet>
 
 
+    <servlet>
+        <servlet-name>StudentSearch</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.student.StudentSearch</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FinderStaff</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.FinderStaff</servlet-class>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>AssignSubject</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.student.AssignSubject</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AssignSubjectClass</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AssignSubjectClass</servlet-class>
+    </servlet>
+
+
+    <servlet>
+        <servlet-name>AddClassTeacher</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AddClassTeacher</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FindClassTeacher</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.FindClassTeacher</servlet-class>
+    </servlet>
+
+     
+      <servlet>
+        <servlet-name>AddGradeScale</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.AddGradeScale</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddExamConfig</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.AddExamConfig</servlet-class>
+    </servlet>
+
+
 
 
 
@@ -340,6 +384,51 @@
         <servlet-name>AddStudentSponsor</servlet-name>
         <url-pattern>/school/addStudentSponsor</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>StudentSearch</servlet-name>
+        <url-pattern>/school/studentSearch</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FinderStaff</servlet-name>
+        <url-pattern>/school/finderStaff</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>AssignSubject</servlet-name>
+        <url-pattern>/school/assignSubject</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AssignSubjectClass</servlet-name>
+        <url-pattern>/school/assignSubjectClass</url-pattern>
+    </servlet-mapping>
+
+
+   
+    <servlet-mapping>
+        <servlet-name>FindClassTeacher</servlet-name>
+        <url-pattern>/school/findClassTeacher</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AddClassTeacher</servlet-name>
+        <url-pattern>/school/addClassTeacher</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>AddExamConfig</servlet-name>
+        <url-pattern>/school/addExamConfig</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AddGradeScale</servlet-name>
+        <url-pattern>/school/addGradeScale</url-pattern>
+    </servlet-mapping>
+
 
 
 
