@@ -4,7 +4,9 @@
 package com.yahoo.petermwenda83.server.servlet.student;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -19,9 +21,11 @@ import org.apache.commons.lang3.StringUtils;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.StudentPrimary;
 import com.yahoo.petermwenda83.bean.student.StudentSubject;
+import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.student.PrimaryDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentSubjectDAO;
+import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 
@@ -57,6 +61,7 @@ public class AddStudentBacic extends HttpServlet{
 	private static StudentDAO studentDAO;
 	private static PrimaryDAO primaryDAO;
 	private static StudentSubjectDAO studentSubjectDAO;
+	private static SubjectDAO subjectDAO;
 	
 
 	/**  
@@ -70,6 +75,7 @@ public class AddStudentBacic extends HttpServlet{
        studentDAO = StudentDAO.getInstance();
        primaryDAO = PrimaryDAO.getInstance();
        studentSubjectDAO = StudentSubjectDAO.getInstance();
+       subjectDAO = SubjectDAO.getInstance();
    }
    
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -184,13 +190,24 @@ public class AddStudentBacic extends HttpServlet{
 		   sprimary.setKcpemark(kcpemark);
 		   sprimary.setKcpeyear(kcpeaddYear); 
 		   
-		   StudentSubject sb = new StudentSubject(); 
- 	       //sb.setStudentUuid(studentid);
- 		   //sb.setSubjectUuid(subjectId[i]); 
- 		   //sb.setSysUser(systemuser);
- 		   //studentSubjectDAO.putstudentSub(sb);
 		   
-		   if(studentDAO.putStudents(student) && primaryDAO.putPrimary(sprimary)){  
+		  
+		   List<Subject> subjectList = new ArrayList<>();
+		   subjectList = subjectDAO.getAllSubjects();
+		  
+ 		  
+		   if(studentDAO.putStudents(student) && primaryDAO.putPrimary(sprimary)){ 
+			   
+			    for(Subject sub : subjectList){
+			       StudentSubject sb = new StudentSubject(); 
+				   sb.setSubjectUuid(sub.getUuid()); 
+				   sb.setStudentUuid(student.getUuid());
+				   sb.setSysUser(systemuser);
+				   studentSubjectDAO.putstudentSub(sb); 
+				  
+			     }
+			    
+			   studentParamHash.clear();
 			   session.setAttribute(SessionConstants.STUDENT_ADD_SUCCESS, STUDENT_ADD_SUCCESS);  
 		   }else{
 			   session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, STUDENT_ADD_ERROR);  

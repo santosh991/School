@@ -220,7 +220,7 @@
             <form  class="form-horizontal"   action="findClassTeacher" method="POST" >
                <fieldset>
                              <div class="control-group">
-                                 <label class="control-label" for="name">Staff Number:</label>
+                                 <label class="control-label" for="name">Emp Number:</label>
                                      <div class="controls">
                                        <input class="input-xlarge focused" id="receiver" type="text" name="employeeNumber" 
                                         value=""  >

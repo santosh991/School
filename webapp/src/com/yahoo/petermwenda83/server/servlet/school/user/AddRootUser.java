@@ -26,8 +26,7 @@ import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
  */
 public class AddRootUser extends HttpServlet{
 
-	final  String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
-	private String principalId = "";
+	
 	
 	private static StaffDAO staffDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
@@ -44,6 +43,7 @@ public class AddRootUser extends HttpServlet{
     final String SUCCESS_PRINCIPAL_ADDED = "Principal Added Successfully";
     
     private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+    private final String PRINCIPAL_POSITION = "C3915245-00EE-4EF4-9898-ACE59683DD60";
 	
 	/**
     *
@@ -63,8 +63,8 @@ public class AddRootUser extends HttpServlet{
        HttpSession session = request.getSession(true);
        
        String accountUuid = StringUtils.trimToEmpty(request.getParameter("accountUuid"));
-       String Category = StringUtils.trimToEmpty(request.getParameter("Category"));
-       String PositionUuid = StringUtils.trimToEmpty(request.getParameter("PositionUuid"));
+      // String Category = StringUtils.trimToEmpty(request.getParameter("Category"));
+      // String PositionUuid = StringUtils.trimToEmpty(request.getParameter("PositionUuid"));
        String principalusername = StringUtils.trimToEmpty(request.getParameter("principalusername"));
        String principalpassword = StringUtils.trimToEmpty(request.getParameter("principalpassword"));
        
@@ -79,11 +79,7 @@ public class AddRootUser extends HttpServlet{
        String idno = StringUtils.trimToEmpty(request.getParameter("idno"));
        String county = StringUtils.trimToEmpty(request.getParameter("county"));
        String dob = StringUtils.trimToEmpty(request.getParameter("dob"));
-       
-       principalId = " ";
-       if(StringUtils.equals(PositionUuid, pos_Pricipal)){
-    	   principalId = pos_Pricipal;
-       }
+      
      
 	   	Map<String, String> paramHash = new HashMap<>();    	
 	   	paramHash.put("principalusername", principalusername);
@@ -103,27 +99,21 @@ public class AddRootUser extends HttpServlet{
        if(StringUtils.isEmpty(accountUuid)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_ACCOUNT); 
     	   
-       }else if(StringUtils.isEmpty(Category)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_CATEGORY); 
-    	   
-       }else if(StringUtils.isEmpty(PositionUuid)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_POSITION); 
-    	   
        }else if(StringUtils.isEmpty(principalusername)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_USERNAME); 
     	   
        }else if(StringUtils.isEmpty(principalpassword)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_PASSWORD); 
     	   
-       }else if(staffDAO.getStaffByPosition(accountUuid, principalId) !=null){
+       }else if(staffDAO.getStaffByPosition(accountUuid, PRINCIPAL_POSITION) !=null){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_PRINCIPAL_EXIST); 
     	   
        }else{
     	   
     	   Staff staff = new Staff();
     	   staff.setSchoolAccountUuid(accountUuid); 
-    	   staff.setCategory(Category);
-    	   staff.setPositionUuid(PositionUuid); 
+    	   staff.setCategory("Teaching");
+    	   staff.setPositionUuid(PRINCIPAL_POSITION); 
     	   staff.setUserName(principalusername); 
     	   staff.setPassword(principalpassword); 
     	   staff.setStatusUuid(STATUS_ACTIVE_UUID); 
@@ -140,7 +130,7 @@ public class AddRootUser extends HttpServlet{
     	   staffDetail.setPhone(phone);
     	   staffDetail.setdOB(dob);
     	   staffDetail.setNationalID(idno); 
-    	   staffDetail.setCounty(county.toUpperCase());
+    	   staffDetail.setCounty(county);
     	   staffDetail.setSysUser("Admin");
     	   
     	   if(staffDAO.putStaff(staff) && staffDetailsDAO.putSStaffDetail(staffDetail)){

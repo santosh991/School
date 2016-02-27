@@ -72,7 +72,7 @@ public class UploadUtil {
 	 * @return the feedback of having inspected the file, whether it was proper
 	 */
 	protected String inspectResultFile(File file,String schooluuid,String staffId,RoomDAO roomDAO,SubjectDAO subjectDAO,TeacherSubClassDAO teacherSubClassDAO,StudentDAO studentDAO) {
-		String feedback = ResultUpload.UPLOAD_SUCCESS;
+		String feedback = UploadExam.UPLOAD_SUCCESS;
 		int count = 1;
 		String[] rowTokens,admNotoken = null,ScoreToken = null;
 		

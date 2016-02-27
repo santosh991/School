@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,7 @@ import net.sf.ehcache.Element;
  * @author peter   
  * 
  */
-public class UploadFrom34 extends HttpServlet {
+public class UploadExam extends HttpServlet {
 
 	/**
 	 * 
@@ -50,13 +51,15 @@ public class UploadFrom34 extends HttpServlet {
 	private static final long serialVersionUID = 3828305434810949182L;
 	public final static String UPLOAD_FEEDBACK = "UploadFeedback";
 	public final static String UPLOAD_SUCCESS = "You have successfully uploaded your results.";
-	private final String UPLOAD_DIR = "/home/peter/Documents/radom";
+	final String USER = System.getProperty("user.name");
+	private final String UPLOAD_DIR = "/home/"+USER+"/school/exams"; 
 	private Cache schoolCache;
 	
 	private Logger logger;
 	String staffUsername;
 	String schooluuid = "";
 	private UploadUtil uploadUtil;
+	private ExcelUtil excelUtil;
 	
 	private static StudentDAO studentDAO;
 	private static ExamEgineDAO examEgineDAO;
@@ -89,6 +92,7 @@ public class UploadFrom34 extends HttpServlet {
        factory.setRepository(repository);
        
        uploadUtil = new UploadUtil();
+       excelUtil = new ExcelUtil();
        CacheManager mgr = CacheManager.getInstance();
        schoolCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
        studentDAO = StudentDAO.getInstance();
@@ -153,14 +157,26 @@ public class UploadFrom34 extends HttpServlet {
 			logger.error(e);
 	   }
 	       
+       String extension = FilenameUtils.getExtension(uploadedFile.getAbsolutePath()); 
+       String feedback = "";
        // First we inspect if it is ok   //
-       String feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
+       if(extension.trim().equalsIgnoreCase("xlsx") ||extension.trim().equalsIgnoreCase("xls")){ 
+    	   feedback = excelUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
+       }else if(extension.trim().equalsIgnoreCase("txt") || extension.trim().equalsIgnoreCase("csv")){
+    	   feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
+       }
+      
 	   session.setAttribute(UPLOAD_FEEDBACK,"<p class='error'>"+feedback+"<p>");
     	
 	   response.sendRedirect("examUpload.jsp");
 	          // Process the file into the database if it is ok
        if(StringUtils.equals(feedback, UPLOAD_SUCCESS)) {
-    	   uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO,studentDAO,roomDAO, subjectDAO,examConfigDAO);
+    	   if(extension.trim().equalsIgnoreCase("txt") || extension.trim().equalsIgnoreCase("csv")){ 
+    		   uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO,studentDAO,roomDAO, subjectDAO,examConfigDAO);
+    	   }else if(extension.trim().equalsIgnoreCase("xlsx") ||extension.trim().equalsIgnoreCase("xls")){
+    		  excelUtil.saveResults(uploadedFile, stffID, school, examEgineDAO, studentDAO, roomDAO, subjectDAO, examConfigDAO); 
+    	   }
+    	  
     	   
        }
        return;

@@ -57,11 +57,10 @@ if (session == null) {
 
  <jsp:include page="header.jsp" />
 
-<div class="row-fluid sortable">    
+<div class="row-fluid sortable"> 
+
     <div class="box span12">
-    <div class="box-header well" data-original-title>
-          <p> <a href="adminIndex.jsp">Back</a> </p>
-        </div>
+    
       
 
         <div class="box-content">
@@ -131,41 +130,6 @@ if (session == null) {
                     </div> 
 
 
-                     <div class="control-group">
-                        <label class="control-label" for="Category">Staff Category*:</label>
-                         <div class="controls">
-                            <select name="Category" >
-                                <option value="">Please select one</option> 
-                                <option value="Teaching">Teaching</option>
-                                <option value="Non-Teaching">Non-Teaching</option>
-                               
-                            </select>                           
-                          
-                        </div>
-                    </div> 
-
-
-                     <div class="control-group">
-                        <label class="control-label" for="Position">Position*:</label>
-                         <div class="controls">
-                            <select name="PositionUuid" >
-                                <option value="">Please select one</option> 
-                               
-                                     <%
-                                    int count = 1;
-                                    if (positionList != null) {
-                                        for (Position p : positionList) {
-                                %>
-                                <option value="<%= p.getUuid()%>"><%=p.getPosition()%></option>
-                                <%
-                                            count++;
-                                        }
-                                    }
-                                    %>
-                            </select>                           
-                          
-                        </div>
-                    </div> 
 
 
                     <div class="control-group">

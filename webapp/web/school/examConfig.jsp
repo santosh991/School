@@ -126,6 +126,31 @@
                                     session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS,null);
                                   } 
 
+                                String gSyupdateErrStr = "";
+                                String gSyupdatesuccessStr = "";
+                                session = request.getSession(false);
+                                     gSyupdateErrStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_ERROR);
+                                     gSyupdatesuccessStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_SUCCESS); 
+
+                                if(session != null) {
+                                    gSyupdateErrStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_ERROR);
+                                    gSyupdatesuccessStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_SUCCESS);
+                                }                        
+
+                                if (StringUtils.isNotEmpty(gSyupdateErrStr)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + gSyupdateErrStr);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.GRADE_ADD_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(gSyupdatesuccessStr)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + gSyupdatesuccessStr);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.GRADE_ADD_SUCCESS,null);
+                                  } 
+
+
 
 
         %>
@@ -165,7 +190,7 @@
                 </tbody>
             </table> 
 
-             <h3><i class="icon-edit"></i> Grading System:</h3>  
+             <h3><i class="icon-edit"></i> Grading Scale:</h3>  
             <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
                     <tr>
@@ -202,7 +227,20 @@
                          <td class="center"><%=gradingSystem.getGradeDminus() %></td>
                          <td class="center"><%=gradingSystem.getGradeE() %></td>  
                          <td class="center">
-                                <form name="edit" method="POST" action="" > 
+                                <form name="edit" method="POST" action="updateGradingScale.jsp" > 
+                                <input type="hidden" name="schoolUuid" value="<%=gradingSystem.getSchoolAccountUuid()%>">
+                                <input type="hidden" name="A" value="<%=gradingSystem.getGradeAplain()%>">
+                                <input type="hidden" name="Am" value="<%=gradingSystem.getGradeAminus()%>">
+                                <input type="hidden" name="Bp" value="<%=gradingSystem.getGradeBplus()%>">
+                                <input type="hidden" name="B" value="<%=gradingSystem.getGradeBplain()%>">
+                                <input type="hidden" name="Bm" value="<%=gradingSystem.getGradeBminus()%>">
+                                <input type="hidden" name="Cp" value="<%=gradingSystem.getGradeCplus()%>">
+                                <input type="hidden" name="C" value="<%=gradingSystem.getGradeCplain()%>">
+                                <input type="hidden" name="Cm" value="<%=gradingSystem.getGradeCminus()%>">
+                                <input type="hidden" name="Dp" value="<%=gradingSystem.getGradeDplus()%>">
+                                <input type="hidden" name="D" value="<%=gradingSystem.getGradeDplain()%>">
+                                <input type="hidden" name="Dm" value="<%=gradingSystem.getGradeDminus()%>">
+                                <input type="hidden" name="E" value="<%=gradingSystem.getGradeE()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update" /> 
                                 </form>                          
                          </td>  

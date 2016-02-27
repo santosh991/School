@@ -596,10 +596,12 @@ CREATE TABLE Deposit (
     StudentUuid text REFERENCES Student(Uuid),
     Amount float NOT NULL CHECK (Amount>=0),
     SystemUser text,
-    DateCommitted timestamp with time zone DEFAULT now()
+    DateCommitted timestamp with time zone DEFAULT now(),
+    Term text,
+    Year text
 
 );
-\COPY Deposit(Uuid,StudentUuid,Amount,SystemUser,DateCommitted) FROM '/tmp/Deposit.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Deposit(Uuid,StudentUuid,Amount,SystemUser,DateCommitted,Term,Year) FROM '/tmp/Deposit.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Deposit OWNER TO school;
 
 
@@ -613,11 +615,52 @@ CREATE TABLE  Withdraw (
     StudentUuid text REFERENCES student(uuid),
     Amount float NOT NULL CHECK (Amount>=0),
     SystemUser text,
-    DateCommitted timestamp with time zone DEFAULT now()
+    DateCommitted timestamp with time zone DEFAULT now(),
+    Term text,
+    Year text
 
 );
-\COPY Withdraw(Uuid,StudentUuid,Amount,SystemUser,DateCommitted) FROM '/tmp/Withdraw.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Withdraw(Uuid,StudentUuid,Amount,SystemUser,DateCommitted,Term,Year) FROM '/tmp/Withdraw.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Withdraw OWNER TO school;
+
+
+-- -------------------
+-- Table  TermFee
+-- -------------------
+
+CREATE TABLE  TermFee (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    TermAmount float NOT NULL CHECK (TermAmount>=0),
+    NextTermAmount float NOT NULL CHECK (NextTermAmount>=0)
+   
+
+);
+\COPY TermFee(Uuid,SchoolAccountUuid,TermAmount,NextTermAmount) FROM '/tmp/TermFee.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE TermFee OWNER TO school;
+
+
+
+-- -------------------
+-- Table  StudentFee
+-- -------------------
+
+CREATE TABLE  StudentFee (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    StudentUuid text REFERENCES student(uuid),
+    TransactionID text,
+    AmountPaid float NOT NULL CHECK (AmountPaid>=0),
+    DatePaid timestamp with time zone DEFAULT now(),
+    Term text,
+    Year text,
+    SystemUser text
+
+);
+\COPY StudentFee(Uuid,SchoolAccountUuid,StudentUuid,TransactionID,AmountPaid,DatePaid,Term,Year,SystemUser) FROM '/tmp/StudentFee.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentFee OWNER TO school;
 
 
 

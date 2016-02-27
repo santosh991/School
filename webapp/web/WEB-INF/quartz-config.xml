@@ -33,7 +33,7 @@
         <schedule>
                 <job>
                         <name>MyJob</name>
-                        <job-class>ke.co.tawi.babblesms.server.servlet.quartz.QuartzListener</job-class>
+                        <job-class>com.yahoo.petermwenda83.server.servlet.quartz.QuartzListener</job-class>
                 </job>
                 <trigger>
                         <simple>

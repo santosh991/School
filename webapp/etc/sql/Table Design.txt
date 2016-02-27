@@ -475,3 +475,31 @@ Table Withdraw
     -SysUser 
     -WithdrawDate 
 
+==================
+==================
+8.Fee Management
+==================
+==================
+
+--------------------
+Table TermFee
+-------------------
+    -Id (primary key)
+    -Uuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -TermAmount
+
+
+--------------------
+Table StudentFee
+-------------------
+
+    -Id (primary key)
+    -Uuid 
+    -SchoolAccountUuid REFERENCES SchoolAccount(Uuid)
+    -StudentUuid REFERENCES Student(Uuid)
+    -TransactionID
+    -AmountPaid
+    -DatePaid
+    -Systemuser
+

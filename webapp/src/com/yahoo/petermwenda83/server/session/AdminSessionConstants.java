@@ -2,7 +2,7 @@ package com.yahoo.petermwenda83.server.session;
 
 public class AdminSessionConstants {
 	
-	final public static int SESSION_TIMEOUT = 100; 
+	final public static int SESSION_TIMEOUT = 400; 
 	
 	 //Admin sessions
 	public static final String ADMIN_SIGN_IN_ERROR_KEY = "Error Login";

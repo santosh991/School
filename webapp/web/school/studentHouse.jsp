@@ -103,13 +103,29 @@
        houseHash.put(hh.getUuid(),hh.getHouseName());
        }
     
+      String formatedFirstname = "";
+      String formatedLastname = "";
+      String formatedSurname = "";
+      String fullname = "";
 
      HashMap<String, String> admNoHash = new HashMap<String, String>();
+     HashMap<String, String> fullnameHash = new HashMap<String, String>();
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
      studentList = studentDAO.getAllStudentList(accountuuid);  
+
      for(Student s : studentList){
        admNoHash.put(s.getUuid(),s.getAdmno());
+
+                    String firstNameLowecase = s.getFirstname().toLowerCase();
+                    String lastNameLowecase =s.getLastname().toLowerCase();
+                    String surNameLowecase = s.getSurname().toLowerCase();
+
+                    formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+                    formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+                    formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+                    fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
+        fullnameHash.put(s.getUuid(),fullname);            
          }
 
 
@@ -149,8 +165,8 @@
                     <tr>
                         <th>*</th>
                         <th>Student AdmNo</th>
+                        <th>Student Name</th>
                         <th>House</th>
-                        <th>System User</th>
                         <th>Date In</th>
                         <th>House Master</th>
                         
@@ -172,8 +188,8 @@
                              out.println("<tr>"); 
                              out.println("<td width=\"3%\" >" + count + "</td>"); 
                              out.println("<td width=\"10%\" class=\"center\">" + ss.getAdmno() + "</td>"); 
+                             out.println("<td width=\"10%\" class=\"center\">" + fullnameHash.get(ss.getUuid()) + "</td>"); 
                              out.println("<td width=\"12%\" class=\"center\">" + houseHash.get(studentHouse.getHouseUuid()) + "</td>");
-                             out.println("<td width=\"8%\" class=\"center\">" + studentHouse.getSysUser() + "</td>");
                              out.println("<td width=\"15%\" class=\"center\">" + dateFormatter.format(studentHouse.getDateIn()) + "</td>"); 
                              out.println("<td width=\"15%\" class=\"center\">" + " " + "</td>"); 
  

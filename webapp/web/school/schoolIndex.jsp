@@ -220,8 +220,8 @@
                    
 
                     String firstNameLowecase = s.getFirstname().toLowerCase();
-                    String lastNameLowecase =s.getSurname().toLowerCase();
-                    String surNameLowecase = s.getLastname().toLowerCase();
+                    String lastNameLowecase =s.getLastname().toLowerCase();
+                    String surNameLowecase = s.getSurname().toLowerCase();
 
                     formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
                     formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);

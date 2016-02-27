@@ -11,7 +11,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
@@ -81,6 +83,43 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
        
 		return student; 
 	}
+	
+	
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getStudentADmNo(java.lang.String)
+	 */
+	@Override
+	public Student getStudentADmNo(String schoolaccountUuid) {
+		Student student = new Student();
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT admNo FROM Student WHERE SchoolAccountUuid =?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, schoolaccountUuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 student  = beanProcessor.toBean(rset,Student.class);
+	   }
+        		
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when student admno for school " + schoolaccountUuid);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+        int admno = NumberUtils.toInt(student.getAdmno());
+        if(admno <=0){
+        	//System.out.println("admno less equal zero="+admno);
+        }else{
+        	//System.out.println("admno greater zero="+admno);
+        }
+        
+		return student; 
+	}
+
 
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.student.SchoolStudentDAO#getStudents(java.lang.String)
@@ -372,6 +411,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		return studentList;
 	}
 
+	
 
 
 

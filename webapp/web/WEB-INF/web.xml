@@ -46,15 +46,12 @@
     </servlet>
 
 
-   <servlet>
-        <servlet-name>ResultUpload</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.upload.ResultUpload</servlet-class>
-    </servlet>
-
     <servlet>
-        <servlet-name>UploadFrom34</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.upload.UploadFrom34</servlet-class>
+        <servlet-name>UploadExam</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.upload.UploadExam</servlet-class>
     </servlet>
+   
+  
    
 
 
@@ -90,10 +87,33 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm12</servlet-class>
     </servlet>
 
+
+
+
+
+     <servlet>
+        <servlet-name>ExportExcelxlsx</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.text.ExportExcelxlsx</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>ExportExcelxls</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.text.ExportExcelxls</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>ExportCSV</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.export.text.ExportCSV</servlet-class>
+    </servlet>
+
      <servlet>
         <servlet-name>ExportText</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.export.text.ExportText</servlet-class>
     </servlet>
+
+
+
+
 
 
      <servlet>
@@ -137,10 +157,33 @@
     </servlet>
 
 
+
+
+
+
+
+
+
     <servlet>
         <servlet-name>AddStudentBacic</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentBacic</servlet-class>
     </servlet>
+
+     <servlet>
+        <servlet-name>UpdateStudentBasic</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.UpdateStudentBasic</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
+
+
+
 
     <servlet>
         <servlet-name>AddStudentParent</servlet-name>
@@ -197,8 +240,8 @@
     </servlet>
 
     <servlet>
-        <servlet-name>AddExamConfig</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.AddExamConfig</servlet-class>
+        <servlet-name>DeleteStudentSubject</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.student.DeleteStudentSubject</servlet-class>
     </servlet>
 
 
@@ -220,9 +263,45 @@
 
 
 
+<!-- start Fee Management -->
+
+   <servlet>
+        <servlet-name>FindStudentFee</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.FindStudentFee</servlet-class>
+    </servlet>
 
 
+     <servlet>
+        <servlet-name>FindStudent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.FindStudent</servlet-class>
+    </servlet>
 
+
+     <servlet>
+        <servlet-name>AddFeeDetails</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.AddFeeDetails</servlet-class>
+    </servlet>
+
+   
+     <servlet>
+        <servlet-name>FindStudentPM</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.FindStudentPM</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>PMDeposit</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.PMDeposit</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>PMWithdraw</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.PMWithdraw</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>UpdateFeeDetails</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.UpdateFeeDetails</servlet-class>
+    </servlet>
 
 
 
@@ -259,19 +338,11 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.user.AddRootUser</servlet-class>
     </servlet>
 
+
     
-
-
-
-
-
-
-
-
-
-
-
-
+    <listener>
+    <listener-class>com.yahoo.petermwenda83.server.servlet.quartz.QuartzListener</listener-class>
+    </listener>
 
 
 
@@ -314,10 +385,38 @@
         <url-pattern>/school/reportForm12</url-pattern>
     </servlet-mapping>
 
+
+
+
+
+
+
+
+    <servlet-mapping>
+        <servlet-name>ExportExcelxlsx</servlet-name>
+        <url-pattern>/school/exportExcelxlsx</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ExportExcelxls</servlet-name>
+        <url-pattern>/school/exportExcelxls</url-pattern>
+    </servlet-mapping>
+
+   <servlet-mapping>
+        <servlet-name>ExportCSV</servlet-name>
+        <url-pattern>/school/exportCSV</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ExportText</servlet-name>
         <url-pattern>/school/exportText</url-pattern>
     </servlet-mapping>
+
+
+
+
+
+
 
 
      <servlet-mapping>
@@ -365,10 +464,31 @@
 
 
 
+
+
+
+
+
+
+
      <servlet-mapping>
         <servlet-name>AddStudentBacic</servlet-name>
         <url-pattern>/school/addStudentBacic</url-pattern>
     </servlet-mapping>
+
+    
+     <servlet-mapping>
+        <servlet-name>UpdateStudentBasic</servlet-name>
+        <url-pattern>/school/updateStudentBasic</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+
+
 
      <servlet-mapping>
         <servlet-name>AddStudentParent</servlet-name>
@@ -420,8 +540,8 @@
 
 
     <servlet-mapping>
-        <servlet-name>AddExamConfig</servlet-name>
-        <url-pattern>/school/addExamConfig</url-pattern>
+        <servlet-name>DeleteStudentSubject</servlet-name>
+        <url-pattern>/school/deleteStudentSubject</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -449,11 +569,22 @@
 
 
      <servlet-mapping>
-        <servlet-name>UploadFrom34</servlet-name>
+        <servlet-name>UploadExam</servlet-name>
         <url-pattern>/school/resultUpload</url-pattern>
     </servlet-mapping>
 
-     <servlet-mapping>
+
+
+
+
+
+
+
+
+
+
+
+     <servlet-mapping> 
         <servlet-name>SchoolLogin</servlet-name>
         <url-pattern>/schoolLogin</url-pattern>
     </servlet-mapping>
@@ -462,6 +593,54 @@
         <servlet-name>SchoolLogout</servlet-name>
         <url-pattern>/schoolLogout</url-pattern>
     </servlet-mapping>
+
+
+
+
+
+<!-- start Fee Management -->
+
+  <servlet-mapping>
+        <servlet-name>FindStudentFee</servlet-name>
+        <url-pattern>/school/findStudentFee</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FindStudent</servlet-name>
+        <url-pattern>/school/findStudent</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AddFeeDetails</servlet-name>
+        <url-pattern>/school/addFeeDetails</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>FindStudentPM</servlet-name>
+        <url-pattern>/school/findStudentPM</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>PMDeposit</servlet-name>
+        <url-pattern>/school/pmDeposit</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>PMWithdraw</servlet-name>
+        <url-pattern>/school/pmWithdraw</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>UpdateFeeDetails</servlet-name>
+        <url-pattern>/school/updateFeeDetail</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
 
 
 

@@ -143,6 +143,9 @@ public class Form34List extends HttpServlet{
 	final String GEO_UUID = "0e5dc1c6-f62f-4a36-a1ec-064173332694";
 	final String CRE_UUID = "f098e943-26fd-4dc0-b6a0-2d02477004a4";
 	final String HIST_UUID = "c9caf109-c27d-4062-9b9f-ac4268629e27";
+	
+	String USER= "";
+    String path ="";
 
 	/**
 	 *
@@ -161,6 +164,8 @@ public class Form34List extends HttpServlet{
 		roomDAO = RoomDAO.getInstance();
 		examConfigDAO = ExamConfigDAO.getInstance();
 		gradingSystemDAO = GradingSystemDAO.getInstance();
+		USER = System.getProperty("user.name");
+		path = "/home/"+USER+"/school/logo";
 	}
 
 	/**
@@ -173,8 +178,11 @@ public class Form34List extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		    ServletContext context = getServletContext();
+		   // ServletContext context = getServletContext();
 		    response.setContentType("application/pdf");
+		    
+		    
+		    
 		    SchoolAccount school = new SchoolAccount();
 		    HttpSession session = request.getSession(false); 
 	        schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
@@ -242,13 +250,13 @@ public class Form34List extends HttpServlet{
 
 			try {
 				writer = PdfWriter.getInstance(document, response.getOutputStream());
-
-
+			
 				PdfUtil event = new PdfUtil();
 				writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 				writer.setPageEvent(event);
 
-				populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, context.getRealPath("/images/fastech.png"));
+				populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, path);
+				
 
 			} catch (DocumentException e) {
 				logger.error("DocumentException while writing into the document");

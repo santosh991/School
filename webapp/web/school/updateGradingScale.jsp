@@ -101,33 +101,28 @@
         </div>
         <div class="box-content">
 
-        <%                 
-                        HashMap<String, String> paramHash = (HashMap<String, String>) session.getAttribute(SessionConstants.GRADE_PARAM);
+        <%             
 
-                        if (paramHash == null) {
-                             paramHash = new HashMap<String, String>();
-                            }
-
-                                String updateErrStr = "";
-                                String updatesuccessStr = "";
+                                String gSyupdateErrStr = "";
+                                String gSyupdatesuccessStr = "";
                                 session = request.getSession(false);
-                                     updateErrStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_ERROR);
-                                     updatesuccessStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_SUCCESS); 
+                                     gSyupdateErrStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_ERROR);
+                                     gSyupdatesuccessStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_SUCCESS); 
 
                                 if(session != null) {
-                                    updateErrStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_ERROR);
-                                    updatesuccessStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_SUCCESS);
+                                    gSyupdateErrStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_ERROR);
+                                    gSyupdatesuccessStr = (String) session.getAttribute(SessionConstants.GRADE_ADD_SUCCESS);
                                 }                        
 
-                                if (StringUtils.isNotEmpty(updateErrStr)) {
+                                if (StringUtils.isNotEmpty(gSyupdateErrStr)) {
                                     out.println("<p style='color:red;'>");                 
-                                    out.println("error: " + updateErrStr);
+                                    out.println("error: " + gSyupdateErrStr);
                                     out.println("</p>");                                 
                                     session.setAttribute(SessionConstants.GRADE_ADD_ERROR, null);
                                   } 
-                                   else if (StringUtils.isNotEmpty(updatesuccessStr)) {
+                                   else if (StringUtils.isNotEmpty(gSyupdatesuccessStr)) {
                                     out.println("<p style='color:green;'>");                                 
-                                    out.println("success: " + updatesuccessStr);
+                                    out.println("success: " + gSyupdatesuccessStr);
                                     out.println("</p>");                                   
                                     session.setAttribute(SessionConstants.GRADE_ADD_SUCCESS,null);
                                   } 
@@ -147,7 +142,7 @@
                                 <label class="control-label" for="FatherName">A*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="A"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("A")) %>"  >
+                                      value="<%=request.getParameter("A")%>"  >
                                 </div>
                              </div> 
 
@@ -155,7 +150,7 @@
                                 <label class="control-label" for="FatherName">A-*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="A-"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Am")) %>"  >
+                                      value="<%=request.getParameter("Am") %>"  >
                                 </div>
                              </div> 
 
@@ -163,7 +158,7 @@
                                 <label class="control-label" for="FatherName">B+*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="B+"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Bp")) %>"  >
+                                      value="<%=request.getParameter("Bp") %>"  >
                                 </div>
                              </div> 
 
@@ -171,7 +166,7 @@
                                 <label class="control-label" for="FatherName">B*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="B"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("B")) %>"  >
+                                      value="<%=request.getParameter("B")%>"  >
                                 </div>
                              </div> 
 
@@ -179,7 +174,7 @@
                                 <label class="control-label" for="FatherName">B-*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="B-"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Bm")) %>"  >
+                                      value="<%=request.getParameter("Bm")%>"  >
                                 </div>
                              </div> 
 
@@ -187,7 +182,7 @@
                                 <label class="control-label" for="FatherName">C+*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="C+"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Cp")) %>"  >
+                                      value="<%=request.getParameter("Cp")%>"  >
                                 </div>
                              </div> 
 
@@ -195,42 +190,42 @@
                                 <label class="control-label" for="FatherName">C*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="C"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("C")) %>"  >
+                                      value="<%=request.getParameter("C")%>"  >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="FatherName">C-*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="C-"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Cm")) %>"  >
+                                      value="<%=request.getParameter("Cm")%>"  >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="FatherName">D+*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="D+"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Dp")) %>"  >
+                                      value="<%=request.getParameter("Dp")%>"  >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="FatherName">D*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="D"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("D")) %>"  >
+                                      value="<%=request.getParameter("D")%>"  >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="FatherName">D-*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="D-"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("Dm")) %>"  >
+                                      value="<%=request.getParameter("Dm")%>"  >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="FatherName">E*:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="E"
-                                      value="<%= StringUtils.trimToEmpty(paramHash.get("E")) %>"  >
+                                      value="<%=request.getParameter("E")%>"  >
                                 </div>
                              </div> 
 

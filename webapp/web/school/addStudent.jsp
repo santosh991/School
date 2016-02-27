@@ -6,12 +6,16 @@
 <%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
-
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+
+<%@page import="org.apache.commons.lang3.math.NumberUtils"%>
 
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
@@ -47,6 +51,9 @@
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
     Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
     SessionStatistics statistics = new SessionStatistics();
+
+   
+
     
 
     SchoolAccount school = new SchoolAccount();
@@ -68,6 +75,25 @@
     RoomDAO roomDAO = RoomDAO.getInstance();
     List<ClassRoom> classList = new ArrayList<ClassRoom>();
     classList = roomDAO.getAllRooms(accountuuid);
+
+     StudentDAO studentDAO = StudentDAO.getInstance();
+     Student student = studentDAO.getStudentADmNo(accountuuid);
+
+      int admno = 0; 
+      String studentadm = student.getAdmno();
+      admno = NumberUtils.toInt(studentadm);
+      if(admno <=0){
+          final  String INITIAL_ADM_NO =(String)  PropertiesConfig.getConfigValue("INITIAL_ADM_NO");
+          admno = NumberUtils.toInt(INITIAL_ADM_NO);
+       }else{
+            admno = NumberUtils.toInt(studentadm);
+        }
+     
+     admno = admno + 1;
+     String newAdmno = ""+admno;
+      
+    
+    
     
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
@@ -88,7 +114,7 @@
     final int YEAR2 = calendar.get(Calendar.YEAR)-10;
     final int YEAR_COUNT2 = YEAR2 + 10;
 
-    
+   
 
  %>
 
@@ -180,12 +206,12 @@
                                     </div> 
 
 
-
+                                  
                                     <div class="control-group">
                                         <label class="control-label" for="name">Admission Number*:</label>
                                         <div class="controls">
                                          <input class="input-xlarge focused" id="receiver" type="text" name="admNO" 
-                                            value="<%= StringUtils.trimToEmpty(paramHash.get("admnumber")) %>"  >
+                                            value="<%=newAdmno%>" readonly > 
 
                                         </div>
                                     </div>  

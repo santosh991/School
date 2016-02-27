@@ -155,7 +155,10 @@
                         <th>Subject </th>
                         <th>Code </th>
                         <th>Scores </th>
-                        <th>MarkSheet </th>
+                        <th>Download</th>
+                        <th>Download</th>
+                        <th>Download</th>
+                        <th>Download</th>
                         
                     </tr>
                 </thead>   
@@ -184,7 +187,31 @@
                                 <form name="edit" method="POST" action="exportText" target="_blank"> 
                                 <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">
                                 <input type="hidden" name="classroomuuidToken" value="<%=cs.getClassRoomUuid()%>">
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Text" /> 
+                                </form>                          
+                               </td>  
+
+                               <td class="center">
+                                <form name="edit" method="POST" action="exportCSV" target="_blank"> 
+                                <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">
+                                <input type="hidden" name="classroomuuidToken" value="<%=cs.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="CSV" /> 
+                                </form>                          
+                               </td>  
+
+                                <td class="center">
+                                <form name="edit" method="POST" action="exportExcelxlsx" target="_blank"> 
+                                <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">
+                                <input type="hidden" name="classroomuuidToken" value="<%=cs.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Excel xlsx" /> 
+                                </form>                          
+                               </td>  
+
+                               <td class="center">
+                                <form name="edit" method="POST" action="exportExcelxls" target="_blank"> 
+                                <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">
+                                <input type="hidden" name="classroomuuidToken" value="<%=cs.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Excel xls" /> 
                                 </form>                          
                                </td>  
 

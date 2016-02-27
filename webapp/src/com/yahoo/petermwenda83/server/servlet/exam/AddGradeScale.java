@@ -21,9 +21,8 @@ public class AddGradeScale extends HttpServlet{
 	
 	
 	final String ERROR_EMPTY_FIRLD = "Empty fields not allowed"; 
-	final String ERROR_SCALE_ADD_ERROR = "An error occured while adding grading scale"; 
-	final String ERROR_SCALE_EXIST = "Grading scale already exist"; 
-	final String ERROR_SCALE_ADD_SUCCESS = "Scale added successfully"; 
+	final String ERROR_SCALE_ADD_ERROR = "An error occured while updating grading scale"; 
+	final String ERROR_SCALE_ADD_SUCCESS = "Grading scale updated successfully"; 
 	
 	private static GradingSystemDAO gradingSystemDAO;
 
@@ -108,11 +107,9 @@ public class AddGradeScale extends HttpServlet{
        }else if(StringUtils.isEmpty(E)){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(gradingSystemDAO.getGradingSystem(schoolAccountUuid) !=null){
-    	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_SCALE_EXIST); 
-    	   
        }else{
     	   GradingSystem gradingSystem = new GradingSystem();
+    	   gradingSystem.setSchoolAccountUuid(schoolAccountUuid); 
     	   gradingSystem.setGradeAplain(Integer.parseInt(A));
     	   gradingSystem.setGradeAminus(Integer.parseInt(Am));
     	   gradingSystem.setGradeBplus(Integer.parseInt(Bp));
@@ -126,7 +123,7 @@ public class AddGradeScale extends HttpServlet{
     	   gradingSystem.setGradeDminus(Integer.parseInt(Dm));
     	   gradingSystem.setGradeE(Integer.parseInt(E)); 
     	   
-    	   if(gradingSystemDAO.putGradingSystem(gradingSystem)){ 
+    	   if(gradingSystemDAO.updateGradingSystem(gradingSystem)){ 
     		   session.setAttribute(SessionConstants.GRADE_ADD_SUCCESS, ERROR_SCALE_ADD_SUCCESS); 
     	   }else{
     		   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_SCALE_ADD_ERROR); 
@@ -136,7 +133,7 @@ public class AddGradeScale extends HttpServlet{
        
        
        session.setAttribute(SessionConstants.GRADE_PARAM, paramHash);
-       response.sendRedirect("addGradingScale.jsp");  
+       response.sendRedirect("examConfig.jsp");  
 	   return;
        
    }

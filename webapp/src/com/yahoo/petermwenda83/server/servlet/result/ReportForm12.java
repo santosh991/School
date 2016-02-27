@@ -47,6 +47,8 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
+import com.yahoo.petermwenda83.bean.money.StudentFee;
+import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.bean.student.Student;
@@ -55,6 +57,8 @@ import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
+import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
+import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
@@ -91,6 +95,8 @@ public class ReportForm12 extends HttpServlet{
     private static RoomDAO roomDAO;
     private static ExamConfigDAO examConfigDAO;
     private static GradingSystemDAO gradingSystemDAO;
+    private static StudentFeeDAO studentFeeDAO;
+    private static TermFeeDAO termFeeDAO;
     
     String classroomuuid = "";
     String schoolusername = "";
@@ -181,7 +187,8 @@ public class ReportForm12 extends HttpServlet{
     int position = 1;
     static int Finalposition = 0;
    
-    
+    String USER= "";
+    String path ="";
    
     
 /**
@@ -202,6 +209,11 @@ public void init(ServletConfig config) throws ServletException {
    roomDAO = RoomDAO.getInstance();
    examConfigDAO = ExamConfigDAO.getInstance();
    gradingSystemDAO = GradingSystemDAO.getInstance();
+   studentFeeDAO = StudentFeeDAO.getInstance();
+   termFeeDAO = TermFeeDAO.getInstance();
+   
+   USER = System.getProperty("user.name");
+   path = "/home/"+USER+"/school/logo/logo.png";
 }
 
 /**
@@ -213,9 +225,11 @@ public void init(ServletConfig config) throws ServletException {
 @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
        throws ServletException, IOException {
-   ServletContext context = getServletContext();
+   //ServletContext context = getServletContext();
    response.setContentType("application/pdf");
    response.setHeader("Content-Disposition", "inline; filename= \" results.pdf \" " );
+   
+  
    
    SchoolAccount school = new SchoolAccount();
    HttpSession session = request.getSession(false);
@@ -286,12 +300,12 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
    try {
        writer = PdfWriter.getInstance(document, response.getOutputStream());
        
-
        PdfUtil event = new PdfUtil();
        writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
        writer.setPageEvent(event);
 
-       populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, context.getRealPath("/images/fastech.png"));
+       populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList,path);
+       
 
    } catch (DocumentException e) {
        logger.error("DocumentException while writing into the document");
@@ -662,6 +676,9 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
               studeadmno = studentAdmNoHash.get(uuid);
               studename = studNameHash.get(uuid);    
               firstnamee = firstnameHash.get(uuid);
+              
+              StudentFee studentFee = studentFeeDAO.getStudentFeeByStudentUuid(school.getUuid(), uuid,examConfig.getTerm(),examConfig.getYear()); 
+   		      TermFee termFee = termFeeDAO.getTermFee(school.getUuid());
                  
              
               engc1 = 0;kisc1 = 0;matc1 = 0;phyc1 = 0;chemc1 = 0;bioc1 = 0;
@@ -1414,12 +1431,15 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
             feeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
             
             
-            double balance = 0.00;
-            double nextfee = 15000.00;
+            double amountpaid = studentFee.getAmountPaid();
+            double termfee = termFee.getTermAmount();
+            double balance =  termfee - amountpaid;
+            double nexttermfee = termFee.getNextTermAmount();
+            
             Locale locale = new Locale("en","KE"); 
     		NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
     		
-            PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(balance)+" \n\n Next Term Fee " + nf.format(nextfee) ,boldFont));
+            PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(balance)+" \n\n Next Term Fee " + nf.format(nexttermfee) ,boldFont));
             feeCell.setBackgroundColor(Colorgrey);
             feeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
             
@@ -1452,7 +1472,7 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
             PdfPCell Cell2 = new PdfPCell(new Paragraph("Date : _____________________\n\n"
             		                                  + "Date : _____________________\n\n"));
             Cell2.setBackgroundColor(Colormagenta);
-            Cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
             
             commentTable.addCell(commentCell);
             commentTable.addCell(Cell1);

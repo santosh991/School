@@ -22,7 +22,7 @@ import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
  * @author peter
- *
+ * 
  */
 public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 
@@ -170,7 +170,7 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 							"WHERE Uuid = (SELECT Uuid FROM PocketMoney WHERE StudentUuid=? );");	
 					
 					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Deposit(Uuid,"
-							+ "Studentuuid,Amount,SystemUser,DateCommitted) VALUES(?,?,?,?,?);");
+							+ "Studentuuid,Amount,SystemUser,DateCommitted,Term,year) VALUES(?,?,?,?,?,?,?);");
 					) {
 				
 					pstmt.setString(1, money.getStudentUuid());									
@@ -184,6 +184,8 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 						pstmt2.setDouble(3, amount);
 						pstmt2.setString(4, money.getSystemUser()); 
 						pstmt2.setTimestamp(5, new Timestamp(money.getDateCommitted().getTime()));
+						pstmt2.setString(6, money.getTerm());
+						pstmt2.setString(7, money.getYear());
 						pstmt2.executeUpdate();
 						
 						
@@ -206,7 +208,7 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 							+ "Studentuuid,amount) VALUES(?,?,?);");	
 					
 					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Deposit(Uuid,"
-							+ "Studentuuid,Amount,SystemUser,DateCommitted) VALUES(?,?,?,?,?);");
+							+ "Studentuuid,Amount,SystemUser,DateCommitted,Term,year) VALUES(?,?,?,?,?,?,?);");
 					) {
 					pstmt.setString(1, money.getUuid());
 					pstmt.setString(2, money.getStudentUuid());									
@@ -219,6 +221,8 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 						pstmt2.setDouble(3, amount);
 						pstmt2.setString(4, money.getSystemUser()); 
 						pstmt2.setTimestamp(5, new Timestamp(money.getDateCommitted().getTime()));
+						pstmt2.setString(6, money.getTerm());
+						pstmt2.setString(7, money.getYear());
 						pstmt2.executeUpdate();
 						
 						
@@ -253,7 +257,7 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 							"WHERE Uuid = (SELECT Uuid FROM PocketMoney WHERE StudentUuid=? );");
 					
 					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Withdraw(Uuid,"
-							+ "Studentuuid,Amount,SystemUser,DateCommitted) VALUES(?,?,?,?,?);");
+							+ "Studentuuid,Amount,SystemUser,DateCommitted,Term,year) VALUES(?,?,?,?,?,?,?);");
 					) {
 				
 					pstmt.setString(1, money.getStudentUuid());									
@@ -267,6 +271,8 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 						pstmt2.setDouble(3, amount);
 						pstmt2.setString(4, money.getSystemUser()); 
 						pstmt2.setTimestamp(5, new Timestamp(money.getDateCommitted().getTime()));
+						pstmt2.setString(6, money.getTerm());
+						pstmt2.setString(7, money.getYear());
 						pstmt2.executeUpdate();
 						
 						
@@ -289,7 +295,7 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 							+ "Studentuuid,Amount) VALUES(?,?,?);");	
 					
 					PreparedStatement pstmt2 = conn.prepareStatement("INSERT INTO Withdraw(Uuid,"
-							+ "Studentuuid,Amount,SystemUser,DateCommitted) VALUES(?,?,?,?,?);");
+							+ "Studentuuid,Amount,SystemUser,DateCommitted,Term,year) VALUES(?,?,?,?,?,?,?);");
 					) {
 					pstmt.setString(1, money.getUuid());
 					pstmt.setString(2, money.getStudentUuid());									
@@ -302,6 +308,8 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 						pstmt2.setDouble(3, amount);
 						pstmt2.setString(4, money.getSystemUser()); 
 						pstmt2.setTimestamp(5, new Timestamp(money.getDateCommitted().getTime()));
+						pstmt2.setString(6, money.getTerm());
+						pstmt2.setString(7, money.getYear());
 						pstmt2.executeUpdate();
 					}	
 						
@@ -323,14 +331,16 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 	 * @see com.yahoo.petermwenda83.persistence.money.SchoolPMoneyDAO#getWithdrawList(java.lang.String)
 	 */
 	@Override
-	public List<Withdraw> getWithdrawList(String StudentUuid) {
+	public List<Withdraw> getWithdrawList(String StudentUuid,String Term,String Year) {
 		List<Withdraw> withdrawList = null;
 		try(
 				Connection conn = dbutils.getConnection();
 				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Withdraw WHERE "
-						+ "StudentUuid = ?;");
+						+ "StudentUuid = ? AND Term = ? AND Year =?;");
 				) {
 			psmt.setString(1, StudentUuid);
+			psmt.setString(2, Term);
+			psmt.setString(3, Year);
 			try(ResultSet rset = psmt.executeQuery();){
 			
 				withdrawList = beanProcessor.toBeanList(rset, Withdraw.class);
@@ -348,14 +358,16 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 	 * @see com.yahoo.petermwenda83.persistence.money.SchoolPMoneyDAO#getDepositList(java.lang.String)
 	 */
 	@Override
-	public List<Deposit> getDepositList(String StudentUuid) {
+	public List<Deposit> getDepositList(String StudentUuid,String Term,String Year) {
 		List<Deposit> depositeList = null;
 		try(
 				Connection conn = dbutils.getConnection();
 				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Deposit WHERE "
-						+ "StudentUuid = ?;");
+						+ "StudentUuid = ? AND Term = ? AND Year =?;");
 				) {
 			psmt.setString(1, StudentUuid);
+			psmt.setString(2, Term);
+			psmt.setString(3, Year);
 			try(ResultSet rset = psmt.executeQuery();){
 			
 				depositeList = beanProcessor.toBeanList(rset, Deposit.class);

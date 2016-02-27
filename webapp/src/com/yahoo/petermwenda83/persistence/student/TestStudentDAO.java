@@ -93,6 +93,19 @@ public class TestStudentDAO {
 		//assertEquals(s.getAdmissionDate(),ADM_DATE);
 	}
    
+	
+	
+	 
+		//@Ignore
+		@Test
+		public void testGetStudentADmNo() {
+			store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+			Student s = new Student();
+			String schoolUuid = "7e90f354-c1e0-4565-bccd-907aea188cf5";
+			s = store.getStudentADmNo(schoolUuid);
+			
+		}
+	   
 	@Ignore
 	@Test
 	public void testGetStudents() {
@@ -160,7 +173,7 @@ public class TestStudentDAO {
 		 assertTrue(store.putStudents(s));   
 
 	}
-	//@Ignore
+	@Ignore
 	@Test
 	public void testUpdateStudents() {
 		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);

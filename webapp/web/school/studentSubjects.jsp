@@ -265,8 +265,9 @@
                              %> 
 
                                 <td class="center">
-                                <form name="update" method="POST" action=""> 
-                                <input type="hidden" name="staffuuid" value="<%%>">
+                                <form name="update" method="POST" action="deleteStudentSubject"> 
+                                <input type="hidden" name="studentid" value="<%=studentid%>">
+                                <input type="hidden" name="subjectid" value="<%=ssub.getSubjectUuid()%>">
                                 <input class="btn btn-success" type="submit" name="delete" id="submit" value="Delete" /> 
                                 </form>                          
                                 </td>    

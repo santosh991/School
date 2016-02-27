@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
@@ -36,7 +36,11 @@ import net.sf.ehcache.CacheManager;
 
 public class ExportText extends HttpServlet{
 	
-	 private static StudentDAO studentDAO;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4685338967135208468L;
+	private static StudentDAO studentDAO;
      private static RoomDAO roomDAO;
      private static SubjectDAO subjectDAO;
      private static ExamConfigDAO examConfigDAO;
@@ -94,8 +98,7 @@ public class ExportText extends HttpServlet{
 	   @Override
 	   protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	           throws ServletException, IOException {
-		   
-		   ServletContext context = getServletContext();
+		 
 		   
 		   response.setContentType("text/plain");
 		   
@@ -166,7 +169,8 @@ public class ExportText extends HttpServlet{
 		         os.close();
 		    
 		   } catch (Exception e) {
-			   //logger
+			   logger.error("Exception when getting exporting text marksheet: ");
+	           logger.error(ExceptionUtils.getStackTrace(e));
 	        }
 		 
 	 

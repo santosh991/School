@@ -15,12 +15,18 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
+import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
+import com.yahoo.petermwenda83.bean.student.House;
+import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
+import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
+import com.yahoo.petermwenda83.persistence.student.HouseDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 
@@ -48,6 +54,9 @@ public class AddSchool extends HttpServlet{
 	private CacheManager cacheManager;
 	private static ExamConfigDAO examConfigDAO;
 	private static GradingSystemDAO gradingSystemDAO;
+	private static HouseDAO houseDAO;
+	private static RoomDAO roomDAO;
+	private static TermFeeDAO termFeeDAO;
 
 
 	/**   
@@ -63,9 +72,12 @@ public class AddSchool extends HttpServlet{
        cacheManager = CacheManager.getInstance();
        examConfigDAO = ExamConfigDAO.getInstance();
        gradingSystemDAO = GradingSystemDAO.getInstance();
+       houseDAO = HouseDAO.getInstance();
+       roomDAO = RoomDAO.getInstance();
+       termFeeDAO = TermFeeDAO.getInstance();
    }
    
-   
+  
    
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
@@ -142,9 +154,9 @@ public class AddSchool extends HttpServlet{
     	   GradingSystem gradingSystem = new GradingSystem();
     	   gradingSystem.setSchoolAccountUuid(account.getUuid()); 
     	   gradingSystem.setGradeAplain(Integer.parseInt("83"));
-    	   gradingSystem.setGradeAminus(Integer.parseInt("79"));
-    	   gradingSystem.setGradeBplus(Integer.parseInt("75"));
-    	   gradingSystem.setGradeBplain(Integer.parseInt("67"));
+    	   gradingSystem.setGradeAminus(Integer.parseInt("71"));
+    	   gradingSystem.setGradeBplus(Integer.parseInt("67"));
+    	   gradingSystem.setGradeBplain(Integer.parseInt("62"));
     	   gradingSystem.setGradeBminus(Integer.parseInt("54"));
     	   gradingSystem.setGradeCplus(Integer.parseInt("50"));
     	   gradingSystem.setGradeCplain(Integer.parseInt("45"));
@@ -154,14 +166,34 @@ public class AddSchool extends HttpServlet{
     	   gradingSystem.setGradeDminus(Integer.parseInt("25"));
     	   gradingSystem.setGradeE(Integer.parseInt("0")); 
 		   
+    	   
+    	   String [] defaultClasses = {"FORM 1 N","FORM 2 N","FORM 3 N","FORM 3 N"};
+    	   String [] defaultHouse = {"Suswa","Tana","Longonot","Chania"};
+    	   
 		   
-		   
-		   
-		   
-		   
-		   
-		   
-		   if(accountDAO.put(account) &&examConfigDAO.putExamConfig(examConfig)&&gradingSystemDAO.putGradingSystem(gradingSystem)){			   
+		   if(accountDAO.put(account) &&examConfigDAO.putExamConfig(examConfig)&&gradingSystemDAO.putGradingSystem(gradingSystem)){	
+			   
+			   for(int i=0;i<defaultClasses.length;i++){
+	    		   ClassRoom room = new ClassRoom();
+	        	   room.setSchoolAccountUuid(account.getUuid());
+	        	   room.setRoomName(defaultClasses[i]);
+	        	   roomDAO.putroom(room);
+	    	   }
+			   
+			   for(int i=0;i<defaultHouse.length;i++){
+	    		   House house = new House();
+	    		   house.setSchoolAccountUuid(account.getUuid());
+	    		   house.setHouseName(defaultHouse[i]);
+	    		   houseDAO.putHouse(house);
+	    	   }
+			   
+			   TermFee termFee = new TermFee();
+			   termFee.setSchoolAccountUuid(account.getUuid());
+			   termFee.setTermAmount(15000);
+			   termFee.setNextTermAmount(20000);
+			   termFeeDAO.putTermFee(termFee);
+			   
+	    	 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_SUCCESS, SCHOOL_ADD_SUCCESS);
 		   }else{
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, SCHOOL_ADD_ERROR);  

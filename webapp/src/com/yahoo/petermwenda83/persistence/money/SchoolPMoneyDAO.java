@@ -55,13 +55,13 @@ public interface SchoolPMoneyDAO {
 	   * @param studedntUuid
 	   * @return
 	   */
-	public List<Withdraw> getWithdrawList(String StudentUuid);
+	public List<Withdraw> getWithdrawList(String StudentUuid,String Term,String Year);
 	  /**
 	   * 
 	   * @param studedntUuid
 	   * @return
 	   */
-	public List<Deposit> getDepositList(String StudentUuid);
+	public List<Deposit> getDepositList(String StudentUuidString,String Term,String Year);
 	
 	
 	

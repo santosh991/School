@@ -65,12 +65,15 @@ public class TestPMoneyDAO {
 		         WSYSTEM_USER_NEW = "wnew",
 		         WSYSTEM_USER_UPDATE = "wupdate";
     
+    final String TERM = "1";
+    final String YEAR = "2014";
+    
     final Date COMMITDATE = new Date();
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PMoneyDAO#getMoney(java.lang.String)}.
 	 */
-    @Ignore
+   @Ignore
 	@Test
 	public void testGetMoney() {
 		store = new PMoneyDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -103,13 +106,13 @@ public class TestPMoneyDAO {
 		store = new PMoneyDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		PocketMoney pm = new PocketMoney();
 		pm.setStudentUuid(STUDENT_UUID);
-		assertTrue(store.hasBalance(pm, 3001)); 
+		assertTrue(store.hasBalance(pm, 30)); 
 	}
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PMoneyDAO#addBalance(com.yahoo.petermwenda83.bean.money.PocketMoney, double)}.
 	 */
-	@Ignore
+    @Ignore
 	@Test
 	public void testAddBalance() {
 		store = new PMoneyDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -125,7 +128,7 @@ public class TestPMoneyDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.PMoneyDAO#deductBalance(com.yahoo.petermwenda83.bean.money.PocketMoney, double)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public void testDeductBalance() {
 		store = new PMoneyDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -146,7 +149,7 @@ public class TestPMoneyDAO {
 	@Test
 	public void testGetWithdrawList() {
 		store = new PMoneyDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Withdraw> wlist = store.getWithdrawList(STUDENT_UUID);
+		List<Withdraw> wlist = store.getWithdrawList(STUDENT_UUID,TERM,YEAR);
 		for (Withdraw w : wlist) {
 			System.out.println(w);	
 		}
@@ -159,7 +162,7 @@ public class TestPMoneyDAO {
 	@Test
 	public void testGetDepositList() {
 		store = new PMoneyDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Deposit> dlist = store.getDepositList(STUDENT_UUID);	
+		List<Deposit> dlist = store.getDepositList(STUDENT_UUID,TERM,YEAR);	
 		for (Deposit d : dlist) {
 			System.out.println(d);	
 		}

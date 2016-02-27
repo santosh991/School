@@ -57,6 +57,8 @@ public class SessionConstants {
 	public static final String STUDENT_PARAM = "Student Parameters";
 	public static final String STUDENT_ADD_ERROR = "Student add error";
 	public static final String STUDENT_ADD_SUCCESS = "Student added successfully";
+	public static final String STUDENT_UPDATE_ERROR = "Student add error";
+	public static final String STUDENT_UPDATE_SUCCESS = "Student added successfully";
 	
 	public static final String FATHER_MOTHER_PARAM = "Father/Mother Parameters";
 	public static final String STUDENT_SPONSOR_PARAM = "Father/Mother Parameters";
@@ -82,7 +84,21 @@ public class SessionConstants {
 	public static final String GRADE_ADD_ERROR = "Grade add error";
 	public static final String GRADE_ADD_SUCCESS = "Grade add successfully";
 	
+	//payment
 	
+	public static final String FEE_PARAM = "Fee Parameters";
+	public static final String STUENT_PARAM_F = "Student Parameters";
+	public static final String STUENT_FEE_ADD_PARAM = "Student Parameters";
+	public static final String STUDENT_FEE_ADD_ERROR = "Student fee details add Error";
+	public static final String STUDENT_FEE_ADD_SUCCESS = "Student fee details add  Success";
+	public static final String STUDENT_FEE_UPDATE_ERROR = "Student fee details UPDATE Error";
+	public static final String STUDENT_FEE_UPDATE_SUCCESS = "Student fee details UPDATE  Success";
+	
+	public static final String STUENT_FEE_UPDATE_PARAM = "Student Parameters";
+	public static final String STUENT_POCKET_MONEY_FIND_PARAM = "Pocket Money Parameters";
+	public static final String STUENT_POCKET_MONEY_PARAM = "pocket Money Parameters";
+	public static final String STUENT_PM_DEPOSITE_PARAM = "deposit Parameters";
+	public static final String STUENT_PM_WITHDRAW_PARAM = "Withdraw Parameters";
 	
 	
 	

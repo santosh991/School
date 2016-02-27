@@ -19,7 +19,7 @@ public class Withdraw extends PocketMoney{
 	
 	private static final long serialVersionUID = -7496104242563750614L;
 	
-	/**
+	/** 
 	 * 
 	 */
 	public Withdraw() {
@@ -41,6 +41,10 @@ public class Withdraw extends PocketMoney{
 		builder.append(getSystemUser());
 		builder.append(", getDateCommitted()=");
 		builder.append(getDateCommitted());
+		builder.append(", getTerm()=");
+		builder.append(getTerm());
+		builder.append(", getYear()=");
+		builder.append(getYear());
 		builder.append("]");
 		return builder.toString(); 
 		}

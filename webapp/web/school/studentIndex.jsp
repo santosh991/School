@@ -179,6 +179,40 @@
          <p>Welcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
         </div>
         <div class="box-content">
+                 
+                  <%             
+
+                                String updateErr = "";
+                                String updateSuccess = "";
+                                session = request.getSession(false);
+                                     updateErr = (String) session.getAttribute(SessionConstants.STUDENT_UPDATE_ERROR);
+                                     updateSuccess = (String) session.getAttribute(SessionConstants.STUDENT_UPDATE_SUCCESS); 
+
+                                if(session != null) {
+                                    updateErr = (String) session.getAttribute(SessionConstants.STUDENT_UPDATE_ERROR);
+                                    updateSuccess = (String) session.getAttribute(SessionConstants.STUDENT_UPDATE_SUCCESS);
+                                }                        
+
+                                if (StringUtils.isNotEmpty(updateErr)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + updateErr);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(updateSuccess)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + updateSuccess);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.STUDENT_UPDATE_SUCCESS,null);
+                                  } 
+
+
+
+        %>
+
+
+
+
 
 
                 <div id="search_box">
@@ -227,8 +261,8 @@
                    
 
                     String firstNameLowecase = s.getFirstname().toLowerCase();
-                    String lastNameLowecase =s.getSurname().toLowerCase();
-                    String surNameLowecase = s.getLastname().toLowerCase();
+                    String lastNameLowecase =s.getLastname().toLowerCase();
+                    String surNameLowecase = s.getSurname().toLowerCase();
                     
                     formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
                     formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
@@ -274,7 +308,19 @@
                          <td class="center"><%=kcpeyear%></td>
                          <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>  
                          <td class="center">
-                                <form name="view" method="POST" action="updateStudentBasic"> 
+                                <form name="view" method="POST" action="updateStudent.jsp"> 
+                                <input type="hidden" name="admNo" value="<%=s.getAdmno()%>">
+                                <input type="hidden" name="firstname" value="<%=formatedFirstname%>">
+                                <input type="hidden" name="lastname" value="<%=formatedLastname%>">
+                                <input type="hidden" name="surname" value="<%=formatedSurname%>">
+                                <input type="hidden" name="gender" value="<%=s.getGender()%>">
+                                <input type="hidden" name="dob" value="<%=s.getdOB()%>">
+                                <input type="hidden" name="BcertNo" value="<%=s.getBcertno()%>">
+                                <input type="hidden" name="county" value="<%=s.getCounty()%>">
+                                <input type="hidden" name="primary" value="<%=primaryschool%>">
+                                <input type="hidden" name="kcpeindex" value="<%=kcpeindex%>">
+                                <input type="hidden" name="kcpemark" value="<%=kcpemark%>">
+                                <input type="hidden" name="kcpeyear" value="<%=kcpeyear%>">
                                 <input type="hidden" name="studentUuid" value="<%=s.getUuid()%>">
                                 <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 

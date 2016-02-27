@@ -17,7 +17,7 @@ package com.yahoo.petermwenda83.bean.money;
  */
 public class Deposit extends PocketMoney {
 	
-	/**
+	/** 
 	 * 
 	 */
 	private static final long serialVersionUID = 7582945268897264721L;
@@ -42,6 +42,10 @@ public class Deposit extends PocketMoney {
 		builder.append(getSystemUser());
 		builder.append(", getDateCommitted()=");
 		builder.append(getDateCommitted());
+		builder.append(", getTerm()=");
+		builder.append(getTerm());
+		builder.append(", getYear()=");
+		builder.append(getYear());
 		builder.append("]");
 		return builder.toString(); 
 		}

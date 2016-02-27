@@ -207,10 +207,10 @@
                   <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
                 <li class='has-sub' ><a href="studentIndex.jsp"><span>Students</span></a>
                   <ul>
-                <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
-                <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
-                <li><a href="addHouse.jsp" ><span>Student House</span></a></li>
-                <li class='last'><a href="addSponsor.jsp"><span>Student Sponsor</span></a></li>
+                <li><a href="addStudent.jsp" ><span>New Student</span></a></li>
+                <li><a href="addParent.jsp" ><span>New Parent </span></a></li>
+                <li><a href="addHouse.jsp" ><span>Assign House</span></a></li>
+                <li class='last'><a href="addSponsor.jsp"><span>New Student's Sponsor</span></a></li>
                 </ul>
                 </li>
                  <%}  %>
@@ -274,10 +274,10 @@
               <%  if(StringUtils.equals(staffPosition,pos_DeputyPricipal)){ %>
               <li class='has-sub' ><a href="studentIndex.jsp"><span>Students</span></a>
                   <ul>
-                <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
-                <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
-                 <li><a href="addHouse.jsp" ><span>Student House</span></a></li>
-                <li class='last'><a href="addSponsor.jsp"><span>Student Sponsor</span></a></li>
+                <li><a href="addStudent.jsp" ><span>New Student</span></a></li>
+                <li><a href="addParent.jsp" ><span>New Parent </span></a></li>
+                <li><a href="addHouse.jsp" ><span>Assign House</span></a></li>
+                <li class='last'><a href="addSponsor.jsp"><span>New Student's Sponsor</span></a></li>
                 </ul>
                 </li>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>
@@ -296,10 +296,10 @@
               <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
                  <li class='has-sub' ><a href="studentIndex.jsp"><span>Students</span></a>
                   <ul>
-                <li><a href="addStudent.jsp" ><span>Basic details</span></a></li>
-                <li><a href="addParent.jsp" ><span>Parent Details</span></a></li>
-                 <li><a href="addHouse.jsp" ><span>Student House</span></a></li>
-                <li class='last'><a href="addSponsor.jsp"><span>Student Sponsor</span></a></li>
+                <li><a href="addStudent.jsp" ><span>New Student</span></a></li>
+                <li><a href="addParent.jsp" ><span>New Parent </span></a></li>
+                <li><a href="addHouse.jsp" ><span>Assign House</span></a></li>
+                <li class='last'><a href="addSponsor.jsp"><span>New Student's Sponsor</span></a></li>
                 </ul>
                 </li>
             <li class='has-sub'><a href="mySubjects.jsp"><span>MySubjects</span></a></li>

@@ -82,7 +82,7 @@ if (session == null) {
 
      String principalUsername = "";
      String staffname = "";
-     StaffDetails staffDetails = new StaffDetails();
+    
 
      StaffDAO staffDAO = StaffDAO.getInstance();
      List<Staff> staffList = new ArrayList(); 
@@ -168,16 +168,20 @@ if (session == null) {
                              studentcount++;
                                }
 
+                           StaffDetails staffDetails = new StaffDetails();
                            staffList = staffDAO.getStaffList(s.getUuid()); 
                            for(Staff staff : staffList){
+                            
 
                            if(StringUtils.equals(staff.getPositionUuid(), principalUuid)) {
                               principalUsername = staff.getUserName();
-                              
+                            
                               staffDetails = staffDetailsDAO.getStaffDetail(staff.getUuid());
+
                               if(staffDetails != null) {
-                                 staffname = "";
+                                  staffname = "";
                                   staffname = "("+staffDetails.getSurname()+" "+staffDetails.getFirstName()+" "+staffDetails.getLastName()+")";
+
                               }else{
                                 staffname = "";
                               }
@@ -214,6 +218,8 @@ if (session == null) {
                            count++;
                            studentcount = 0;
                            principalUsername = " ";
+                           staffname = " ";
+                            
                             } 
                     %>
                 </tbody>

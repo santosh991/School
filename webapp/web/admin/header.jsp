@@ -50,6 +50,7 @@ if (session == null) {
          
         <link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
         <style type="text/css">
+
             body {
                 padding-bottom: 40px;
             }
@@ -60,12 +61,15 @@ if (session == null) {
         <!-- jQuery --> 
        
     
-      <style type="text/css">
-       input{
+       <style type="text/css">
+        input{
          height: 26px !important;
             }
    
           </style>
+        
+        
+      
         
         <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
         <link href="../css/fastech/charisma-app.css" rel="stylesheet">
@@ -86,6 +90,8 @@ if (session == null) {
         <link href='../css/fastech/template.css' rel='stylesheet'>
         <link href='../css/fastech/checkpass.css' rel='stylesheet'>
         <link href='../css/fastech/styles.css' rel='stylesheet'>
+
+
         
       
         

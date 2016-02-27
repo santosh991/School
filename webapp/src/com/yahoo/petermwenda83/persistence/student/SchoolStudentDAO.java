@@ -18,6 +18,13 @@ public interface SchoolStudentDAO {
 	 * @return Student
 	 */
 	public Student getStudentByuuid(String schoolaccountUuid,String uuid);
+	
+	/**
+	 * 
+	 * @param uuid
+	 * @return Student
+	 */
+	public Student getStudentADmNo(String schoolaccountUuid);
 	/**
 	 * 
 	 * @param admno
