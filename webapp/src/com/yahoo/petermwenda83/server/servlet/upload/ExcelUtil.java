@@ -142,9 +142,16 @@ public class ExcelUtil {
     			    rf3.setRoundingMode(RoundingMode.DOWN);
     				
     				String score = (String) scorestr;
+    			
+    			    if(StringUtils.isBlank(score) ||StringUtils.isEmpty(score) || score == null){
+    			    	return ("Blank score " + score + " on line \"" + count);
+    			    }
+    			    
     				double toformat = Double.parseDouble(score);
     				double dblescore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(toformat)))));
     			    String formated = rf3.format(dblescore);
+    			   
+    				
     				
     				boolean isNumeric = formated.chars().allMatch(x -> Character.isDigit(x));
     			    if(!isNumeric) {  

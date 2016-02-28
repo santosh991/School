@@ -171,13 +171,33 @@
 %> 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+
+        <li>
+            <a href="addStudent.jsp">New Student</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="addParent.jsp">New Parent</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="addSponsor.jsp">New Student Sponsor</a> <span class="divider">/</span>
+        </li>
+
+        <li>
+            <a href="addHouse.jsp">Assign House</a>
+        </li>
+        
+    </ul>
+</div>
 
 
 <div class="row-fluid sortable">    
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :STUDENT MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
                  
                   <%             
@@ -255,7 +275,7 @@
                     String kcpeindex = "";
                     String kcpemark = "";
                     String kcpeyear = ""; 
-
+                    String gender = "";
 
                     for(Student s : studentList){
                    
@@ -263,6 +283,13 @@
                     String firstNameLowecase = s.getFirstname().toLowerCase();
                     String lastNameLowecase =s.getLastname().toLowerCase();
                     String surNameLowecase = s.getSurname().toLowerCase();
+
+                    gender = s.getGender();
+                    if(StringUtils.equalsIgnoreCase(gender, "FEMALE")) {
+                                gender = "F";
+                                     }else{
+                                    gender = "M";
+                                 }
                     
                     formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
                     formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
@@ -297,7 +324,7 @@
                          <td width="3%"><%=ussdCount%></td>
                          <td class="center"><%=s.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
-                         <td class="center"><%=s.getGender()%></td>
+                         <td class="center"><%=gender%></td>
                          <td class="center"><%=s.getdOB()%></td>
                          <td class="center"><%=s.getBcertno()%></td>
                          <td class="center"><%=classroomHash.get(s.getClassRoomUuid())%></td>

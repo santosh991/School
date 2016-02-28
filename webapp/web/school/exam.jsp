@@ -12,7 +12,6 @@
 
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
-<%@page import="com.yahoo.petermwenda83.server.servlet.upload.UploadFrom34"%>
 
 <%@page import="com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator"%>
 
@@ -125,10 +124,22 @@
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList<Student>(); 
      studentList = studentDAO.getAllStudents(accountuuid,classroomuuid);
+
+      String formatedFirstname = "";
+      String formatedLastname = "";
+      String formatedSurname = "";
+      String fullname = "";
     
      for(Student stu : studentList){
-           studentAdmNoHash.put(stu.getUuid(),stu.getAdmno());  
-           studNameHash.put(stu.getUuid(),stu.getFirstname()+" "+stu.getLastname()+" "+stu.getSurname()); 
+            studentAdmNoHash.put(stu.getUuid(),stu.getAdmno()); 
+            String firstNameLowecase = stu.getFirstname().toLowerCase();
+            String lastNameLowecase =stu.getLastname().toLowerCase();
+            String surNameLowecase = stu.getSurname().toLowerCase(); 
+            formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+            formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+            formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+            fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
+            studNameHash.put(stu.getUuid(),fullname); 
             }
 
      Perfomance perfor;
@@ -267,49 +278,53 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+
+    <li> <b> <%=schoolname%> :EXAM MANAGEMENT PANEL FOR  <%=roomHash.get(classroomuuid)%> TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+         
+    </ul>
+</div>
+
+
 
 
 <div class="row-fluid sortable">
 
 
-
-
         <div class="box span12">
-        <div class="box-header well" data-original-title>
-          <p>Welcome to <%=schoolname%> :EXAM MANAGEMENT PANEL FOR: <%=roomHash.get(classroomuuid)%>:TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
-            
-            <div class="sortable row-fluid " id="set-margin">
 
-                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+
+        <table class="table table-striped  ">
+                <thead>
+                    <tr >             
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>   
+                <tbody >            
+                    <td width="10%" class="center">    
                     <form  class=""   action="classList" method="POST" target="_blank">
-                    <fieldset>                   
-                    <div class="">    
+                    <fieldset>                      
                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >     
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Results</button> 
-                    </div>
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Performance List</button> 
                     </fieldset>
-                    </form>
-                    </a>
+                    </form>                                          
+                    </td> 
 
-
-
-                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <td width="10%" class="center">                              
                     <form  class=""   action="reportForm12" method="POST" target="_blank">
-                    <fieldset>                   
-                    <div class="">   
+                    <fieldset>                    
                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >         
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form</button> 
-                    </div>                   
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form</button>                
                     </fieldset>
-                    </form>
-                    </a>
-
-                </div>
-             
-
-            <div>
+                    </form>                                                
+                    </td> 
+                </tbody>                  
+            </table>  
+            
+           
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
@@ -659,7 +674,7 @@
                 </tbody>
             </table> 
 
-            </div>
+          
                      
        
 

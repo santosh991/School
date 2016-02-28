@@ -123,20 +123,34 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :STAFF MANAGENENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+
+        <li>
+            <a href="addStaff.jsp">New Staff</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="classTeachers.jsp">Class Teachers</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="teacherSubjects.jsp">Assign Subject</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
+
 
 
 
 <div class="row-fluid sortable">
 
                
-
-
-
-
-    <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>[<a href="addStaff.jsp">Add staff</a>]-[<a href="teacherSubjects.jsp">AssignSubject</a>] Welcome to <%=schoolname%> :Staff Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
+    <div class="box span12">S
         <div class="box-content">
             
              <%

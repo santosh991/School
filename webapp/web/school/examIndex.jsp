@@ -9,12 +9,8 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.Perfomance"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.exam.StudentExamDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.exam.StudentExam"%>
-
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
-<%@page import="com.yahoo.petermwenda83.server.servlet.upload.UploadFrom34"%>
 
 <%@page import="com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator"%>
 
@@ -126,10 +122,22 @@
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList<Student>(); 
      studentList = studentDAO.getAllStudents(accountuuid,classroomuuid);
+
+      String formatedFirstname = "";
+      String formatedLastname = "";
+      String formatedSurname = "";
+      String fullname = "";
     
      for(Student stu : studentList){
            studentAdmNoHash.put(stu.getUuid(),stu.getAdmno());  
-           studNameHash.put(stu.getUuid(),stu.getFirstname()+" "+stu.getLastname()); 
+            String firstNameLowecase = stu.getFirstname().toLowerCase();
+            String lastNameLowecase =stu.getLastname().toLowerCase();
+            String surNameLowecase = stu.getSurname().toLowerCase(); 
+            formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+            formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+            formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+            fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
+            studNameHash.put(stu.getUuid(),fullname); 
             }
 
      Perfomance perfor;
@@ -145,9 +153,6 @@
      
      Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
      
-     StudentExamDAO studentExamDAO = StudentExamDAO.getInstance();
-     List<StudentExam> sutexamList = new ArrayList<StudentExam>(); 
-     sutexamList = studentExamDAO.getStudentExamList(accountuuid,classroomuuid); 
      
      HashMap<String, String> roomHash = new HashMap<String, String>();
      RoomDAO roomDAO = RoomDAO.getInstance();
@@ -158,7 +163,7 @@
             
             } 
 
-   
+      
     //nanguages
      double engscore = 0;
      String engscorestr = "";
@@ -271,6 +276,14 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+
+    <li> <b> <%=schoolname%> :EXAM MANAGEMENT PANEL FOR <%=roomHash.get(classroomuuid)%> TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+         
+    </ul>
+</div>
+
 
 
 <div class="row-fluid sortable">
@@ -279,63 +292,58 @@
 
 
         <div class="box span12">
-        <div class="box-header well" data-original-title>
-        <p>Welcome to <%=schoolname%>:EXAM MANAGEMENT PANEL FOR: <%=roomHash.get(classroomuuid)%>:TERM <%=examConfig.getTerm()%>,<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
-        <div class="sortable row-fluid " id="set-margin">
-
-                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+         <table class="table table-striped  ">
+                <thead>
+                    <tr >             
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>   
+                <tbody >            
+                    <td width="10%" class="center">    
                     <form  class=""   action="form34List" method="POST" target="_blank">
                      <fieldset>                     
-                     <div class=""> 
                      <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard List</button> 
-                     </div>
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Performance List</button> 
                      </fieldset>
-                     </form>
-                    </a>
+                     </form>                                      
+                    </td> 
 
-
-
-                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <td width="10%" class="center">                              
                     <form  class=""   action="form34List" method="POST" target="_blank">
                      <fieldset>
-                     <div class="">  
                      <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard List</button> 
-                     </div>
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Performance List</button> 
                      </fieldset>
-                     </form>
-                    </a>
+                     </form>                                             
+                    </td> 
 
-                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
-                    <form  class=""   action="reportForm" method="POST" target="_blank">
+                    <td width="10%" class="center">                              
+                     <form  class=""   action="reportForm" method="POST" target="_blank">
                      <fieldset>                     
-                     <div class=""> 
                      <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Report</button> 
-                     </div>
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Report Form</button> 
                      </fieldset>
-                     </form>
-                    </a>
+                     </form>                                            
+                    </td> 
 
-                    <a data-rel="tooltip" title="" class="well span3 top-block" href="">
+                    <td width="10%" class="center">                              
                     <form  class=""   action="reportForm2" method="POST" target="_blank">
                      <fieldset>
-                     <div class="">  
                      <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Report</button> 
-                     </div>
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Report Form</button> 
                      </fieldset>
-                     </form>
-                    </a>
+                     </form>                                         
+                    </td> 
+                </tbody>                  
+            </table>  
 
-                </div>
-           
+       
 
-            <div>
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
@@ -833,9 +841,7 @@
                 </tbody>
             </table> 
 
-            </div>
-                     
-       
+         
 
 
     </div>

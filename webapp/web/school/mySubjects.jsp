@@ -129,6 +129,17 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+
+    <li> <b> <%=schoolname%> :MY SUBJECTS TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+        <li>
+            <a href="examUpload.jsp">Upload Exam</a> <span class="divider">/</span>
+        </li>
+         
+    </ul>
+</div>
 
 
 
@@ -138,9 +149,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :My Subjects: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
             
             

@@ -117,7 +117,18 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :STAFF MANAGEMENT PANEL(STAFF INFORMATION): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
+
+        <li>
+            <a href="staff.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
 
 
 <div class="row-fluid sortable">
@@ -128,9 +139,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>[<a href="staff.jsp">Back</a>]   Welcome to <%=schoolname%> :Staff Details: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
         <form class="form-horizontal" action="#" method="POST"  >

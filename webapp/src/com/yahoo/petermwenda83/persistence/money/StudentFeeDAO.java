@@ -24,6 +24,8 @@ import com.yahoo.petermwenda83.persistence.GenericDAO;
 public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 
 	private static StudentFeeDAO studentFeeDAO;
+	private static StudentAmountDAO studentAmountDAO;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 	private BeanProcessor beanProcessor = new BeanProcessor();
 	
@@ -34,9 +36,10 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 		return studentFeeDAO;
 	}
 	
+	
 	public StudentFeeDAO() {
 		super();
-		
+		studentAmountDAO = StudentAmountDAO.getInstance();
 	}
 
 
@@ -49,7 +52,7 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 	 */
 	public StudentFeeDAO(String databaseName, String Host, String databaseUsername, String databasePassword, int databasePort){
 		super(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		
+		studentAmountDAO = new StudentAmountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 	}
 
 	/**
@@ -141,6 +144,9 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 	            pstmt.setString(8, studentFee.getYear());
 	            pstmt.setString(9, studentFee.getSystemUser());
 	            pstmt.executeUpdate();
+	            
+	            studentAmountDAO.addAmount(studentFee.getSchoolAccountUuid(), studentFee.getStudentUuid(), studentFee.getAmountPaid());
+	            
 			 
 		 }catch(SQLException e){
 		   logger.error("SQL Exception trying to put StudentFee "+studentFee);
@@ -175,6 +181,8 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 	            pstmt.setString(8, studentFee.getStudentUuid());
 	            pstmt.setString(9, studentFee.getTransactionID());
 	            pstmt.executeUpdate();
+	            
+	            studentAmountDAO.deductAmount(studentFee.getSchoolAccountUuid(), studentFee.getStudentUuid(), studentFee.getAmountPaid());
 
   } catch (SQLException e) {
         logger.error("SQL Exception when updating StudentFee " + studentFee);

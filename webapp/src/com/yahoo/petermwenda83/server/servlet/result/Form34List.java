@@ -164,9 +164,9 @@ public class Form34List extends HttpServlet{
 		roomDAO = RoomDAO.getInstance();
 		examConfigDAO = ExamConfigDAO.getInstance();
 		gradingSystemDAO = GradingSystemDAO.getInstance();
+		
 		USER = System.getProperty("user.name");
-		path = "/home/"+USER+"/school/logo";
-	}
+		path = "/home/"+USER+"/school/logo/logo.png";	}
 
 	/**
 	 *
@@ -226,12 +226,14 @@ public class Form34List extends HttpServlet{
 
 			for(Student stu : studentList){
 				studentAdmNoHash.put(stu.getUuid(),stu.getAdmno()); 
-				String firstNameLowecase = stu.getFirstname().toLowerCase();
-				String lastNameLowecase = stu.getLastname().toLowerCase();
-				String formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
-				String formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
-
-				studNameHash.put(stu.getUuid(),formatedFirstname + " " + formatedLastname); 
+				   String firstNameLowecase = stu.getFirstname().toLowerCase();
+		           String lastNameLowecase = stu.getLastname().toLowerCase();
+		           String surNameLowecase = stu.getSurname().toLowerCase(); 
+		   		   String formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+		   		   String formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+		   		   String formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+		   		   
+		           studNameHash.put(stu.getUuid(),formatedFirstname + " " + formatedLastname ); 
 				
 				List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
 		          classroomList = roomDAO.getAllRooms(school.getUuid()); 

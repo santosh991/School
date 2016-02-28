@@ -81,32 +81,23 @@
 
 <jsp:include page="header.jsp" />
 
-<script>
-	
-	function hideDiv(){
-		$('#motherDiv').hide();
-	}
-
-	function showDiv(){
-    $('#motherDiv').show();
-
-	 }
-
-</script>  
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :STUDENT REGISTRATION PANEL (PARENT/GUARDIAN INFORMATION): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
 
+        <li>
+            <a href="studentIndex.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
+ 
 <div class="row-fluid sortable">
 
 
-
-               
-
-
-
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-   <p>[<a href="schoolIndex.jsp">Back</a>]  <%=schoolname%> : Parent/Guardian Registration Panel : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
           
                <%
@@ -128,6 +119,7 @@
                                 String findsuccess = "";
                                 String addError = "";
                                 String addsuccess = "";
+
                                 session = request.getSession(false);
                                 findError = (String) session.getAttribute(SessionConstants.STUDENT_FIND_ERROR);
                                 findsuccess = (String) session.getAttribute(SessionConstants.STUDENT_FIND_SUCCESS); 
@@ -164,9 +156,17 @@
                                   } 
 
                            String admNumber =""; 
+
+                           String fullname = "";
+
                            String firstname ="";
                            String lastname =""; 
                            String surname ="";  
+
+                           String formatedFirstname = "";
+                           String formatedLastname = "";
+                           String formatedSurname = "";
+
                           if(StringUtils.isEmpty(paramHash.get("admNumber"))){
                            admNumber = " ";
                           }else{
@@ -177,6 +177,8 @@
                            firstname = " ";
                           }else{
                            firstname = paramHash.get("firstname"); 
+                           String firstNameLowecase = firstname.toLowerCase();
+                            formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
                            }
 
 
@@ -184,6 +186,8 @@
                            lastname = " ";
                           }else{
                            lastname = paramHash.get("lastname"); 
+                            String lastNameLowecase = lastname.toLowerCase();
+                            formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
                            }
 
 
@@ -191,46 +195,70 @@
                            surname = " ";
                           }else{
                            surname = paramHash.get("surname"); 
-                           }
+                           String surNameLowecase = surname.toLowerCase();
+                           formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
 
+                           }
+                           fullname = formatedFirstname+" "+formatedLastname+" "+formatedSurname;
 
                      %>
+
+              <table class="table table-striped  ">
+                <thead>
+                    <tr >             
+                        <th></th>
+                        <th></th>
+                        <th>Search</th>
+                    </tr>
+                </thead>   
+
+                <tbody >
+
+                              <form name="view" method="POST" action="findStudentP"> 
+
+                               <td width="8%" class="center">                              
+                              <p><b>Student Admission Number:</b><p>                                                    
+                               </td> 
+
+                                <td width="10%" class="center">                              
+                                   <input class="input-xlarge focused" id="receiver" type="text" name="AdmNo" 
+                                    value=""  >                                                    
+                               </td> 
+
+                               <td width="10%" class="center">                                
+                            <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Find" />                                                         
+                               </td> 
+                               </form> 
+
+
+                </tbody>                  
+            </table>  
+
+
+
+
+             <table class="table ">
+                <thead>
+                    <tr >             
+                        <th>Student AdmNo</th>
+                        <th>Student name</th>
+                    </tr>
+                </thead>   
+                <tbody >
+                    <%  
+                               out.println("<tr>"); 
+                               out.println("<td width=\"10%\" class=\"center\">" + admNumber + "</td>");  
+                               out.println("<td width=\"10%\" class=\"center\">" + fullname + "</td>");    
+                             
+                    %> 
+
+                </tbody>                  
+            </table>  
               
-               <form  class="form-horizontal"   action="findStudentP" method="POST" >
-               <fieldset>
-		                     <div class="control-group">
-		                         <label class="control-label" for="name">Admission Number:</label>
-		                             <div class="controls">
-		                               <input class="input-xlarge focused" id="receiver" type="text" name="AdmNo" 
-		                                value=""  >
-		                           </div>
-		                    </div> <!--end of form find-->
-		                 
-		                    <!--submit form -->  
-		                    <div class="form-actions">
-		                          <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
-		                          <button type="submit" name="Find" value="Find"   class="btn btn-primary">Find</button> 
-		                    </div>
-
-                </fieldset>
-                </form>
- 
-               <form  class="form-horizontal"   action="" method="POST" >
-               <fieldset>
-			                     <div class="control-group">
-                                    <label class="control-label" for="name">Student:</label>
-                                    <div class="controls">
-                                    <input class="input-xlarge focused" id="receiver" type="text" name="" 
-                                        value="<%=admNumber + " (" + firstname +" "+ lastname +" " + surname +")"%>" readonly >
-                                    </div>
-                                </div>  
-                                
-                 </fieldset>
-                 </form>
-
 
                 <h3><i class="icon-edit"></i> Student Parent/Guardian Details:</h3>  
-                <p>Fields marked with a * are compulsory. (If the student is an orphan,Guardian's details can be entered in the place of father or mother)</p>
+                <p>Fields marked with a * are compulsory. <br> (If the student is an orphan,Guardian's details can be entered in the place of father or mother)</p>
 
                 <form  class="form-horizontal"   action="addStudentParent" method="POST" >
                 <fieldset>           
@@ -348,7 +376,9 @@
               </fieldset>
               </form>
        
-
+     <%
+            //fatherMotherParamHash.clear();
+     %>
 
     </div>
      </div>

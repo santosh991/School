@@ -72,6 +72,30 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :REPORTS PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+
+        <li>
+            <a href="#">FORM ONE</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="#">FORM TWO</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="#">FORM THREE</a> <span class="divider">/</span>
+        </li>
+
+        <li>
+            <a href="#">FORM FOUR</a>
+        </li>
+        
+    </ul>
+</div>
+
 
 
 <div class="row-fluid sortable">
@@ -80,9 +104,6 @@
 
 
         <div class="box span12">
-        <div class="box-header well" data-original-title>
-          <p>Welcome to <%=schoolname%> :REPORTS PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
             
             

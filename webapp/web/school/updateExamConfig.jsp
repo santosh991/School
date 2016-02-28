@@ -82,6 +82,18 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :EXAM CONFIGURATION PANEL (UPDATE CONFIGURATIONS): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+
+        <li>
+            <a href="examConfig.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
 
 
 
@@ -91,9 +103,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%>:Update Exam Configurations: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
          <div class="box-content">
 
         

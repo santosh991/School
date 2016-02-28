@@ -148,16 +148,20 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :HOUSE/DOMITPRY MANAGEMENT PANEL : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
+      <li>
+            <a href="addHouse.jsp">Assign House</a> <span class="divider">/</span>
+        </li>
+    </ul>
+</div>
+
 
 <div class="row-fluid sortable">
 
                
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p><a href="">Change House</a>   Welcome to <%=schoolname%> :House Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
-
-
         <div class="box-content">
         
                 <table class="table table-striped table-bordered bootstrap-datatable datatable">

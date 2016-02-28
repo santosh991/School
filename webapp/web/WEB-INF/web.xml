@@ -306,6 +306,33 @@
 
 
 
+
+
+    <listener>
+    <listener-class>com.yahoo.petermwenda83.server.servlet.quartz.QuartzListener</listener-class>
+    </listener>
+
+
+
+
+<!-- TERM FEE UPDATE -->
+
+   <servlet>
+        <servlet-name>NewTermUpdate</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.newtermupdate.NewTermUpdate</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
+
+
+
+
  <!-- start administrator -->
 
 
@@ -340,9 +367,6 @@
 
 
     
-    <listener>
-    <listener-class>com.yahoo.petermwenda83.server.servlet.quartz.QuartzListener</listener-class>
-    </listener>
 
 
 
@@ -637,6 +661,12 @@
     </servlet-mapping>
 
 
+<!-- TERM FEE UPDATE -->
+
+    <servlet-mapping>
+        <servlet-name>NewTermUpdate</servlet-name>
+        <url-pattern>/school/committ</url-pattern>
+    </servlet-mapping>
 
 
 
@@ -671,6 +701,12 @@
         <servlet-name>AddRootUser</servlet-name>
         <url-pattern>/admin/addRootUser</url-pattern>
     </servlet-mapping>
+
+
+
+
+
+
 
 
 

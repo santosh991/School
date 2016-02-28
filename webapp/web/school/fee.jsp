@@ -10,6 +10,9 @@
 
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
+<%@page import="com.yahoo.petermwenda83.bean.money.StudentAmount"%>
+
+
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
@@ -94,22 +97,39 @@
 
 
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=termFee.getTermAmount()%><b> </li> <br>
+
+        <li>
+            <a href="addFee.jsp">Add</a> <span class="divider">/</span>
+        </li>
+
+         
+        
+    </ul>
+</div>
+
+
+
 <div class="row-fluid sortable">
 
 
 
 
         <div class="box span12">
-        <div class="box-header well" data-original-title>
-      <p> <a href="addFee.jsp">Add</a>    Welcome to <%=schoolname%> :FEE MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%>  TERM FEE : <%=termFee.getTermAmount()%> </p>
-        </div>
         <div class="box-content">
 
          <%
+                    HashMap<String, StudentAmount> studentAmountHash = (HashMap<String, StudentAmount>) session.getAttribute(SessionConstants.STUENT_BALANCE_PARAM);
                     HashMap<String, Student> studentParamHash = (HashMap<String, Student>) session.getAttribute(SessionConstants.STUENT_PARAM_F);
                     HashMap<String, List<StudentFee> > feeParamHash = (HashMap<String, List<StudentFee> >) session.getAttribute(SessionConstants.FEE_PARAM);
 
-                        if (studentParamHash == null) {
+                        if (studentAmountHash == null) {
+                             studentAmountHash = new HashMap<String, StudentAmount>();
+                            }
+
+                            if (studentParamHash == null) {
                              studentParamHash = new HashMap<String, Student>();
                             }
 
@@ -117,11 +137,18 @@
                              feeParamHash = new HashMap<String, List<StudentFee> >();
                             }
 
-                               Student student = new Student();
-                               student = studentParamHash.get("studentObj");
 
-                               List<StudentFee> studentfeeList = new ArrayList<StudentFee>();
-                               studentfeeList = feeParamHash.get("studentfeeList");
+                            StudentAmount studentAmount = new StudentAmount();
+                            studentAmount = studentAmountHash.get("studentamountObj");
+
+
+                            Student student = new Student();
+                            student = studentParamHash.get("studentObj");
+                              
+
+                            List<StudentFee> studentfeeList = new ArrayList<StudentFee>();
+                            studentfeeList = feeParamHash.get("studentfeeList");
+                            
 
                                
                          
@@ -290,8 +317,8 @@
                                totalpaid = totalpaid + total;
                                out.println("<tr>"); 
                                out.println("<td width=\"3%\" >" + count + "</td>"); 
-                               out.println("<td class=\"center\">" +  sfee.getAmountPaid() + "</td>"); 
-                               out.println("<td class=\"center\">" +  sfee.getTransactionID() + "</td>"); 
+                               out.println("<td class=\"center\">" +  nf.format(total) + "</td>"); 
+                               out.println("<td class=\"center\">" +  sfee.getTransactionID() + "</td>");
                                out.println("<td class=\"center\">" +  sfee.getDatePaid() + "</td>"); 
                                %>
                                <td class="center">
@@ -301,7 +328,7 @@
                                 <input type="hidden" name="studentuuid" value="<%=sfee.getStudentUuid()%>">
                                 <input type="hidden" name="fullname" value="<%=fullname%>">
                                  <input type="hidden" name="admNumber" value="<%=admNumber%>">
-                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Deduct" /> 
                                 </form>                          
                                </td>    
 
@@ -313,17 +340,36 @@
                             
 		                       }		                       
                            }                   
-                   
+                  
                              %> 
 
                                
 
                 </tbody>                                 
             </table>  
+ 
 
 
+            
+            <table class="table  ">
+                <thead>
+                    <tr >             
+                        <th>Totals</th>
+                    </tr>
+                </thead>   
+                <tbody >
+                    <%  
+                              
+                               out.println("<tr>"); 
+                               out.println("<td class=\"center\">" +  nf.format(totalpaid) + "</td>"); 
+                             
+                    %> 
+
+                </tbody>
 
 
+                                   
+            </table>  
 
 
 
@@ -337,10 +383,16 @@
                 </thead>   
                 <tbody >
                     <%  
-                                double termfee = termFee.getTermAmount();
-					            double balance =  termfee - totalpaid;
+                               double mybalance = 0.0;   
+
+                               if(studentAmount !=null){
+                                    mybalance =  studentAmount.getAmount();
+                                  }
+
+                               double termfee = termFee.getTermAmount();
+					                     double balance =  termfee - mybalance;
                                out.println("<tr>"); 
-                               out.println("<td width=\"10%\" class=\"center\">" + nf.format(totalpaid) + "</td>");  
+                               out.println("<td width=\"10%\" class=\"center\">" + nf.format(mybalance) + "</td>");  
                                out.println("<td width=\"10%\" class=\"center\">" + nf.format(balance) + "</td>");    
                              
                     %> 

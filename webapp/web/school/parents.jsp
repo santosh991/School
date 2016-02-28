@@ -113,8 +113,14 @@
 
 <jsp:include page="header.jsp" />
 
-
-
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :PARENTS PANEL : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+      <li>
+            <a href="addParent.jsp">New Parent</a> <span class="divider">/</span>
+        </li>
+    </ul>
+</div>
 
 <div class="row-fluid sortable">
 
@@ -124,9 +130,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>Welcome to <%=schoolname%> :Parents Management Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
                 <table class="table table-striped table-bordered bootstrap-datatable datatable">

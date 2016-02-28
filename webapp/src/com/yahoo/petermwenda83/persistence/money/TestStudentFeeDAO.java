@@ -35,7 +35,7 @@ public class TestStudentFeeDAO {
 	final String SCHOOL_UUID = "E3CDC578-37BA-4CDB-B150-DAB0409270CD";
 	
 	final String STUDENT_UUID = "4F218688-6DE5-4E69-8690-66FBA2F0DC9F",
-			     STUDENTUUID_NEW ="29A012E5-CDE3-45D8-9BB0-A25D3DBF0A92";
+		     STUDENTUUID_NEW ="A195BAF6-D6E7-43A5-B7C9-D6C627A42815";
 
 
 	final String TRANSCATION_ID = "7B59B315-70B7-4470-BC62-9284B5AADE86",
@@ -43,8 +43,8 @@ public class TestStudentFeeDAO {
       			 TRANSCATION_ID_UPDATE ="427E2D6D-39DF-4D01-A64E-A36E877058E5";
 	
 	final double AMOUNT_PAID = 6700,
-			     AMOUNT_PAID_NEW =2000,
-			     AMOUNT_PAID_UPDATE =1200;
+			     AMOUNT_PAID_NEW =1111,
+			     AMOUNT_PAID_UPDATE =10000;
 	
 	final String SYSTEM_USER = "Peter",
 			     SYSTEM_USER_NEW ="new",
@@ -101,7 +101,7 @@ public class TestStudentFeeDAO {
 	public final void testPutStudentFee() {
 		store = new StudentFeeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		StudentFee sf = new StudentFee();
-		sf.setUuid(UUID_NEW);
+		//sf.setUuid(UUID_NEW);
 		sf.setSchoolAccountUuid(SCHOOL_UUID);
 		sf.setStudentUuid(STUDENTUUID_NEW);
 		sf.setTransactionID(TRANSCATION_ID_NEW);

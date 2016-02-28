@@ -87,17 +87,15 @@
 <jsp:include page="header.jsp" />
 
 
-
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :EXAM CONFIGURATION PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> 
+        
+    </ul>
+</div>
 
 <div class="row-fluid sortable">
-
-
-
-
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p> Welcome to <%=schoolname%> :Exam Configuration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
         <%

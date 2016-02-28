@@ -107,7 +107,7 @@ public class AddFeeDetails extends HttpServlet{
 		   StudentFee studentFee = new StudentFee();
 		   studentFee.setSchoolAccountUuid(schooluuid);
 		   studentFee.setStudentUuid(studentuuid);
-		   studentFee.setTransactionID(slipNumber);
+		   studentFee.setTransactionID(slipNumber.toUpperCase()); 
 		   studentFee.setAmountPaid(Double.parseDouble(Amountpaid)); 
 		   studentFee.setTerm(examConfig.getTerm());
 		   studentFee.setYear(examConfig.getYear());

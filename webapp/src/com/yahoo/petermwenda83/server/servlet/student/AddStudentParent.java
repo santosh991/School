@@ -187,6 +187,7 @@ public class AddStudentParent extends HttpServlet{
 		parent.setRelativeName(RelativeName);
 		parent.setRelativePhone(RelativePhone);
 	    if(parentsDAO.putParent(parent)){
+	    	 fatherMotherParamHash.clear();
 	    	 session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_SUCCESS, FATHER_MOTHER_ADD_SUCCESS); 	
 	    }else{
 	    	session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, FATHER_MOTHER_ADD_ERROR); 	

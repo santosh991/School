@@ -643,6 +643,24 @@ ALTER TABLE TermFee OWNER TO school;
 
 
 -- -------------------
+-- Table  StudentAmount
+-- -------------------
+
+CREATE TABLE  StudentAmount (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    StudentUuid text REFERENCES student(uuid),
+    Amount float 
+   
+
+);
+\COPY StudentAmount(Uuid,SchoolAccountUuid,StudentUuid,Amount) FROM '/tmp/StudentAmount.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentAmount OWNER TO school;
+
+
+
+-- -------------------
 -- Table  StudentFee
 -- -------------------
 

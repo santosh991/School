@@ -91,6 +91,16 @@
 <jsp:include page="header.jsp" />
 
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :POCKET MOMNEY MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+         
+        
+    </ul>
+</div>
+
+
 
 <div class="row-fluid sortable">
 
@@ -98,9 +108,6 @@
 
 
         <div class="box span12">
-        <div class="box-header well" data-original-title>
-          <p> Welcome to <%=schoolname%> :POCKET MOMNEY MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
                     <%

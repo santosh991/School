@@ -19,9 +19,11 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
@@ -43,6 +45,7 @@ public class FindStudentFee extends HttpServlet{
     private static StudentDAO studentDAO;
     private static StudentFeeDAO studentFeeDAO;
     private static ExamConfigDAO examConfigDAO;
+    private static StudentAmountDAO studentAmountDAO;
     
 	/**  
     *
@@ -55,6 +58,7 @@ public class FindStudentFee extends HttpServlet{
        studentDAO = StudentDAO.getInstance();
        studentFeeDAO = StudentFeeDAO.getInstance();
        examConfigDAO = ExamConfigDAO.getInstance();
+       studentAmountDAO = StudentAmountDAO.getInstance();
       
    }
    
@@ -67,6 +71,7 @@ public class FindStudentFee extends HttpServlet{
        
        Map<String, Student> studentHash = new HashMap<>();  
        Map<String, List<StudentFee> > feeListHash = new HashMap<>();  
+       Map<String, StudentAmount> studentAmountHash = new HashMap<>();  
 
        if(StringUtils.isBlank(admissionNumber)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_NO_ADMNO); 
@@ -87,14 +92,20 @@ public class FindStudentFee extends HttpServlet{
         	  student = studentDAO.getStudentObjByadmNo(schoolUuid, admissionNumber);
         	  studentHash.put("studentObj", student);
            }
+           
+           StudentAmount studentAmount = new StudentAmount();
+           if(studentAmountDAO.getStudentAmount(schoolUuid, student.getUuid()) !=null){
+        	   studentAmount = studentAmountDAO.getStudentAmount(schoolUuid, student.getUuid());
+        	   studentAmountHash.put("studentamountObj", studentAmount);
+        	  
+           }
 		  
            List<StudentFee> studentfeeList = new ArrayList<StudentFee>();
-           //System.out.println("student="+student); 
            
            if(studentFeeDAO.getStudentFeeByStudentUuidList(schoolUuid, student.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
         	   studentfeeList = studentFeeDAO.getStudentFeeByStudentUuidList(schoolUuid, student.getUuid(),examConfig.getTerm(),examConfig.getYear());
         	   feeListHash.put("studentfeeList", studentfeeList);
-        	  // System.out.println("studentfeeList="+studentfeeList); 
+        	 
            }
 		
           
@@ -104,6 +115,7 @@ public class FindStudentFee extends HttpServlet{
  
        session.setAttribute(SessionConstants.FEE_PARAM, feeListHash); 
        session.setAttribute(SessionConstants.STUENT_PARAM_F, studentHash); 
+       session.setAttribute(SessionConstants.STUENT_BALANCE_PARAM, studentAmountHash); 
        response.sendRedirect("fee.jsp");  
 	   return;
        

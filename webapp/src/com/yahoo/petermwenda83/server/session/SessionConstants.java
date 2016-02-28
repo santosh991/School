@@ -99,9 +99,12 @@ public class SessionConstants {
 	public static final String STUENT_POCKET_MONEY_PARAM = "pocket Money Parameters";
 	public static final String STUENT_PM_DEPOSITE_PARAM = "deposit Parameters";
 	public static final String STUENT_PM_WITHDRAW_PARAM = "Withdraw Parameters";
+	public static final String STUENT_BALANCE_PARAM = "Balance Parameters";
 	
+	//Term Fee Update
 	
-	
+	public static final String TERM_FEE_UPDATE_SUCCESS = "Term Fee Updated Successfully";
+	public static final String TERM_FEE_UPDATE_ERROR = "Term Fee Updated Error";
 	
 	
 	

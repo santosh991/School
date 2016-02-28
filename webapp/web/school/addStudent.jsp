@@ -125,6 +125,18 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :STUDENT REGISTRATION PANEL (BASIC INFORMATION): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+
+
+        <li>
+            <a href="studentIndex.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
 
 
 
@@ -132,14 +144,9 @@
 
 
 
-               
-
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-   <p>[<a href="schoolIndex.jsp">Back</a>]  <%=schoolname%> :Student Registration Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
           
                <%

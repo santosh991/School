@@ -135,6 +135,12 @@ public class UploadUtil {
 			     if(ScoreToken!=null){
 			     for(String score : ScoreToken) {
 			    	 
+			    	 
+			    	 
+			    	  if(StringUtils.isBlank(score) ||StringUtils.isEmpty(score) || score == null){
+	    			    	return ("Blank score " + score + " on line \"" + count);
+	    			    }
+			    	 
 			    	 if(!StringUtils.isNumeric(score)) {
 			    		 return ("Invalid score on line \"" + count + "\":   \"" + line+"\"");
 			    	 }

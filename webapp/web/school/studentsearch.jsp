@@ -109,6 +109,8 @@
                    String formatedLastname = "";
                    String formatedSurname = "";
 
+                     String gender = "";
+
                     String status = "";
                      String primaryschool = "";
                       String kcpeindex = "";
@@ -120,6 +122,13 @@
                     String firstNameLowecase = st.getFirstname().toLowerCase();
                     String lastNameLowecase =st.getSurname().toLowerCase();
                     String surNameLowecase = st.getLastname().toLowerCase();
+
+                     gender = st.getGender();
+                    if(StringUtils.equalsIgnoreCase(gender, "FEMALE")) {
+                                gender = "F";
+                                     }else{
+                                    gender = "M";
+                                 }
                     
                     formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
                     formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
@@ -150,7 +159,7 @@
                         <td width="3%"><%=count%></td>
                          <td class="center"><%=st.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
-                         <td class="center"><%=st.getGender()%></td>
+                         <td class="center"><%=gender%></td>
                          <td class="center"><%=st.getdOB()%></td>
                          <td class="center"><%=st.getBcertno()%></td>
                          <td class="center"><%=classroomHash.get(st.getClassRoomUuid())%></td>

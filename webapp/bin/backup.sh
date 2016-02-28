@@ -22,11 +22,11 @@ export PGUSER=$DB_USERNAME
 export PGHOST=$DB_HOST
 export PGPASSWORD=$DB_PASSWORD
 
-echo "backing up..."
+#echo "backing up..."
 
 pg_dump  -U school schooldb -f /home/$USER/school/dbBackup/buckup.sql
 
-echo "done.!"
+#echo "done.!"
 
 
 

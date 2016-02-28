@@ -123,6 +123,7 @@ public class AddStudentSponsor extends HttpServlet{
 		session.setAttribute(SessionConstants.SPONSOR_PARAM, paramHash); 
 		
 		  if(sponsorsDAO.putSponsor(sponsor)){
+			  sponsorParamHash.clear();
 			  session.setAttribute(SessionConstants.SPONSOR_ADD_SUCCESS, SPONSOR_ADD_SUCESS); 
 		  }else{
 			  session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, SPONSOR_ADD_ERROR);   

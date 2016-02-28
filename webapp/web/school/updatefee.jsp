@@ -81,7 +81,18 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :STUDENT FEE MANAGEMENT PANEL(FEE UPDATE): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
+
+        <li>
+            <a href="fee.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
 
 
 <div class="row-fluid sortable">
@@ -93,9 +104,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-   <p>[<a href="fee.jsp">Back</a>]  <%=schoolname%> :Student Fee Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
                    <%
@@ -127,7 +135,7 @@
                      %>
                                
                              
-                                <p>Fields marked with a * are compulsory.</p>
+      <p color="red"> Confirm that the amount and Bank slip number shown below are correct  then replace the ammount with new ammount to be deducted</p>
 
 
 

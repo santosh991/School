@@ -87,7 +87,18 @@
 
 <jsp:include page="header.jsp" />
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :EXAM GRADING SCALE: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
+
+        <li>
+            <a href="examConfig.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        
+    </ul>
+</div>
 
 
 <div class="row-fluid sortable">
@@ -96,9 +107,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-         <p>    Welcome to <%=schoolname%> :Exam Grading scale Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
 
         <%             

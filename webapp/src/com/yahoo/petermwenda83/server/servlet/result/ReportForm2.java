@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +46,7 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
-import com.yahoo.petermwenda83.bean.money.StudentFee;
+import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
@@ -57,7 +56,7 @@ import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
-import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
+import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
@@ -97,7 +96,7 @@ public class ReportForm2 extends HttpServlet{
      private static RoomDAO roomDAO;
      private static ExamConfigDAO examConfigDAO;
      private static GradingSystemDAO gradingSystemDAO;
-     private static StudentFeeDAO studentFeeDAO;
+     private static StudentAmountDAO studentAmountDAO;
      private static TermFeeDAO termFeeDAO;
     
       String classroomuuid = "";String schoolusername = "";String stffID = "";
@@ -173,11 +172,11 @@ public void init(ServletConfig config) throws ServletException {
    roomDAO = RoomDAO.getInstance();
    examConfigDAO = ExamConfigDAO.getInstance();
    gradingSystemDAO = GradingSystemDAO.getInstance();
-   studentFeeDAO = StudentFeeDAO.getInstance();
+   studentAmountDAO = StudentAmountDAO.getInstance();
    termFeeDAO = TermFeeDAO.getInstance();
    
    USER = System.getProperty("user.name");
-   path = "/home/"+USER+"/school/logo";
+   path = "/home/"+USER+"/school/logo/logo.png";
 }
 
 /**
@@ -784,7 +783,11 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
               studename = studNameHash.get(uuid);   
               firstnamee = firstnameHash.get(uuid);
               
-              StudentFee studentFee = studentFeeDAO.getStudentFeeByStudentUuid(school.getUuid(), uuid,examConfig.getTerm(),examConfig.getYear()); 
+              StudentAmount studentAmount = new StudentAmount();
+              if(studentAmountDAO.getStudentAmount(school.getUuid(), uuid) !=null){
+            	  studentAmount = studentAmountDAO.getStudentAmount(school.getUuid(), uuid);
+              }
+              
    		      TermFee termFee = termFeeDAO.getTermFee(school.getUuid());
 
               engc1 = 0;kisc1 = 0;matc1 = 0;phyc1 = 0;chemc1 = 0;bioc1 = 0;
@@ -1524,10 +1527,14 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                     feeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
                     
                     
-                    double amountpaid = studentFee.getAmountPaid();
+         		    double amountpaid = 0.0;
+         		    double balance = 0.0;
+         		    
                     double termfee = termFee.getTermAmount();
-                    double balance =  termfee - amountpaid;
                     double nexttermfee = termFee.getNextTermAmount();
+                   
+                    amountpaid = studentAmount.getAmount();
+                    balance =  termfee - amountpaid;
                     
                     Locale locale = new Locale("en","KE"); 
             		NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
@@ -1550,8 +1557,8 @@ private void populatePDFDocument(SessionStatistics statistics, SchoolAccount sch
                     commentTable.setWidths(new int[]{100,100}); 
                     commentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
                     
-                    PdfPCell commentCell = new PdfPCell(new Paragraph("Thanks " + firstnamee + " for the fantastic term, it has been awesome to see you grow "
-                    + "and develope, hope you have a wonderful holiday.\nFor your performance, all we can say is ... " + classteacherRemarks(mean)+"\n\n"));
+                    PdfPCell commentCell = new PdfPCell(new Paragraph("Thank you " + firstnamee + " for the fantastic term, it has been awesome to see you grow "
+                            + "and develop, hope you have a wonderful holiday.\nFor your performance, all we can say is ... " + classteacherRemarks(mean)+"\n\n"));
                     commentCell.setBackgroundColor(Colormagenta);
                     commentCell.setColspan(2); 
                     commentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
