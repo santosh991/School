@@ -85,6 +85,7 @@ public class AllStudentsFinaceReport extends HttpServlet{
 
 		String USER= "";
 		String path ="";
+		String pdfname = "";
 		
 
 		HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
@@ -145,8 +146,9 @@ public class AllStudentsFinaceReport extends HttpServlet{
 		
 		List<Student> studentList = new ArrayList<Student>(); 
 		studentList = studentDAO.getAllStudentList(school.getUuid());
-
+        
 		for(Student stu : studentList){
+			
 			studentAdmNoHash.put(stu.getUuid(),stu.getAdmno()); 
 			String firstNameLowecase = stu.getFirstname().toLowerCase();
 			String lastNameLowecase = stu.getLastname().toLowerCase();
@@ -158,8 +160,8 @@ public class AllStudentsFinaceReport extends HttpServlet{
 			firstnameHash.put(stu.getUuid(), formatedFirstname);
 		}
 
-		String pdfname =school.getUsername()+"Report.pdf";
-
+		
+		pdfname =new Date()+school.getUsername()+"_Student_FeeReport_.pdf"; 
 		response.setHeader("Content-Disposition", "inline; filename= \"" +pdfname);
 
 		examConfig = new ExamConfig();
@@ -293,7 +295,7 @@ public class AllStudentsFinaceReport extends HttpServlet{
 					preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 					preface.add(new Paragraph("PRINTED ON :"+formattedDate + " FOR YEAR :"+examConfig.getYear()+"\n\n", smallBold));
 
-					PdfPCell contheader = new PdfPCell(new Paragraph(("TERM " +examConfig.getTerm() + ": YEAR " + examConfig.getYear() +"\n\n" +("CLASS : " + roomHash.get(s.getClassRoomUuid()) +"\n")) +"",boldFont));
+					PdfPCell contheader = new PdfPCell(new Paragraph(("TERM " +examConfig.getTerm() + ": YEAR " + examConfig.getYear()+" TERM FEE "+nf.format(termFees.getTermAmount()) +"\n\n" +("CLASS : " + roomHash.get(s.getClassRoomUuid()) +"\n")) +"",boldFont));
 					contheader.setBackgroundColor(Colormagenta);
 					contheader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -305,22 +307,31 @@ public class AllStudentsFinaceReport extends HttpServlet{
 					containerTable.addCell(bodyheader);
 					containerTable.addCell(contheader);
 					
-					int mycount = 1;
-					for(StudentFee fee : list){
+					Paragraph balance = new Paragraph();
 					
+					
+					int mycount = 1;
+					double totalpaid = 0;
+					//totalpaid = 0;
+					for(StudentFee fee : list){
+					//
                     
 					myTable.addCell(mycount+"");
 					myTable.addCell(nf.format(fee.getAmountPaid()));
 					myTable.addCell(fee.getTransactionID());
+					totalpaid +=fee.getAmountPaid();
+					
 					mycount++;
+					
 					}
-
+					balance.add(new Paragraph("Fee Balance "+nf.format((termFees.getTermAmount()-totalpaid)), smallBold));
 					document.add(preface);
 					document.add(emptyline);
 					document.add(containerTable);      	  
 					document.add(emptyline);
 					document.add(myTable); 
 					document.add(emptyline);
+					document.add(balance);
 					document.newPage();
 					
 					count++;
