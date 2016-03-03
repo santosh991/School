@@ -96,6 +96,17 @@ public class TestPerfomanceDAO {
 	
 	}
 	
+	@Ignore
+	@Test
+	public void testGetPerfomanceListDistinctGeneral() {
+		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		List<Perfomance> list = store.getPerfomanceListDistinctGeneral(SCHOOL_UUID,FORM_ONE_N,TERM,YEAR);
+		for(Perfomance p : list){
+			System.out.println(p.getStudentUuid());
+		}
+	
+	}
+	
 
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO#getPerfomanceList(java.lang.String)}.
@@ -104,7 +115,7 @@ public class TestPerfomanceDAO {
 	@Test  
 	public void testGetClassPerfomanceList() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getClassPerfomanceList(SCHOOL_UUID,FORM_ONE,TERM,YEAR);
+		List<Perfomance> list = store.getClassPerfomanceListGeneral(SCHOOL_UUID,FORM_ONE,TERM,YEAR);
 		for(Perfomance p : list){
 			System.out.println(p);
 		}

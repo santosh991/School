@@ -95,7 +95,9 @@
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> :POCKET MOMNEY MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
-         
+        <li>
+            <a href="feeIndex.jsp">Back</a> <span class="divider">/</span>
+        </li>
         
     </ul>
 </div>

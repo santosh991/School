@@ -3,6 +3,8 @@
  */
 package com.yahoo.petermwenda83.persistence.money;
 
+import java.util.List;
+
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
 
 /**
@@ -30,7 +32,7 @@ public interface SchoolStudentAmountDAO {
 	 * @param amount
 	 * @return
 	 */
-	public boolean addAmount(String schoolAccountUuid,String studentUuid,double amount);
+	public boolean addAmount(String schoolAccountUuid,String studentUuid,double amount,String Status);
 	 /**
 	  * 
 	  * @param studentAmount
@@ -38,6 +40,21 @@ public interface SchoolStudentAmountDAO {
 	  * @return
 	  */
 	public boolean deductAmount(String schoolAccountUuid,String studentUuid,double amount);
+	
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param Status
+	 * @return
+	 */
+	public boolean changeStatus(String Status,String schoolAccountUuid, String studentUuid);
+	
+	 /**
+	  * 
+	  * @param schoolAccountUuid
+	  * @return
+	  */
+	public List<StudentAmount> getAmountList(String schoolAccountUuid);
 	
 
 }

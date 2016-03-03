@@ -116,7 +116,7 @@ public class TestStudentFeeDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.StudentFeeDAO#updateStudentFee(com.yahoo.petermwenda83.bean.money.StudentFee)}.
 	 */
-	//@Ignore
+	@Ignore
 	@Test
 	public final void testUpdateStudentFee() {
 		store = new StudentFeeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -164,11 +164,25 @@ public class TestStudentFeeDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.StudentFeeDAO#getStudentFeeList(java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test
 	public final void testGetStudentFeeByStudentUuidList() {
 		store = new StudentFeeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		List<StudentFee> list = store.getStudentFeeByStudentUuidList(SCHOOL_UUID,STUDENT_UUID,TERM,YEAR);
+		for (StudentFee l : list) {
+					System.out.println(l);	
+				}
+			
+	}
+	
+	/**
+	 * Test method for {@link com.yahoo.petermwenda83.persistence.money.StudentFeeDAO#getStudentFeeList(java.lang.String)}.
+	 */
+	@Ignore
+	@Test
+	public final void testGetStudentFeeDistinctList() {
+		store = new StudentFeeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		List<StudentFee> list = store.getStudentFeeDistinctList(SCHOOL_UUID,TERM,YEAR);
 		for (StudentFee l : list) {
 					System.out.println(l);	
 				}

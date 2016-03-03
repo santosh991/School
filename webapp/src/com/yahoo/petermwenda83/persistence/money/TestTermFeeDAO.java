@@ -42,7 +42,7 @@ public class TestTermFeeDAO {
 	public final void testGetTermFee() {
 		store = new TermFeeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		TermFee t = new TermFee();
-		t = store.getTermFee(SCHOOL_UUID);
+		//t = store.getTermFee(SCHOOL_UUID);
 		assertEquals(t.getUuid(),UUID);
 		assertEquals(t.getSchoolAccountUuid(),SCHOOL_UUID);
 		assertEquals(t.getTermAmount(),TERM_FEE,0);

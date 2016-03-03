@@ -16,16 +16,17 @@ public class TermFee extends StorableBean{
 	 */
 	private static final long serialVersionUID = 3556481789932595293L;
 	private String schoolAccountUuid;
+	private String term;
 	private double termAmount;
-	private double nextTermAmount;
-
+	
 	/** 
 	 * 
 	 */
 	public TermFee() {
 		schoolAccountUuid = "";
+		term = "";
 		termAmount = 0.0;
-		nextTermAmount = 0.0;
+		
 
 	}
 	
@@ -50,6 +51,24 @@ public class TermFee extends StorableBean{
 
 
 	/**
+	 * @return the term
+	 */
+	public String getTerm() {
+		return term;
+	}
+
+
+
+	/**
+	 * @param term the term to set
+	 */
+	public void setTerm(String term) {
+		this.term = term;
+	}
+
+
+
+	/**
 	 * @return the termAmount
 	 */
 	public double getTermAmount() {
@@ -67,23 +86,6 @@ public class TermFee extends StorableBean{
 
    
 
-	/**
-	 * @return the nextTermAmount
-	 */
-	public double getNextTermAmount() {
-		return nextTermAmount;
-	}
-
-
-
-	/**
-	 * @param nextTermAmount the nextTermAmount to set
-	 */
-	public void setNextTermAmount(double nextTermAmount) {
-		this.nextTermAmount = nextTermAmount;
-	}
-
-
 
 	@Override
 	public String toString(){
@@ -93,10 +95,10 @@ public class TermFee extends StorableBean{
 		builder.append(getUuid());
 		builder.append(", schoolAccountUuid =");
 		builder.append(schoolAccountUuid); 
+		builder.append(", term =");
+		builder.append(term);
 		builder.append(", termAmount =");
 		builder.append(termAmount);
-		builder.append(", nextTermAmount =");
-		builder.append(nextTermAmount);
 		builder.append("]");
 		return builder.toString(); 
 		}

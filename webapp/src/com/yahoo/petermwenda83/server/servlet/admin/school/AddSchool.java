@@ -187,11 +187,16 @@ public class AddSchool extends HttpServlet{
 	    		   houseDAO.putHouse(house);
 	    	   }
 			   
-			   TermFee termFee = new TermFee();
-			   termFee.setSchoolAccountUuid(account.getUuid());
-			   termFee.setTermAmount(15000);
-			   termFee.setNextTermAmount(20000);
-			   termFeeDAO.putTermFee(termFee);
+			   String [] terms = {"1","2","3"};
+			   double [] fee = {18000,12000,8000};
+			   for(int i=0; i<terms.length;i++){
+				   TermFee termFee = new TermFee();
+				   termFee.setSchoolAccountUuid(account.getUuid());
+				   termFee.setTerm(terms[i]); 
+				   termFee.setTermAmount(fee[i]);
+				   termFeeDAO.putTermFee(termFee);
+			   }
+			   
 			   
 	    	 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_SUCCESS, SCHOOL_ADD_SUCCESS);

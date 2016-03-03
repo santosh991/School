@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -72,8 +73,8 @@ public class Form34List extends HttpServlet{
 
 
 	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
-	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-	private Font normalText = new Font(Font.FontFamily.COURIER, 12);
+    private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLDITALIC);
+    private Font normalText = new Font(Font.FontFamily.COURIER, 12);
 	private Document document;
 	private PdfWriter writer;
 	private Cache schoolaccountCache, statisticsCache;
@@ -242,11 +243,12 @@ public class Form34List extends HttpServlet{
 		                 }
 			}
 			
-			 PDF_SUBTITLE = "P.O BOX "+school.getPostalAddress()+"\n" 
-			           + "Town: "+school.getTown() +" Kenya\n" 
-			           + "PHONE: " + school.getMobile()+"\n"
-			           + "Email: " + school.getEmail()+"\n"
-			           + "Class: "+roomHash.get(classroomuuid)+"\n"; 
+			PDF_SUBTITLE = school.getSchoolName()+"\n"
+	      		        + "P.O BOX "+school.getPostalAddress()+"\n" 
+	                    + ""+school.getTown().toUpperCase() +" KENYA\n" 
+	                    + "" + school.getMobile()+"\n"
+	                    + "" + school.getEmail()+"\n";
+	    	           // + "Class: "+roomHash.get(classroomuuid)+"\n"; 
 
 			document = new Document(PageSize.A3, 46, 46, 64, 64);
 
@@ -307,18 +309,47 @@ public class Form34List extends HttpServlet{
 	           Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 	           
 	           Paragraph emptyline = new Paragraph(("                              "));
-          
+	           PdfPTable prefaceTable = new PdfPTable(2);  
+	           prefaceTable.setWidthPercentage(100); 
+	           prefaceTable.setWidths(new int[]{100,100}); 
+	          
+	           Paragraph content = new Paragraph();
+	           content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n") , smallBold));
+	           
+	           Paragraph classname = new Paragraph();
+	           classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid)+"\n",smallBold));
+	        
+	           PdfPCell contentcell = new PdfPCell(content);
+	           contentcell.setBorder(Rectangle.NO_BORDER); 
+	           contentcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+	          
 	           Paragraph preface = new Paragraph();
-             preface.add(createImage(realPath));
-             preface.add(new Paragraph(school.getSchoolName()  + " ", bigFont));// Student Report Card
-             preface.add(new Paragraph(PDF_SUBTITLE , smallBold));
-            // preface.add(new Paragraph(formattedDate, smallBold));
-             preface.setAlignment(Element.ALIGN_RIGHT);
-			DecimalFormat df = new DecimalFormat("0.00"); 
-			df.setRoundingMode(RoundingMode.DOWN);
+	           preface.add(createImage(realPath));
+	           
+	           Image imgLogo = null;
+	           try {
+	     		imgLogo = Image.getInstance(realPath);
+	     	    } catch (IOException e) {
+	     		// TODO Auto-generated catch block
+	     		e.printStackTrace();
+	     	    }
+	           
+	           imgLogo.scalePercent(10); 
+	           imgLogo.setAlignment(Element.ALIGN_LEFT);
+	           
+	           PdfPCell logo = new PdfPCell();
+	           logo.addElement(new Chunk(imgLogo,30,-100)); // margin left  ,  margin top
+	           logo.setBorder(Rectangle.NO_BORDER); 
+	           logo.setHorizontalAlignment(Element.ALIGN_LEFT);
+	           
+	           prefaceTable.addCell(logo); 
+	           prefaceTable.addCell(contentcell);
+	           
+			 DecimalFormat df = new DecimalFormat("0.00"); 
+			 df.setRoundingMode(RoundingMode.DOWN);
 
-			DecimalFormat rf = new DecimalFormat("0.0"); 
-			rf.setRoundingMode(RoundingMode.HALF_UP);
+			 DecimalFormat rf = new DecimalFormat("0.0"); 
+			 rf.setRoundingMode(RoundingMode.HALF_UP);
 			
 			 DecimalFormat rf2 = new DecimalFormat("0"); 
 			 rf2.setRoundingMode(RoundingMode.UP);
@@ -948,10 +979,11 @@ public class Form34List extends HttpServlet{
 				}
 			}
 			
-			document.add(preface);   
-		   	document.add(emptyline);
-
-			document.add(myTable);  
+			    document.add(prefaceTable);
+			    document.add(emptyline);
+			   	document.add(classname);
+				document.add(emptyline);
+			    document.add(myTable);  
 			// step 5
 			document.close();
 		}

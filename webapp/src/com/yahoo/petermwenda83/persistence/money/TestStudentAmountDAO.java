@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
+import com.yahoo.petermwenda83.server.servlet.money.newtermupdate.NewTermUpdate;
 
 /**
  * @author peter
@@ -74,9 +75,10 @@ public class TestStudentAmountDAO {
 	public final void testAddAmount() {
 		store = new StudentAmountDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		StudentAmount studentAmount = new StudentAmount();
+		 String status = NewTermUpdate.STATUS_NOT_DEDUCTED;
 		studentAmount.setSchoolAccountUuid(SCHOOL_UUID);
 		studentAmount.setStudentUuid(STUDENTUUID_NEW);
-		assertTrue(store.addAmount(SCHOOL_UUID,"4F218688-6DE5-4E69-8690-66FBA2F0DC9F", 50000));
+		assertTrue(store.addAmount(SCHOOL_UUID,"4F218688-6DE5-4E69-8690-66FBA2F0DC9F", 50000,status));
 	}
 
 	/**

@@ -322,9 +322,22 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.money.newtermupdate.NewTermUpdate</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>ChangeStudentStatus</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.newtermupdate.ChangeStudentStatus</servlet-class>
+    </servlet>
 
+  <!-- FINANCIAL REPORTS-->
 
+   <servlet>
+        <servlet-name>FinancialReport</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.reports.FinancialReport</servlet-class>
+    </servlet>
 
+     <servlet>
+        <servlet-name>AllStudentsFinaceReport</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.reports.AllStudentsFinaceReport</servlet-class>
+    </servlet>
 
 
 
@@ -661,14 +674,30 @@
     </servlet-mapping>
 
 
-<!-- TERM FEE UPDATE -->
+<!-- TERM FEE UPDATE --> 
 
     <servlet-mapping>
         <servlet-name>NewTermUpdate</servlet-name>
         <url-pattern>/school/committ</url-pattern>
     </servlet-mapping>
 
+     <servlet-mapping>
+        <servlet-name>ChangeStudentStatus</servlet-name>
+        <url-pattern>/school/prepare</url-pattern>
+    </servlet-mapping>
 
+
+<!-- FINANCIAL REPORTS-->  
+
+ <servlet-mapping>
+        <servlet-name>FinancialReport</servlet-name>
+        <url-pattern>/school/financeReport</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AllStudentsFinaceReport</servlet-name>
+        <url-pattern>/school/studentsFinaceReport</url-pattern>
+    </servlet-mapping>
 
 
 

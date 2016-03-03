@@ -1,3 +1,11 @@
+ sudo updatedb 
+ locate postgresql.conf
+
+
+
+
+
+
 
 1) we are to create a dabasase 
 

@@ -7,18 +7,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
+import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**
  * @author peter
  *
- */
+ */  
 public class StudentAmountDAO extends GenericDAO implements SchoolStudentAmountDAO {
 
 	private static StudentAmountDAO studentAmountDAO;
@@ -120,7 +123,7 @@ public class StudentAmountDAO extends GenericDAO implements SchoolStudentAmountD
 	 * @see com.yahoo.petermwenda83.persistence.money.SchoolStudentAmountDAO#addAmount(com.yahoo.petermwenda83.bean.money.StudentAmount, double)
 	 */
 	@Override
-	public boolean addAmount(String schoolAccountUuid,String studentUuid, double amount) {
+	public boolean addAmount(String schoolAccountUuid,String studentUuid, double amount,String Status) {
 		StudentAmount studentAmount = new StudentAmount();
 		boolean success = true;
 		if(getStudentAmount(schoolAccountUuid,studentUuid) !=null) {
@@ -152,13 +155,14 @@ public class StudentAmountDAO extends GenericDAO implements SchoolStudentAmountD
 			try(	
 					Connection conn = dbutils.getConnection();
 					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentAmount(Uuid,"
-							+ "SchoolAccountUuid,Studentuuid,amount) VALUES(?,?,?,?);");	
+							+ "SchoolAccountUuid,Studentuuid,amount,status) VALUES(?,?,?,?,?);");	
 					
 					) {
 					pstmt.setString(1, studentAmount.getUuid());
 					pstmt.setString(2,schoolAccountUuid);	
 					pstmt.setString(3, studentUuid);	
 					pstmt.setDouble(4, amount);
+					pstmt.setString(5, Status);
 					pstmt.executeUpdate();	
 										
 			} catch(SQLException e) {
@@ -205,6 +209,57 @@ public class StudentAmountDAO extends GenericDAO implements SchoolStudentAmountD
 			} 
 		
 		return success;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.money.SchoolStudentAmountDAO#changeStatus(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean changeStatus(String Status,String schoolAccountUuid, String studentUuid) {
+		boolean success = true;
+		
+		  try (  Connection conn = dbutils.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE StudentAmount SET Status = ? WHERE SchoolAccountUuid = ? AND Studentuuid = ?;");
+	               ) {           			 	            
+			  
+	            pstmt.setString(1,Status);
+	            pstmt.setString(2, schoolAccountUuid);
+	            pstmt.setString(3, studentUuid);
+	            pstmt.executeUpdate();
+	
+	  } catch (SQLException e) {
+	    logger.error("SQL Exception when updating StudentAmount for student" + studentUuid);
+	    logger.error(ExceptionUtils.getStackTrace(e));
+	    System.out.println(ExceptionUtils.getStackTrace(e));
+	    success = false;
+	  } 
+		
+		return success;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.money.SchoolStudentAmountDAO#getAmountList(java.lang.String)
+	 */
+	@Override
+	public List<StudentAmount> getAmountList(String schoolAccountUuid) {
+		List<StudentAmount> feeList = null;
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM StudentAmount WHERE "
+						+ "schoolAccountUuid = ?;");
+				) {
+			psmt.setString(1, schoolAccountUuid);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				feeList = beanProcessor.toBeanList(rset, StudentAmount.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Student List for school " +schoolAccountUuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return feeList;
 	}
 
 }

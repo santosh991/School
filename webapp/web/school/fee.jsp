@@ -50,30 +50,41 @@
      
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
-    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
-    SessionStatistics statistics = new SessionStatistics();
-
-
+    
 
     SchoolAccount school = new SchoolAccount();
     Element element;
    
 
     int incount = 0;  // Generic counter
+    String accountuuid = "";
+    String schoolname = "";
+   
 
     if ((element = accountsCache.get(username)) != null) {
         school = (SchoolAccount) element.getObjectValue();
     }
-
-    String accountuuid = school.getUuid();
-    String schoolname = school.getSchoolName();
+     
+     if(school !=null){
+      accountuuid = school.getUuid();
+      schoolname = school.getSchoolName();
+      }
 
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
-    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+    ExamConfig examConfig = new ExamConfig();
+    if(examConfigDAO.getExamConfig(accountuuid) !=null){
+        examConfig = examConfigDAO.getExamConfig(accountuuid);
+       }
+    
 
     TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
-    TermFee termFee = termFeeDAO.getTermFee(accountuuid);
 
+    TermFee termFee  = new TermFee();
+    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
+           termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
+       }
+   
+    
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -102,7 +113,15 @@
      <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=termFee.getTermAmount()%><b> </li> <br>
 
         <li>
-            <a href="addFee.jsp">Add</a> <span class="divider">/</span>
+            <a href="addFee.jsp">New Payment Info</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="feeIndex.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+        <li>
+            <a href="studentsFinaceReport" target="_blank">Print</a> <span class="divider">/</span>
         </li>
 
          
@@ -308,7 +327,7 @@
                               double total = 0;
                               double totalpaid = 0;
                               Locale locale = new Locale("en","KE"); 
-					   		              NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+					   		  NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
 
                                int count = 1;
 		                     if(studentfeeList !=null){

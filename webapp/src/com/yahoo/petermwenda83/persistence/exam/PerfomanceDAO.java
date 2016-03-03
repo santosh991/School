@@ -193,7 +193,7 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getClassPerfomanceList(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<Perfomance> getClassPerfomanceList(String schoolAccountUuid, String ClassesUuid,String Term,String Year) {
+	public List<Perfomance> getClassPerfomanceListGeneral(String schoolAccountUuid, String ClassesUuid,String Term,String Year) {
 		List<Perfomance> list = new ArrayList<>();
 
         try (
@@ -214,6 +214,35 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
             logger.error(ExceptionUtils.getStackTrace(e));
             System.out.println(ExceptionUtils.getStackTrace(e));
         }
+        return list;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getPerfomanceListDistinctGeneral(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Perfomance> getPerfomanceListDistinctGeneral(String schoolAccountUuid, String ClassesUuid, String Term,
+			String Year) {
+		List<Perfomance> list = new ArrayList<>();
+        try (
+        		 Connection conn = dbutils.getConnection();
+        		 PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT studentuuid FROM perfomance WHERE"
+        		 		+ " SchoolAccountUuid = ? AND ClassesUuid = ? AND Term = ? AND Year = ?;");
+     	   ) {
+         	   pstmt.setString(1, schoolAccountUuid);      
+         	   pstmt.setString(2, ClassesUuid);
+         	   pstmt.setString(3, Term); 
+        	   pstmt.setString(4, Year); 
+         	   try( ResultSet rset = pstmt.executeQuery();){
+     	       
+     	       list = beanProcessor.toBeanList(rset, Perfomance.class);
+         	   }
+        } catch (SQLException e) {
+            logger.error("SQLException when getting DISTINCT StudentUuid List  of Perfomance for school" + schoolAccountUuid +" and classroom" +ClassesUuid); 
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+      
         return list;
 	}
 

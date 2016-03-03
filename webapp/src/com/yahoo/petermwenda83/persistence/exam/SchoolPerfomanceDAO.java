@@ -56,10 +56,18 @@ public interface SchoolPerfomanceDAO {
 	/**
 	 * 
 	 * @param schoolAccountUuid
+	 * @param classRoomUuid
+	 * @return
+	 */
+	public List<Perfomance> getPerfomanceListDistinctGeneral(String schoolAccountUuid,String ClassesUuid,String Term,String Year);
+	
+	/**
+	 * 
+	 * @param schoolAccountUuid
 	 * @param ClassesUuid
 	 * @return
 	 */
-	public List<Perfomance> getClassPerfomanceList(String schoolAccountUuid,String ClassesUuid,String Term,String Year);
+	public List<Perfomance> getClassPerfomanceListGeneral(String schoolAccountUuid,String ClassesUuid,String Term,String Year);
 	
 	
 }

@@ -9,7 +9,7 @@ public interface SchoolTermFeeDAO {
 	 * @param schoolAccountUuid
 	 * @return
 	 */
-	public TermFee getTermFee(String schoolAccountUuid);
+	public TermFee getTermFee(String schoolAccountUuid,String Term);
 	/**
 	 * 
 	 * @param termFee

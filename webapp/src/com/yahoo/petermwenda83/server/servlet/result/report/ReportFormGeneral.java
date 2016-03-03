@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.yahoo.petermwenda83.server.servlet.result;
+package com.yahoo.petermwenda83.server.servlet.result.report;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -63,6 +64,7 @@ import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
+import com.yahoo.petermwenda83.server.servlet.result.PdfUtil;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionStatistics;
 import com.yahoo.petermwenda83.server.util.magic.MiddleNumberFor3;
@@ -72,9 +74,11 @@ import net.sf.ehcache.CacheManager;
 
 /**
  * @author peter
- * 
+ *
  */
-public class ReportForm extends HttpServlet{
+public class ReportFormGeneral extends HttpServlet{
+
+
 
 
 	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
@@ -100,7 +104,7 @@ public class ReportForm extends HttpServlet{
 	private static TermFeeDAO termFeeDAO;
 	private static StudentAmountDAO studentAmountDAO;
 
-	String classroomuuid = "";String schoolusername = "";String stffID = "";
+	
 
 	HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
 	HashMap<String, String> firstnameHash = new HashMap<String, String>();
@@ -201,7 +205,9 @@ public class ReportForm extends HttpServlet{
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition", "inline; filename= \" results.pdf \" " );
 
-
+		String classroomuuid = "";
+		String schoolusername = "";
+		classroomuuid = StringUtils.trimToEmpty(request.getParameter("classroomUuid"));
 
 		SchoolAccount school = new SchoolAccount();
 		HttpSession session = request.getSession(false);
@@ -210,8 +216,7 @@ public class ReportForm extends HttpServlet{
 
 		if(session !=null){
 			schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
-			stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
-
+			
 		}
 		net.sf.ehcache.Element element;
 
@@ -230,10 +235,7 @@ public class ReportForm extends HttpServlet{
 		examConfig = examConfigDAO.getExamConfig(school.getUuid());
 		gradingSystem = gradingSystemDAO.getGradingSystem(school.getUuid());
 
-		ClassTeacher classTeacher = classTeacherDAO.getClassTeacherByteacherId(stffID);
-		if(classTeacher !=null){
-			classroomuuid = classTeacher.getClassRoomUuid();
-		}
+		
 
 		SessionStatistics statistics = new SessionStatistics();
 		if ((element = statisticsCache.get(schoolusername)) != null) {
@@ -241,9 +243,9 @@ public class ReportForm extends HttpServlet{
 		}
 
 		List<Perfomance> perfomanceList = new ArrayList<Perfomance>(); 
-		perfomanceList = perfomanceDAO.getPerfomanceList(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
+		perfomanceList = perfomanceDAO.getClassPerfomanceListGeneral(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
 		List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-		pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
+		pDistinctList = perfomanceDAO.getPerfomanceListDistinctGeneral(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
 
 
 		List<Student> studentList = new ArrayList<Student>(); 
@@ -1324,6 +1326,7 @@ public class ReportForm extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 3513371438433721109L;
+
 
 
 }

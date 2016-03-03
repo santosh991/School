@@ -153,7 +153,11 @@
      <li> <b> <%=schoolname%> :HOUSE/DOMITPRY MANAGEMENT PANEL : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
       <li>
             <a href="addHouse.jsp">Assign House</a> <span class="divider">/</span>
-        </li>
+      </li>
+
+       <li>
+            <a href="newHouse.jsp">New House</a> <span class="divider">/</span>
+      </li>
     </ul>
 </div>
 

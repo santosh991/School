@@ -219,8 +219,7 @@
 
 			  <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
 			    <a href="studentIndex.jsp">STUDENTS</a>
-			    <a href="fee.jsp">FEE</a>
-			    <a href="pocketM.jsp">POCKET MONEY</a>  
+			    <a href="feeIndex.jsp">FINANCE</a>
           <a href="mySubjects.jsp">MY SUBJECTS</a>
 			    <a href="reports.jsp">REPORTS</a>
 			    <a href="staff.jsp">STAFF</a>
@@ -279,8 +278,7 @@
                <!--BURSAR -->
 
 			   <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
-			    <a href="fee.jsp">FEE</a>
-			    <a href="pocketM.jsp">POCKET MONEY</a>  
+			     <a href="feeIndex.jsp">FINANCE</a>
 			      <% }  %>
 
 
@@ -319,11 +317,14 @@
 <!--menu to change depending on page requested-->
 <li class="nav-header hidden-tablet">MORE</li>
 <li><a href="schoolIndex.jsp" class="ajax-link" id ="btn-dangers1"href=""><i class="icon-envelope"></i><span class="hidden-tablet">HOME</span></a></li>
+<li><a href="lib.jsp" class="ajax-link" id ="btn-dangers1"href=""><i class="icon-envelope"></i><span class="hidden-tablet">LIBRARY</span></a></li>
+<li><a href="lab.jsp" class="ajax-link" id ="btn-dangers1"href=""><i class="icon-envelope"></i><span class="hidden-tablet">LABORATORY</span></a></li>
  <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
 <li><a href="studentHouse.jsp" id ="btn-dangers1" href="" title="student house" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet">HOUSE</span></a></li>
 <li><a href="parents.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-home"></i><span class="hidden-tablet">PARENTS</span></a></li>
 <li><a href="studentSponsor.jsp" class="ajax-link" id ="btn-dangers1"href=""><i class="icon-envelope"></i><span class="hidden-tablet">SPONSORS</span></a></li>
-<li><a href="#" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">SUBJECTS</span></a></li>
+<li><a href="classes.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">CLASSES</span></a></li>
+<li><a href="termConfig.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">TERM CONFIG</span></a></li>
   <% }  %>
 
 

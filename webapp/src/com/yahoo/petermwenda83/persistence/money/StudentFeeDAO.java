@@ -8,14 +8,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
+import com.yahoo.petermwenda83.server.servlet.money.newtermupdate.NewTermUpdate;
+import com.yahoo.petermwenda83.server.servlet.upload.UploadExam;
 
 /** 
  * @author peter
@@ -145,7 +149,8 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 	            pstmt.setString(9, studentFee.getSystemUser());
 	            pstmt.executeUpdate();
 	            
-	            studentAmountDAO.addAmount(studentFee.getSchoolAccountUuid(), studentFee.getStudentUuid(), studentFee.getAmountPaid());
+	            String status = NewTermUpdate.STATUS_NOT_DEDUCTED;
+	            studentAmountDAO.addAmount(studentFee.getSchoolAccountUuid(), studentFee.getStudentUuid(), studentFee.getAmountPaid(),status);
 	            
 			 
 		 }catch(SQLException e){
@@ -272,6 +277,31 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 	    }
 		
 		return studentFeeList;
+	}
+
+
+	@Override
+	public List<StudentFee> getStudentFeeDistinctList(String schoolAccountUuid, String Term, String Year) {
+		List<StudentFee> list = null;
+        try (
+        		 Connection conn = dbutils.getConnection();
+        		 PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT studentuuid FROM StudentFee WHERE"
+        		 		+ " SchoolAccountUuid = ? AND Term = ? AND Year = ?;");
+     	   ) {
+         	   pstmt.setString(1, schoolAccountUuid);      
+         	   pstmt.setString(2, Term); 
+        	   pstmt.setString(3, Year); 
+         	   try( ResultSet rset = pstmt.executeQuery();){
+     	       
+     	       list = beanProcessor.toBeanList(rset, StudentFee.class);
+         	   }
+        } catch (SQLException e) {
+            logger.error("SQLException when getting DISTINCT StudentUuid List  of StudentFee for school" + schoolAccountUuid); 
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+      
+        return list;
 	}
 
 }

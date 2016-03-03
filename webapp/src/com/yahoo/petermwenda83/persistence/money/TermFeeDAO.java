@@ -52,16 +52,17 @@ public class TermFeeDAO extends GenericDAO implements SchoolTermFeeDAO {
 	 * @see com.yahoo.petermwenda83.persistence.money.SchoolTermFeeDAO#getTermFee(java.lang.String)
 	 */
 	@Override
-	public TermFee getTermFee(String schoolAccountUuid) {
+	public TermFee getTermFee(String schoolAccountUuid,String Term) {
 		TermFee termFee = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TermFee WHERE schoolAccountUuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TermFee WHERE schoolAccountUuid = ? AND Term =?;");       
         		
         		){
         	
         	 pstmt.setString(1, schoolAccountUuid);
+        	 pstmt.setString(2, Term);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -87,13 +88,13 @@ public class TermFeeDAO extends GenericDAO implements SchoolTermFeeDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO TermFee" 
-			        		+"(Uuid,SchoolAccountUuid,TermAmount,NextTermAmount) VALUES (?,?,?,?);");
+			        		+"(Uuid,SchoolAccountUuid,Term,TermAmount) VALUES (?,?,?,?);");
 		             ){
 			   
 	            pstmt.setString(1, termFee.getUuid());
 	            pstmt.setString(2, termFee.getSchoolAccountUuid());
-	            pstmt.setDouble(3, termFee.getTermAmount());
-	            pstmt.setDouble(4, termFee.getNextTermAmount());
+	            pstmt.setString(3, termFee.getTerm());
+	            pstmt.setDouble(4, termFee.getTermAmount());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -114,11 +115,11 @@ public class TermFeeDAO extends GenericDAO implements SchoolTermFeeDAO {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
-	             PreparedStatement pstmt = conn.prepareStatement("UPDATE termFee SET TermAmount = ?,NextTermAmount =? WHERE SchoolAccountUuid = ?;");
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE termFee SET TermAmount =? WHERE  Term =? AND SchoolAccountUuid = ?;");
 	               ) {           			 	            
-			  
-	            pstmt.setDouble(1, termFee.getTermAmount());
-	            pstmt.setDouble(2, termFee.getNextTermAmount());
+			    
+			    pstmt.setDouble(1, termFee.getTermAmount());
+	            pstmt.setString(2, termFee.getTerm());
 	            pstmt.setString(3, termFee.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 

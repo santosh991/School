@@ -632,12 +632,13 @@ CREATE TABLE  TermFee (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
-    TermAmount float NOT NULL CHECK (TermAmount>=0),
-    NextTermAmount float NOT NULL CHECK (NextTermAmount>=0)
+    Term text,
+    TermAmount float NOT NULL CHECK (TermAmount>=0)
+  
    
 
 );
-\COPY TermFee(Uuid,SchoolAccountUuid,TermAmount,NextTermAmount) FROM '/tmp/TermFee.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY TermFee(Uuid,SchoolAccountUuid,Term,TermAmount) FROM '/tmp/TermFee.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE TermFee OWNER TO school;
 
 
@@ -651,11 +652,12 @@ CREATE TABLE  StudentAmount (
     Uuid text UNIQUE NOT NULL,
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
     StudentUuid text REFERENCES student(uuid),
-    Amount float 
+    Amount float,
+    Status text
    
 
 );
-\COPY StudentAmount(Uuid,SchoolAccountUuid,StudentUuid,Amount) FROM '/tmp/StudentAmount.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY StudentAmount(Uuid,SchoolAccountUuid,StudentUuid,Amount,Status) FROM '/tmp/StudentAmount.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE StudentAmount OWNER TO school;
 
 

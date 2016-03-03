@@ -18,7 +18,7 @@ import java.util.UUID;
  * This class represents an object in the School System architecture that can be
  * stored in the RDBMS as well as cached.
  * 
- * @author peter<a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
+ * @author <a href="mailto:mwendapeter72@gmail.com">Peter mwenda</a>
  *
  */
 public class StorableBean implements Serializable {

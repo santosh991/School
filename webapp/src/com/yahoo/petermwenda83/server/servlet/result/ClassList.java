@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -70,9 +71,9 @@ import net.sf.ehcache.CacheManager;
  */
 public class ClassList extends HttpServlet{
 
-	    private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
-	     private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-	      //private Font normalText = new Font(Font.FontFamily.COURIER, 12);
+	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
+    private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLDITALIC);
+    private Font normalText = new Font(Font.FontFamily.COURIER, 12);
 	       private Cache schoolaccountCache, statisticsCache;
 	        private Document document;
 	         private PdfWriter writer;
@@ -230,11 +231,12 @@ public class ClassList extends HttpServlet{
 					                roomHash.put(c.getUuid() , c.getRoomName());
 					                 }
 					           
-					           PDF_SUBTITLE = "P.O BOX "+school.getPostalAddress()+"\n" 
-					    	           + "Town: "+school.getTown() +" Kenya\n" 
-					    	           + "PHONE: " + school.getMobile()+"\n"
-					    	           + "Email: " + school.getEmail()+"\n"
-					    	           + "Class: "+roomHash.get(classroomuuid)+"\n"; 
+					           PDF_SUBTITLE = school.getSchoolName()+"\n"
+						      		        + "P.O BOX "+school.getPostalAddress()+"\n" 
+						                    + ""+school.getTown().toUpperCase() +" KENYA\n" 
+						                    + "" + school.getMobile()+"\n"
+						                    + "" + school.getEmail()+"\n";
+						    	        
 	
 					          document = new Document(PageSize.A3, 46, 46, 64, 64);
 		
@@ -296,13 +298,44 @@ public class ClassList extends HttpServlet{
 					           Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 					           
 					           Paragraph emptyline = new Paragraph(("                              "));
-                            
+					           
+					           Paragraph content = new Paragraph();
+					           content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n") , smallBold));
+					           
+					           Paragraph classname = new Paragraph();
+					           classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid)+"\n",smallBold));
+					        
+					           PdfPTable prefaceTable = new PdfPTable(2);  
+					           prefaceTable.setWidthPercentage(100); 
+					           prefaceTable.setWidths(new int[]{100,100}); 
+					          
+					          
+					        
+					           PdfPCell contentcell = new PdfPCell(content);
+					           contentcell.setBorder(Rectangle.NO_BORDER); 
+					           contentcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					          
 					           Paragraph preface = new Paragraph();
-				               preface.add(createImage(realPath));
-				               preface.add(new Paragraph(school.getSchoolName()  + " ", bigFont));// Student Report Card
-				               preface.add(new Paragraph(PDF_SUBTITLE , smallBold));
-				              // preface.add(new Paragraph(formattedDate, smallBold));
-				               preface.setAlignment(Element.ALIGN_RIGHT);
+					           preface.add(createImage(realPath));
+					           
+					           Image imgLogo = null;
+					           try {
+					     		imgLogo = Image.getInstance(realPath);
+					     	    } catch (IOException e) {
+					     		// TODO Auto-generated catch block
+					     		e.printStackTrace();
+					     	    }
+					           
+					           imgLogo.scalePercent(10); 
+					           imgLogo.setAlignment(Element.ALIGN_LEFT);
+					           
+					           PdfPCell logo = new PdfPCell();
+					           logo.addElement(new Chunk(imgLogo,30,-100)); // margin left  ,  margin top
+					           logo.setBorder(Rectangle.NO_BORDER); 
+					           logo.setHorizontalAlignment(Element.ALIGN_LEFT);
+					           
+					           prefaceTable.addCell(logo); 
+					           prefaceTable.addCell(contentcell);
                              
 						       formatter = new SimpleDateFormat("dd, MMM yyyy HH:mm z");
 						      formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
@@ -652,8 +685,10 @@ public class ClassList extends HttpServlet{
        }
      }
        
-    document.add(preface);   
-   	document.add(emptyline);
+    document.add(prefaceTable);
+    document.add(emptyline);
+   	document.add(classname);
+	document.add(emptyline);
     document.add(myTable);  
     // step 5
     document.close();

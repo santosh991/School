@@ -21,6 +21,14 @@ public interface SchoolStudentFeeDAO {
 	 * @return
 	 */
 	public List<StudentFee> getStudentFeeByStudentUuidList(String schoolAccountUuid , String studentUuid,String Term,String Year); 
+	
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param studentUuid
+	 * @return
+	 */
+	public List<StudentFee> getStudentFeeDistinctList(String schoolAccountUuid ,String Term,String Year); 
 	/**
 	 * 
 	 * @param schoolAccountUuid

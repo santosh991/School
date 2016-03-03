@@ -82,6 +82,18 @@
 <jsp:include page="header.jsp" />
 
 
+<div>
+    <ul class="breadcrumb">
+     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL(ENTER PAYMENT DETAILS): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %> <b> </li> <br>
+
+        <li>
+            <a href="fee.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+         
+        
+    </ul>
+</div>
 
 
 <div class="row-fluid sortable">
@@ -93,9 +105,6 @@
 
 
     <div class="box span12">
-        <div class="box-header well" data-original-title>
-   <p>[<a href="fee.jsp">Back</a>]  <%=schoolname%> :Student Fee Panel: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> </p>
-        </div>
         <div class="box-content">
           
                <%
