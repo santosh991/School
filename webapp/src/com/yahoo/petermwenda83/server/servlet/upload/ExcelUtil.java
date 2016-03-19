@@ -74,6 +74,15 @@ public class ExcelUtil {
         XSSFWorkbook myWorkBook = new XSSFWorkbook(myInput);
    		XSSFSheet mySheet = myWorkBook.getSheetAt(0);
    		int totalRow = mySheet.getLastRowNum();
+   		
+   		DecimalFormat rf = new DecimalFormat("0.0"); 
+		rf.setRoundingMode(RoundingMode.HALF_UP);
+			
+	    DecimalFormat rf2 = new DecimalFormat("0"); 
+	    rf2.setRoundingMode(RoundingMode.UP);
+	    
+	    DecimalFormat rf3 = new DecimalFormat("0"); 
+	    rf3.setRoundingMode(RoundingMode.DOWN);
         
         try{
         	
@@ -122,39 +131,54 @@ public class ExcelUtil {
     			for(int j=0; j<totalColumn; j++){
     			XSSFCell cell = row.getCell((short)j);
     			if(i==0){
-    				//System.out.println("Headers value: "+cell);
-    			}else if(i >0){
-    				//System.out.println("Cell Value: "+cell);
     				
-    				//System.out.println("Cell 0: "+row.getCell(0));
-    				//System.out.println("Cell 1: "+row.getCell(1));
+    			}else if(i >0){
+    				
     				
     				String scorestr =  row.getCell(1)+"";
     				String admnostr = row.getCell(0)+"";
     				
-    				DecimalFormat rf = new DecimalFormat("0.0"); 
-    				rf.setRoundingMode(RoundingMode.HALF_UP);
-    					
-    			    DecimalFormat rf2 = new DecimalFormat("0"); 
-    			    rf2.setRoundingMode(RoundingMode.UP);
-    			    
-    			    DecimalFormat rf3 = new DecimalFormat("0"); 
-    			    rf3.setRoundingMode(RoundingMode.DOWN);
+    				double toformat = Double.parseDouble(scorestr);
+    				double dblescore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(toformat)))));
+    			    String formated = rf3.format(dblescore);
+    				
+    				boolean isNumeric = formated.chars().allMatch(x -> Character.isDigit(x));
+    			    if(!isNumeric) {  
+			    		return ("Invalid score " + scorestr + " on line \"" + count);
+			    	 }
+    				
+    				
     				
     				String score = (String) scorestr;
+    				
+    				
+    				
+    				switch (score){
+                    case "null":
+                    	return ("Blank score " + score + " on line \"" + count);
+                    	
+                    case "":
+                    	return ("Blank score " + score + " on line \"" + count);
+                    default:
+                       // System.out.println("Wrong score");
+                   break;   
+                        
+                     }
+    				
+    				
     			
     			    if(StringUtils.isBlank(score) ||StringUtils.isEmpty(score) || score == null){
     			    	return ("Blank score " + score + " on line \"" + count);
     			    }
     			    
-    				double toformat = Double.parseDouble(score);
-    				double dblescore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(toformat)))));
-    			    String formated = rf3.format(dblescore);
+    			   // System.out.println("score ="+score);
+    			    
+    				
     			   
     				
     				
-    				boolean isNumeric = formated.chars().allMatch(x -> Character.isDigit(x));
-    			    if(!isNumeric) {  
+    				boolean isNumericz = formated.chars().allMatch(x -> Character.isDigit(x));
+    			    if(!isNumericz) {  
 			    		return ("Invalid score " + formated + " on line \"" + count);
 			    	 }
     				
@@ -355,17 +379,6 @@ public class ExcelUtil {
 			    	
 			    	
 			    	
-			    	
-			   
-           
-           
-          
-          
-          
-           
-           
-			   
-			    
 			    	 
 						if(StringUtils.equalsIgnoreCase(exam, "c1")){
 							
@@ -455,9 +468,6 @@ public class ExcelUtil {
 					}
 						
 						
-						
-						
-						
 					 	
 				    	
 			    }
@@ -465,17 +475,7 @@ public class ExcelUtil {
 			
 		      }
 		
-						
-						
-						
-						
-						
-						
-					    
-					
-						
-			     
-		
+			
 			
 		} finally {
 			if(myInput != null) {

@@ -21,6 +21,7 @@ public class StudentFee extends StorableBean{
 	    private String studentUuid;
 	    private String transactionID;
 	    private double amountPaid ;
+	    private double amountTokenizer;
 	    private Date DatePaid;
 	    private String Term;
 	    private String Year;
@@ -32,6 +33,7 @@ public class StudentFee extends StorableBean{
 		studentUuid = "";
 		transactionID = "";
 		amountPaid = 0.0;
+		amountTokenizer = 0.0;
 		DatePaid = new Date();
 		Term = "";
 		Year = "";
@@ -100,6 +102,22 @@ public class StudentFee extends StorableBean{
 	 */
 	public void setAmountPaid(double amountPaid) {
 		this.amountPaid = amountPaid;
+	}
+    
+
+	/**
+	 * @return the amountTokenizer
+	 */
+	public double getAmountTokenizer() {
+		return amountTokenizer;
+	}
+
+
+	/**
+	 * @param amountTokenizer the amountTokenizer to set
+	 */
+	public void setAmountTokenizer(double amountTokenizer) {
+		this.amountTokenizer = amountTokenizer;
 	}
 
 
@@ -181,6 +199,8 @@ public class StudentFee extends StorableBean{
 		builder.append(transactionID);
 		builder.append(", amountPaid =");
 		builder.append(amountPaid);
+		builder.append(", amountTokenizer =");
+		builder.append(amountTokenizer);
 		builder.append(", DatePaid =");
 		builder.append(DatePaid);
 		builder.append(", Term =");

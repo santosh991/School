@@ -85,6 +85,7 @@
     List<Student> studentList = new ArrayList(); 
 
     int studentCount = 0;
+
     if(studentList !=null){
     studentList = studentDAO.getAllStudentList(accountuuid); 
     for(Student stu : studentList) {
@@ -95,6 +96,7 @@
 
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = new ExamConfig();
+
     if(examConfigDAO.getExamConfig(accountuuid) !=null){
         examConfig = examConfigDAO.getExamConfig(accountuuid);
        }
@@ -103,6 +105,7 @@
     TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
 
     TermFee termFee  = new TermFee();
+
     if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
            termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
        }
@@ -129,8 +132,10 @@
       NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
 
       
-
-       termfee = termFee.getTermAmount();  
+        if(termFee !=null){
+         termfee = termFee.getTermAmount();  
+          }
+      
    
    
  %>

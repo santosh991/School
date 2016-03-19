@@ -22,6 +22,7 @@ import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
+import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 import net.sf.ehcache.Cache;
@@ -63,7 +64,6 @@ public class UpdateFeeDetails extends HttpServlet{
        CacheManager mgr = CacheManager.getInstance();
        schoolaccountCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
        examConfigDAO = ExamConfigDAO.getInstance();
-    
       
    }
    
@@ -73,7 +73,8 @@ public class UpdateFeeDetails extends HttpServlet{
        HttpSession session = request.getSession(true);
        
        String transactionId = StringUtils.trimToEmpty(request.getParameter("transactionid"));
-       String amountPaid = StringUtils.trimToEmpty(request.getParameter("amountpaid"));
+       String amounttodeduct = StringUtils.trimToEmpty(request.getParameter("amountpaid"));
+       String amountpaidold = StringUtils.trimToEmpty(request.getParameter("amountpaidold"));
        String systemUser = StringUtils.trimToEmpty(request.getParameter("systemuser"));
        String schoolUuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        String studentUuid = StringUtils.trimToEmpty(request.getParameter("studentuuid"));
@@ -82,7 +83,7 @@ public class UpdateFeeDetails extends HttpServlet{
        
        Map<String, String> paramHash = new HashMap<>();
        paramHash.put("transactionId", transactionId);
-       paramHash.put("amountPaid", amountPaid);
+       paramHash.put("amountPaid", amounttodeduct);
        
        SchoolAccount school = new SchoolAccount();
        String  schoolusername = "";
@@ -96,14 +97,18 @@ public class UpdateFeeDetails extends HttpServlet{
     	   if(element !=null){
     	   school = (SchoolAccount) element.getObjectValue();
     	      }
-       
+    	  
+    	   
        if(StringUtils.isBlank(transactionId)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, EMPTY_TRANSACTION_ID); 
 		   
-	   }else if(StringUtils.isBlank(amountPaid)){
+	   }else if(StringUtils.isBlank(amounttodeduct)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, EMPTY_AMOUNT); 
 			   
-	   }else if(!isNumericRange(amountPaid)){
+	   }else if(StringUtils.isBlank(amountpaidold)){
+		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANSACTION_NOT_UPDATED); 
+			   
+	   }else if(!isNumericRange(amounttodeduct)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, NUMBER_FORMAT_ERROR); 
 			   
 	   }else if(StringUtils.isBlank(systemUser)){
@@ -115,31 +120,43 @@ public class UpdateFeeDetails extends HttpServlet{
 	   }else if(StringUtils.isBlank(studentUuid)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, EMPTY_CREDENTIALS); 
 			   
-	   }else if(!StringUtils.equals(schoolpassword, school.getPassword())){
+	   }else if(!StringUtils.equals(SecurityUtil.getMD5Hash(schoolpassword), school.getPassword())){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, INCORRECT_SCHOL_PASSWORD); 
 			   
 	   }else{
        
        
 
-  	     examConfig = examConfigDAO.getExamConfig(school.getUuid());
-       
-       StudentFee studentFee = studentFeeDAO.getStudentFeeByTransactionId(schoolUuid, transactionId);
-       studentFee.setTransactionID(transactionId);
-       studentFee.setAmountPaid(Double.parseDouble(amountPaid)); 
-       studentFee.setSystemUser(systemUser);
-       studentFee.setSchoolAccountUuid(schoolUuid);
-       studentFee.setStudentUuid(studentUuid);
-       studentFee.setTerm(examConfig.getTerm());
-       studentFee.setYear(examConfig.getYear());
-       
-       if(studentFeeDAO.updateStudentFee(studentFee)){ 
-    	   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_SUCCESS, SUCCESS_TRANSACTION_UPDATED);
-       }else{
-    	   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANSACTION_NOT_UPDATED);
-        }
-       
-       }
+  	   examConfig = examConfigDAO.getExamConfig(school.getUuid());
+  	   double balance = 0;
+	   double oldamount = Double.parseDouble(amountpaidold);
+	   double amountTodeduct = Double.parseDouble(amounttodeduct);
+	   balance = oldamount - amountTodeduct; //oldamount 5000 , newamount 2000 , 
+	   if(amountTodeduct>=oldamount){
+		   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANSACTION_NOT_UPDATED);
+	   }else{
+		   
+
+			       StudentFee studentFee = studentFeeDAO.getStudentFeeByTransactionId(schoolUuid, transactionId);
+			       studentFee.setTransactionID(transactionId);
+			       studentFee.setAmountPaid(amountTodeduct);   
+			       studentFee.setAmountTokenizer(balance); 
+			       studentFee.setSystemUser(systemUser);
+			       studentFee.setSchoolAccountUuid(schoolUuid);
+			       studentFee.setStudentUuid(studentUuid);
+			       studentFee.setTerm(examConfig.getTerm());
+			       studentFee.setYear(examConfig.getYear());
+			       
+			       if(studentFeeDAO.updateStudentFee(studentFee)){ 
+			    	   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_SUCCESS, SUCCESS_TRANSACTION_UPDATED);
+			       }else{
+			    	   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANSACTION_NOT_UPDATED);
+			        }
+			       
+	       }
+		   
+	   }
+		
        
        session.setAttribute(SessionConstants.STUENT_FEE_UPDATE_PARAM, paramHash); 
        response.sendRedirect("fee.jsp");  

@@ -159,8 +159,27 @@ public class ClassTeacherDAO extends GenericDAO implements SchoolClassTeacherDAO
 	 */
 	@Override
 	public boolean deleteClassTeacher(ClassTeacher Teacher) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+	      try(
+	      		  Connection conn = dbutils.getConnection();
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ClassTeacher"
+	         	      		+ " WHERE ClassRoomUuid =? AND TeacherUuid=? ;");       
+	      		
+	      		){
+	      	
+	      	     pstmt.setString(1, Teacher.getClassRoomUuid());
+	      	     pstmt.setString(2, Teacher.getTeacherUuid());
+		         pstmt.executeUpdate();
+		     
+	      }catch(SQLException e){
+	      	   logger.error("SQL Exception when deletting Teacher : " +Teacher);
+	           logger.error(ExceptionUtils.getStackTrace(e));
+	           System.out.println(ExceptionUtils.getStackTrace(e));
+	           success = false;
+	           
+	      }
+	      
+			return success;
 	}
 
 	/**

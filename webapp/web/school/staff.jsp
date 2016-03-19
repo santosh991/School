@@ -91,17 +91,22 @@
      StaffDetailsDAO staffDetailsDAO = StaffDetailsDAO.getInstance();
      List<StaffDetails> staffdetailList = new ArrayList<StaffDetails>(); 
      staffdetailList = staffDetailsDAO.getSStaffDetailList();
+         
+         if(staffdetailList !=null){
       for(StaffDetails sd : staffdetailList){
           staffHash.put(sd.getStaffUuid(), sd);
          }
+     }
      
      HashMap<String, String> positionHash = new HashMap<String, String>();
      PositionDAO positionDAO = PositionDAO.getInstance();
      List<Position> positionList = new ArrayList<Position>(); 
      positionList = positionDAO.getPositionList();
+        if(positionList !=null){
      for(Position pp : positionList){
       positionHash.put(pp.getUuid(),pp.getPosition());  
        }
+   }
     
      StaffDAO staffDAO = StaffDAO.getInstance();
      List<Staff> staffList = new ArrayList<Staff>(); 
@@ -212,15 +217,24 @@
                              
                        int count = 1;
                        String gender = "";
-                       String formatedFirstname = "";
-                       String formatedLastname = "";
-                       String formatedSurname = "";
+                       String formatedFirstname = " ";
+                       String formatedLastname = " ";
+                       String formatedSurname = " ";
                        
 
                         if(staffList !=null){
                        for(Staff s : staffList) { 
 
+                             if(staffHash.get(s.getUuid()) !=null){
                              staffdetail = staffHash.get(s.getUuid());
+
+                            String firstNameLowecase = staffdetail.getFirstName().toLowerCase();
+                            String lastNameLowecase =staffdetail.getLastName().toLowerCase();
+                            String surNameLowecase = staffdetail.getSurname().toLowerCase();
+                            formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
+                            formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
+                            formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+                                     }
 
 
                              out.println("<tr>"); 
@@ -235,12 +249,7 @@
                                     gender = "M";
                                  }
 
-                            String firstNameLowecase = staffdetail.getFirstName().toLowerCase();
-                            String lastNameLowecase =staffdetail.getLastName().toLowerCase();
-                            String surNameLowecase = staffdetail.getSurname().toLowerCase();
-                            formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
-                            formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
-                            formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
+                           
 
                              out.println("<td width=\"8%\" class=\"center\">" + staffdetail.getEmployeeNo() + "</td>");
                              out.println("<td width=\"8%\" class=\"center\">" + formatedFirstname + "</td>"); 

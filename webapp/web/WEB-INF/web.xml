@@ -220,12 +220,17 @@
     <servlet>
         <servlet-name>AssignSubjectClass</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AssignSubjectClass</servlet-class>
-    </servlet>
+    </servlet>  
 
 
     <servlet>
         <servlet-name>AddClassTeacher</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AddClassTeacher</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ChangeClassTeacher</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.ChangeClassTeacher</servlet-class>
     </servlet>
 
     <servlet>
@@ -327,6 +332,36 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.money.newtermupdate.ChangeStudentStatus</servlet-class>
     </servlet>
 
+
+     <servlet>
+        <servlet-name>NewPayment</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.NewPayment</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>AddPaymentToaStudent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.AddPaymentToaStudent</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>FindStudentOM</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.FindStudentOM</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>OtherItemsUpdate</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.newtermupdate.OtherItemsUpdate</servlet-class>
+    </servlet>
+
+
+
+
+
+
+
+
+
   <!-- FINANCIAL REPORTS-->
 
    <servlet>
@@ -339,6 +374,89 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.money.reports.AllStudentsFinaceReport</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>PerClassFinanceReport</servlet-name>
+        <servlet-class> com.yahoo.petermwenda83.server.servlet.money.reports.PerClassFinanceReport</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>PrintStatement</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.PrintStatement</servlet-class>
+    </servlet>
+     
+
+
+     
+
+
+    <!-- STUDENT PROMOTION/STATUS-->
+     <servlet>
+        <servlet-name>PromoteByClass</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.promote.PromoteByClass</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>ChangeStatusByClass</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.promote.ChangeStatusByClass</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>PromotePerStudent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.promote.PromotePerStudent</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>ChangeStatusPerStudent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.promote.ChangeStatusPerStudent</servlet-class>
+    </servlet>
+
+
+
+  <!-- classroom and house/domitories-->
+
+  <servlet>
+        <servlet-name>AddRoom</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.roomhouse.AddRoom</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>UpdateRoom</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.roomhouse.UpdateRoom</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>AddHouse</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.roomhouse.AddHouse</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>UpdateHouse</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.roomhouse.UpdateHouse</servlet-class>
+    </servlet>
+
+
+
+     <!-- examination analysis-->
+
+        <servlet>
+        <servlet-name>AllClassesAnalyzer</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.report.AllClassesAnalyzer</servlet-class>
+        </servlet>
+
+
+
+
+
+<!-- send sms-->
+
+        <servlet>
+        <servlet-name>SendSMS</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.sms.send.SendSMS</servlet-class>
+        </servlet>
 
 
 
@@ -568,11 +686,16 @@
     <servlet-mapping>
         <servlet-name>FindClassTeacher</servlet-name>
         <url-pattern>/school/findClassTeacher</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> 
 
     <servlet-mapping>
         <servlet-name>AddClassTeacher</servlet-name>
         <url-pattern>/school/addClassTeacher</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ChangeClassTeacher</servlet-name>
+        <url-pattern>/school/changeClassTeacher</url-pattern>
     </servlet-mapping>
 
 
@@ -679,7 +802,7 @@
     <servlet-mapping>
         <servlet-name>NewTermUpdate</servlet-name>
         <url-pattern>/school/committ</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
 
      <servlet-mapping>
         <servlet-name>ChangeStudentStatus</servlet-name>
@@ -687,11 +810,32 @@
     </servlet-mapping>
 
 
+   <servlet-mapping>
+        <servlet-name>NewPayment</servlet-name>
+        <url-pattern>/school/newPayment</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddPaymentToaStudent</servlet-name>
+        <url-pattern>/school/addPaymentToaStudent</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>FindStudentOM</servlet-name>
+        <url-pattern>/school/findStudentOM</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>OtherItemsUpdate</servlet-name>
+        <url-pattern>/school/otherItemsUpdate</url-pattern>
+    </servlet-mapping>
+
+
 <!-- FINANCIAL REPORTS-->  
 
  <servlet-mapping>
         <servlet-name>FinancialReport</servlet-name>
-        <url-pattern>/school/financeReport</url-pattern>
+        <url-pattern>/school/financeReport</url-pattern>  
     </servlet-mapping>
 
      <servlet-mapping>
@@ -699,11 +843,91 @@
         <url-pattern>/school/studentsFinaceReport</url-pattern>
     </servlet-mapping>
 
+     <servlet-mapping>
+        <servlet-name>PerClassFinanceReport</servlet-name>
+        <url-pattern>/school/perClassFinanceReport</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>PrintStatement</servlet-name>
+        <url-pattern>/school/printStatement</url-pattern>
+    </servlet-mapping>
+
+
+
+    
+
+     <!-- STUDENT PROMOTION/STATUS-->
+
+      <servlet-mapping>
+        <servlet-name>PromoteByClass</servlet-name>
+        <url-pattern>/school/promoteByClass</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ChangeStatusByClass</servlet-name>
+        <url-pattern>/school/changeStatusByClass</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>PromotePerStudent</servlet-name>
+        <url-pattern>/school/promotePerStudent</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ChangeStatusPerStudent</servlet-name>
+        <url-pattern>/school/changeStatusPerStudent</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--classroom/domitory mapping -->
+    <servlet-mapping>
+        <servlet-name>AddRoom</servlet-name>
+        <url-pattern>/school/addRoom</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdateRoom</servlet-name>
+        <url-pattern>/school/updateRoom</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddHouse</servlet-name>
+        <url-pattern>/school/addHouse</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdateHouse</servlet-name>
+        <url-pattern>/school/updateHouse</url-pattern>
+    </servlet-mapping>
 
 
 
 
-<!-- start admin mapping -->
+
+
+<!-- examination analysis mapping --> 
+
+
+     <servlet-mapping>
+        <servlet-name>AllClassesAnalyzer</servlet-name>
+        <url-pattern>/school/allClassesAnalyzer</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- send sms mapping --> 
+
+
+     <servlet-mapping>
+        <servlet-name>SendSMS</servlet-name>
+        <url-pattern>/school/sendSMS</url-pattern>
+    </servlet-mapping>
+
+
+
+
+<!-- start admin mapping -->  
 
 
     <servlet-mapping>

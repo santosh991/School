@@ -107,7 +107,38 @@ public class SessionConstants {
 	public static final String TERM_FEE_UPDATE_ERROR = "Term Fee Updated Error";
 	
 	
+	//promote students 
+	public static final String PROMOTE_CALSS_SUCCESS = "Class promoted Successfully";
+	public static final String PROMOTE_CALSS_ERROR = "Class promote Error";
 	
+	public static final String STATUS_CHANGE_SUCCESS = "Status change Successfully";
+	public static final String STATUS_CHANGE_ERROR = "Status change Error";
+	
+	//room house management
+	public static final String HOUSE_REG_SUCCESS = "House added Successfully";
+	public static final String HOUSE_REG_ERROR = "House add Error";
+	
+	public static final String ROOM_REG_SUCCESS = "Class room added Successfully";
+	public static final String ROOM_REG_ERROR = "Class room add Error";
+	
+	
+	
+	//reports
+	 public static final String ERROR_REPORT_NO_PAGES = "Sorry, the report has no pages tp print";
+
+	 
+	 //other monies
+	 public static final String OTHER_MONIES_ADD_ERROR = "Something went wrong";
+	 public static final String OTHER_MONIES_ADD_SUCESS = "New payments added Successfully";
+	 
+	 public static final String STUDENT_ADD_OTHER_MONIES_ADD_ERROR = "Other monies add error";
+	 public static final String STUDENT_ADD_OTHER_MONIES_ADD_SUCCESS = "Other monies add error Success";
+	 
+	 public static final String STUENT_O_M_PARAM = "Other M Parameters";
+
+	 //sms send
+	 public static final String SMS_SEND_SUCCESS = "SMS sent Successfully";
+	 public static final String SMS_SEND_ERROR = "SMS send error";
 	
 	
 	   //file upload management

@@ -86,6 +86,38 @@ public class TeacherSubClassDAO extends GenericDAO  implements SchoolTeacherSubC
      
 		return teachersub; 
 	}
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolTeacherSubClassDAO#getSubject(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public TeacherSubClass getSubject(String SubjectUuid, String ClassRoomUuid) {
+		TeacherSubClass teachersub = null;
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM TeacherSubClass WHERE SubjectUuid = ? AND ClassRoomUuid = ?;");       
+     		
+     		){
+     	
+     	     pstmt.setString(1, SubjectUuid);
+     	     pstmt.setString(2, ClassRoomUuid);
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	        	teachersub  = beanProcessor.toBean(rset,TeacherSubClass.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting Staff with teacher with SubjectUuid: " + SubjectUuid);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return teachersub; 
+	}
+
 	
 	
 	/* (non-Javadoc)

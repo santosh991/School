@@ -209,23 +209,23 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	 */
 	@Override
 	public List<Subject> getAllSubjects() {
-		 List<Subject>  list = null;		
+		List<Subject>  list = null;		
 		 try(   
-        		Connection conn = dbutils.getConnection();
-        		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");          		
-    		) {			     
+       		Connection conn = dbutils.getConnection();
+       		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM Subject;");          		
+   		) {			     
 			 try( ResultSet rset = pstmt.executeQuery();){
 	     	       
 				 list = beanProcessor.toBeanList(rset, Subject.class);
 	         	   }
 			
-           
+          
 
-        } catch(SQLException e){
-        	logger.error("SQL Exception when getting all SubjectUi");
-            logger.error(ExceptionUtils.getStackTrace(e));
-        }
-      
+       } catch(SQLException e){
+       	logger.error("SQL Exception when getting all SubjectUi");
+           logger.error(ExceptionUtils.getStackTrace(e));
+       }
+     
 		
 		return list;
 	}

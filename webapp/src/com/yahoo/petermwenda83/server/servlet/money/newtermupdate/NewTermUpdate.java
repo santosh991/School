@@ -4,8 +4,8 @@
 package com.yahoo.petermwenda83.server.servlet.money.newtermupdate;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -17,13 +17,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.gson.Gson;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.money.ClosingBalance;
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.money.ClosingBalanceDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
@@ -54,9 +55,15 @@ public class NewTermUpdate extends HttpServlet{
 	private static ExamConfigDAO examConfigDAO;
 	private static StudentDAO studentDAO;
 	private static TermFeeDAO termFeeDAO;
+	private static ClosingBalanceDAO closingBalanceDAO;
+	
+	
+	
 	TermFee termFee;
 	ExamConfig examConfig;
-
+    
+	
+	 HashMap<String, String> typetHash = new HashMap<String, String>();
 	/**  
 	 *
 	 * @param config
@@ -71,8 +78,8 @@ public class NewTermUpdate extends HttpServlet{
 		examConfigDAO = ExamConfigDAO.getInstance();
 		termFeeDAO = TermFeeDAO.getInstance();
 		studentDAO = StudentDAO.getInstance();
-
-
+		closingBalanceDAO = ClosingBalanceDAO.getInstance();
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -80,10 +87,10 @@ public class NewTermUpdate extends HttpServlet{
 
 		HttpSession session = request.getSession(true);
 
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json"); 
+		//response.setCharacterEncoding("UTF-8");
+		//response.setContentType("application/json"); 
 
-		PrintWriter out = response.getWriter();
+		//PrintWriter out = response.getWriter();
 
 		SchoolAccount school = new SchoolAccount();
 		String  schoolusername = "";
@@ -109,14 +116,22 @@ public class NewTermUpdate extends HttpServlet{
 		int currentTernint = Integer.parseInt(currentTerm);
 		int previoustermint = currentTernint - 1;
 		
+		String currentYear = examConfig.getYear();
+		int currentYearint = Integer.parseInt(currentYear);
+		int prevyearint = 0;
+		String previousyear = "";
+		
 		int realTermint = 0;
 		String previousTerm = "";
 		if(previoustermint == 0){   //MEANS OUR CURREMT TERM IS 1, so prev term is 3
 			realTermint = 3;
 			previousTerm = Integer.toString(realTermint);
+			prevyearint = currentYearint - 1;
+			previousyear = Integer.toString(prevyearint);
 		}else{
 			realTermint = previoustermint;
 			previousTerm = Integer.toString(realTermint);
+			previousyear = currentYear;
 		}
 
 		termFee = new TermFee();
@@ -129,52 +144,88 @@ public class NewTermUpdate extends HttpServlet{
 
 
 
-		String json = "";
+		//String json = "";
 		double previousFee = 0;
-		int count = 0;
+		
+		 
+		
 		if(studentList !=null){
 			for(Student student : studentList){
-
+				
 				StudentAmount studentAmount = new StudentAmount();
 
 				//get student status
 				if(studentAmountDAO.getStudentAmount(school.getUuid(), student.getUuid()) !=null){
 					studentAmount = studentAmountDAO.getStudentAmount(school.getUuid(), student.getUuid());
 				}
+				
+			
 
 				//check whether student has been deducted term amount
 				// if not so, deduct , else skip
-				if(StringUtils.equals(studentAmount.getStatus(), STATUS_NOT_DEDUCTED)){
+				if(StringUtils.equals(studentAmount.getStatus(), STATUS_NOT_DEDUCTED) ){
 					
-					//we find previous term fee
+					//we find previous term fee					
 					TermFee	termFeePrev = new TermFee();
 					
-					System.out.println(previousFee);
 					if(termFeeDAO.getTermFee(school.getUuid(),previousTerm) !=null){
 						termFeePrev = termFeeDAO.getTermFee(school.getUuid(),previousTerm);
 					}
-					previousFee = termFeePrev.getTermAmount();
 					
-					studentAmountDAO.deductAmount(school.getUuid(), student.getUuid(), previousFee);
-					studentAmountDAO.changeStatus(STATUS_DEDUCTED, school.getUuid(), student.getUuid());
+					//this is prev term fee
+					previousFee = termFeePrev.getTermAmount();
+					// assume prev term fee was 18,000 and the student over paid ( paid 20,000 )					
+					// bal overpay = 2000
+					//if paid 15000, 
+					//bal dues 3000
+					
+					
+					if(studentAmountDAO.deductAmount(school.getUuid(), student.getUuid(), previousFee) &&
+							studentAmountDAO.changeStatus(STATUS_DEDUCTED, school.getUuid(), student.getUuid())
+							){
+						//SELECT THE CURRENT AMOUNT, WHICH DENOTES EITHER OVER PAYMENT OR DUES
+						StudentAmount studentAmountObj = new StudentAmount();
+						double closingamount = 0;
+						studentAmountObj = studentAmountDAO.getStudentAmount(school.getUuid(), student.getUuid());
+						closingamount = studentAmountObj.getAmount();
+						//WE SAVE CLOSING AMOUNT
+						
+						ClosingBalance closingBalance = new ClosingBalance();
+						closingBalance.setSchoolAccountUuid(school.getUuid());
+						closingBalance.setStudentUuid(student.getUuid());
+						closingBalance.setTerm(previousTerm);
+						closingBalance.setYear(previousyear);
+						closingBalance.setClosingAmount(closingamount);
+					
+						
+						if(closingBalanceDAO.putClosingBalance(closingBalance)){
+							session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, COMMITT_SUCCESS +" "+previousFee +" for Term  "  + previousTerm + " Deducted from each student"); 
+	
+						}
+						
+					    
+						
+						
+					}else{
+						  session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, COMMITT_ERROR); 
+							//json = new Gson().toJson("Some Students SKIPED,");
 
-					json = new Gson().toJson("Deducted");
-				} else{
-					json = new Gson().toJson("Some Students SKIPED,");
-
+						} 
+					
+					
+					
+					//json = new Gson().toJson("Deducted");
 				} 
 
 
-				count ++;
-
 
 			}
-			out.println( previousFee + " for Term " + previousTerm + json + ",from each Student, Total Number of Students = "+count);
+			//out.println( previousFee + " for Term " + previousTerm + json + ",from each Student, Total Number of Students = "+count);
 		}
 
-		out.flush();
-		out.close();	
-		// response.sendRedirect("gson.jsp");  
+		//out.flush();
+		//out.close();	
+		response.sendRedirect("feedback.jsp");  
 		return; 
 
 	}

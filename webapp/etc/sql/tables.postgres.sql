@@ -147,12 +147,13 @@ CREATE TABLE Student(
     DOB text,
     BcertNo text,
     County text,
+    RegTerm text,
     SysUser text,
     AdmissionDate timestamp with time zone DEFAULT now()
    
 );
 
-\COPY Student(Uuid,SchoolAccountUuid,StatusUuid,ClassRoomUuid,AdmNo,FirstName, LastName,SurName,Gender,DOB,BcertNo,County,SysUser,AdmissionDate) FROM '/tmp/Student.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Student(Uuid,SchoolAccountUuid,StatusUuid,ClassRoomUuid,AdmNo,FirstName, LastName,SurName,Gender,DOB,BcertNo,County,RegTerm,SysUser,AdmissionDate) FROM '/tmp/Student.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Student OWNER TO school;
 
 
@@ -340,7 +341,7 @@ CREATE TABLE StaffDetails (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StaffUuid text REFERENCES Staff(Uuid),
-    EmployeeNo text,
+    EmployeeNo text UNIQUE NOT NULL,
     FirstName text,
     LastName text,
     Surname text,
@@ -444,6 +445,22 @@ CREATE TABLE ClassTeacher (
 );
 \COPY ClassTeacher(Uuid,TeacherUuid,ClassRoomUuid) FROM '/tmp/ClassTeacher.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ClassTeacher OWNER TO school;
+
+
+-- -------------------
+-- Table HouseMaster
+-- -------------------
+
+CREATE TABLE HouseMaster (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    TeacherUuid text REFERENCES Staff(Uuid),
+    HouseUuid text REFERENCES House(Uuid)
+        
+   
+);
+\COPY HouseMaster(Uuid,TeacherUuid,HouseUuid) FROM '/tmp/HouseMaster.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE HouseMaster OWNER TO school;
 
 
 
@@ -644,6 +661,104 @@ ALTER TABLE TermFee OWNER TO school;
 
 
 -- -------------------
+-- Table  Otherstype
+-- -------------------
+
+CREATE TABLE  Otherstype (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    Type text,
+    Term text,
+    Year text
+  
+);
+\COPY Otherstype(Uuid,SchoolAccountUuid,Type,Term,Year) FROM '/tmp/Otherstype.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE Otherstype OWNER TO school;
+
+
+
+
+-- -------------------
+-- Table  TermOtherMonies
+-- -------------------
+
+CREATE TABLE  TermOtherMonies (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    OtherstypeUuid text REFERENCES Otherstype(uuid),
+    Amount float NOT NULL CHECK (Amount>=0)
+  
+   
+
+);
+\COPY TermOtherMonies(Uuid,SchoolAccountUuid,OtherstypeUuid,Amount) FROM '/tmp/TermOtherMonies.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE TermOtherMonies OWNER TO school;
+
+
+
+-- -------------------
+-- Table  StudentOtherMonies
+-- -------------------
+
+CREATE TABLE  StudentOtherMonies (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    StudentUuid text REFERENCES student(uuid),
+    OtherstypeUuid text REFERENCES Otherstype(uuid),
+    AmountPiad float NOT NULL CHECK (AmountPiad>=0),
+    Term text,
+    Year text
+  
+   
+
+);
+\COPY StudentOtherMonies(Uuid,StudentUuid,OtherstypeUuid,AmountPiad,Term,Year) FROM '/tmp/StudentOtherMonies.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentOtherMonies OWNER TO school;
+
+
+
+-- -------------------
+-- Table  StudentOtherMoniesClosingBal
+-- -------------------
+
+CREATE TABLE  StudentOtherMoniesClosingBal (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    StudentUuid text REFERENCES student(uuid),
+    OtherstypeUuid text REFERENCES Otherstype(uuid),
+    Balance float ,
+    Term text,
+    Year text 
+   
+);
+\COPY StudentOtherMoniesClosingBal(Uuid,StudentUuid,OtherstypeUuid,Balance,Term,Year) FROM '/tmp/StudentOtherMoniesClosingBal.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentOtherMoniesClosingBal OWNER TO school;
+
+
+
+
+-- -------------------
+-- Table  OtherMonies
+-- -------------------
+
+CREATE TABLE  OtherMonies (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    StudentUuid text REFERENCES student(uuid),
+    Amount float NOT NULL,
+    Status text
+   
+);
+\COPY OtherMonies(Uuid,StudentUuid,Amount,Status) FROM '/tmp/OtherMonies.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE OtherMonies OWNER TO school;
+
+
+
+
+
+-- -------------------
 -- Table  StudentAmount
 -- -------------------
 
@@ -684,7 +799,77 @@ ALTER TABLE StudentFee OWNER TO school;
 
 
 
+-- -------------------
+-- Table  ClosingBalance
+-- -------------------
 
+CREATE TABLE  ClosingBalance (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    StudentUuid text REFERENCES student(uuid),
+    Term text,
+    Year text,
+    ClosingAmount text
+
+);
+\COPY ClosingBalance(Uuid,SchoolAccountUuid,StudentUuid,Term,Year,ClosingAmount) FROM '/tmp/ClosingBalance.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE ClosingBalance OWNER TO school;
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ==================
+-- ==================
+-- .8 Library Management
+-- ==================
+-- ==================
+-- -------------------
+-- Table  Books
+-- -------------------
+
+CREATE TABLE  Books (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    ISBN text UNIQUE NOT NULL,
+    Author text,
+    Publisher text,
+    Title text,
+    BookStatus text,
+    BorrowStatus text
+
+);
+\COPY Books(Uuid,SchoolAccountUuid,ISBN,Author,Publisher,Title,BookStatus,BorrowStatus) FROM '/tmp/Books.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE Books OWNER TO school;
+
+
+-- -------------------
+-- Table  StudentBook
+-- -------------------
+
+CREATE TABLE  StudentBook (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    StudentUuid text REFERENCES student(uuid),
+    ISBN text REFERENCES Books(ISBN),
+    BorrowStatus text,
+    BorrowDate timestamp with time zone DEFAULT now(),
+    ReturnDate text
+   
+
+);
+\COPY StudentBook(Uuid,StudentUuid,ISBN,BorrowStatus,BorrowDate,ReturnDate) FROM '/tmp/StudentBook.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE StudentBook OWNER TO school;
 
 
 

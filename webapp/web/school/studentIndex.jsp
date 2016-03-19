@@ -189,8 +189,17 @@
         </li>
 
         <li>
-            <a href="addHouse.jsp">Assign House</a>
+            <a href="addHouse.jsp">Assign House</a> <span class="divider">/</span>
         </li>
+
+        <li>
+            <a href="studentSubjects.jsp">Student Subject</a> <span class="divider">/</span>
+        </li>
+
+
+
+
+        
         
     </ul>
 </div>

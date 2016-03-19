@@ -246,6 +246,33 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
         return list;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.exam.SchoolPerfomanceDAO#getAllclassesPerformance(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public List<Perfomance> getAllclassesPerformance(String schoolAccountUuid, String Term, String Year) {
+		List<Perfomance> list = new ArrayList<>();
+        try (
+        		 Connection conn = dbutils.getConnection();
+        		 PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM perfomance WHERE"
+        		 		+ " SchoolAccountUuid = ? AND Term = ? AND Year = ?;");
+     	   ) {
+         	   pstmt.setString(1, schoolAccountUuid);      
+         	   pstmt.setString(2, Term); 
+        	   pstmt.setString(3, Year); 
+         	   try( ResultSet rset = pstmt.executeQuery();){
+     	       
+     	       list = beanProcessor.toBeanList(rset, Perfomance.class);
+         	   }
+        } catch (SQLException e) {
+            logger.error("SQLException when getting DISTINCT StudentUuid List  of Perfomance for school" + schoolAccountUuid); 
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+      
+        return list;
+	}
+
 	
 
 }

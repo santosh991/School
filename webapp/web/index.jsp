@@ -28,33 +28,7 @@
 
 <%
 
-    /* CacheManager mgr = CacheManager.getInstance();
-     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
-     Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
-     SessionStatistics statistics = new SessionStatistics();
-
-  if (session != null) {
-      String username = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
-
-           SchoolAccount school = new SchoolAccount();
-            
-            
    
-
-            Element element;
-            if ((element = accountsCache.get(username)) != null) {
-              school = (SchoolAccount) element.getObjectValue();
-            }
-            statisticsCache.remove(school.getUuid());
-
-            //destroy the session
-            session.invalidate();
-    }else {
-       response.sendRedirect("index.jsp");
-
-    }  */
-     
-
 
      PositionDAO positionDAO = PositionDAO.getInstance();
      List<Position> positionList = new ArrayList<Position>(); 

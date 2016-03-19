@@ -19,12 +19,16 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.money.TermFee;
+import com.yahoo.petermwenda83.bean.othermoney.Otherstype;
+import com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.House;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
+import com.yahoo.petermwenda83.persistence.othermoney.OtherstypeDAO;
+import com.yahoo.petermwenda83.persistence.othermoney.TermOtherMoniesDAO;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 import com.yahoo.petermwenda83.persistence.student.HouseDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -57,6 +61,13 @@ public class AddSchool extends HttpServlet{
 	private static HouseDAO houseDAO;
 	private static RoomDAO roomDAO;
 	private static TermFeeDAO termFeeDAO;
+	
+	
+	private static TermOtherMoniesDAO termOtherMoniesDAO;
+	private static OtherstypeDAO otherstypeDAO;
+	Otherstype otherstype;
+	TermOtherMonies termOtherMonies;
+
 
 
 	/**   
@@ -75,6 +86,9 @@ public class AddSchool extends HttpServlet{
        houseDAO = HouseDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
        termFeeDAO = TermFeeDAO.getInstance();
+       
+       termOtherMoniesDAO = TermOtherMoniesDAO.getInstance();
+       otherstypeDAO = OtherstypeDAO.getInstance();
    }
    
   
@@ -167,7 +181,7 @@ public class AddSchool extends HttpServlet{
     	   gradingSystem.setGradeE(Integer.parseInt("0")); 
 		   
     	   
-    	   String [] defaultClasses = {"FORM 1 N","FORM 2 N","FORM 3 N","FORM 3 N"};
+    	   String [] defaultClasses = {"FORM 1 N","FORM 2 N","FORM 3 N","FORM 4 N"};
     	   String [] defaultHouse = {"Suswa","Tana","Longonot","Chania"};
     	   
 		   
@@ -188,7 +202,7 @@ public class AddSchool extends HttpServlet{
 	    	   }
 			   
 			   String [] terms = {"1","2","3"};
-			   double [] fee = {18000,12000,8000};
+			   double [] fee = {18700,15900,14000};
 			   for(int i=0; i<terms.length;i++){
 				   TermFee termFee = new TermFee();
 				   termFee.setSchoolAccountUuid(account.getUuid());
@@ -197,6 +211,20 @@ public class AddSchool extends HttpServlet{
 				   termFeeDAO.putTermFee(termFee);
 			   }
 			   
+			   String type =  "Trip-Coast";
+			   double amount = 2500;
+			   otherstype = new Otherstype();
+			   otherstype.setSchoolAccountUuid(account.getUuid());
+	    	   otherstype.setType(type);	    	  
+	    	   otherstype.setTerm("1");
+	    	   otherstype.setYear("2016"); 
+	    	   if(otherstypeDAO.putOtherstype(otherstype)){
+	    		   termOtherMonies = new TermOtherMonies();
+	    		   termOtherMonies.setSchoolAccountUuid(account.getUuid());
+	    		   termOtherMonies.setOtherstypeUuid(otherstype.getUuid()); 
+	    		   termOtherMonies.setAmount(amount);
+	    		   termOtherMoniesDAO.putTermOtherMonies(termOtherMonies);
+	    	   }
 			   
 	    	 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_SUCCESS, SCHOOL_ADD_SUCCESS);

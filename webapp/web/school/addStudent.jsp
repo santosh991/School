@@ -218,7 +218,7 @@
                                         <label class="control-label" for="name">Admission Number*:</label>
                                         <div class="controls">
                                          <input class="input-xlarge focused" id="receiver" type="text" name="admNO" 
-                                            value="<%=newAdmno%>" readonly > 
+                                            value="<%=newAdmno%>" > <!-readonly ->
 
                                         </div>
                                     </div>  
@@ -254,9 +254,9 @@
                                         <label class="control-label" for="gender">Gender*:</label>
                                          <div class="controls">
                                             <select name="gender" >
-                                                <option value="">Please select one</option> 
+                                               <!-- <option value="">Please select one</option> -->
                                                 <option value="MALE">Male</option>
-                                                <option value="FEMALE">Female</option>
+                                              <!--  <option value="FEMALE">Female</option> -->
                                                 
                                             </select>                           
                                           
@@ -267,7 +267,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="name">DOB (DD-MM-YYYY)*:</label>
                                         <div class="controls">
-                                                  <select name="dobaddDay" id="input" style="max-width:5%;">
+                                                  <select name="dobaddDay" id="input" style="max-width:8%;">
                                                         <%
                                                             for (int j = 1; j < DAYS_IN_MONTH; j++) {
                                                                 if (j == DAY_OF_MONTH) {
@@ -278,7 +278,7 @@
                                                             }
                                                         %>
                                                     </select>
-                                                   <select name="dobaddMonth" id="input" style="max-width:5%;" >
+                                                   <select name="dobaddMonth" id="input" style="max-width:8%;" >
                                                         <%
                                                             for (int j = 1; j < 13; j++) {
                                                                 if (j == MONTH) {

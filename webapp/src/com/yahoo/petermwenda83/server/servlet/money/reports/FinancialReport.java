@@ -37,12 +37,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.money.ClosingBalance;
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.money.ClosingBalanceDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
@@ -81,6 +83,7 @@ public class FinancialReport extends HttpServlet{
 	private Cache schoolaccountCache;
 
 	private static StudentAmountDAO studentAmountDAO;
+	private static ClosingBalanceDAO closingBalanceDAO;
 	private static StudentFeeDAO studentFeeDAO;
 	private static StudentDAO studentDAO;
 	private static ExamConfigDAO examConfigDAO;
@@ -104,7 +107,7 @@ public class FinancialReport extends HttpServlet{
 		CacheManager mgr = CacheManager.getInstance();
 		schoolaccountCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
 		studentDAO = StudentDAO.getInstance();
-
+	    closingBalanceDAO = ClosingBalanceDAO.getInstance();
 		examConfigDAO = ExamConfigDAO.getInstance();
 		studentAmountDAO = StudentAmountDAO.getInstance();
 		termFeeDAO = TermFeeDAO.getInstance();
@@ -225,7 +228,7 @@ public class FinancialReport extends HttpServlet{
 		Paragraph emptyline = new Paragraph(("                              "));
 
 
-		Paragraph current = new Paragraph(("CURRENT FEE ANALYSIS"),smallBold);
+		Paragraph current = new Paragraph(("CURRENT YEAR FEE ANALYSIS"),smallBold);
 		Paragraph termOne = new Paragraph(("TERM ONE FEE ANALYSIS"),smallBold);
 		Paragraph termTwo = new Paragraph(("TERM TWO FEE ANALYSIS"),smallBold);
 		Paragraph termThree = new Paragraph(("TERM THREE FEE ANALYSIS"),smallBold);
@@ -239,86 +242,118 @@ public class FinancialReport extends HttpServlet{
 
 		PdfPTable FinanceReportTable = new PdfPTable(2);  
 
-		PdfPCell totalDuesHeader = new PdfPCell(new Paragraph("Total Dues",smallBold));
-		totalDuesHeader.setBackgroundColor(baseColor);
-		totalDuesHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		PdfPCell totalpaidHeader = new PdfPCell(new Paragraph("Year Total Fee",smallBold));
+		totalpaidHeader.setBackgroundColor(baseColor);
+		totalpaidHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell totalOverPaysHeader = new PdfPCell(new Paragraph("Total OverPay",smallBold));
+		PdfPCell totalfeesHeader = new PdfPCell(new Paragraph("Year Total Paid",smallBold));
+		totalfeesHeader.setBackgroundColor(baseColor);
+		totalfeesHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		/*PdfPCell totalduesHeader = new PdfPCell(new Paragraph("Year Total Dues",smallBold));
+		totalduesHeader.setBackgroundColor(baseColor);
+		totalduesHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		PdfPCell totalOverPaysHeader = new PdfPCell(new Paragraph("Year Total OverPay",smallBold));
 		totalOverPaysHeader.setBackgroundColor(baseColor);
 		totalOverPaysHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-		FinanceReportTable.addCell(totalDuesHeader);
-		FinanceReportTable.addCell(totalOverPaysHeader);
+       */
+		FinanceReportTable.addCell(totalpaidHeader);
+		FinanceReportTable.addCell(totalfeesHeader);
+		//FinanceReportTable.addCell(totalduesHeader);
+		//FinanceReportTable.addCell(totalOverPaysHeader);
 		FinanceReportTable.setWidthPercentage(100); 
-		FinanceReportTable.setWidths(new int[]{100,100});   
+		FinanceReportTable.setWidths(new int[]{60,60});   
 		FinanceReportTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 
 
 		//TERM 1
-		PdfPTable termOneTable = new PdfPTable(2); 
+		PdfPTable termOneTable = new PdfPTable(4); 
 		//table here
+		
+		PdfPCell termoneExpectHeader = new PdfPCell(new Paragraph("Total Fee Term 1 ",smallBold));
+		termoneExpectHeader.setBackgroundColor(baseColor);
+		termoneExpectHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
 		PdfPCell termoneTotalHeader = new PdfPCell(new Paragraph("Total Paid Term 1",smallBold));
 		termoneTotalHeader.setBackgroundColor(baseColor);
 		termoneTotalHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-
-		PdfPCell termoneExpectHeader = new PdfPCell(new Paragraph("Total Term 1 Fee",smallBold));
-		termoneExpectHeader.setBackgroundColor(baseColor);
-		termoneExpectHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-		termOneTable.addCell(termoneTotalHeader);
+		
+		PdfPCell lasttermTotalDuesHeader = new PdfPCell(new Paragraph("Last Term Dues",smallBold));
+		lasttermTotalDuesHeader.setBackgroundColor(baseColor);
+		lasttermTotalDuesHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		PdfPCell lasttermTotalOverPayHeader = new PdfPCell(new Paragraph("Last Term Overpay",smallBold));
+		lasttermTotalOverPayHeader.setBackgroundColor(baseColor);
+		lasttermTotalOverPayHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
 		termOneTable.addCell(termoneExpectHeader);
+		termOneTable.addCell(termoneTotalHeader);
+		termOneTable.addCell(lasttermTotalDuesHeader);
+		termOneTable.addCell(lasttermTotalOverPayHeader);
 		
 		termOneTable.setWidthPercentage(100); 
-		termOneTable.setWidths(new int[]{100,100});   
+		termOneTable.setWidths(new int[]{60,60,60,60});   
 		termOneTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		//TERM 2
-		PdfPTable termTwoTable = new PdfPTable(3); 
+		PdfPTable termTwoTable = new PdfPTable(4); 
 		//table here
-		PdfPCell termtwoTotalHeader = new PdfPCell(new Paragraph("Total Paid Term 2",smallBold));
-		termtwoTotalHeader.setBackgroundColor(baseColor);
-		termtwoTotalHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-
+		
 		PdfPCell termtwoExpectHeader = new PdfPCell(new Paragraph("Total Term 2 Fee",smallBold));
 		termtwoExpectHeader.setBackgroundColor(baseColor);
 		termtwoExpectHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 		
-		PdfPCell realtermtwoExpectHeader = new PdfPCell(new Paragraph("Total Expected Amnt",smallBold));
-		realtermtwoExpectHeader.setBackgroundColor(baseColor);
-		realtermtwoExpectHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		PdfPCell termtwoTotalHeader = new PdfPCell(new Paragraph("Total Paid Term 2",smallBold));
+		termtwoTotalHeader.setBackgroundColor(baseColor);
+		termtwoTotalHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		PdfPCell lastterm2TotalDuesHeader = new PdfPCell(new Paragraph("Last Term Dues",smallBold));
+		lastterm2TotalDuesHeader.setBackgroundColor(baseColor);
+		lastterm2TotalDuesHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		PdfPCell lastterm2TotalOverPayHeader = new PdfPCell(new Paragraph("Last Term Overpay",smallBold));
+		lastterm2TotalOverPayHeader.setBackgroundColor(baseColor);
+		lastterm2TotalOverPayHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		termTwoTable.addCell(termtwoTotalHeader);
 		termTwoTable.addCell(termtwoExpectHeader);
-		termTwoTable.addCell(realtermtwoExpectHeader);
+		termTwoTable.addCell(termtwoTotalHeader);
+		termTwoTable.addCell(lastterm2TotalDuesHeader);
+		termTwoTable.addCell(lastterm2TotalOverPayHeader);
 		
 		termTwoTable.setWidthPercentage(100); 
-		termTwoTable.setWidths(new int[]{80,80,80});   
+		termTwoTable.setWidths(new int[]{60,60,60,60});   
 		termTwoTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		//TERM 3
-		PdfPTable termThreeTable = new PdfPTable(3); 
+		PdfPTable termThreeTable = new PdfPTable(4); 
 
 		//table here
-		PdfPCell termthreeTotalHeader = new PdfPCell(new Paragraph("Total Paid Term 3",smallBold));
-		termthreeTotalHeader.setBackgroundColor(baseColor);
-		termthreeTotalHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
-
+		
 		PdfPCell termthreeExpectHeader = new PdfPCell(new Paragraph("Total Term 3 Fee",smallBold));
 		termthreeExpectHeader.setBackgroundColor(baseColor);
 		termthreeExpectHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 		
-		PdfPCell realtermtthreeExpectHeader = new PdfPCell(new Paragraph("Total Expected Amnt",smallBold));
-		realtermtthreeExpectHeader.setBackgroundColor(baseColor);
-		realtermtthreeExpectHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		PdfPCell termthreeTotalHeader = new PdfPCell(new Paragraph("Total Paid Term 3",smallBold));
+		termthreeTotalHeader.setBackgroundColor(baseColor);
+		termthreeTotalHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		termThreeTable.addCell(termthreeTotalHeader);
+		PdfPCell lastterm3TotalDuesHeader = new PdfPCell(new Paragraph("Last Term Dues",smallBold));
+		lastterm3TotalDuesHeader.setBackgroundColor(baseColor);
+		lastterm3TotalDuesHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		PdfPCell lastterm3TotalOverPayHeader = new PdfPCell(new Paragraph("Last Term Overpay",smallBold));
+		lastterm3TotalOverPayHeader.setBackgroundColor(baseColor);
+		lastterm3TotalOverPayHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+	
 		termThreeTable.addCell(termthreeExpectHeader);
-		termThreeTable.addCell(realtermtthreeExpectHeader);
+		termThreeTable.addCell(termthreeTotalHeader);
+		termThreeTable.addCell(lastterm3TotalDuesHeader);
+		termThreeTable.addCell(lastterm3TotalOverPayHeader);
 		
 		termThreeTable.setWidthPercentage(100); 
-		termThreeTable.setWidths(new int[]{80,80,80});   
+		termThreeTable.setWidths(new int[]{60,60,60,60});   
 		termThreeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 
@@ -344,6 +379,21 @@ public class FinancialReport extends HttpServlet{
 		double termOneFee = 0;
 		double termOneTotalExpect = 0;
 		
+		double prevtermbalance = 0;
+		double prevdues = 0;
+		double prevoverpay = 0;
+		
+		double yeartotalfee = 0;
+		double yeartotalpaid = 0;
+		double yeartotaldues = 0;
+		double yeartotaloverpay = 0;
+		
+		String currentyear = "";
+		currentyear = examConfig.getYear();
+		int currentyearint = Integer.parseInt(currentyear);
+		int prevyear = currentyearint - 1;
+		String prevyearstring = Integer.toString(prevyear);
+		
 
 		TermFee termoneFee = new TermFee();
 		if(termFeeDAO.getTermFee(school.getUuid(),"1") !=null){
@@ -356,6 +406,8 @@ public class FinancialReport extends HttpServlet{
 			studentfeeListTerm1 = studentFeeDAO.getStudentFeeList(school.getUuid(),"1",examConfig.getYear());      	 
 
 		}
+		
+		yeartotalpaid = 0;
 		if(studentfeeListTerm1 !=null){
 			for(StudentFee term1 : studentfeeListTerm1){
 				termOneAmount = term1.getAmountPaid();
@@ -363,12 +415,38 @@ public class FinancialReport extends HttpServlet{
 				
 			}
 		}
-
-		termOneTotalExpect = termOneFee * studentCount;
-
 		
-		termOneTable.addCell(nf.format(termOneTotals));
+		termOneTotalExpect = termOneFee * studentCount;
+		yeartotalfee +=termOneTotalExpect;
+
+		 List<ClosingBalance> closingBalanceList1 = new ArrayList<>();
+		if(closingBalanceDAO.getClosingBalanceList(school.getUuid(),"3", prevyearstring) !=null){
+			closingBalanceList1 = closingBalanceDAO.getClosingBalanceList(school.getUuid(), "3", prevyearstring);
+			
+		}
+		//positive bal means dues, while negative bal means over pay
+		for(ClosingBalance closebal : closingBalanceList1){
+			prevtermbalance = closebal.getClosingAmount();
+			if(prevtermbalance>0){
+				prevdues+=prevtermbalance;
+				yeartotaldues +=prevdues;
+			}else{
+				prevoverpay+=(Math.abs(prevtermbalance));
+				yeartotaloverpay +=prevoverpay;
+			}
+			
+		}
+		
+		
+		
+
+		yeartotalpaid +=termOneTotals;
+		//System.out.println("term 1="+yeartotalpaid);
 		termOneTable.addCell(nf.format(termOneTotalExpect));
+		termOneTable.addCell(nf.format(termOneTotals));
+		termOneTable.addCell(nf.format(prevoverpay));//prevdues
+		termOneTable.addCell(nf.format(prevdues));//prevoverpay
+		
 
 		//TERM 2
 
@@ -392,96 +470,65 @@ public class FinancialReport extends HttpServlet{
 			studentfeeListTerm2 = studentFeeDAO.getStudentFeeList(school.getUuid(),"2",examConfig.getYear());      	 
 
 		}
-		
-		
-		double TotalprevTermPaid = 0;
-		double prevTermbalance = 0;
-		double REAL_TOTAL_EXPECTED = 0;
 
-		double REAL_TOTAL_UN_PAID = 0;
-		double ALREADYPAIDAMOUNT = 0;
-		double absALREADYPAIDAMOUNT = 0;
-		double TotalabsALREADYPAIDAMOUNT = 0;
-		double TotalabsALREADYPAIDAMOUNT2 = 0;
-		 
-		if(studentList !=null){
-			for(Student students : studentList){
-				
-				//WE GO BACK TO PREV TERM 1
-				List<StudentFee> studentfeeListPrevTerm = new ArrayList<StudentFee>();
-				if(studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),students.getUuid(),"1",examConfig.getYear()) !=null){
-					studentfeeListPrevTerm = studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),students.getUuid(),"1",examConfig.getYear());      	 
 
-				}
-				 double prevTermPaid = 0;
-				
-				
-				 for(StudentFee PrevTerm : studentfeeListPrevTerm){
-					 prevTermPaid = PrevTerm.getAmountPaid();
-					 TotalprevTermPaid = 0;
-					 TotalprevTermPaid +=prevTermPaid;
-					 prevTermbalance = termOneFee - TotalprevTermPaid ;
-	             
-	                 if(prevTermbalance >0){ 
-	                  REAL_TOTAL_UN_PAID = 0;
-	       			  REAL_TOTAL_UN_PAID += (prevTermbalance+termTwoFee);
-	       			
-	       			
-	       		     }else{
-	       		      TotalabsALREADYPAIDAMOUNT = 0;
-	       			  ALREADYPAIDAMOUNT = prevTermbalance;
-	       			  absALREADYPAIDAMOUNT = Math.abs(ALREADYPAIDAMOUNT);
-	       			  TotalabsALREADYPAIDAMOUNT +=(termTwoFee-absALREADYPAIDAMOUNT);
-	       			  TotalabsALREADYPAIDAMOUNT2 +=TotalabsALREADYPAIDAMOUNT;
-	       		  }
-	                 
-	             
-				 }
-				  
-				 
-		  		  REAL_TOTAL_EXPECTED = 0;
-		  		  REAL_TOTAL_EXPECTED +=(TotalabsALREADYPAIDAMOUNT2 + REAL_TOTAL_UN_PAID);
-		  		 
-			  }
+
+		prevtermbalance = 0;
+		prevdues = 0;
+		prevoverpay = 0;
+
+
+
+		List<ClosingBalance> closingBalanceList = new ArrayList<>();
+		if(closingBalanceDAO.getClosingBalanceList(school.getUuid(),"1", examConfig.getYear()) !=null){
+			closingBalanceList = closingBalanceDAO.getClosingBalanceList(school.getUuid(), "1", examConfig.getYear());
+
+		}
+		//positive bal means dues, while negative bal means over pay
+		for(ClosingBalance closebal : closingBalanceList){
+			prevtermbalance = closebal.getClosingAmount();
+			if(prevtermbalance>0){
+				prevdues+=prevtermbalance;
+				yeartotaldues +=prevdues;
+			}else{
+				prevoverpay+=(Math.abs(prevtermbalance));
+				yeartotaloverpay +=prevoverpay;
 			}
-		
-		 
-		
-		
-		//GO BACK TO TERM 1, GET TERM 1 FEE, 18000, FIND WHAT THE STUDENT PAID , IF AMOUNT PAID IS +VE 
-		// UNPAIDAMOUNT = AMOUNT    ,
-		// CURRENTLY WE DEMAND THE STUDENT , CURRENT TERM FEE
-		//TOTALUNPAIDAMOUNT = UNPAINDAOUNT + CURRENT TERM FEE
-		//REAL_TOTAL_UN_PAID +=TOTALUNPAIDAMOUNT;
-		
-		//ELSE IF BALANCE IS NEGATIVE
-		//CONVERT TO POSITVE CALL IT , ALREADYPAIDAMOUNT 
-		//CURRENTDEMAND = CURRENT TERM FEE - ALREADYPAIDAMOUNT
-		
-		//TOTALEXPECTEDAMOUNT =  TOTALUNPAIDAMOUNT+CURRENTDEMAND
-		//REAL_TOTAL_EXPECTED += TOTALEXPECTEDAMOUNT; //( Total Expected Amnt)
-		
-		
-		
+
+		}
+
+
+
 
 		if(studentfeeListTerm2 !=null){
 			for(StudentFee term2 : studentfeeListTerm2){
 				termTwoAmount = term2.getAmountPaid();
-				termTwoTotals = termTwoTotals+termTwoAmount;
+				termTwoTotals+=termTwoAmount;
+				
 			}
 		}
-
-		termTwoTotalExpect = termTwoFee * studentCount;
 		
-		termTwoTable.addCell(nf.format(termTwoTotals));
+		termTwoTotalExpect = termTwoFee * studentCount;
+		yeartotalfee +=termTwoTotalExpect;
+        
+		yeartotalpaid +=termTwoTotals;
+		//System.out.println("term 2="+yeartotalpaid);
+		
 		termTwoTable.addCell(nf.format(termTwoTotalExpect));
-		termTwoTable.addCell(nf.format(REAL_TOTAL_EXPECTED));
+		termTwoTable.addCell(nf.format(termTwoTotals));
+		termTwoTable.addCell(nf.format(prevoverpay));
+		termTwoTable.addCell(nf.format(prevdues));
+		
 		
 		//TERM 3
 		double termThreeAmount = 0;
 		double termThreeTotals = 0;
 		double termThreeFee = 0;
 		double termThreeTotalExpect = 0;
+		
+		prevtermbalance = 0;
+		prevdues = 0;
+		prevoverpay = 0;
 		
 		TermFee termthreeFee = new TermFee();
 		if(termFeeDAO.getTermFee(school.getUuid(),"3") !=null){
@@ -498,122 +545,56 @@ public class FinancialReport extends HttpServlet{
 		if(studentfeeListTerm3 !=null){
 			for(StudentFee term3 : studentfeeListTerm3){
 				termThreeAmount = term3.getAmountPaid();
-				termThreeTotals = termThreeTotals+termThreeAmount;
+				termThreeTotals +=termThreeAmount;
+				
 			}
+		}
+		
+		
+		List<ClosingBalance> closingBalanceList3 = new ArrayList<>();
+		if(closingBalanceDAO.getClosingBalanceList(school.getUuid(),"2", examConfig.getYear()) !=null){
+			closingBalanceList3 = closingBalanceDAO.getClosingBalanceList(school.getUuid(), "2", examConfig.getYear());
+
+		}
+		//positive bal means dues, while negative bal means over pay
+		for(ClosingBalance closebal : closingBalanceList3){
+			prevtermbalance = closebal.getClosingAmount();
+			if(prevtermbalance>0){
+				prevdues+=prevtermbalance;
+				yeartotaldues +=prevdues;
+			}else{
+				prevoverpay+=(Math.abs(prevtermbalance));
+				yeartotaloverpay +=prevoverpay;
+			}
+
 		}
 
 		termThreeTotalExpect = termThreeFee * studentCount;
+		yeartotalfee +=termThreeTotalExpect;
 		
-		//GO BACK TO TERM 2
-		double TotalprevTerm2Paid = 0;
-		double prevTerm2balance = 0;
-		double REAL_TOTAL_EXPECTED_T_2 = 0;
-
-		double REAL_TOTAL_UN_PAID_T_2 = 0;
-		double ALREADY_PAID_AMOUNT_T_2 = 0;
-		double abs_ALREADY_PAID_AMOUNT_T_2 = 0;
-		double Total_abs_ALREADY_PAID_AMOUNT_T_2 = 0;
-		
-		 
-		if(studentList !=null){
-			for(Student students : studentList){
-				
-				//WE GO BACK TO PREV TERM 2
-				List<StudentFee> studentfeeListPrevTerm = new ArrayList<StudentFee>();
-				if(studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),students.getUuid(),"2",examConfig.getYear()) !=null){
-					studentfeeListPrevTerm = studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),students.getUuid(),"2",examConfig.getYear());      	 
-
-				}
-				 double prevTermPaid = 0;
-				
-				
-				 for(StudentFee PrevTerm : studentfeeListPrevTerm){
-					 prevTermPaid = PrevTerm.getAmountPaid();
-					 TotalprevTerm2Paid = 0;
-					 TotalprevTerm2Paid +=prevTermPaid;
-					 prevTerm2balance = (termTwoFee - TotalprevTerm2Paid);
-	             
-	                 if(prevTerm2balance >0){ 
-	                	 REAL_TOTAL_UN_PAID_T_2 = 0;
-	                	 REAL_TOTAL_UN_PAID_T_2 += (prevTerm2balance+termThreeAmount);
-	       			
-	       			
-	       		     }else{
-	       		      Total_abs_ALREADY_PAID_AMOUNT_T_2 = 0;
-	       		      ALREADY_PAID_AMOUNT_T_2 = REAL_TOTAL_UN_PAID_T_2;
-	       		      abs_ALREADY_PAID_AMOUNT_T_2 = Math.abs(ALREADY_PAID_AMOUNT_T_2);
-	       		      Total_abs_ALREADY_PAID_AMOUNT_T_2 +=(termThreeAmount-abs_ALREADY_PAID_AMOUNT_T_2);
-	       		      Total_abs_ALREADY_PAID_AMOUNT_T_2 +=Total_abs_ALREADY_PAID_AMOUNT_T_2;
-	       		  }
-	                 
-	             
-				 }
-				  
-				 
-				 REAL_TOTAL_EXPECTED_T_2 = 0;
-				 REAL_TOTAL_EXPECTED_T_2 +=(Total_abs_ALREADY_PAID_AMOUNT_T_2 + REAL_TOTAL_UN_PAID_T_2);
-		  		 
-			  }
-			}
-
-		
-		termThreeTable.addCell(nf.format(termThreeTotals));
+       
+		yeartotalpaid +=termThreeTotals;
+		//System.out.println("term 3="+yeartotalpaid);
 		termThreeTable.addCell(nf.format(termThreeTotalExpect));
-		termThreeTable.addCell(nf.format(REAL_TOTAL_EXPECTED_T_2));
+		termThreeTable.addCell(nf.format(termThreeTotals));
+		termThreeTable.addCell(nf.format(prevoverpay));
+		termThreeTable.addCell(nf.format(prevdues));
 		
-		// CURRENT ANALYSIS 
-		double amountpaid = 0;
-		double balance = 0;
-		double termfee = 0;
-		double grandtotal = 0;  
-		double theTotal = 0;  
-		double totalDue = 0;
-
- 
-		double realDues = 0;
-		double overPays = 0;
-		double aBSoverPays = 0;
-		double thisBalance = 0;
-		termfee = termFee.getTermAmount();
-
-		if(feeList !=null){
-			for(StudentAmount fees : feeList){
-
-				theTotal = fees.getAmount();  
-				thisBalance =  termfee - theTotal;
-
-				grandtotal = grandtotal+theTotal;
-
-				balance = termfee - amountpaid;
-				totalDue = totalDue + balance;
-
-				if(thisBalance < 0){
-					overPays +=thisBalance;
-				}else{
-					realDues +=thisBalance;
-				}
-
-
-
-			}
-		}
-
-		aBSoverPays = Math.abs(overPays);
-
-
-
 		
-		FinanceReportTable.addCell(nf.format(realDues));
-		FinanceReportTable.addCell(nf.format(aBSoverPays));
-
-
 		
+		// CURRENT YEAR ANALYSIS 
+		
+		FinanceReportTable.addCell(nf.format(yeartotalfee));
+		FinanceReportTable.addCell(nf.format(yeartotalpaid));
+		//FinanceReportTable.addCell(nf.format(yeartotaloverpay));
+		//FinanceReportTable.addCell(nf.format(yeartotaldues));
+
+
+		//PREFACE
 		document.add(emptyline);
 		document.add(preface);
-		document.add(emptyline);
-		document.add(current);
-		document.add(emptyline);
-		document.add(FinanceReportTable); 
+		
+		
 
 		//TERM 1
 		document.add(emptyline);
@@ -630,6 +611,12 @@ public class FinancialReport extends HttpServlet{
 		document.add(termThree);
 		document.add(emptyline);
 		document.add(termThreeTable);
+		
+		//CURENT YEAR
+	     document.add(emptyline);
+		 document.add(current);
+		 document.add(emptyline);
+		 document.add(FinanceReportTable); 
 		
 		
 

@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -15,7 +14,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
-import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
 /**

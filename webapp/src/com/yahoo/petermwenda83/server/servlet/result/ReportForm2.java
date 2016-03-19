@@ -51,6 +51,8 @@ import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
+import com.yahoo.petermwenda83.bean.staff.StaffDetails;
+import com.yahoo.petermwenda83.bean.staff.TeacherSubClass;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
@@ -60,6 +62,8 @@ import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
+import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
+import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -77,9 +81,9 @@ import net.sf.ehcache.CacheManager;
 public class ReportForm2 extends HttpServlet{
 
 
-	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
-	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-	private Font normalText = new Font(Font.FontFamily.COURIER, 12);
+	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	private Font normalText = new Font(Font.FontFamily.COURIER, 8);
 	private Document document;
 	private PdfWriter writer;
 	private Cache schoolaccountCache, statisticsCache;
@@ -99,6 +103,8 @@ public class ReportForm2 extends HttpServlet{
 	private static GradingSystemDAO gradingSystemDAO;
 	private static StudentAmountDAO studentAmountDAO;
 	private static TermFeeDAO termFeeDAO;
+	private static TeacherSubClassDAO teacherSubClassDAO;
+	private static StaffDetailsDAO staffDetailsDAO;
 
 	String classroomuuid = "";String schoolusername = "";String stffID = "";
 
@@ -175,6 +181,8 @@ public class ReportForm2 extends HttpServlet{
 		gradingSystemDAO = GradingSystemDAO.getInstance();
 		studentAmountDAO = StudentAmountDAO.getInstance();
 		termFeeDAO = TermFeeDAO.getInstance();
+		teacherSubClassDAO = TeacherSubClassDAO.getInstance();
+		staffDetailsDAO = StaffDetailsDAO.getInstance();
 
 		USER = System.getProperty("user.name");
 		path = "/home/"+USER+"/school/logo/logo.png";
@@ -217,7 +225,7 @@ public class ReportForm2 extends HttpServlet{
 
 		PDF_SUBTITLE = school.getSchoolName()+"\n"
 				+ "P.O BOX "+school.getPostalAddress()+"\n" 
-				+ ""+school.getTown().toUpperCase()+"-KENYA\n" 
+				+ ""+school.getTown() +"-Kenya\n" 
 				+ "" + school.getMobile()+"\n"
 				+ "" + school.getEmail()+"\n"; 
 
@@ -268,7 +276,7 @@ public class ReportForm2 extends HttpServlet{
 
 
 
-		document = new Document(PageSize.A3, 46, 46, 64, 64);
+		document = new Document(PageSize.A4, 46, 46, 64, 64);
 
 		try {
 			writer = PdfWriter.getInstance(document, response.getOutputStream());
@@ -277,7 +285,7 @@ public class ReportForm2 extends HttpServlet{
 
 
 			PdfUtil event = new PdfUtil();
-			writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
+			writer.setBoxSize("art", new Rectangle(46, 64, 559, 788));
 			writer.setPageEvent(event);
 
 			populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, path); 
@@ -327,7 +335,44 @@ public class ReportForm2 extends HttpServlet{
 		String totalz = "";
 		try {
 			document.open();
+			
+			
+			PdfPTable prefaceTable = new PdfPTable(2);  
+			prefaceTable.setWidthPercentage(100); 
+			prefaceTable.setWidths(new int[]{100,100}); 
 
+			Paragraph content = new Paragraph();
+			content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n\n\n\n\n\n") , smallBold));
+
+			Paragraph reporttitle = new Paragraph();
+			reporttitle.add(new Paragraph(("STUDENT REPORT CARD") , smallBold));
+
+			PdfPCell contentcell = new PdfPCell(content);
+			contentcell.setBorder(Rectangle.NO_BORDER); 
+			contentcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+			Paragraph preface = new Paragraph();
+			preface.add(createImage(realPath));
+
+			Image imgLogo = null;
+			try {
+				imgLogo = Image.getInstance(realPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			imgLogo.scalePercent(8); 
+			imgLogo.setAlignment(Element.ALIGN_LEFT);
+
+			PdfPCell logo = new PdfPCell();
+			logo.addElement(new Chunk(imgLogo,15,-90)); // margin left  ,  margin top
+			logo.setBorder(Rectangle.NO_BORDER); 
+			logo.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			prefaceTable.addCell(logo); 
+			prefaceTable.addCell(contentcell);
+			
 
 
 			// addEmptyLine(preface, 1);
@@ -1167,7 +1212,7 @@ public class ReportForm2 extends HttpServlet{
 					BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
 					BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
 
-					Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+					Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
 
 					Paragraph emptyline = new Paragraph(("                              "));
 
@@ -1203,9 +1248,15 @@ public class ReportForm2 extends HttpServlet{
 					PdfPCell remarkHeader = new PdfPCell(new Paragraph("REMARKS",boldFont));
 					remarkHeader.setBackgroundColor(baseColor);
 					remarkHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
+					
+					PdfPCell teacherHeader = new PdfPCell(new Paragraph("Teacher",boldFont));
+					teacherHeader.setBackgroundColor(baseColor);
+					teacherHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
 					PdfPTable myTable;
 
-					myTable = new PdfPTable(8); 
+					myTable = new PdfPTable(9); 
 					myTable.addCell(CountHeader);
 					myTable.addCell(subjectHeader);
 					myTable.addCell(cat1Header);
@@ -1214,8 +1265,9 @@ public class ReportForm2 extends HttpServlet{
 					myTable.addCell(scoreHeader);
 					myTable.addCell(gradeHeader);
 					myTable.addCell(remarkHeader);
+					myTable.addCell(teacherHeader);
 					myTable.setWidthPercentage(100); 
-					myTable.setWidths(new int[]{15,60,20,20,20,25,25,80});   
+					myTable.setWidths(new int[]{15,60,20,20,20,25,25,80,20});   
 					myTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					String maxscore = "100";
@@ -1304,18 +1356,18 @@ public class ReportForm2 extends HttpServlet{
 					gradeTable.setWidths(new int[]{20,20,20,20,20,25,20,20,20,20,20,20});   
 					gradeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					gradeTable.addCell("A ");
-					gradeTable.addCell("A-");
-					gradeTable.addCell("B+");
-					gradeTable.addCell("B");
-					gradeTable.addCell("B-");
-					gradeTable.addCell("C+");
-					gradeTable.addCell("C");
-					gradeTable.addCell("C-");
-					gradeTable.addCell("D+");
-					gradeTable.addCell("D");
-					gradeTable.addCell("D-");
-					gradeTable.addCell("E");
+					gradeTable.addCell(new Paragraph("A",boldFont));
+					gradeTable.addCell(new Paragraph("A-",boldFont));
+					gradeTable.addCell(new Paragraph("B+",boldFont));
+					gradeTable.addCell(new Paragraph("B",boldFont));
+					gradeTable.addCell(new Paragraph("B-",boldFont));
+					gradeTable.addCell(new Paragraph("C+",boldFont));
+					gradeTable.addCell(new Paragraph("C",boldFont));
+					gradeTable.addCell(new Paragraph("C-",boldFont));
+					gradeTable.addCell(new Paragraph("D+",boldFont));
+					gradeTable.addCell(new Paragraph("D",boldFont));
+					gradeTable.addCell(new Paragraph("D-",boldFont));
+					gradeTable.addCell(new Paragraph("E",boldFont));
 
 					PdfPTable containerTable = new PdfPTable(2);  
 					containerTable.setWidthPercentage(100); 
@@ -1333,41 +1385,7 @@ public class ReportForm2 extends HttpServlet{
 					HeaderTable.setWidths(new int[]{100});   
 					HeaderTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPTable prefaceTable = new PdfPTable(2);  
-					prefaceTable.setWidthPercentage(100); 
-					prefaceTable.setWidths(new int[]{100,100}); 
-
-					Paragraph content = new Paragraph();
-					content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n\n\n\n\n\n") , smallBold));
-
-					Paragraph reporttitle = new Paragraph();
-					reporttitle.add(new Paragraph(("STUDENT REPORT CARD") , smallBold));
-
-					PdfPCell contentcell = new PdfPCell(content);
-					contentcell.setBorder(Rectangle.NO_BORDER); 
-					contentcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-
-					Paragraph preface = new Paragraph();
-					preface.add(createImage(realPath));
-
-					Image imgLogo = null;
-					try {
-						imgLogo = Image.getInstance(realPath);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					imgLogo.scalePercent(14); 
-					imgLogo.setAlignment(Element.ALIGN_LEFT);
-
-					PdfPCell logo = new PdfPCell();
-					logo.addElement(new Chunk(imgLogo,30,-140)); // margin left  ,  margin top
-					logo.setBorder(Rectangle.NO_BORDER); 
-					logo.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-					prefaceTable.addCell(logo); 
-					prefaceTable.addCell(contentcell);
+					
 
 
 					PdfPCell contheader = new PdfPCell(new Paragraph(("TERM " +examConfig.getTerm() + ": YEAR " + examConfig.getYear() +"\n\n" +("CLASS : " + roomHash.get(classroomuuid) +"\n")) +"",boldFont));
@@ -1389,139 +1407,176 @@ public class ReportForm2 extends HttpServlet{
 					int count = 1;
 					for(Subject sub : subList){
 
-						myTable.addCell(" "+count);
+
+
+						myTable.addCell(new Paragraph(" "+count,boldFont));
 
 						if(StringUtils.equals(sub.getUuid(), ENG_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+engc1str);
-							myTable.addCell(" "+engc2str);
-							myTable.addCell(" "+engetstr);
-							myTable.addCell(" "+engscorestr);
-							myTable.addCell(" "+computeGrade(engscore));
-							myTable.addCell(" "+computeRemarks(engscore));
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+engc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+engc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+engetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+engscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(engscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(engscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							engscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), KISWA_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+kisc1str);
-							myTable.addCell(" "+kisc2str);
-							myTable.addCell(" "+kisetstr);
-							myTable.addCell(" "+kswscorestr);
-							myTable.addCell(" "+computeGrade(kswscore));
-							myTable.addCell(" "+computeRemarks(kswscore));	  
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+kisc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+kisc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+kisetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+kswscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(kswscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(kswscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
 							kswscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), MATH_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+matc1str);  
-							myTable.addCell(" "+matc2str);  
-							myTable.addCell(" "+matetstr);  
-							myTable.addCell(" "+matscorestr);  
-							myTable.addCell(" "+computeGrade(matscore));
-							myTable.addCell(" "+computeRemarks(matscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+matc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+matc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+matetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+matscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(matscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(matscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							matscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), PHY_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+phyc1str);  
-							myTable.addCell(" "+phyc2str); 
-							myTable.addCell(" "+phyetstr); 
-							myTable.addCell(" "+physcorestr); 
-							myTable.addCell(" "+computeGrade(physcore));
-							myTable.addCell(" "+computeRemarks(physcore));  
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+phyc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+phyc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+phyetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+physcorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(physcore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(physcore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							physcore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), BIO_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+bioc1str);      
-							myTable.addCell(" "+bioc2str);      
-							myTable.addCell(" "+bioetstr);      
-							myTable.addCell(" "+bioscorestr);      
-							myTable.addCell(" "+computeGrade(bioscore));
-							myTable.addCell(" "+computeRemarks(bioscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+bioc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+bioc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+bioetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+bioscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(bioscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(bioscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							bioscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), CHEM_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+chemc1str); 
-							myTable.addCell(" "+chemc2str); 
-							myTable.addCell(" "+chemetstr); 
-							myTable.addCell(" "+chemscorestr); 
-							myTable.addCell(" "+computeGrade(chemscore));
-							myTable.addCell(" "+computeRemarks(chemscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+chemc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+chemc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+chemetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+chemscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(chemscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(chemscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							chemscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), BS_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+bsc1str);     
-							myTable.addCell(" "+bsc2str);     
-							myTable.addCell(" "+bsetstr);     
-							myTable.addCell(" "+bsscorestr);     
-							myTable.addCell(" "+computeGrade(bsscore));
-							myTable.addCell(" "+computeRemarks(bsscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+bsc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+bsc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+bsetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+bsscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(bsscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(bsscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							bsscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), COMP_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+comc1str);  
-							myTable.addCell(" "+comc2str);  
-							myTable.addCell(" "+cometstr);  
-							myTable.addCell(" "+comscorestr);  
-							myTable.addCell(" "+computeGrade(comscore));
-							myTable.addCell(" "+computeRemarks(comscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+comc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+comc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+cometstr,boldFont));
+							myTable.addCell(new Paragraph(" "+comscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(comscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(comscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+						
 							comscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), H_S)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+hscc1str);
-							myTable.addCell(" "+hscc2str);
-							myTable.addCell(" "+hscetstr);
-							myTable.addCell(" "+hscscorestr);
-							myTable.addCell(" "+computeGrade(hscscore));
-							myTable.addCell(" "+computeRemarks(hscscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+hscc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+hscc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+hscetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+hscscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(hscscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(hscscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							hscscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), AGR_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+agrc1str);      
-							myTable.addCell(" "+agrc2str);      
-							myTable.addCell(" "+agretstr);      
-							myTable.addCell(" "+agriscorestr);      
-							myTable.addCell(" "+computeGrade(agriscore));
-							myTable.addCell(" "+computeRemarks(agriscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+agrc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+agrc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+agretstr,boldFont));
+							myTable.addCell(new Paragraph(" "+agriscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(agriscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(agriscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							agriscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), GEO_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+geoc1str);     
-							myTable.addCell(" "+geoc2str);     
-							myTable.addCell(" "+geoetstr);     
-							myTable.addCell(" "+geoscorestr);     
-							myTable.addCell(" "+computeGrade(geoscore));
-							myTable.addCell(" "+computeRemarks(geoscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+geoc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+geoc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+geoc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+geoscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(geoscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(geoscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							geoscore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), CRE_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+crec1str);   
-							myTable.addCell(" "+crec2str);   
-							myTable.addCell(" "+creetstr);   
-							myTable.addCell(" "+crescorestr);   
-							myTable.addCell(" "+computeGrade(crescore));
-							myTable.addCell(" "+computeRemarks(crescore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+crec1str,boldFont));
+							myTable.addCell(new Paragraph(" "+crec2str,boldFont));
+							myTable.addCell(new Paragraph(" "+creetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+crescorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(crescore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(crescore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							crescore = 0;
 
 						}if(StringUtils.equals(sub.getUuid(), HIST_UUID)){
-							myTable.addCell(sub.getSubjectName());
-							myTable.addCell(" "+hisc1str);    
-							myTable.addCell(" "+hisc2str);    
-							myTable.addCell(" "+hisetstr);    
-							myTable.addCell(" "+histscorestr);    
-							myTable.addCell(" "+computeGrade(histscore));
-							myTable.addCell(" "+computeRemarks(histscore));
+							
+							myTable.addCell(new Paragraph(" "+sub.getSubjectName(),boldFont));
+							myTable.addCell(new Paragraph(" "+hisc1str,boldFont));
+							myTable.addCell(new Paragraph(" "+hisc2str,boldFont));
+							myTable.addCell(new Paragraph(" "+hisetstr,boldFont));
+							myTable.addCell(new Paragraph(" "+histscorestr,boldFont));
+							myTable.addCell(new Paragraph(" "+computeGrade(histscore),boldFont));
+							myTable.addCell(new Paragraph(" "+computeRemarks(histscore),boldFont));
+							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),boldFont)); 
+							
 							histscore = 0;
 						}
-
 
 						count++;
 					}
@@ -1529,14 +1584,14 @@ public class ReportForm2 extends HttpServlet{
 					Paragraph myposition;
 
 					if(mean==number){
-						myposition = new Paragraph(("POSITION " +(position-counttwo++)+ " OUT OF " +Finalposition));
+						myposition = new Paragraph(("POSITION " +(position-counttwo++)+ " OUT OF " +Finalposition),boldFont);
 					}
 					else{
 						counttwo=1;
-						myposition = new Paragraph(("POSITION " +position+ " OUT OF " +Finalposition));
+						myposition = new Paragraph(("POSITION " +position+ " OUT OF " +Finalposition),boldFont);
 					}
 
-					PdfPCell positionheader = new PdfPCell(new Paragraph(myposition +"\n\n",boldFont));
+					PdfPCell positionheader = new PdfPCell(myposition);
 					positionheader.setBackgroundColor(Colormagenta);
 					positionheader.setHorizontalAlignment(Element.ALIGN_LEFT);  
 
@@ -1584,11 +1639,11 @@ public class ReportForm2 extends HttpServlet{
 					Locale locale = new Locale("en","KE"); 
 					NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
 
-					PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(balance)+" \n\n Next Term Fee " + nf.format(nexttermfee) ,boldFont));
+					PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(balance)+" \nNext Term Fee " + nf.format(nexttermfee) ,boldFont));
 					feeCell.setBackgroundColor(Colorgrey);
 					feeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell DateCell = new PdfPCell(new Paragraph((("Clossing date : " +formatter.format(new Date()))+" \n\n Next Term Opening date :_________________ ")+"\n\n",boldFont));
+					PdfPCell DateCell = new PdfPCell(new Paragraph((("Clossing date : " +formatter.format(new Date()))+" \nNext Term Opening date :_________________ ")+"\n",boldFont));
 					DateCell.setBackgroundColor(Colorgrey);
 					DateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -1603,30 +1658,29 @@ public class ReportForm2 extends HttpServlet{
 					commentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					PdfPCell commentCell = new PdfPCell(new Paragraph("Thank you " + firstnamee + " for the fantastic term, it has been awesome to see you grow "
-							+ "and develop, hope you have a wonderful holiday.\nFor your performance, all we can say is ... " + classteacherRemarks(mean)+"\n\n"));
+							+ "and develop, hope you have a wonderful holiday.\nFor your performance, all we can say is ... " + classteacherRemarks(mean)+"\n",boldFont));
 					commentCell.setBackgroundColor(Colormagenta);
 					commentCell.setColspan(2); 
 					commentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell Cell1 = new PdfPCell(new Paragraph("Class Teacher's Signature: _____________________\n\n"
-							+ "Principal's Signature: _____________________\n\n"));
+					PdfPCell Cell1 = new PdfPCell(new Paragraph("Class Teacher's Signature: _____________________\n"
+							+ "Principal's Signature: _____________________\n",boldFont));
 
 					Cell1.setBackgroundColor(Colormagenta);
-					Cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					Cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell Cell2 = new PdfPCell(new Paragraph("Date : _____________________\n\n"
-							+ "Date : _____________________\n\n"));
+					PdfPCell Cell2 = new PdfPCell(new Paragraph("Date : _____________________\n"
+							+ "Date : _____________________\n",boldFont));
 					Cell2.setBackgroundColor(Colormagenta);
-					Cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					commentTable.addCell(commentCell);
 					commentTable.addCell(Cell1);
 					commentTable.addCell(Cell2);
 
+				
+					
 					document.add(prefaceTable);
-					//document.add(reporttitle);
-					document.add(emptyline);
-
 					document.add(containerTable);      	  
 					document.add(emptyline);
 					document.add(myTable); 
@@ -1636,16 +1690,16 @@ public class ReportForm2 extends HttpServlet{
 					document.add(bottomTable); 
 					document.add(emptyline);
 					document.add(feeTable);
-					document.add(emptyline);  //commentTable
+					document.add(emptyline); 
 					document.add(commentTable);
 
-
+					position++;
+					number=mean;
 
 					document.newPage();
 
 
-					position++;
-					number=mean;
+					
 
 				}
 
@@ -1660,6 +1714,24 @@ public class ReportForm2 extends HttpServlet{
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
 
+	}
+
+	private String findSubTecher(String subjectid, String classroomid) {
+		String teachername = "";
+		String teacheruuid = "";
+		if(teacherSubClassDAO.getSubject(subjectid, classroomid) !=null){
+			TeacherSubClass teachersub = teacherSubClassDAO.getSubject(subjectid, classroomid);
+			teacheruuid = teachersub.getTeacherUuid();
+			if(staffDetailsDAO.getStaffDetail(teacheruuid) !=null){
+				StaffDetails StaffDetail = staffDetailsDAO.getStaffDetail(teacheruuid); 
+				teachername = StaffDetail.getFirstName();
+			}	
+		}
+		if(StringUtils.isBlank(teachername)){
+			teachername = "";
+		}
+		
+		return teachername.toLowerCase();
 	}
 
 	private String classteacherRemarks(double score) {

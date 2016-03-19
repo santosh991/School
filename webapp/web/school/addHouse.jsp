@@ -315,7 +315,7 @@
                                         <input type="hidden" name="studentUuid" value="<%=StringUtils.trimToEmpty(paramHash.get("studentuuid"))%>">
                                         <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                                         <input type="hidden" name="systemuser" value="<%=staffUsername%>">
-                                        <button type="submit" class="btn btn-primary">Register</button>
+                                        <button type="submit" class="btn btn-primary">Assign</button>
                                     </div> 
 
               </fieldset>

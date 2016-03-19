@@ -70,4 +70,13 @@ public interface SchoolPerfomanceDAO {
 	public List<Perfomance> getClassPerfomanceListGeneral(String schoolAccountUuid,String ClassesUuid,String Term,String Year);
 	
 	
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param ClassesUuid
+	 * @return
+	 */
+	public List<Perfomance> getAllclassesPerformance(String schoolAccountUuid,String Term,String Year);
+	
+	
 }

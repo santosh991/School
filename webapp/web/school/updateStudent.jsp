@@ -82,7 +82,7 @@
 
 
         <li>
-            <a href="">Back</a> <span class="divider">/</span>
+            <a href="studentIndex.jsp">Back</a> <span class="divider">/</span>
         </li>
 
         

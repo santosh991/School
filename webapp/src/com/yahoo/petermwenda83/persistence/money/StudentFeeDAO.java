@@ -186,8 +186,7 @@ public class StudentFeeDAO extends GenericDAO implements SchoolStudentFeeDAO {
 	            pstmt.setString(8, studentFee.getStudentUuid());
 	            pstmt.setString(9, studentFee.getTransactionID());
 	            pstmt.executeUpdate();
-	            
-	            studentAmountDAO.deductAmount(studentFee.getSchoolAccountUuid(), studentFee.getStudentUuid(), studentFee.getAmountPaid());
+	            studentAmountDAO.deductAmount(studentFee.getSchoolAccountUuid(), studentFee.getStudentUuid(), studentFee.getAmountTokenizer());
 
   } catch (SQLException e) {
         logger.error("SQL Exception when updating StudentFee " + studentFee);

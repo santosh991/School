@@ -153,6 +153,39 @@
 
     <div class="box span12">
         <div class="box-content">
+
+
+
+                <%
+                  
+                    
+
+                                String addErrStr = "";
+                                String addsuccessStr = "";
+                                session = request.getSession(false);
+                                     addErrStr = (String) session.getAttribute(SessionConstants.PROMOTE_CALSS_ERROR);
+                                     addsuccessStr = (String) session.getAttribute(SessionConstants.PROMOTE_CALSS_SUCCESS); 
+                                    
+                    
+
+                                if (StringUtils.isNotEmpty(addErrStr)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + addErrStr);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.PROMOTE_CALSS_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(addsuccessStr)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + addsuccessStr);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.PROMOTE_CALSS_SUCCESS, null);
+                                  } 
+                                  
+
+                           
+                     %>
+
+
             
             
 
@@ -165,6 +198,8 @@
                         <th>Teacher</th>
                         <th>Class </th>
                         <th>Download </th>
+                        <th>FeeList </th>
+                        <th>Action </th>
                         
                     </tr>
                 </thead>   
@@ -186,6 +221,23 @@
                                 <form name="edit" method="POST" action="exportExcel" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 
+                                </form>                          
+                                </td>  
+
+                                <td class="center" width="20%">
+                                <form name="edit" method="POST" action="perClassFinanceReport" target="_blank"> 
+                                <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="FeeList" /> 
+                                </form>                          
+                                </td>  
+
+                                <td class="center" width="20%">
+                                <form name="edit" method="POST" action="changeclass.jsp"> 
+                                <input type="hidden" name="currentclassroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input type="hidden" name="teachername" value="<%=staffHash.get(s.getUuid())%>">
+                                <input type="hidden" name="classroomname" value="<%=roomHash.get(classHash.get(s.getUuid()))%>">
+                                <input type="hidden" name="teacheruuid" value="<%=ct.getTeacherUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Edit" /> 
                                 </form>                          
                                 </td>  
                                <%

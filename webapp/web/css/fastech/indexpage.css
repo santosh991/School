@@ -1,19 +1,4 @@
 
- /**
-    Copyright 2015 Tawi Commercial Services Ltd
-
-    Licensed under the Open Software License, Version 3.0 (the "License"); you may 
-    not use this file except in compliance with the License. You may obtain a copy 
-    of the License at:
-    http://opensource.org/licenses/OSL-3.0
-
-    Unless required by applicable law or agreed to in writing, software distributed 
-    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-    CONDITIONS OF ANY KIND, either express or implied.
-
-    See the License for the specific language governing permissions and limitations 
-    under the License.
-    */
 
 .nb-select-dropdown .ui-menu,._nb-select-item,._nb-tabs-tab{
 	margin:0;
@@ -83,8 +68,7 @@ input.nb-input-group .nb-button:first-child:not(:only-child),input.nb-input-grou
 ._nb-popup-close,._nb-simple-input ._nb-input-reset,._nb-complex-input ._nb-input-reset,._nb-small-complex-input ._nb-input-reset,._nb-large-complex-input ._nb-input-reset,._nb-small-simple-input ._nb-input-reset,._nb-large-simple-input ._nb-input-reset{
 	width:16px;
 	height:16px;
-	background-image:url(data:image/svg+xml;
-	base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IDEuMjA5Yy0zLjc1MSAwLTYuNzkxIDMuMDQtNi43OTEgNi43OTEgMCAzLjc0OSAzLjA0IDYuNzg5IDYuNzkxIDYuNzg5IDMuNzQ5IDAgNi43ODktMy4wNCA2Ljc4OS02Ljc4OSAwLTMuNzUxLTMuMDQtNi43OTEtNi43ODktNi43OTF6bTMuOTkgOS4zNTVsLTEuNDI2IDEuNDI2LTIuNTY0LTIuNTY0LTIuNTY0IDIuNTY0LTEuNDI2LTEuNDI2IDIuNTY0LTIuNTY0LTIuNTY0LTIuNTY0IDEuNDI2LTEuNDI2IDIuNTY0IDIuNTY0IDIuNTY0LTIuNTY0IDEuNDI2IDEuNDI2LTIuNTY0IDIuNTY0IDIuNTY0IDIuNTY0eiIvPjwvc3ZnPg==)
+	
 }
 
 ._nb-popup-close,._nb-simple-input ._nb-input-reset,._nb-complex-input ._nb-input-reset,._nb-small-complex-input ._nb-input-reset,._nb-large-complex-input ._nb-input-reset,._nb-small-simple-input ._nb-input-reset,._nb-large-simple-input ._nb-input-reset{

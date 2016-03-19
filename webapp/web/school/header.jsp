@@ -79,9 +79,9 @@
        }
        
         final String FORM1 = "FORM 1";
-	    final String FORM2 = "FORM 2";
-	    final String FORM3 = "FORM 3";
-	    final String FORM4 = "FORM 4";
+	      final String FORM2 = "FORM 2";
+	      final String FORM3 = "FORM 3";
+	      final String FORM4 = "FORM 4";
 
 	
 	        String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL");
@@ -142,18 +142,16 @@
         <link href='../css/fastech/checkpass.css' rel='stylesheet'>
         <link href='../css/fastech/styles.css' rel='stylesheet'>
 
+         <link rel="stylesheet" href="../css/reset.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../css/site.css" type="text/css" media="all">
+
 
         
         
         <!-- The fav icon -->
         <link rel="shortcut icon" href="img/favicon.ico">
         
-       
-  
-	
-        
-   
-
+      
 
     </head>
 
@@ -177,8 +175,8 @@
           <!--<li><a href="#">Profile</a></li>-->
           <li class="divider"></li>
           <li><a href="../schoolLogout">Logout</a></li>
-          <li><a href="">Profile</a></li>
-          <li ><a href="">Help</a></li>
+          <li><a href="profile.jsp">Profile</a></li>
+          <li ><a href="help.jsp">Help</a></li>
           </ul>
           </div>
 
@@ -195,6 +193,9 @@
 
 
 			  <%
+			  if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){
+
+
                if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
                  %>
                    <a href="exam.jsp">MY CLASS</a>
@@ -209,7 +210,10 @@
 	          
 		       response.sendRedirect("../index.jsp");
 	           }
-   
+                 
+
+                 
+                 }
                %>
 
 
@@ -220,10 +224,10 @@
 			  <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
 			    <a href="studentIndex.jsp">STUDENTS</a>
 			    <a href="feeIndex.jsp">FINANCE</a>
-          <a href="mySubjects.jsp">MY SUBJECTS</a>
+                <a href="mySubjects.jsp">MY SUBJECTS</a>
 			    <a href="reports.jsp">REPORTS</a>
 			    <a href="staff.jsp">STAFF</a>
-          <a href="examConfig.jsp">EXAM</a>
+                <a href="examConfig.jsp">EXAM</a>
 			    
 			   
 			       <% }  %>
@@ -233,8 +237,8 @@
 			      <%  if(StringUtils.equals(staffPosition,pos_DeputyPricipal)){ %>
 			    <a href="studentIndex.jsp">STUDENTS</a>
 			    <a href="reports.jsp">REPORTS</a>
-			     <a href="examConfig.jsp">EXAM</a>
-           <a href="mySubjects.jsp">MY SUBJECTS</a>
+			    <a href="examConfig.jsp">EXAM</a>
+                <a href="mySubjects.jsp">MY SUBJECTS</a>
 			       <% }  %>
 
 			     <!--CM-CURRICULUM MASTER-->
@@ -265,20 +269,19 @@
 
              <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
                <a href="examUpload.jsp">UPLOAD EXAM</a>
+               <a href="mySubjects.jsp">MY SUBJECTS</a>
        
-             <%} %>
+               <%} 
+             }%>
 
-              <a href="mySubjects.jsp">MY SUBJECTS</a>
-           
-             <% }  %>
-
-
+            
 
 
                <!--BURSAR -->
 
 			   <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
 			     <a href="feeIndex.jsp">FINANCE</a>
+           <a href="studentIndex.jsp">STUDENTS</a>
 			      <% }  %>
 
 
@@ -288,6 +291,7 @@
 			     <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
 			   
 			         <a href="studentIndex.jsp">STUDENTS</a>
+               <a href="feeIndex.jsp">FINANCE</a>
 
 			      <% }  %>
 			    
@@ -321,10 +325,11 @@
 <li><a href="lab.jsp" class="ajax-link" id ="btn-dangers1"href=""><i class="icon-envelope"></i><span class="hidden-tablet">LABORATORY</span></a></li>
  <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
 <li><a href="studentHouse.jsp" id ="btn-dangers1" href="" title="student house" data-rel="tooltip"><i class="icon-folder-open"></i><span class="hidden-tablet">HOUSE</span></a></li>
+
 <li><a href="parents.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-home"></i><span class="hidden-tablet">PARENTS</span></a></li>
 <li><a href="studentSponsor.jsp" class="ajax-link" id ="btn-dangers1"href=""><i class="icon-envelope"></i><span class="hidden-tablet">SPONSORS</span></a></li>
-<li><a href="classes.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">CLASSES</span></a></li>
-<li><a href="termConfig.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">TERM CONFIG</span></a></li>
+<li><a href="settings.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">SETTINGS</span></a></li>
+<li><a href="prepareCommitt.jsp" class="ajax-link"id ="btn-dangers1" href=""><i class="icon-edit"></i><span class="hidden-tablet">TERM CONFIG</span></a></li>
   <% }  %>
 
 

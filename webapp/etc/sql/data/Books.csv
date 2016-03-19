@@ -1,0 +1,10 @@
+Uuid|SchoolAccountUuid|ISBN|Author|Publisher|Title|BookStatus|BorrowStatus
+B2FC93E4-42AE-4898-8C3C-65BE3B0BE4D7|E3CDC578-37BA-4CDB-B150-DAB0409270CD|asdfghhj|obed muthomi|lognhorn|English|Reference|Borrowed
+06523763-EFF1-4433-9BBF-CC05CBE3537E|E3CDC578-37BA-4CDB-B150-DAB0409270CD|hhgtrefdv|peter mwenda|lognhorn|Kiswahili|Reference|Borrowed
+E419B8A2-B0DA-4983-BF84-EAFE61C0DD5B|E3CDC578-37BA-4CDB-B150-DAB0409270CD|hhjklkjhh|naomi kawira|lognhorn|English|Reference|Borrowed
+690B0F12-CF98-4553-9C8F-36403D7D50E1|E3CDC578-37BA-4CDB-B150-DAB0409270CD|uytrfbhj|dynah mwende|lognhorn|English|ShortLoan|Borrowed
+C666B78A-E3F4-4DFF-9E49-7A1331759454|E3CDC578-37BA-4CDB-B150-DAB0409270CD|hjkkkjhgg|rael kathomi|lognhorn|English|ShortLoan|Available
+BD95C78D-FE0A-4004-A63A-FE28C6EB7DBC|E3CDC578-37BA-4CDB-B150-DAB0409270CD|tghhjkkk|joram muriithi|lognhorn|English|ShortLoan|Available
+4629D32A-6DD3-4EEE-943B-0D69562312C1|E3CDC578-37BA-4CDB-B150-DAB0409270CD|gghjjkkhvfc|john muriithi|lognhorn|Kiswahili|ShortLoan|Available
+01FDADA0-FC0A-4A64-BD7C-8265744D743D|E3CDC578-37BA-4CDB-B150-DAB0409270CD|ghhjkjhgfcd|migwi ndungu|lognhorn|Kiswahili|ShortLoan|Available
+8A20B11E-419E-4E4C-814B-26834E15DF63|E3CDC578-37BA-4CDB-B150-DAB0409270CD|rffvghhjjgfcf|bridgit mboku|lognhorn|Kiswahili|ShortLoan|Available

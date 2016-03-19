@@ -4,6 +4,9 @@
 package com.yahoo.petermwenda83.server.servlet.exam;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
@@ -31,8 +35,24 @@ public class UpdateExamConfig extends HttpServlet{
 	
 	
 	private static ExamConfigDAO examConfigDAO;
-	final String ERROR_EMPTY_FIELD = "Empty fields not allowed";
 
+	
+	TermFee termFee;
+	ExamConfig examConfig;
+	
+	private String[] examcodeArray;
+	private List<String> examcodeList;
+	
+	private String[] exammodeArray;
+	private List<String> exammodeList;
+	
+	
+	final String ERROR_EMPTY_FIELD = "Empty fields not allowed";
+	final String ERROR_YEAR_OUTSIDE_RANGE = "Check the year and try again";
+	final String ERROR_TERM_NOT_ALLOWED = "Term can't be greater that three";
+	final String ERROR_EXAM_MODE_NOT_ALLOWED = "Exam Mode can only be  ON or OFF";
+	final String ERROR_EXAM_NOT_FOUND = "Exam code not found";
+	
 	/**
     *
     * @param config
@@ -41,7 +61,14 @@ public class UpdateExamConfig extends HttpServlet{
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
-       examConfigDAO = ExamConfigDAO.getInstance();
+        examConfigDAO = ExamConfigDAO.getInstance();
+        examcodeArray = new String[] {"C1", "C2", "ET", "P1","P2","P3"};
+		examcodeList = Arrays.asList(examcodeArray);
+		
+		exammodeArray = new String[] {"ON","OFF"};
+		exammodeList = Arrays.asList(exammodeArray);
+	
+		
    }
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -54,26 +81,42 @@ public class UpdateExamConfig extends HttpServlet{
        String year = StringUtils.trimToEmpty(request.getParameter("year"));
        String exam = StringUtils.trimToEmpty(request.getParameter("exam"));
        String exammode = StringUtils.trimToEmpty(request.getParameter("exammode"));
+
+       Calendar calendar = Calendar.getInstance();
+       final int YEAR = calendar.get(Calendar.YEAR);
+       int currentYearplusone = YEAR+1;
+       int theyear = Integer.parseInt(year);
+       int theterm = Integer.parseInt(term);
        
        
-       if(StringUtils.isEmpty(schoolAccountUuid)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_FIELD); 
+        if(StringUtils.isEmpty(year)){
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
     	   
-       }else if(StringUtils.isEmpty(term)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_FIELD); 
+        }else if(theterm >3){
+    	  session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_TERM_NOT_ALLOWED); 
     	   
-       }else if(StringUtils.isEmpty(year)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_FIELD); 
+        }
+        else if(theyear>currentYearplusone){
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_YEAR_OUTSIDE_RANGE); 
     	   
-       }else if(StringUtils.isEmpty(exam)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_FIELD); 
+        }else if(StringUtils.isEmpty(exam)){
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
+    	   
+        }else if(!examcodeList.contains(exam)){ 
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EXAM_NOT_FOUND); 
     	   
        }else if(StringUtils.isEmpty(exammode)){
-    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_FIELD); 
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
     	   
-       }else{
-       
-       
+       }else if(!exammodeList.contains(exammode)){  
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EXAM_MODE_NOT_ALLOWED); 
+    	   
+       }else if(StringUtils.isEmpty(schoolAccountUuid)){
+   	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
+   	   
+      }else{
+    	   
+    	
        ExamConfig examConfig = new ExamConfig();
        examConfig.setSchoolAccountUuid(schoolAccountUuid);
        examConfig.setTerm(term);
@@ -86,9 +129,11 @@ public class UpdateExamConfig extends HttpServlet{
        }else{
     	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, SessionConstants.EXAM_CONFIG_UPDATE_ERROR);  
        }
+       
+       }
+       
        response.sendRedirect("examConfig.jsp");  
 	   return;
-       }
    }
    
    

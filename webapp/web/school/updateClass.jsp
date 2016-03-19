@@ -105,6 +105,28 @@
                
     <div class="box span12">
         <div class="box-content">
+
+
+         <form  class="form-horizontal"   action="updateRoom" method="POST" >
+                  <fieldset>
+                              
+
+                              <div class="control-group">
+                                  <label class="control-label" for="name">Class room Name*:</label>
+                                  <div class="controls">
+                                      <input class="input-xlarge focused" id="receiver" type="text" name="roomname"
+                                        value="<%=request.getParameter("classname")%>" >
+                                  </div>
+                              </div> 
+
+                              <div class="form-actions">
+                               <input type="hidden" name="schooluuid" value="<%=accountuuid%>" >
+                               <input type="hidden" name="roomuuid" value="<%=request.getParameter("roomuuid")%>" >
+                               <button type="submit" class="btn btn-primary">Update</button>
+                              </div> 
+
+              </fieldset>
+              </form>
         
                 
 

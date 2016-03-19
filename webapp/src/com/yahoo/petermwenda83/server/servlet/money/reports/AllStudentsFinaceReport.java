@@ -37,12 +37,14 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.money.ClosingBalance;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.money.ClosingBalanceDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
@@ -76,10 +78,11 @@ public class AllStudentsFinaceReport extends HttpServlet{
 		NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
 
 		private Cache schoolaccountCache;
-
+          
 		private static StudentFeeDAO studentFeeDAO;
 		private static StudentDAO studentDAO;
 		private static ExamConfigDAO examConfigDAO;
+		private static ClosingBalanceDAO closingBalanceDAO;
 		private static TermFeeDAO termFeeDAO;
 		private static RoomDAO roomDAO;
 
@@ -108,7 +111,7 @@ public class AllStudentsFinaceReport extends HttpServlet{
        CacheManager mgr = CacheManager.getInstance();
        schoolaccountCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
        studentDAO = StudentDAO.getInstance();
-
+       closingBalanceDAO = ClosingBalanceDAO.getInstance();
        examConfigDAO = ExamConfigDAO.getInstance();
        termFeeDAO = TermFeeDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
@@ -247,7 +250,7 @@ public class AllStudentsFinaceReport extends HttpServlet{
 			List<StudentFee> list = new ArrayList<>();
 		
 			if(studentList !=null){
-			      int count = 1;
+			     
 				for(Student s : studentList){                              
 					list = studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),s.getUuid(),examConfig.getTerm(),examConfig.getYear());
 					
@@ -312,10 +315,9 @@ public class AllStudentsFinaceReport extends HttpServlet{
 					
 					int mycount = 1;
 					double totalpaid = 0;
-					//totalpaid = 0;
+					
 					for(StudentFee fee : list){
-					//
-                    
+				
 					myTable.addCell(mycount+"");
 					myTable.addCell(nf.format(fee.getAmountPaid()));
 					myTable.addCell(fee.getTransactionID());
@@ -324,7 +326,40 @@ public class AllStudentsFinaceReport extends HttpServlet{
 					mycount++;
 					
 					}
-					balance.add(new Paragraph("Fee Balance "+nf.format((termFees.getTermAmount()-totalpaid)), smallBold));
+					
+					// we should find previous term balance or over payments
+					String previuosyear = "";
+					String currentyear = examConfig2.getYear();
+					int currentyearint = Integer.parseInt(currentyear);
+					int previousyearint = 0;
+					
+					String currenttermStr = examConfig2.getTerm();
+					int currenttermint = Integer.parseInt(currenttermStr);// can either be 1, 2, or 3
+					int previousterm = currenttermint - 1;// if c = 3 , p = 2 // if c = 2 , p = 1 // if c = 1 p = 3
+					if(previousterm == 0){
+						previousterm = 3;
+						previousyearint = currentyearint - 1;
+						previuosyear = Integer.toString(previousyearint);
+					}else{
+						previuosyear = examConfig.getYear();
+					}
+					String previoustermStr = Integer.toString(previousterm);
+					//now we have the previous term , we get the term amount (previous)
+					//from closing balance, we add the amount, negative balance means dues, positive balance means over pay
+					
+					double prevtermbalance = 0;
+					ClosingBalance closingBalance = new ClosingBalance();
+					if(closingBalanceDAO.getClosingBalanceByStudentId(school.getUuid(), s.getUuid(), previoustermStr, previuosyear) !=null){
+						closingBalance = closingBalanceDAO.getClosingBalanceByStudentId(school.getUuid(), s.getUuid(), previoustermStr, previuosyear);
+						
+					}
+					
+					prevtermbalance = closingBalance.getClosingAmount();
+					
+					//System.out.println("last term clossing balance="+prevtermbalance); 
+					
+					
+					balance.add(new Paragraph("Fee Balance "+nf.format( ((termFees.getTermAmount()-totalpaid)-prevtermbalance)), smallBold));
 					document.add(preface);
 					document.add(emptyline);
 					document.add(containerTable);      	  
@@ -334,7 +369,7 @@ public class AllStudentsFinaceReport extends HttpServlet{
 					document.add(balance);
 					document.newPage();
 					
-					count++;
+					
 					}
 				
 				}

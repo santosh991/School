@@ -281,7 +281,7 @@
                                    <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                                    <input type="hidden" name="systemuser" value="<%=staffUsername%>">
                                    <input type="hidden" name="studentuuid" value="<%=studentUuid%>">
-                                  <button type="submit" class="btn btn-primary">Register</button>
+                                  <button type="submit" class="btn btn-primary">Save</button>
                               </div> 
 
               </fieldset>

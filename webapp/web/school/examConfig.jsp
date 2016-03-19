@@ -90,6 +90,7 @@
 <div>
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> :EXAM CONFIGURATION PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> 
+      
         
     </ul>
 </div>

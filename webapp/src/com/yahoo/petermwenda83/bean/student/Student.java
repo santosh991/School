@@ -37,8 +37,10 @@ public class Student extends StorableBean implements Comparable<Student> {
 		private String dOB;
 		private String bcertno;
 		private String county;
+		private String regTerm;
 		private String sysUser;
 		private Date admissionDate;
+		
   
 	
     public Student() {
@@ -54,6 +56,7 @@ public class Student extends StorableBean implements Comparable<Student> {
 		dOB = "";
 		bcertno = "";
 		county ="";
+		regTerm = "";
 		sysUser = "";
 		admissionDate = new Date();
 	
@@ -260,6 +263,24 @@ public class Student extends StorableBean implements Comparable<Student> {
 
 
 	/**
+	 * @return the regTerm
+	 */
+	public String getRegTerm() {
+		return regTerm;
+	}
+
+
+
+	/**
+	 * @param regTerm the regTerm to set
+	 */
+	public void setRegTerm(String regTerm) {
+		this.regTerm = regTerm;
+	}
+
+
+
+	/**
 	 * @return the sysUser
 	 */
 	public String getSysUser() {
@@ -319,9 +340,11 @@ public class Student extends StorableBean implements Comparable<Student> {
 		builder.append(",dOB =");
 		builder.append(dOB);
 		builder.append(",bcertno =");
-		builder.append(bcertno);
+		builder.append(bcertno);  //
 		builder.append(",county =");
 		builder.append(county);
+		builder.append(",regTerm =");
+		builder.append(regTerm);
 		builder.append(",sysUser =");
 		builder.append(sysUser);
 		builder.append(",admissionDate =");

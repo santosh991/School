@@ -1,7 +1,7 @@
 
 
 function checkPasswordMatch() {
-	alert('hey');
+	
     var password = $("#txtNewPassword").val();
     var confirmPassword = $("#txtConfirmPassword").val();
 

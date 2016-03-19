@@ -8,6 +8,21 @@
 <%@page import="com.yahoo.petermwenda83.persistence.money.TermFeeDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.money.TermFee"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.othermoney.OtherstypeDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.othermoney.Otherstype"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.othermoney.TermOtherMoniesDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.othermoney.OtherMoniesDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.othermoney.OtherMonies"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesClosingBalDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.othermoney.StudentOtherMoniesClosingBal"%>
+
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
 <%@page import="com.yahoo.petermwenda83.bean.money.StudentAmount"%>
@@ -75,6 +90,18 @@
     if(examConfigDAO.getExamConfig(accountuuid) !=null){
         examConfig = examConfigDAO.getExamConfig(accountuuid);
        }
+
+
+    OtherMoniesDAO otherMoniesDAO = OtherMoniesDAO.getInstance();
+    OtherMonies otherMonies = new OtherMonies();
+    if(otherMoniesDAO.getOtherMonies(accountuuid) !=null){
+        otherMonies = otherMoniesDAO.getOtherMonies(accountuuid);
+       }
+
+
+    StudentOtherMoniesClosingBalDAO studentOtherClosingBalDAO = StudentOtherMoniesClosingBalDAO.getInstance();
+    StudentOtherMoniesClosingBal studentOtherClosingBal = new StudentOtherMoniesClosingBal();
+    
     
 
     TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
@@ -83,9 +110,41 @@
     if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
            termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
        }
-   
-    
 
+
+     StudentOtherMoniesDAO studentOtherMoniesDAO = StudentOtherMoniesDAO.getInstance();
+     List<StudentOtherMonies> stuOthermoniList = new ArrayList<StudentOtherMonies>(); 
+
+     TermOtherMoniesDAO termOtherMoniesDAO = TermOtherMoniesDAO.getInstance();
+     List<TermOtherMonies> termOtherMoniesList = new ArrayList<TermOtherMonies>(); 
+     termOtherMoniesList = termOtherMoniesDAO.getTermOtherMoniesList(accountuuid);  
+
+      HashMap<String, Double> tomHash = new HashMap<String, Double>(); 
+     for(TermOtherMonies toml: termOtherMoniesList){
+       tomHash.put(toml.getOtherstypeUuid(),toml.getAmount());
+       }
+
+
+      
+      
+      
+     OtherstypeDAO otherstypeDAO = OtherstypeDAO.getInstance();
+     List<Otherstype> othertypeList = new ArrayList<Otherstype>(); 
+     othertypeList = otherstypeDAO.gettypeList(accountuuid);  
+
+      HashMap<String, String> moneytypeHash = new HashMap<String, String>(); 
+      HashMap<String, String> termHash = new HashMap<String, String>(); 
+      HashMap<String, String> yearHash = new HashMap<String, String>(); 
+
+     if(othertypeList !=null){
+     for(Otherstype om : othertypeList){
+         moneytypeHash.put(om.getUuid(),om.getType());
+         termHash.put(om.getUuid(),om.getTerm());
+         yearHash.put(om.getUuid(),om.getYear());
+         }
+       }
+             
+      
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
    
@@ -95,7 +154,10 @@
    
 
      
-   
+    Locale locale = new Locale("en","KE"); 
+    NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+
+    
    
  %>
 
@@ -113,16 +175,18 @@
      <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=termFee.getTermAmount()%><b> </li> <br>
 
         <li>
+            <a href="feeIndex.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+
+        <li>
             <a href="addFee.jsp">New Payment Info</a> <span class="divider">/</span>
         </li>
 
          <li>
-            <a href="feeIndex.jsp">Back</a> <span class="divider">/</span>
+            <a href="newPayment.jsp">Add new Payment</a> <span class="divider">/</span>
         </li>
 
-        <li>
-            <a href="studentsFinaceReport" target="_blank">Print</a> <span class="divider">/</span>
-        </li>
 
          
         
@@ -225,9 +289,7 @@
                                     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_SUCCESS, null);
                                   } 
 
-                          
-
-                         
+                   
                        
                            
                      %>
@@ -250,6 +312,7 @@
                         <th></th>
                         <th></th>
                         <th>Search</th>
+                       
                     </tr>
                 </thead>   
 
@@ -267,10 +330,12 @@
                                </td> 
 
                                <td width="10%" class="center">                                
-		                        <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+		                           <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="Find" />                                                         
                                </td> 
                                </form> 
+
+                              
 
 
                 </tbody>                  
@@ -294,6 +359,7 @@
                     <tr >             
                         <th>Student AdmNo</th>
                         <th>Student name</th>
+                        <th>Statement</th>
                     </tr>
                 </thead>   
                 <tbody >
@@ -303,13 +369,22 @@
                                out.println("<td width=\"10%\" class=\"center\">" + fullname + "</td>");    
                              
                     %> 
+                              
+                               <td width="10%" class="center">    
+                               <form name="view" method="POST" action="printStatement" target="_blank">                             
+                               <input type="hidden" name="studentuuid" value="<%=studentuuid%>">
+                               <input class="btn btn-success" type="submit" name="view" id="submit" value="Print" />
+                               </form>      
+                               </td>
+                                                                  
+                              
 
                 </tbody>                  
             </table>  
 
        
 
-
+           <h3><i class="icon-edit"></i>School Fee </h3> 
 
 
              <table class="table table-striped table-bordered bootstrap-datatable ">
@@ -320,18 +395,20 @@
                         <th>Receipt Number</th>
                         <th>Date Received</th>
                         <th>Update</th>
+                        
                     </tr>
                 </thead>   
                 <tbody >
                     <%     
                               double total = 0;
                               double totalpaid = 0;
-                              Locale locale = new Locale("en","KE"); 
-					   		  NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
-
+                             
                                int count = 1;
 		                     if(studentfeeList !=null){
 		                   for(StudentFee sfee : studentfeeList){
+
+
+
                                total = sfee.getAmountPaid();
                                totalpaid = totalpaid + total;
                                out.println("<tr>"); 
@@ -347,9 +424,11 @@
                                 <input type="hidden" name="studentuuid" value="<%=sfee.getStudentUuid()%>">
                                 <input type="hidden" name="fullname" value="<%=fullname%>">
                                  <input type="hidden" name="admNumber" value="<%=admNumber%>">
-                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Deduct" /> 
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
                                 </form>                          
                                </td>    
+
+                                  
 
 
 
@@ -366,6 +445,11 @@
 
                 </tbody>                                 
             </table>  
+
+            
+
+
+
  
 
 
@@ -408,6 +492,7 @@
                                     mybalance =  studentAmount.getAmount();
                                   }
 
+
                                double termfee = termFee.getTermAmount();
 					                     double balance =  termfee - mybalance;
                                out.println("<tr>"); 
@@ -421,11 +506,103 @@
 
                                    
             </table>  
-               
+
+
+
+                 <h3><i class="icon-edit"></i>Other Payments </h3> 
+
+
+            <table class="table table-striped table-bordered bootstrap-datatable ">
+                <thead>
+                    <tr >             
+                        <th>*</th>
+                        <th>Item Type</th>
+                        <th>Item Cost</th>
+                        <th>Item Term </th>
+                        <th>Item Year </th>
+                        <th>Amount Paid</th>
+                        <th>Term Paid</th>
+                        <th>Year Paid</th>
+                       
+                        
+                        
+                        
+                        
+                    </tr>
+                </thead>   
+                <tbody >
+                    <%   
+                         
+                         
+
+                          String othermoney ="";
+                          String itemterm ="";
+                          String itemyear ="";
+
+                          double itemcost = 0;
+                          double amountpaid = 0;
+                          double amountpaidTotal = 0;
+                          double mysombalance = 0;
+                          double mysombalancetotal = 0;
+                        
+                            
+             List<StudentOtherMonies> stuOthermoniDistinctList = new ArrayList<StudentOtherMonies>(); 
+              stuOthermoniDistinctList = studentOtherMoniesDAO.getStudentOtherMoniesDistinct(studentuuid);
+                    if(stuOthermoniDistinctList !=null){
+                       for(StudentOtherMonies somdisticnt : stuOthermoniDistinctList){                               
+                          
+                           if(studentOtherMoniesDAO.getStudentOtherMoniesList(studentuuid,somdisticnt.getOtherstypeUuid()) !=null){
+                              stuOthermoniList = studentOtherMoniesDAO.getStudentOtherMoniesList(studentuuid,somdisticnt.getOtherstypeUuid());
+                                
+                                 amountpaid = 0;
+                                 amountpaidTotal = 0;
+                                 itemcost = 0;
+                                 mysombalance = 0;
+                                 mysombalancetotal = 0;
+
+                                int count22 = 1;
+                                for(StudentOtherMonies sotheO : stuOthermoniList){
+
+                                   itemterm = termHash.get(sotheO.getOtherstypeUuid());
+                                   itemyear = yearHash.get(sotheO.getOtherstypeUuid());
+                                  
+                                   amountpaid = sotheO.getAmountPiad();
+                                   amountpaidTotal+=amountpaid;
+                                   othermoney = moneytypeHash.get(sotheO.getOtherstypeUuid());
+                                   itemcost = tomHash.get(sotheO.getOtherstypeUuid());
+                                   mysombalance = itemcost - amountpaidTotal;
+                                   mysombalancetotal+=mysombalance;
+
+                                   out.println("<tr>"); 
+                                   out.println("<td width=\"3%\" >" + count22 + "</td>"); 
+                                   out.println("<td class=\"center\">" + othermoney  + "</td>"); 
+                                   out.println("<td class=\"center\">" + itemcost + "</td>");
+                                   out.println("<td class=\"center\">" + itemterm + "</td>");
+                                   out.println("<td class=\"center\">" + itemyear + "</td>");
+                                   out.println("<td class=\"center\">" + amountpaid + "</td>");
+                                   out.println("<td class=\"center\">" + sotheO.getTerm() + "</td>");
+                                   out.println("<td class=\"center\">" + sotheO.getYear() + "</td>");
+                                  
+
+                                    count22++;
+
+                                     }            
+                                 }
+                              }
+                          }
+
+                             %> 
+
+                               
+
+                </tbody>                                 
+            </table>  
+
+
 
                                       
          <%
-            feeParamHash.clear();
+            //feeParamHash.clear();
          %>
             
        

@@ -21,6 +21,16 @@ public interface SchoolTeacherSubClassDAO {
 	
 	
 	/**
+	 * 
+	 * @param SubjectUuid
+	 * @param ClassRoomUuid
+	 * @return
+	 */
+	
+	public TeacherSubClass getSubject(String SubjectUuid,String ClassRoomUuid);
+	
+	
+	/**
 	 * @param subClass
 	 * @return
 	 */

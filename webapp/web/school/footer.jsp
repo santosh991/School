@@ -65,6 +65,9 @@
 <script src="../js/jquery/jquery.cookie.js"></script>
 <!-- calander plugin -->
 <script src='../js/fastech/fullcalendar.min.js'></script>
+
+<script src='../js/fastech/passwdcheck.js'></script>
+
 <!-- data table plugin -->
 <script src='../js/jquery/jquery.dataTables.min.js'></script> 
 
@@ -101,7 +104,7 @@
 <!-- application script for Charisma demo -->
 <script src="../js/fastech/charisma.js"></script>
 
-
+<script src="../js/characterCounter.js"></script>
 
 
 

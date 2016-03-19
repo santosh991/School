@@ -16,18 +16,10 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.*"%>
-<%@page import="java.util.stream.Collectors"%>
 
 <%@page import="net.sf.ehcache.Element"%>
 <%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
-
-<%@page import="java.util.HashSet"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.Set"%>
-
-<%@page import="java.text.SimpleDateFormat"%>
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -48,9 +40,7 @@
      
     CacheManager mgr = CacheManager.getInstance();
     Cache accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
-    Cache statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
-    SessionStatistics statistics = new SessionStatistics();
-    
+   
 
     SchoolAccount school = new SchoolAccount();
     Element element;
@@ -65,8 +55,12 @@
     accountuuid = school.getUuid();
     String schoolname = school.getSchoolName();
 
+     ExamConfig examConfig = new ExamConfig();
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
-    ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+    if(examConfigDAO.getExamConfig(accountuuid) !=null){
+       examConfig = examConfigDAO.getExamConfig(accountuuid);
+    }
+   
 
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
@@ -76,8 +70,7 @@
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      
-          //date format
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-dd-MM");
+      
                              
 
  %>
@@ -91,13 +84,11 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :HOUSE/DOMITORY MANAGEMENT : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
-      <li>
-            <a href="">Assign House Master</a> <span class="divider">/</span>
+     <li> <b> <%=schoolname%> :HELP  : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
+       <li>
+            <a href="">Back</a> <span class="divider">/</span>
       </li>
-      <li>
-            <a href="">Promotion</a> <span class="divider">/</span>
-      </li>
+     
 
     </ul>
 </div>

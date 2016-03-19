@@ -111,14 +111,22 @@ public class TestPerfomanceDAO {
 	/**
 	 * Test method for {@link com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO#getPerfomanceList(java.lang.String)}.
 	 */
-	@Ignore
+	//@Ignore
 	@Test  
 	public void testGetClassPerfomanceList() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getClassPerfomanceListGeneral(SCHOOL_UUID,FORM_ONE,TERM,YEAR);
+		
+		final String FORM1 = "C143978A-E021-4015-BC67-5A00D6C910D1";
+		final String FORM2 = "3E22E428-3155-42F5-B73E-66553ED501C9";
+		final String FORM3 = "A4BFC2BD-262F-4207-99C8-057D6ADF80C7";
+		final String FORM4 = "14E56350-08DA-45CC-97D9-C225AF74A7AD";
+		
+		List<Perfomance> list = store.getPerfomanceListDistinctGeneral(SCHOOL_UUID,FORM1,TERM,YEAR);
+		int count = 0;
 		for(Perfomance p : list){
-			System.out.println(p);
+			count++;
 		}
+		System.out.println(count);
 	
 	}
 

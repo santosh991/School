@@ -55,6 +55,9 @@ public class AddStaff extends HttpServlet {
 	final String STAFF_ADD_SUCSESS = "Staff added successfully";
 	final String STAFF_ADD_ERROR = " An error occured while adding staff";
 	
+	final String STAFF_USERNAME_EXIST= "Staff Username already exist";
+	final String STAFF_EMP_NO_EXIST = "Employee Number already exist";
+	
 	 private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	
@@ -159,6 +162,12 @@ public class AddStaff extends HttpServlet {
     	   
        }else if(staffDAO.getStaffByPosition(schoolAccountUuid, DeputyprincipalId) !=null){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_DPRINCIPAL_EXIST); 
+    	   
+       }else if(staffDetailsDAO.getStaffDetailByemployeeNo(employeeNo) !=null){ 
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR,STAFF_EMP_NO_EXIST );  
+    	   
+       }else if(staffDAO.getStaffByUsername(schoolAccountUuid, username) !=null){ 
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, STAFF_USERNAME_EXIST); 
     	   
        }else{
     	  

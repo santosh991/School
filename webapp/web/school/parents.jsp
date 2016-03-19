@@ -181,7 +181,7 @@
 
                                        %>
                                 <td class="center">
-                                <form name="view" method="POST" action="updateStudentParent"> 
+                                <form name="view" method="POST" action=""> 
                                 <input type="hidden" name="studentUuid" value="<%=ss.getUuid()%>">
                                 <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 

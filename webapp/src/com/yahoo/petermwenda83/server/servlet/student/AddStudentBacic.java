@@ -18,10 +18,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.student.StudentPrimary;
 import com.yahoo.petermwenda83.bean.student.StudentSubject;
 import com.yahoo.petermwenda83.bean.subject.Subject;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.student.PrimaryDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentSubjectDAO;
@@ -62,6 +64,8 @@ public class AddStudentBacic extends HttpServlet{
 	private static PrimaryDAO primaryDAO;
 	private static StudentSubjectDAO studentSubjectDAO;
 	private static SubjectDAO subjectDAO;
+	private static ExamConfigDAO examConfigDAO;
+	ExamConfig examConfig;
 	
 
 	/**  
@@ -76,6 +80,7 @@ public class AddStudentBacic extends HttpServlet{
        primaryDAO = PrimaryDAO.getInstance();
        studentSubjectDAO = StudentSubjectDAO.getInstance();
        subjectDAO = SubjectDAO.getInstance();
+       examConfigDAO = ExamConfigDAO.getInstance();
    }
    
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -143,7 +148,7 @@ public class AddStudentBacic extends HttpServlet{
 	   }else if(StringUtils.isBlank(dobaddYear)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_YEAR); 
 		     
-	   }else if(StringUtils.isBlank(BcertNo)){
+	   }/*else if(StringUtils.isBlank(BcertNo)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_BCERT_NO); 
 		     
 	   }else if(StringUtils.isBlank(County)){
@@ -161,13 +166,19 @@ public class AddStudentBacic extends HttpServlet{
 	   }else if(StringUtils.isBlank(kcpemark)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_KCPE_MARK); 
 		     
-	   }else if(StringUtils.isBlank(schooluuid)){
+	   }*/else if(StringUtils.isBlank(schooluuid)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, UNEXPECTED_ERROR); 
 		     
 	   }else if(StringUtils.isBlank(systemuser)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, UNEXPECTED_ERROR); 
 		     
 	   }else{
+		   
+		   examConfig = new ExamConfig();
+			if(examConfigDAO.getExamConfig(schooluuid) !=null){
+				examConfig = examConfigDAO.getExamConfig(schooluuid);
+			}
+
 		   
 		   Student student = new Student();
 		   student.setSchoolAccountUuid(schooluuid); 
@@ -179,16 +190,17 @@ public class AddStudentBacic extends HttpServlet{
 		   student.setSurname(surname);
 		   student.setGender(gender);
 		   student.setdOB(dobaddDay+"/"+dobaddMonth+"/"+dobaddYear);
-		   student.setBcertno(BcertNo);
-		   student.setCounty(County); 
+		   student.setBcertno("notset");
+		   student.setCounty("notset"); 
+		   student.setRegTerm(examConfig.getTerm());  
 		   student.setSysUser(systemuser); 
 		   
 		   StudentPrimary sprimary = new StudentPrimary();
 		   sprimary.setStudentUuid(student.getUuid());
-		   sprimary.setSchoolname(primary);
-		   sprimary.setIndex(indexno);
-		   sprimary.setKcpemark(kcpemark);
-		   sprimary.setKcpeyear(kcpeaddYear); 
+		   sprimary.setSchoolname("notset");
+		   sprimary.setIndex("notset");
+		   sprimary.setKcpemark("notset");
+		   sprimary.setKcpeyear("notset"); 
 		   
 		   
 		  

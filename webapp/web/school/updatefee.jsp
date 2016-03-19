@@ -189,6 +189,7 @@
 
 
                               <div class="form-actions">
+                               <input type="hidden" name="amountpaidold" value="<%=request.getParameter("amountpaid")%>" >
                                <input type="hidden" name="systemuser" value="<%=staffUsername%>" >
                                <input type="hidden" name="schooluuid" value="<%=accountuuid%>" >
                                <input type="hidden" name="studentuuid" value="<%=request.getParameter("studentuuid")%>" >

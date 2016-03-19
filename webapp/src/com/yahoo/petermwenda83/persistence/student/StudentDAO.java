@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -226,8 +225,8 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Student" 
 			        		+"(Uuid,SchoolAccountUuid,StatusUuid,ClassRoomUuid,AdmNo,Firstname, Lastname,Surname,"
-			        		+ "Gender,DOB,Bcertno,County,SysUser,AdmissionDate)"
-			        		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+			        		+ "Gender,DOB,Bcertno,County,RegTerm,SysUser,AdmissionDate)"
+			        		+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 		){
 			   
 	            pstmt.setString(1, student.getUuid());
@@ -242,8 +241,9 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	            pstmt.setString(10, student.getdOB());
 	            pstmt.setString(11, student.getBcertno());
 	            pstmt.setString(12, student.getCounty());
-	            pstmt.setString(13, student.getSysUser());
-	            pstmt.setTimestamp(14, new Timestamp(student.getAdmissionDate().getTime()));
+	            pstmt.setString(13, student.getRegTerm());
+	            pstmt.setString(14, student.getSysUser());
+	            pstmt.setTimestamp(15, new Timestamp(student.getAdmissionDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -269,7 +269,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student SET ClassRoomUuid =?, Firstname =?," 
 			        +"Lastname =?,Surname =?,Gender =?,DOB =?,"
-			        + "Bcertno =?,County =?,SysUser=?,Admno =? WHERE Uuid = ? AND SchoolAccountUuid = ?; ");
+			        + "Bcertno =?,County =?,SysUser=?,StatusUuid =?,Admno =? WHERE Uuid = ? AND SchoolAccountUuid = ?; ");
 		){
 			  
 			    pstmt.setString(1, student.getClassRoomUuid());
@@ -281,9 +281,10 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 	            pstmt.setString(7, student.getBcertno());
 	            pstmt.setString(8, student.getCounty());
 	            pstmt.setString(9, student.getSysUser());
-	            pstmt.setString(10, student.getAdmno());
-	            pstmt.setString(11, student.getUuid());
-	            pstmt.setString(12, student.getSchoolAccountUuid());
+	            pstmt.setString(10, student.getStatusUuid());
+	            pstmt.setString(11, student.getAdmno());
+	            pstmt.setString(12, student.getUuid());
+	            pstmt.setString(13, student.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

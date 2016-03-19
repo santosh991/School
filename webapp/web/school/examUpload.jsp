@@ -153,18 +153,6 @@
 
 
                 
-                 <h3>
-                <%
-                    if(StringUtils.isNotBlank((String)session.getAttribute(UploadExam.UPLOAD_FEEDBACK ))) {
-                    String servletResponse =(String)session.getAttribute(UploadExam.UPLOAD_FEEDBACK );
-                        out.println(servletResponse);
-                        //used by javascript 
-                        if(servletResponse!=null){notNull=servletResponse.substring(0,10);
-                        }                    
-                        session.setAttribute(UploadExam.UPLOAD_FEEDBACK, null);
-                    }
-                %>  
-                </h3>
                 
                 <p>Upload Excel/CSV/txt file with format <code>admission number,score</code></p>
                 <p>The results file must be saved as<code>subjectcode.classcode_examcode.xlsx/xls/csv/txt</code><p> 
@@ -182,7 +170,19 @@
                 </form> 
 
              
-
+                 
+                 <h3>
+                <%
+                    if(StringUtils.isNotBlank((String)session.getAttribute(UploadExam.UPLOAD_FEEDBACK ))) {
+                    String servletResponse =(String)session.getAttribute(UploadExam.UPLOAD_FEEDBACK );
+                        out.println(servletResponse);
+                        //used by javascript 
+                        if(servletResponse!=null){notNull=servletResponse.substring(0,10);
+                        }                    
+                        session.setAttribute(UploadExam.UPLOAD_FEEDBACK, null);
+                    }
+                %>  
+                </h3>
 
     </div>
 

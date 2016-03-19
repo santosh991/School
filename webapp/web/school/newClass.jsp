@@ -3,6 +3,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
@@ -68,6 +71,10 @@
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
+    RoomDAO roomDAO = RoomDAO.getInstance();
+    List<ClassRoom> classroomList = new ArrayList<ClassRoom>();
+    classroomList = roomDAO.getAllRooms(accountuuid);
+
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -91,7 +98,10 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :CLASS-ROOMS MANAGEMENT (ADD NEW CLASS-ROOM): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
+     <li> <b> <%=schoolname%> :CLASS-ROOMS MANAGEMENT (ADD NEW CLASS-ROOM): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>  
+     <li>
+            <a href="addnewClass.jsp">New Class</a> <span class="divider">/</span>
+      </li> 
       <li>
             <a href="">Back</a> <span class="divider">/</span>
       </li>
@@ -105,6 +115,53 @@
                
     <div class="box span12">
         <div class="box-content">
+
+
+        <div>
+                <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                <thead>
+                    <tr>
+                        <th>*</th>
+                        <th>Class </th>
+                        <th>Update </th>
+
+                        
+                        
+                        
+                    </tr>
+                </thead>   
+                <tbody>
+          
+                    <%                 
+                             
+                       int count = 1;
+                        if(classroomList !=null){
+                       for(ClassRoom cr : classroomList) { 
+
+                             out.println("<tr>"); 
+                             out.println("<td width=\"3%\" >" + count + "</td>"); 
+                             out.println("<td width=\"10%\" class=\"center\">" +cr.getRoomName() + "</td>"); 
+                                     %>
+                            <td class="center" width ="10%">
+                             <form name="update" method="POST" action="updateClass.jsp"> 
+                             <input type="hidden" name="classname" value="<%=cr.getRoomName()%>">
+                              <input type="hidden" name="roomuuid" value="<%=cr.getUuid()%>">
+                             <input class="btn btn-success" type="submit" name="update" id="submit" value="Update" /> 
+                             </form>                          
+                             </td>  
+
+                             <%
+
+                           count++;
+                          } 
+                     }
+                    %>
+                    
+                    </tbody>
+            </table> 
+            
+            </div>
+
         
                 
 

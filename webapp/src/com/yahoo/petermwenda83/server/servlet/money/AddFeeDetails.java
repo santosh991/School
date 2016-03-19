@@ -42,6 +42,7 @@ public class AddFeeDetails extends HttpServlet{
 	 
 	 private static StudentFeeDAO studentFeeDAO;
 	 private static ExamConfigDAO examConfigDAO;
+	
 
 	/**  
     *
@@ -53,6 +54,7 @@ public class AddFeeDetails extends HttpServlet{
        super.init(config);
        studentFeeDAO = StudentFeeDAO.getInstance();
        examConfigDAO = ExamConfigDAO.getInstance();
+      
    }
    
    
@@ -104,11 +106,14 @@ public class AddFeeDetails extends HttpServlet{
 			   examConfig = examConfigDAO.getExamConfig(schooluuid);
 		   }
 		   
+		   
+		   double amountTopay =  Double.parseDouble(Amountpaid);
+		  
 		   StudentFee studentFee = new StudentFee();
 		   studentFee.setSchoolAccountUuid(schooluuid);
 		   studentFee.setStudentUuid(studentuuid);
 		   studentFee.setTransactionID(slipNumber.toUpperCase()); 
-		   studentFee.setAmountPaid(Double.parseDouble(Amountpaid)); 
+		   studentFee.setAmountPaid(amountTopay);  
 		   studentFee.setTerm(examConfig.getTerm());
 		   studentFee.setYear(examConfig.getYear());
 		   studentFee.setSystemUser(systemuser);
