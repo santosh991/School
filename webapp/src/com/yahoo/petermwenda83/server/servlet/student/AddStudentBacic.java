@@ -88,6 +88,13 @@ public class AddStudentBacic extends HttpServlet{
 
        HttpSession session = request.getSession(true);
        
+       String BcertNo = "not-set";
+       String County = "not-set";
+       String primary = "not-set";
+       String indexno = "not-set";
+       String kcpeaddYear =  "not-set";
+       String kcpemark = "not-set";
+       
        String classroomUuid = StringUtils.trimToEmpty(request.getParameter("classroomUuid"));
        String admnumber = StringUtils.trimToEmpty(request.getParameter("admNO"));
        String firstname = StringUtils.trimToEmpty(request.getParameter("firstname"));
@@ -97,12 +104,12 @@ public class AddStudentBacic extends HttpServlet{
        String dobaddDay = StringUtils.trimToEmpty(request.getParameter("dobaddDay"));
        String dobaddMonth = StringUtils.trimToEmpty(request.getParameter("dobaddMonth"));
        String dobaddYear = StringUtils.trimToEmpty(request.getParameter("dobaddYear"));
-       String BcertNo = StringUtils.trimToEmpty(request.getParameter("BcertNo"));
-       String County = StringUtils.trimToEmpty(request.getParameter("County"));
-       String primary = StringUtils.trimToEmpty(request.getParameter("primary"));
-       String indexno = StringUtils.trimToEmpty(request.getParameter("indexno"));
-       String kcpeaddYear = StringUtils.trimToEmpty(request.getParameter("kcpeaddYear"));
-       String kcpemark = StringUtils.trimToEmpty(request.getParameter("kcpemark"));
+       BcertNo = StringUtils.trimToEmpty(request.getParameter("BcertNo"));
+       County = StringUtils.trimToEmpty(request.getParameter("County"));
+       primary = StringUtils.trimToEmpty(request.getParameter("primary"));
+       indexno = StringUtils.trimToEmpty(request.getParameter("indexno"));
+       kcpeaddYear = StringUtils.trimToEmpty(request.getParameter("kcpeaddYear"));
+       kcpemark = StringUtils.trimToEmpty(request.getParameter("kcpemark"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        String systemuser = StringUtils.trimToEmpty(request.getParameter("systemuser"));
        
@@ -174,6 +181,13 @@ public class AddStudentBacic extends HttpServlet{
 		     
 	   }else{
 		   
+		   BcertNo = "not-set";
+	       County = "not-set";
+	       primary = "not-set";
+	       indexno = "not-set";
+	       kcpeaddYear =  "not-set";
+	       kcpemark = "not-set";
+		   
 		   examConfig = new ExamConfig();
 			if(examConfigDAO.getExamConfig(schooluuid) !=null){
 				examConfig = examConfigDAO.getExamConfig(schooluuid);
@@ -190,17 +204,17 @@ public class AddStudentBacic extends HttpServlet{
 		   student.setSurname(surname);
 		   student.setGender(gender);
 		   student.setdOB(dobaddDay+"/"+dobaddMonth+"/"+dobaddYear);
-		   student.setBcertno("notset");
-		   student.setCounty("notset"); 
+		   student.setBcertno(BcertNo);
+		   student.setCounty(County); 
 		   student.setRegTerm(examConfig.getTerm());  
 		   student.setSysUser(systemuser); 
 		   
 		   StudentPrimary sprimary = new StudentPrimary();
 		   sprimary.setStudentUuid(student.getUuid());
-		   sprimary.setSchoolname("notset");
-		   sprimary.setIndex("notset");
-		   sprimary.setKcpemark("notset");
-		   sprimary.setKcpeyear("notset"); 
+		   sprimary.setSchoolname(primary);
+		   sprimary.setIndex(indexno);
+		   sprimary.setKcpemark(kcpemark);
+		   sprimary.setKcpeyear(kcpeaddYear); 
 		   
 		   
 		  

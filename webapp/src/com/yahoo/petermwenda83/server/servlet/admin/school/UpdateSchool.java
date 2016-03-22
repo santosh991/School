@@ -109,7 +109,7 @@ public class UpdateSchool extends HttpServlet{
 		   account.setEmail(schoolemail); 
 		   account.setPostalAddress(schoolpostaladdress); 
 		   account.setTown(schoolhometown); 
-		   updateStudentCache(account);
+		   updateSchoolCache(account);
 		   if(accountDAO.update(account) ){ 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_UPDATE_SUCCESS, SCHOOL_UPDATE_SUCCESS); 
 		   }else{
@@ -128,7 +128,7 @@ public class UpdateSchool extends HttpServlet{
    
    
 
-private void updateStudentCache(SchoolAccount accnt) {
+private void updateSchoolCache(SchoolAccount accnt) {
 	cacheManager.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME).put(new Element(accnt.getUsername(), accnt));
 	cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(accnt.getUuid(), accnt));
 }

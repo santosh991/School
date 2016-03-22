@@ -265,7 +265,7 @@
  
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="FatherName">Father Name*:</label>
+				                        <label class="control-label" for="FatherName">Parent 1 Full Name*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherName"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherName")) %>"  >
@@ -273,7 +273,7 @@
 				                    </div> 
 
 				                    <div class="control-group">
-				                        <label class="control-label" for="FatherPhone">Father Phone*:</label>
+				                        <label class="control-label" for="FatherPhone">Parent 1 Phone*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherPhone"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherPhone")) %>"  >
@@ -281,7 +281,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="FatherOccupation">Father Occupation*:</label>
+				                        <label class="control-label" for="FatherOccupation">Parent 1 Occupation*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherOccupation"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherOccupation")) %>"  >
@@ -290,7 +290,7 @@
 
 
 				                    <div class="control-group">
-				                        <label class="control-label" for="FatherID">Father ID No*:</label>
+				                        <label class="control-label" for="FatherID">Parent 1 ID No*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherID"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherID")) %>"  >
@@ -298,7 +298,7 @@
 				                    </div> 
 
 				                    <div class="control-group">
-				                        <label class="control-label" for="FatherEmail">Father Email*:</label>
+				                        <label class="control-label" for="FatherEmail">Parent 1 Email*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherEmail"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherEmail")) %>"  >
@@ -309,7 +309,7 @@
                       
 
 				                    <div class="control-group">
-				                        <label class="control-label" for="MotherName">Mother Name*:</label>
+				                        <label class="control-label" for="MotherName">Parent 2 Full Name:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherName"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherName")) %>"  >
@@ -317,7 +317,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="MotherPhone">Mother Phone*:</label>
+				                        <label class="control-label" for="MotherPhone">Parent 2 Phone:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherPhone"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherPhone")) %>"  >
@@ -325,7 +325,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="MotherOccupation">Mother Occupation*:</label>
+				                        <label class="control-label" for="MotherOccupation">Parent 2 Occupation:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherOccupation"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherOccupation")) %>"  >
@@ -333,7 +333,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="MotherEmail">Mother Email*:</label>
+				                        <label class="control-label" for="MotherEmail">Parent 2 Email:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherEmail"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherEmail")) %>"  >
@@ -341,7 +341,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="MotherID">Mother ID No*:</label>
+				                        <label class="control-label" for="MotherID">Parent 2 ID No:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherID"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherID")) %>"  >
@@ -351,7 +351,7 @@
 				        
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="RelativeName">Relative Name*:</label>
+				                        <label class="control-label" for="RelativeName">Relative Name:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="RelativeName"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("RelativeName")) %>"  >
@@ -359,7 +359,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="RelativePhone">Relative Phone*:</label>
+				                        <label class="control-label" for="RelativePhone">Relative Phone:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="RelativePhone"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("RelativePhone")) %>"  >

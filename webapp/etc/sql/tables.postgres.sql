@@ -27,8 +27,29 @@ CREATE DATABASE schooldb;
 -- =========================
 
 -- -------------------
+-- Table SmsSend
+-- -------------------
+
+
+CREATE TABLE  SmsSend (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    Status text,
+    PhoneNo text,
+    MessageId text,
+    Cost text 
+
+    
+
+);
+\COPY SmsSend(Uuid,Status,PhoneNo,MessageId,Cost) FROM '/tmp/SmsSend.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE SmsSend OWNER TO school;
+
+
+-- -------------------
 -- Table Status
 -- -------------------
+
 
 
 CREATE TABLE  Status (

@@ -38,7 +38,9 @@ public class Login extends HttpServlet {
 	final String ERROR_ACCEPT_TERMS_AND_CONDITION = "You must agree with terms and conditions.";
 	final String ERROR_WRONG_USER_DETAIL = "Incorrect staff credentials.";
 	final String BLANK_FIELDS_NOT_ALLOWED = "blank fields are not allowed.";
+	final String ERROR_SCHOOL_INACTIVE = "You can't login to your school account, call +254718953974 for help.";
 	
+	final String STATUS_INACTIVE = "6C03705B-E05E-420B-B5B8-C7EE36643E60";
 
 	/**
 	 * 
@@ -115,6 +117,10 @@ public class Login extends HttpServlet {
     		   
     		    else  if (!validateCaptcha(hiddenCaptchaStr, captchaAnswer)) {
                    session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ACCOUNT_SIGN_IN_BAD_CAPTCHA);
+                   response.sendRedirect("index.jsp");
+                
+               } else  if (StringUtils.equals(school.getStatusUuid(), STATUS_INACTIVE)) {
+                   session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, ERROR_SCHOOL_INACTIVE);
                    response.sendRedirect("index.jsp");
                    
                }

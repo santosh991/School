@@ -73,20 +73,36 @@ public class AddStudentParent extends HttpServlet{
 
        HttpSession session = request.getSession(true);
        
+     
+     
+       String RelativePhone = "not-set";
+       String RelativeName = "not-set";
+       String MotherOccupation = "not-set";
+       String MotherPhone = "not-set";
+       String MotherEmail = "not-set";
+       String MotherName = "not-set";
+       String MotherID = "not-set";
+       
+       
+      
+       MotherOccupation = StringUtils.trimToEmpty(request.getParameter("MotherOccupation"));
+       MotherPhone = StringUtils.trimToEmpty(request.getParameter("MotherPhone"));
+       MotherEmail = StringUtils.trimToEmpty(request.getParameter("MotherEmail"));
+       MotherName = StringUtils.trimToEmpty(request.getParameter("MotherName"));
+       MotherID = StringUtils.trimToEmpty(request.getParameter("MotherID"));
+       
+       RelativePhone = StringUtils.trimToEmpty(request.getParameter("RelativePhone"));
+       RelativeName = StringUtils.trimToEmpty(request.getParameter("RelativeName"));
+       
        String FatherOccupation = StringUtils.trimToEmpty(request.getParameter("FatherOccupation"));
-       String MotherOccupation = StringUtils.trimToEmpty(request.getParameter("MotherOccupation"));
-       String RelativePhone = StringUtils.trimToEmpty(request.getParameter("RelativePhone"));
-       String RelativeName = StringUtils.trimToEmpty(request.getParameter("RelativeName"));
        String FatherPhone = StringUtils.trimToEmpty(request.getParameter("FatherPhone"));
        String FatherEmail = StringUtils.trimToEmpty(request.getParameter("FatherEmail"));
-       String MotherPhone = StringUtils.trimToEmpty(request.getParameter("MotherPhone"));
-       String MotherEmail = StringUtils.trimToEmpty(request.getParameter("MotherEmail"));
        String studentUuid = StringUtils.trimToEmpty(request.getParameter("studentUuid"));
-       String MotherName = StringUtils.trimToEmpty(request.getParameter("MotherName"));
        String FatherName = StringUtils.trimToEmpty(request.getParameter("FatherName"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        String FatherID = StringUtils.trimToEmpty(request.getParameter("FatherID"));
-       String MotherID = StringUtils.trimToEmpty(request.getParameter("MotherID"));
+      
+       
        
        Map<String, String> fatherMotherParamHash = new HashMap<>(); 
        Map<String, String> paramHash = new HashMap<>(); 
@@ -141,7 +157,7 @@ public class AddStudentParent extends HttpServlet{
 		   session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_INVALID_FATHER_EMAIL);  
 	  	   
     }
-	else if(StringUtils.isBlank(MotherName)){
+	/*else if(StringUtils.isBlank(MotherName)){
 			session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_EMPTY_MOTHER_NAME); 
 						   
 	}else if(StringUtils.isBlank(MotherPhone)){ 
@@ -166,10 +182,18 @@ public class AddStudentParent extends HttpServlet{
    }else if(StringUtils.isBlank(RelativePhone)){ 
 		   session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_EMPTY_RELATIVE_PHONE); 
 		   
-   }else if(parentsDAO.getParent(studentUuid) !=null){ 
+   }*/else if(parentsDAO.getParent(studentUuid) !=null){ 
 		   session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_STUDENT_PARENT_EXIST); 
 		   
 	}else{
+		
+		    RelativePhone = "not-set";
+	        RelativeName = "not-set";
+	        MotherOccupation = "not-set";
+	        MotherPhone = "not-set";
+	        MotherEmail = "not-set";
+	        MotherName = "not-set";
+	        MotherID = "not-set";
 	   
 		StudentParent parent = new StudentParent();
 		parent.setStudentUuid(studentUuid); 

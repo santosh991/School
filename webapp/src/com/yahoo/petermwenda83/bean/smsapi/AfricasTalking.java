@@ -18,7 +18,7 @@ public class AfricasTalking {
 	 * 
 	 */
 	public AfricasTalking() {
-		username = "mwendapeter72@gmail.com";
+		username = "msomi22";
 		apiKey = "a565d7d375de2c69da745d0297e92bd50b25f52b402c5404ddd72b3ecc421b3b";
 		recipients = "";
 	    message = "";

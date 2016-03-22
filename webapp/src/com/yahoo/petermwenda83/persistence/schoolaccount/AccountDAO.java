@@ -162,7 +162,7 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 		boolean success = true; 
 		 try(   Connection conn = dbutils.getConnection();
 	      PreparedStatement pstmt = conn.prepareStatement("UPDATE SchoolAccount SET SchoolName =?,Username =?,Password =?,"
-			+ "Mobile =?,PostalAddress =?,Town =?,Email =? WHERE Uuid = ? ;");
+			+ "Mobile =?,PostalAddress =?,Town =?,Email =?,StatusUuid =? WHERE Uuid = ? ;");
        		){
 	            pstmt.setString(1, school.getSchoolName());
 	            pstmt.setString(2, school.getUsername());
@@ -171,7 +171,8 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	            pstmt.setString(5, school.getPostalAddress());
 	            pstmt.setString(6, school.getTown());
 	            pstmt.setString(7, school.getEmail());
-	            pstmt.setString(8, school.getUuid());
+	            pstmt.setString(8, school.getStatusUuid());
+	            pstmt.setString(9, school.getUuid());
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){

@@ -15,6 +15,7 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.yahoo.petermwenda83.server.quartz.QuartzJob;
+import com.yahoo.petermwenda83.server.quartz.SchoolQuartzJob;
 
 public class QuartzListener extends HttpServlet implements ServletContextListener {
 	
@@ -29,22 +30,41 @@ public class QuartzListener extends HttpServlet implements ServletContextListene
     public void contextInitialized(ServletContextEvent servletContext) {
               
     	  try {
+    		  
                     // Setup the Job class and the Job group
                     JobDetail job = newJob(QuartzJob.class).withIdentity(
                                     "CronQuartzJob", "Group").build();
 
-                    // Create a Trigger that fires every 5 minutes 
+                    // Create a Trigger that fires every 1 minutes 
                     Trigger trigger = newTrigger()
                     .withIdentity("TriggerName", "Group")
                     .startNow()
-                    .withSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ?"))
+                    .withSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * * * ?"))
                     .build(); 
 
                     // Setup the Job and Trigger with Scheduler & schedule jobs
                     scheduler = new StdSchedulerFactory().getScheduler();
                     scheduler.start();
                     scheduler.scheduleJob(job, trigger);
-                   
+                    
+                    
+                    
+                 // Setup the Job class and the Job group
+                    JobDetail job2 = newJob(SchoolQuartzJob.class).withIdentity(
+                                    "CronQuartzJob2", "Group2").build();
+
+                    // Create a Trigger
+                    Trigger trigger2 = newTrigger()
+                    .withIdentity("TriggerName2", "Group2")
+                    .startNow()
+                    .withSchedule(CronScheduleBuilder.cronSchedule("0 0 16 ? 1/2 MON#1"))//execute the first Monday of every 2 months //
+                    .build(); 
+
+                    // Setup the Job and Trigger with Scheduler & schedule jobs
+                    scheduler = new StdSchedulerFactory().getScheduler();
+                    scheduler.start();
+                    scheduler.scheduleJob(job2, trigger2);
+                 
                  }
              catch (SchedulerException e) {
                e.printStackTrace();

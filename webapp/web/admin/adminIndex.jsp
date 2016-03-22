@@ -160,7 +160,14 @@ if (session == null) {
                     <%                                                          
                       int count = 1;
                          for (SchoolAccount s : schoolList) {
-                         String status = "Active";
+                          String status = "Active";
+
+                          String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                          if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
+                            status = "Active";
+                              }else{
+                             status = "Inactive";
+                               }
 
 
                          studentList = studentDAO.getAllStudentList(s.getUuid()); 

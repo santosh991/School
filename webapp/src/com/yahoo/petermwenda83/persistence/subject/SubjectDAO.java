@@ -138,7 +138,7 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
-			 logger.error("SQL Exception trying to put: "+subject);
+			 logger.error("SQL Exception trying to put Subject: "+subject);
              logger.error(ExceptionUtils.getStackTrace(e)); 
              success = false;
 		 }
@@ -167,7 +167,7 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
                 pstmt.executeUpdate(); 
 
         } catch (SQLException e) {
-            logger.error("SQL Exception when updating SubjectUi with uuid " + subject);
+            logger.error("SQL Exception when updating Subject with uuid " + subject);
             logger.error(ExceptionUtils.getStackTrace(e));
             success = false;
         } 
@@ -222,7 +222,7 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
           
 
        } catch(SQLException e){
-       	logger.error("SQL Exception when getting all SubjectUi");
+       	logger.error("SQL Exception when getting all Subject");
            logger.error(ExceptionUtils.getStackTrace(e));
        }
      

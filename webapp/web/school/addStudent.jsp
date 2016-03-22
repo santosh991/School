@@ -254,9 +254,9 @@
                                         <label class="control-label" for="gender">Gender*:</label>
                                          <div class="controls">
                                             <select name="gender" >
-                                               <!-- <option value="">Please select one</option> -->
+                                               <option value="">Please select one</option> 
                                                 <option value="MALE">Male</option>
-                                              <!--  <option value="FEMALE">Female</option> -->
+                                              <option value="FEMALE">Female</option> 
                                                 
                                             </select>                           
                                           
