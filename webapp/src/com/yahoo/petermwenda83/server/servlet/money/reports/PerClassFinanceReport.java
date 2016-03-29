@@ -273,10 +273,12 @@ public class PerClassFinanceReport extends HttpServlet{
 		String formatedFirstname = "";
 		String formatedLastname = "";
 		String formatedSurname = "";
-		double othermonies = 0;
+		double other_m_amount = 0;
+		double other_m_totals = 0;
 		//create other rows
 		if(studentList != null){
 			for(Student stu :studentList){
+				other_m_totals = 0;
 
 				String firstNameLowecase = stu.getFirstname().toLowerCase();
 				String lastNameLowecase = stu.getLastname().toLowerCase();
@@ -285,30 +287,39 @@ public class PerClassFinanceReport extends HttpServlet{
 				formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
 				formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1);
 
-				List<StudentFee> list = new ArrayList<>();
-				if(studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),stu.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
-					list = studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),stu.getUuid(),examConfig.getTerm(),examConfig.getYear());
-
-				}
 				
 				
 				List<StudentOtherMonies>  stuOthermoniList = new ArrayList<>(); 
 				if(studentOtherMoniesDAO.getStudentOtherList(stu.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
 					stuOthermoniList = studentOtherMoniesDAO.getStudentOtherList(stu.getUuid(),examConfig.getTerm(),examConfig.getYear());
 				}  
-
+				
+				
+                
 				if(stuOthermoniList !=null){
 					for(StudentOtherMonies som  : stuOthermoniList){
-						othermonies += som.getAmountPiad();
+						other_m_amount = som.getAmountPiad();
+						other_m_totals +=other_m_amount;
 					}
 				}
 				
 				
-
+				List<StudentFee> list = new ArrayList<>();
+				if(studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),stu.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
+					list = studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),stu.getUuid(),examConfig.getTerm(),examConfig.getYear());
+                  
+				}
+				
 				double totalpaid = 0;
+				double paid = 0;
 				if(list !=null) {
+					totalpaid = 0;
+					paid = 0;
 					for(StudentFee fee : list){
-						totalpaid +=fee.getAmountPaid();
+						//System.out.println(formatedFirstname+" "+formatedLastname+"fee="+fee.getAmountPaid());
+						paid = fee.getAmountPaid();
+						totalpaid +=paid;
+						
 					} 
 				}
 
@@ -339,7 +350,7 @@ public class PerClassFinanceReport extends HttpServlet{
 					closingBalance = closingBalanceDAO.getClosingBalanceByStudentId(school.getUuid(), stu.getUuid(), previoustermStr, previuosyear);
 
 				}
-
+				prevtermbalance =0;
 				prevtermbalance = closingBalance.getClosingAmount();
 
 
@@ -362,12 +373,14 @@ public class PerClassFinanceReport extends HttpServlet{
 
 				//get class
 				XSSFCell c4 = r.createCell(3);
-
+				
+				//System.out.println(formatedFirstname+" "+formatedLastname+",totalpaid="+totalpaid+",other_m_totals="+other_m_totals +",prevtermbalance="+prevtermbalance);
 				//else{ 
-				c4.setCellValue(ch.createRichTextString( nf.format( ((termFee.getTermAmount()-totalpaid +othermonies)-prevtermbalance) )));        		
-
-
-
+				c4.setCellValue(ch.createRichTextString( nf.format(termFee.getTermAmount() - prevtermbalance - totalpaid + other_m_totals)));        		
+                
+				
+               
+                
 
 				i++;
 				count++;      	  

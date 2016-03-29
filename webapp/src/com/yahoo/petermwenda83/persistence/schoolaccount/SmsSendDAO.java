@@ -132,10 +132,10 @@ public class SmsSendDAO extends GenericDAO implements SchoolSmsSendDAO {
 	public boolean updateSmsSend(SmsSend smsSend) {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
-        	   PreparedStatement pstmt = conn.prepareStatement("UPDATE SmsSend SET Status=?,"
-        			+ "PhoneNo=?,MessageId=?,Cost=? WHERE Uuid = ?;");
+        	   PreparedStatement pstmt = conn.prepareStatement("UPDATE SmsSend SET Status =?,"
+        	      + "PhoneNo=?,MessageId=?,Cost=? WHERE Uuid = ?;");
         	) { 
-	            pstmt.setString(1, smsSend.getStatus());
+	           pstmt.setString(1, smsSend.getStatus());
 	            pstmt.setString(2, smsSend.getPhoneNo());
 	            pstmt.setString(3, smsSend.getMessageId());
 	            pstmt.setString(4, smsSend.getCost());
@@ -152,13 +152,29 @@ public class SmsSendDAO extends GenericDAO implements SchoolSmsSendDAO {
 		
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolSmsSendDAO#deleteSmsSend(com.yahoo.petermwenda83.bean.schoolaccount.SmsSend)
 	 */
 	@Override
 	public boolean deleteSmsSend(SmsSend smsSend) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+        try(
+        	Connection conn = dbutils.getConnection();
+           	PreparedStatement pstmt = conn.prepareStatement("DELETE FROM SmsSend WHERE Status = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, smsSend.getStatus());
+	         pstmt.executeUpdate();
+	     
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when deletting smsSend" + smsSend);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             success = false;
+             
+        }
+        
+		return success; 
 	}
 
 	/**
@@ -171,7 +187,7 @@ public class SmsSendDAO extends GenericDAO implements SchoolSmsSendDAO {
       		Connection conn = dbutils.getConnection();
       		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM SmsSend;");          		
   		) {			     
-			 try( ResultSet rset = pstmt.executeQuery();){
+			try( ResultSet rset = pstmt.executeQuery();){
 	     	       
 				 list = beanProcessor.toBeanList(rset, SmsSend.class);
 	        }

@@ -17,12 +17,6 @@
 <%@page import="com.yahoo.petermwenda83.persistence.othermoney.TermOtherMoniesDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.othermoney.OtherMoniesDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.othermoney.OtherMonies"%>
-
-<%@page import="com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesClosingBalDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.othermoney.StudentOtherMoniesClosingBal"%>
-
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
 <%@page import="com.yahoo.petermwenda83.bean.money.StudentAmount"%>
@@ -90,19 +84,6 @@
     if(examConfigDAO.getExamConfig(accountuuid) !=null){
         examConfig = examConfigDAO.getExamConfig(accountuuid);
        }
-
-
-    OtherMoniesDAO otherMoniesDAO = OtherMoniesDAO.getInstance();
-    OtherMonies otherMonies = new OtherMonies();
-    if(otherMoniesDAO.getOtherMonies(accountuuid) !=null){
-        otherMonies = otherMoniesDAO.getOtherMonies(accountuuid);
-       }
-
-
-    StudentOtherMoniesClosingBalDAO studentOtherClosingBalDAO = StudentOtherMoniesClosingBalDAO.getInstance();
-    StudentOtherMoniesClosingBal studentOtherClosingBal = new StudentOtherMoniesClosingBal();
-    
-    
 
     TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
 
@@ -523,6 +504,7 @@
                         <th>Amount Paid</th>
                         <th>Term Paid</th>
                         <th>Year Paid</th>
+                        <th>Revert</th>
                        
                         
                         
@@ -549,6 +531,8 @@
              List<StudentOtherMonies> stuOthermoniDistinctList = new ArrayList<StudentOtherMonies>(); 
               stuOthermoniDistinctList = studentOtherMoniesDAO.getStudentOtherMoniesDistinct(studentuuid);
                     if(stuOthermoniDistinctList !=null){
+
+                      int count22 = 1;
                        for(StudentOtherMonies somdisticnt : stuOthermoniDistinctList){                               
                           
                            if(studentOtherMoniesDAO.getStudentOtherMoniesList(studentuuid,somdisticnt.getOtherstypeUuid()) !=null){
@@ -560,7 +544,7 @@
                                  mysombalance = 0;
                                  mysombalancetotal = 0;
 
-                                int count22 = 1;
+                                
                                 for(StudentOtherMonies sotheO : stuOthermoniList){
 
                                    itemterm = termHash.get(sotheO.getOtherstypeUuid());
@@ -582,12 +566,26 @@
                                    out.println("<td class=\"center\">" + amountpaid + "</td>");
                                    out.println("<td class=\"center\">" + sotheO.getTerm() + "</td>");
                                    out.println("<td class=\"center\">" + sotheO.getYear() + "</td>");
+
+                                   %>
+                               <td class="center">
+                               <form name="view" method="POST" action="revert">                             
+                               <input type="hidden" name="studentuuid" value="<%=studentuuid%>">
+                               <input type="hidden" name="typeuuid" value="<%=sotheO.getOtherstypeUuid()%>">
+                               <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                               <input type="hidden" name="amount" value="<%=itemcost%>">
+                               <input class="btn btn-success" type="submit" name="view" id="submit" value="Revert" />
+                               </form>  
+                               </td>   </tr>
+
+                                   <%
                                   
 
-                                    count22++;
+                                   
 
                                      }            
                                  }
+                                  count22++;
                               }
                           }
 

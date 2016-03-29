@@ -135,7 +135,9 @@
                      %>
                                
                              
-      <p color="red"> Confirm that the amount and Bank slip number shown below are correct  then replace the ammount with new ammount to be deducted</p>
+      <p color="red"> Confirm that the amount and Bank slip number shown below are correct. <br>
+       Then replace the amount with new correct ammount, Note that the new correct amount should be less <br>
+       than the original amount </p>
 
 
 

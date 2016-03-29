@@ -138,7 +138,7 @@
 
 
 
-                     <form id="SendSMS" name="SendSMS" method="post" action="sendSMS"> 
+                     <form id="SendSMS" name="SendSMS" method="post" action=""> <!--sendSMS-->
                                 <p>
                                     <label for="destination">Destination Phone(s) with +254 --- and separated by a comma</label>
                                     <input id="destination" name="destination" type="text" size="40" />

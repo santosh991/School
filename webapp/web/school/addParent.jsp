@@ -263,7 +263,7 @@
                 <form  class="form-horizontal"   action="addStudentParent" method="POST" >
                 <fieldset>           
  
-
+                              <h3><i class="icon-edit"></i>Parent 1 (Parent to receive SMS-Father) :</h3> 
 				                     <div class="control-group">
 				                        <label class="control-label" for="FatherName">Parent 1 Full Name*:</label>
 				                        <div class="controls">
@@ -306,7 +306,7 @@
 				                    </div> 
 
 
-                      
+                         <h3><i class="icon-edit"></i>Parent 2 (Optional-Mother) :</h3> 
 
 				                    <div class="control-group">
 				                        <label class="control-label" for="MotherName">Parent 2 Full Name:</label>
@@ -348,10 +348,10 @@
 				                        </div>
 				                    </div> 
 
-				        
+				            <h3><i class="icon-edit"></i>Person to be contacted if Parents are not available</h3>  
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="RelativeName">Relative Name:</label>
+				                        <label class="control-label" for="RelativeName">Full Name:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="RelativeName"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("RelativeName")) %>"  >
@@ -359,7 +359,7 @@
 				                    </div> 
 
 				                     <div class="control-group">
-				                        <label class="control-label" for="RelativePhone">Relative Phone:</label>
+				                        <label class="control-label" for="RelativePhone"> Phone Number:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="RelativePhone"
 				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("RelativePhone")) %>"  >

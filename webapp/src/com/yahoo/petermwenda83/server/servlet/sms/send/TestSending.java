@@ -3,15 +3,10 @@
  */
 package com.yahoo.petermwenda83.server.servlet.sms.send;
 
-/* Make sure the downloaded jar file is in the classpath or has been added to 
-referenced libraries if you are using an SDK like eclipse or netbeans*/
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.yahoo.petermwenda83.bean.smsapi.AfricasTalking;
 public class TestSending
 
-{
+{/*
  public static void main(String[] args_)
  {
 	 
@@ -53,4 +48,4 @@ public class TestSending
      }
  
 }
-}
+*/}

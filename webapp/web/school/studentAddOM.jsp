@@ -68,21 +68,23 @@
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
 
-
      OtherstypeDAO otherstypeDAO = OtherstypeDAO.getInstance();
      List<Otherstype> othertypeList = new ArrayList<Otherstype>(); 
-     othertypeList = otherstypeDAO.gettypeList(accountuuid);  
-     HashMap<String, String> moneytypeHash = new HashMap<String, String>(); 
-     if(othertypeList !=null){
-     for(Otherstype om : othertypeList){
-         moneytypeHash.put(om.getUuid(),om.getType());
-         }
-       }
+     othertypeList = otherstypeDAO.getOtherstypeList(accountuuid,examConfig.getTerm(),examConfig.getYear());  
 
      TermOtherMoniesDAO termOtherMoniesDAO = TermOtherMoniesDAO.getInstance();
      List<TermOtherMonies> termothermoneyList = new ArrayList<TermOtherMonies>(); 
      termothermoneyList = termOtherMoniesDAO.getTermOtherMoniesList(accountuuid); 
 
+
+     TermOtherMonies termOtherMonies = new TermOtherMonies();
+     HashMap<String, TermOtherMonies> termOtherMoniesHash = new HashMap<String, TermOtherMonies>(); 
+     if(termothermoneyList !=null){
+     for(TermOtherMonies tom : termothermoneyList){
+         termOtherMoniesHash.put(tom.getOtherstypeUuid(),tom);
+         }
+       }
+    
 
     
      
@@ -272,33 +274,31 @@
                                         <div class="controls">
                                          <select name="OtherstypeUuid" >
                                            <option value="">Please select one</option> 
-                                                 <%
-                                                    int count = 1;
-                                                    if (termothermoneyList != null) {
-                                                        for (TermOtherMonies tm : termothermoneyList) {
-                                                         
-                                                %>
-                    <option value="<%=tm.getOtherstypeUuid()%>"> <%=moneytypeHash.get(tm.getOtherstypeUuid())+" "+tm.getAmount()%> </option>
-                                                <%
-                                                            count++;
-                                                           
-                                                        }
-                                                    }
-                                                %>
+                       <%               
+                             
+                   
+                         int count = 1;
+                         double amount = 0;
+                        if(othertypeList !=null){
+                       for(Otherstype ot : othertypeList) {
+                              amount = 0;
+                             if(termOtherMoniesHash.get(ot.getUuid()) !=null){
+                              termOtherMonies = termOtherMoniesHash.get(ot.getUuid());
+                              amount = termOtherMonies.getAmount();
+                             }
+                            %>
+                    <option value="<%=ot.getUuid()%>"> <%= ot.getType()+" "+amount%> </option>
+                            <%
+                          
+                          count++;
+
+                          } 
+                     }
+                    %>
                                           </select>   
                                         </div>
                                     </div> 
 
-
-                                    <!-- <div class="control-group">
-                                        <label class="control-label" for="name">Amount:</label>
-                                        <div class="controls">
-                                            <input class="input-xlarge focused" id="receiver" type="text" name="AmountPiad" 
-                                             value=""  >                                    
-                                        </div>
-                                    </div> -->
-
-                                    
                                     
                                     <div class="form-actions">
                                         <input type="hidden" name="StudentUuid" value="<%=studentuuid%>">

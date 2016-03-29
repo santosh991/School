@@ -100,9 +100,43 @@
     <div class="box span12">
         <div class="box-content">
 
+                  <%
+                                String updateErrStr = "";
+                                String updatesuccessStr = "";
+                                session = request.getSession(false);
+                                     updateErrStr = (String) session.getAttribute(SessionConstants.STAFF_UPDATE_ERROR);
+                                     updatesuccessStr = (String) session.getAttribute(SessionConstants.STAFF_UPDATE_SUCCESS); 
+
+                                if(session != null) {
+                                    updateErrStr = (String) session.getAttribute(SessionConstants.STAFF_UPDATE_ERROR);
+                                    updatesuccessStr = (String) session.getAttribute(SessionConstants.STAFF_UPDATE_SUCCESS);
+                                }                        
+
+                                if (StringUtils.isNotEmpty(updateErrStr)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + updateErrStr);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(updatesuccessStr)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + updatesuccessStr);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.STAFF_UPDATE_SUCCESS, null);
+                                  } 
+
+
+                     %>
+
+
+
+ 
+
+
+
 
                   <h3><i class="icon-edit"></i>Change your password :</h3> 
-                  <form  class="form-horizontal"   action="" method="POST" >
+                  <form  class="form-horizontal"   action="updatePassword" method="POST" >
                   <fieldset>
 
                         <div class="control-group">
@@ -134,6 +168,7 @@
                       </div>
 
                       <div class="form-actions">
+                      <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                         <button type="submit" name="sendsms" value="Send" class="btn btn-primary">Edit Password</button>
                      </div>
 

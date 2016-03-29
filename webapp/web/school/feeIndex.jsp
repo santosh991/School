@@ -274,10 +274,16 @@
                                balance = termfee - amountpaid;
 
                                if(studentHash.get(fee.getStudentUuid()) !=null){
+                                  
+                                  if(studentHash.get(fee.getStudentUuid()) !=null){
                                   student = studentHash.get(fee.getStudentUuid());
+                                    }
+
+                                  if(student !=null){
                                   admno = student.getAdmno();
                                   firstname = student.getFirstname();
                                   lastname = student.getLastname();
+                                  }
                                }
                                
                                

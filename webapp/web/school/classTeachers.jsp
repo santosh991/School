@@ -140,6 +140,8 @@
         <li>
             <a href="addclassTecaher.jsp">New Class Teacher</a> <span class="divider">/</span>
         </li>
+
+       
         
     </ul>
 </div>
@@ -237,7 +239,7 @@
                                 <input type="hidden" name="teachername" value="<%=staffHash.get(s.getUuid())%>">
                                 <input type="hidden" name="classroomname" value="<%=roomHash.get(classHash.get(s.getUuid()))%>">
                                 <input type="hidden" name="teacheruuid" value="<%=ct.getTeacherUuid()%>">
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Edit" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Change Class" /> 
                                 </form>                          
                                 </td>  
                                <%

@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.yahoo.petermwenda83.server.servlet.result.report;
+package com.yahoo.petermwenda83.server.servlet.result.classes;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -10,6 +7,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,7 +33,6 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
@@ -52,14 +49,12 @@ import com.yahoo.petermwenda83.server.util.magic.MiddleNumberFor3;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 
-/** allClassesAnalyzer
+/** 
  * @author peter
  *
- */ 
-public class AllClassesAnalyzer  extends HttpServlet{
-	
-	
-	
+ */
+public class ClassMean extends HttpServlet{
+
 	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
 	private Document document;
 	private PdfWriter writer;
@@ -76,7 +71,6 @@ public class AllClassesAnalyzer  extends HttpServlet{
 	private static ExamConfigDAO examConfigDAO;
 	private static GradingSystemDAO gradingSystemDAO;
 
-	//String classroomuuid = "";
 	String schoolusername = "";
 	String stffID = "";
 
@@ -131,6 +125,8 @@ public class AllClassesAnalyzer  extends HttpServlet{
 
 	String USER= "";
 	String path ="";
+	
+	
 
 	/**
 	 *
@@ -150,11 +146,6 @@ public class AllClassesAnalyzer  extends HttpServlet{
 		USER = System.getProperty("user.name");
 		path = "/home/"+USER+"/school/logo/logo.png";	
 		
-
-
-		
-	
-	
 	}
 
 	/**
@@ -200,8 +191,7 @@ public class AllClassesAnalyzer  extends HttpServlet{
 				+ ""+school.getTown().toUpperCase() +" KENYA\n" 
 				+ "" + school.getMobile()+"\n"
 				+ "" + school.getEmail()+"\n";
-		// + "Class: "+roomHash.get(classroomuuid)+"\n"; 
-
+	
 		document = new Document(PageSize.A4, 46, 46, 64, 64);
 
 		try {
@@ -337,150 +327,114 @@ public class AllClassesAnalyzer  extends HttpServlet{
 			myTable4.setWidths(new int[]{60,60});   
 			myTable4.setHorizontalAlignment(Element.ALIGN_LEFT);
 			
-			//get list of all class streams
-			List<ClassRoom> classroomlist = new ArrayList<>();
-			classroomlist = roomDAO.getAllRooms(school.getUuid());
-			
+		
 			int formonecount = 0;
 			int formtwocount = 0;
 			int formthreecount = 0;
 			int formfourcount = 0;
 			
-			for(ClassRoom classroom : classroomlist){	
-				
-		      List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-		      pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroom.getUuid(),examConfig.getTerm(),examConfig.getYear());
+
+			final String FORM1 = "C143978A-E021-4015-BC67-5A00D6C910D1";
+			final String FORM2 = "3E22E428-3155-42F5-B73E-66553ED501C9";
+			final String FORM3 = "A4BFC2BD-262F-4207-99C8-057D6ADF80C7";
+			final String FORM4 = "14E56350-08DA-45CC-97D9-C225AF74A7AD";
+			
+			 //firm 0ne
+			  List<Perfomance> pDistinctList1 = new ArrayList<Perfomance>();
+		      pDistinctList1 = perfomanceDAO.getPerfomanceListDistinctGeneral(school.getUuid(), FORM1,examConfig.getTerm(),examConfig.getYear());
 		        
-		      for(Perfomance p: pDistinctList){
-		        	p.getClassRoomUuid();
-
-				  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 1")){
+		      for(Perfomance p1: pDistinctList1){
 					  formonecount++;
-					  computeFormone(formonecount,school,classroom);
-					 
-				  }
-				  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 2")){
-					  formtwocount++;
-					  computeFortwo(formtwocount,school,classroom);
-					  
-				  }
-				  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 3")){
-					  formthreecount++;
-					  computeFormthree(formthreecount,school,classroom);
-					 
-				  }
-				  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 4")){
-					  formfourcount++;
-					  computeFormfour(formfourcount,school,classroom);
-					 
-				  }
-		        	
 		        }
+		      
+		       double classmean = 0;
+			   double grandscore = 0;
+			   double classmeantotals = 0;
 				
-			
-			
-			//int f1count = 1;
-			 if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 1")){
-				//myTable1.addCell(" "+f1count); 
-				myTable1.addCell(new Paragraph(" "+classroom.getRoomName(),boldFont));
-				myTable1.addCell(new Paragraph(df2.format(computeFormone(formonecount,school,classroom)),boldFont));
-				//f1count++;
-			 }
-			
-			// int f2count = 1;
-			  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 2")){
-				//myTable2.addCell(" "+f2count); 
-				myTable2.addCell(new Paragraph(" "+classroom.getRoomName(),boldFont));
-			    myTable2.addCell(new Paragraph(df2.format(computeFortwo(formtwocount,school,classroom)),boldFont));
+		      
+		      List<Perfomance> list1 = new ArrayList<>();
+		      list1 = perfomanceDAO.getClassPerfomanceListGeneral(school.getUuid(), FORM1,examConfig.getTerm(),examConfig.getYear());
+		      
+		      
+		       for(Perfomance pp : list1){
+           	   
+				   cat1 = pp.getCatOne();
+				   cat2 = pp.getCatTwo();
+				   endterm = pp.getEndTerm();
+				   total = (cat1+cat2)/2 +endterm;
+				   total = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(total)))));
+				   grandscore = total/11;
+				   classmean+=grandscore;
+				   classmeantotals = classmean/formonecount;   
+				   
+	               }
+		      
+		        myTable1.addCell(new Paragraph("FORM 1",boldFont));
+				myTable1.addCell(new Paragraph(df2.format(classmeantotals),boldFont));
+		      
+		      
+		      
+		      
+		      
+		      
+		      
+		      //firm Two
+		      List<Perfomance> pDistinctList2 = new ArrayList<Perfomance>();
+		      pDistinctList2 = perfomanceDAO.getPerfomanceListDistinctGeneral(school.getUuid(), FORM2,examConfig.getTerm(),examConfig.getYear());
+		        
+		      for(Perfomance p2: pDistinctList2){
+		    	  formtwocount++;
+		        }
+		      
+		       classmean = 0;
+			   grandscore = 0;
+			   classmeantotals = 0;
 				
-				//f2count++;
-			 }
+		      List<Perfomance> list2 = new ArrayList<>();
+		      list2 = perfomanceDAO.getClassPerfomanceListGeneral(school.getUuid(), FORM2,examConfig.getTerm(),examConfig.getYear());
+				
+               for(Perfomance pp : list2){
+            	   
+			   cat1 = pp.getCatOne();
+			   cat2 = pp.getCatTwo();
+			   endterm = pp.getEndTerm();
+			   total = (cat1+cat2)/2 +endterm;
+			   total = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(total)))));
+			   grandscore = total/11;
+			   classmean+=grandscore;
+			   classmeantotals = classmean/formtwocount;   
+			   
+               }
+		      
+               myTable2.addCell(new Paragraph("FORM 2",boldFont));
+			   myTable2.addCell(new Paragraph(df2.format(classmeantotals),boldFont));
+		      
+		      
+		      
+		      //firm Three
+		      List<Perfomance> pDistinctList3 = new ArrayList<Perfomance>();
+		      pDistinctList3 = perfomanceDAO.getPerfomanceListDistinctGeneral(school.getUuid(), FORM3,examConfig.getTerm(),examConfig.getYear());
+		        
+		      for(Perfomance p3: pDistinctList3){
+		    	  formthreecount++;
+		        }
+		      
+		      List<Perfomance> list3 = new ArrayList<>();
+		      double languageScore = 0;double scienceScore = 0;double humanityScore = 0;
+			  double techinicalScore = 0;grandscore = 0;
+			  MiddleNumberFor3 middle = new MiddleNumberFor3();
+			  engscore = 0;kswscore = 0;matscore = 0;physcore = 0;bioscore = 0;chemscore = 0;
+			  bsscore = 0;comscore = 0;hscscore = 0;agriscore = 0;geoscore = 0;crescore = 0;
+			  histscore = 0;
 			  
-			//  int f3count = 1;
-			  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 3")){
-				//myTable3.addCell(" "+f3count); 
-				myTable3.addCell(new Paragraph(" "+classroom.getRoomName(),boldFont));
-				myTable3.addCell(new Paragraph(df2.format(computeFormthree(formthreecount,school,classroom)),boldFont));  
-				
-			//	f3count++;
-			 }
-			  
-			//  int f4count = 1;
-			  if(StringUtils.containsIgnoreCase(classroom.getRoomName(), "FORM 4")){
-				//myTable4.addCell(" "+f4count); 
-			    myTable4.addCell(new Paragraph(" "+classroom.getRoomName(),boldFont));
-				myTable4.addCell(new Paragraph(df2.format(computeFormfour(formfourcount,school,classroom)),boldFont));  
-				
-				//f4count++;
-			 }
-			
-			
-			
-		}//end if true
-			
-			
-			document.add(prefaceTable);
-			document.add(emptyline);
-			document.add(myTable1);  
-			document.add(myTable2);  
-			document.add(myTable3);  
-			document.add(myTable4);  
-			
-			
-			
-			
-			document.close();
-		}
-		catch(DocumentException e) {
-			logger.error("DocumentException while writing into the document");
-			logger.error(ExceptionUtils.getStackTrace(e));
-		}
+			  double totalclassmark = 0;
+			  classmean = 0;
+		      
+		      
+		      list3 = perfomanceDAO.getClassPerfomanceListGeneral(school.getUuid(), FORM3,examConfig.getTerm(),examConfig.getYear());
+		      for(Perfomance pp : list3){
 
-	}
 
-	
-	
-	
-	/**
-	 * @param formfourcount
-	 * @param school
-	 * @param classroom
-	 * @return
-	 */
-	private double computeFormfour(int formfourcount, SchoolAccount school, ClassRoom classroom) {
-		
-		
-		DecimalFormat df = new DecimalFormat("0.00"); 
-		df.setRoundingMode(RoundingMode.DOWN);
-
-		DecimalFormat rf = new DecimalFormat("0.0"); 
-		rf.setRoundingMode(RoundingMode.HALF_UP);
-
-		DecimalFormat rf2 = new DecimalFormat("0"); 
-		rf2.setRoundingMode(RoundingMode.UP);
-		
-
-		double totalclassmark = 0;
-		double classmean = 0;
-
-		//start  
-		List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-		pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroom.getUuid(),examConfig.getTerm(),examConfig.getYear());
-        
-		
-
-		List<Perfomance> list = new ArrayList<>();
-		double languageScore = 0;double scienceScore = 0;double humanityScore = 0;
-		double techinicalScore = 0;double grandscore = 0;
-		MiddleNumberFor3 middle = new MiddleNumberFor3();
-		if(pDistinctList !=null){
-			for(Perfomance s : pDistinctList){                              
-				list = perfomanceDAO.getPerformance(school.getUuid(), classroom.getUuid(), s.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
-				engscore = 0;kswscore = 0;matscore = 0;physcore = 0;bioscore = 0;chemscore = 0;
-				bsscore = 0;comscore = 0;hscscore = 0;agriscore = 0;geoscore = 0;crescore = 0;
-				histscore = 0;
-
-				for(Perfomance pp : list){
 					//Languages
 					//Include all the languages
 					if(true){
@@ -806,66 +760,47 @@ public class AllClassesAnalyzer  extends HttpServlet{
 						humanityScore = bestHumanity; 
 						
 					} 
-				}
+				
+		      
+		    	  
+		      }
 
-				grandscore = 0;
+		        grandscore = 0;
 				grandscore = languageScore+scienceScore+humanityScore+techinicalScore;
 				languageScore = 0; scienceScore = 0; humanityScore = 0;techinicalScore = 0;  				         
 				grandscore = grandscore/7;
 				totalclassmark+=grandscore;
-				classmean = totalclassmark/formfourcount;
+				classmean = totalclassmark/formthreecount;
+				myTable3.addCell(new Paragraph("FORM 3",boldFont));
+				myTable3.addCell(new Paragraph(df2.format(classmean),boldFont));
+		      
+		      
+		      
+		      
+		      
+		      
+		      
+		      //firm Four
+		      List<Perfomance> pDistinctList4 = new ArrayList<Perfomance>();
+		      pDistinctList4 = perfomanceDAO.getPerfomanceListDistinctGeneral(school.getUuid(), FORM4,examConfig.getTerm(),examConfig.getYear());
 
-			}
+		      for(Perfomance p4: pDistinctList4){
+		    	  formfourcount++;
+		      }
 
-			
-		}
-		return classmean;
-	}
-	
-	
+		      List<Perfomance> list4 = new ArrayList<>();
+		      languageScore = 0;scienceScore = 0;humanityScore = 0;
+			  techinicalScore = 0;grandscore = 0;
+			  engscore = 0;kswscore = 0;matscore = 0;physcore = 0;bioscore = 0;chemscore = 0;
+			  bsscore = 0;comscore = 0;hscscore = 0;agriscore = 0;geoscore = 0;crescore = 0;
+			  histscore = 0;
+			  
+			  totalclassmark = 0;
+			  classmean = 0;
+			  
+		      list4 = perfomanceDAO.getClassPerfomanceListGeneral(school.getUuid(), FORM4,examConfig.getTerm(),examConfig.getYear());
+		      for(Perfomance pp : list4){
 
-
-	/**
-	 * @param formthreecount
-	 * @param school
-	 * @param classroom
-	 * @return
-	 */
-	private double computeFormthree(int formthreecount, SchoolAccount school, ClassRoom classroom) {
-		
-		
-
-		DecimalFormat df = new DecimalFormat("0.00"); 
-		df.setRoundingMode(RoundingMode.DOWN);
-
-		DecimalFormat rf = new DecimalFormat("0.0"); 
-		rf.setRoundingMode(RoundingMode.HALF_UP);
-
-		DecimalFormat rf2 = new DecimalFormat("0"); 
-		rf2.setRoundingMode(RoundingMode.UP);
-	
-
-		double totalclassmark = 0;
-		double classmean = 0;  //formthreecount
-
-		//start  
-		List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-		pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroom.getUuid(),examConfig.getTerm(),examConfig.getYear());
-        
-		
-
-		List<Perfomance> list = new ArrayList<>();
-		double languageScore = 0;double scienceScore = 0;double humanityScore = 0;
-		double techinicalScore = 0;double grandscore = 0;
-		MiddleNumberFor3 middle = new MiddleNumberFor3();
-		if(pDistinctList !=null){
-			for(Perfomance s : pDistinctList){                              
-				list = perfomanceDAO.getPerformance(school.getUuid(), classroom.getUuid(), s.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
-				engscore = 0;kswscore = 0;matscore = 0;physcore = 0;bioscore = 0;chemscore = 0;
-				bsscore = 0;comscore = 0;hscscore = 0;agriscore = 0;geoscore = 0;crescore = 0;
-				histscore = 0;
-
-				for(Perfomance pp : list){
 					//Languages
 					//Include all the languages
 					if(true){
@@ -916,7 +851,8 @@ public class AllClassesAnalyzer  extends HttpServlet{
 						engscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(engscore)))));
 						kswscore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(kswscore)))));
 						languageScore = (engscore+kswscore); 
-						
+						//System.out.println("student="+studNameHash.get(s.getStudentUuid())+",engscore="+engscore+",kswscore="+kswscore+",languageScore="+languageScore);
+
 					}       
 					//Sciences
 					//Pick best two if the student take the three
@@ -1084,6 +1020,7 @@ public class AllClassesAnalyzer  extends HttpServlet{
 								examcattotal = catmean + endterm;
 								hscscore = examcattotal; 
 								
+
 							}
 
 						}
@@ -1160,7 +1097,6 @@ public class AllClassesAnalyzer  extends HttpServlet{
 								examcattotal = catmean + endterm;
 								crescore = examcattotal; 
 								
-
 							}
 
 						}
@@ -1180,7 +1116,6 @@ public class AllClassesAnalyzer  extends HttpServlet{
 								catmean = catTotals/2;
 								examcattotal = catmean + endterm;
 								histscore = examcattotal; 
-								
 							}
 						}
 
@@ -1191,146 +1126,43 @@ public class AllClassesAnalyzer  extends HttpServlet{
 						humanityScore = bestHumanity; 
 						
 					} 
-				}
-				grandscore = 0;
+				
+		      }
+		      
+		        grandscore = 0;
 				grandscore = languageScore+scienceScore+humanityScore+techinicalScore;
 				languageScore = 0; scienceScore = 0; humanityScore = 0;techinicalScore = 0;  				         
 				grandscore = grandscore/7;
 				totalclassmark+=grandscore;
-				classmean = totalclassmark/formthreecount;
-				
-				
+				classmean = totalclassmark/formfourcount;
+				myTable4.addCell(new Paragraph("FORM 4 ",boldFont));
+				myTable4.addCell(new Paragraph(df2.format(classmean),boldFont));  
+		      
+		      
+		      
 
-			}
-
+		      document.add(prefaceTable);
+		      document.add(emptyline);
+		      document.add(myTable1);  
+		      document.add(myTable2);  
+		      document.add(myTable3);  
+		      document.add(myTable4);  
 			
-
-
 			
+			
+			
+			document.close();
 		}
-		//end
-		return classmean;
-	}
-	
-
-	/**
-	 * @param formtwocount
-	 * @param school
-	 * @param classroom
-	 * @return
-	 */
-	private double computeFortwo(int formtwocount, SchoolAccount school, ClassRoom classroom) {
-		
-
-		   DecimalFormat df = new DecimalFormat("0.00"); 
-		   df.setRoundingMode(RoundingMode.DOWN);
-		   
-		   DecimalFormat rf = new DecimalFormat("0.0"); 
-		   rf.setRoundingMode(RoundingMode.HALF_UP);
-
-		   DecimalFormat rf2 = new DecimalFormat("0"); 
-		   rf2.setRoundingMode(RoundingMode.UP);
-		   
-		   DecimalFormat df2 = new DecimalFormat("0.00"); 
-		   df2.setRoundingMode(RoundingMode.UP); 
-		
-
-	
-		double classmean = 0;
-		double grandscore = 0;
-		double classmeantotals = 0;
-		//start  
-		List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-		pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroom.getUuid(),examConfig.getTerm(),examConfig.getYear());
-        
-		List<Perfomance> list = new ArrayList<>();
-		if(pDistinctList !=null){
-			for(Perfomance s : pDistinctList){                              
-				list = perfomanceDAO.getPerformance(school.getUuid(), classroom.getUuid(), s.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
-				
-
-				for(Perfomance pp : list){
-					   cat1 = pp.getCatOne();
-					   cat2 = pp.getCatTwo();
-					   endterm = pp.getEndTerm();
-					   total = (cat1+cat2)/2 +endterm;
-					   total = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(total)))));
-					   grandscore = total/11;
-					   classmean+=grandscore;
-					   classmeantotals = classmean/formtwocount;        
-					  
-
-			           }
-
-			    }
-
-			}
-		return classmeantotals;
-	}
-	
-	
-	
-	
-
-	/**
-	 * @param formonecount
-	 * @param school
-	 * @param classroom
-	 * @return
-	 */
-	private double computeFormone(int formonecount, SchoolAccount school, ClassRoom classroom) {
-		
-		//start  
-		
-		   DecimalFormat df = new DecimalFormat("0.00"); 
-		   df.setRoundingMode(RoundingMode.DOWN);
-		   
-		   DecimalFormat rf = new DecimalFormat("0.0"); 
-		   rf.setRoundingMode(RoundingMode.HALF_UP);
-
-		   DecimalFormat rf2 = new DecimalFormat("0"); 
-		   rf2.setRoundingMode(RoundingMode.UP);
-		   
-		   DecimalFormat df2 = new DecimalFormat("0.00"); 
-		   df2.setRoundingMode(RoundingMode.UP); 
-		
-		List<Perfomance> pDistinctList = new ArrayList<Perfomance>();
-		pDistinctList = perfomanceDAO.getPerfomanceListDistinct(school.getUuid(), classroom.getUuid(),examConfig.getTerm(),examConfig.getYear());
-        
-		
-
-		List<Perfomance> list = new ArrayList<>();
-		
-		double grandscore = 0;
-		double classmean = 0;
-		double classmeantotals = 0;
-		
-		if(pDistinctList !=null){
-			for(Perfomance s : pDistinctList){                              
-				list = perfomanceDAO.getPerformance(school.getUuid(), classroom.getUuid(), s.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
-				for(Perfomance pp : list){
-					   cat1 = pp.getCatOne();
-					   cat2 = pp.getCatTwo();
-					   endterm = pp.getEndTerm();
-					   total = (cat1+cat2)/2 +endterm;
-					   total = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(total)))));
-					   grandscore = total/11;
-					   classmean+=grandscore;
-					   classmeantotals = classmean/formonecount;
-				   }
-				 
-			}
-
+		catch(DocumentException e) {
+			logger.error("DocumentException while writing into the document");
+			logger.error(ExceptionUtils.getStackTrace(e));
 		}
-		  
-		//end
-		return classmeantotals;
-	}
-	
-	
-	
-	
 
+	}
+
+	
+	
+	
 	/**
 	 * @param realPath
 	 * @return
@@ -1376,6 +1208,7 @@ public class AllClassesAnalyzer  extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 3513371438433721109L;
+
 
 
 }

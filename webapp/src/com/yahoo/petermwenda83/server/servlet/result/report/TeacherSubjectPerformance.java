@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.yahoo.petermwenda83.server.servlet.result.report;
 
 import java.io.IOException;
@@ -51,7 +48,6 @@ import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
-import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
@@ -72,11 +68,7 @@ import com.yahoo.petermwenda83.server.util.magic.MiddleNumberFor3;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 
-/**
- * @author peter
- *
- */
-public class ReportFormGeneral extends HttpServlet{
+public class TeacherSubjectPerformance extends HttpServlet {
 
 
 

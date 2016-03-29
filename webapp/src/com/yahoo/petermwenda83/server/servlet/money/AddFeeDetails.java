@@ -291,13 +291,13 @@ public class AddFeeDetails extends HttpServlet{
 		       String username = africasTalking.getUsername();
 		       String apiKey   = africasTalking.getApiKey();
 		       String message = "";
-		       message = "HI " + parentname + ", your " + genderfinderHash.get(studentuuid)+ " " + studNameHash.get(studentuuid) + " Adm.No " + studentAdmNoHash.get(studentuuid) + "  has paid fee of amount " + nf.format(amountTopay) + ", Fee balance is " + feebalance;
+		       message = "HI " + parentname + ", your " + genderfinderHash.get(studentuuid)+ " " + studNameHash.get(studentuuid) + " Adm.No " + studentAdmNoHash.get(studentuuid) + "  has paid fee of amount " + nf.format(amountTopay) + " Term " + examConfig.getTerm() + " Year " + examConfig.getYear() + "  , Fee balance is " + feebalance;
 		       
 		       
 		       africasTalking.setMessage(message); 
 		       africasTalking.setRecipients(realphone); 
 		       // Create a new instance of our awesome gateway class
-		       AfricasTalkingGateway gateway  = new AfricasTalkingGateway(username, apiKey);
+		      AfricasTalkingGateway gateway  = new AfricasTalkingGateway(username, apiKey);
 		       //	System.out.println("message ="+message);
 		       // Thats it, hit send and we'll take care of the rest. Any errors will
 		       // be captured in the Exception class below

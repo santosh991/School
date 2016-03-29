@@ -40,10 +40,8 @@ import com.yahoo.petermwenda83.bean.money.ClosingBalance;
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
-import com.yahoo.petermwenda83.bean.othermoney.OtherMonies;
 import com.yahoo.petermwenda83.bean.othermoney.Otherstype;
 import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies;
-import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMoniesClosingBal;
 import com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
@@ -110,9 +108,7 @@ public class PrintStatement extends HttpServlet {
 
 	TermOtherMonies termOtherMonies;
 	StudentOtherMonies studentOtherMonies;
-	StudentOtherMoniesClosingBal studentOtherMoniesClosingBal;
 	Otherstype otherstype;
-	OtherMonies otherMonies;
 
 	String USER= "";
 	String path ="";
@@ -311,11 +307,11 @@ public class PrintStatement extends HttpServlet {
 			paydateHeader.setBackgroundColor(baseColor);
 			paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell termHeader = new PdfPCell(new Paragraph("Term",boldFont));
+			PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + "1",boldFont));
 			termHeader.setBackgroundColor(baseColor);
 			termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
 			yearHeader.setBackgroundColor(baseColor);
 			yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -499,11 +495,11 @@ public class PrintStatement extends HttpServlet {
 			paydateHeader.setBackgroundColor(baseColor);
 			paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell termHeader = new PdfPCell(new Paragraph("Term",boldFont));
+			PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + "2",boldFont));
 			termHeader.setBackgroundColor(baseColor);
 			termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
 			yearHeader.setBackgroundColor(baseColor);
 			yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -689,11 +685,11 @@ public class PrintStatement extends HttpServlet {
 			paydateHeader.setBackgroundColor(baseColor);
 			paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell termHeader = new PdfPCell(new Paragraph("Term",boldFont));
+			PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + "3",boldFont));
 			termHeader.setBackgroundColor(baseColor);
 			termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
 			yearHeader.setBackgroundColor(baseColor);
 			yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -910,11 +906,11 @@ public class PrintStatement extends HttpServlet {
 		paydateHeader.setBackgroundColor(baseColor);
 		paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell termHeader = new PdfPCell(new Paragraph("Term",boldFont));
+		PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + regterm,boldFont));
 		termHeader.setBackgroundColor(baseColor);
 		termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
 		yearHeader.setBackgroundColor(baseColor);
 		yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -1116,11 +1112,12 @@ public class PrintStatement extends HttpServlet {
 		paydateHeader.setBackgroundColor(baseColor);
 		paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell termHeader = new PdfPCell(new Paragraph("Term",boldFont));
+
+		PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + regterm,boldFont));
 		termHeader.setBackgroundColor(baseColor);
 		termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
 		yearHeader.setBackgroundColor(baseColor);
 		yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -1324,11 +1321,12 @@ public class PrintStatement extends HttpServlet {
 		paydateHeader.setBackgroundColor(baseColor);
 		paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell termHeader = new PdfPCell(new Paragraph("Term",boldFont));
+
+		PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + regterm,boldFont));
 		termHeader.setBackgroundColor(baseColor);
 		termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
 		yearHeader.setBackgroundColor(baseColor);
 		yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 

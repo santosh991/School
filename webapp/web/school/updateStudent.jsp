@@ -111,7 +111,7 @@
                                 <label class="control-label" for="AdmissionNumber">Admission Number:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="admNo"
-                                      value="<%=request.getParameter("admNo")%>"  readonly>
+                                      value="<%=request.getParameter("admNo")%>" readonly >  <!--readonly -->
                                 </div>
                              </div> 
 

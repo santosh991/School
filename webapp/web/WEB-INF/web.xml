@@ -134,11 +134,16 @@
    <servlet>
         <servlet-name>AddStaff</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AddStaff</servlet-class>
-    </servlet>
+    </servlet>  
 
      <servlet>
         <servlet-name>UpdateStaff</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.UpdateStaff</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>UpdatePassword</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.UpdatePassword</servlet-class>
     </servlet>
 
      <servlet>
@@ -308,6 +313,11 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.money.UpdateFeeDetails</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>Revert</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.Revert</servlet-class>
+    </servlet>
+
 
 
 
@@ -347,12 +357,6 @@
      <servlet>
         <servlet-name>FindStudentOM</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.FindStudentOM</servlet-class>
-    </servlet>
-
-
-     <servlet>
-        <servlet-name>OtherItemsUpdate</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.newtermupdate.OtherItemsUpdate</servlet-class>
     </servlet>
 
 
@@ -444,8 +448,13 @@
      <!-- examination analysis-->
 
         <servlet>
-        <servlet-name>AllClassesAnalyzer</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.report.AllClassesAnalyzer</servlet-class>
+        <servlet-name>ClassMeans</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.perstream.ClassMeans</servlet-class>
+        </servlet>
+
+        <servlet>
+        <servlet-name>ClassMean</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.classes.ClassMean</servlet-class>
         </servlet>
 
 
@@ -454,10 +463,10 @@
 
 <!-- send sms-->
 
-        <servlet>
+       <!-- <servlet>
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.sms.send.SendSMS</servlet-class>
-        </servlet>
+        </servlet> -->
 
 
 
@@ -596,11 +605,16 @@
      <servlet-mapping>
         <servlet-name>AddStaff</servlet-name>
         <url-pattern>/school/addStaff</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
 
      <servlet-mapping>
         <servlet-name>UpdateStaff</servlet-name>
         <url-pattern>/school/updateStaff</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdatePassword</servlet-name>
+        <url-pattern>/school/updatePassword</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>
@@ -792,9 +806,14 @@
         <url-pattern>/school/pmWithdraw</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
+    <servlet-mapping> 
         <servlet-name>UpdateFeeDetails</servlet-name>
         <url-pattern>/school/updateFeeDetail</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping> 
+        <servlet-name>Revert</servlet-name>
+        <url-pattern>/school/revert</url-pattern>
     </servlet-mapping>
 
 
@@ -826,11 +845,7 @@
         <url-pattern>/school/findStudentOM</url-pattern>
     </servlet-mapping>
 
-     <servlet-mapping>
-        <servlet-name>OtherItemsUpdate</servlet-name>
-        <url-pattern>/school/otherItemsUpdate</url-pattern>
-    </servlet-mapping>
-
+    
 
 <!-- FINANCIAL REPORTS-->  
 
@@ -912,18 +927,23 @@
 
 
      <servlet-mapping>
-        <servlet-name>AllClassesAnalyzer</servlet-name>
-        <url-pattern>/school/allClassesAnalyzer</url-pattern>
+        <servlet-name>ClassMeans</servlet-name>
+        <url-pattern>/school/classMeans</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ClassMean</servlet-name>
+        <url-pattern>/school/classMean</url-pattern>
     </servlet-mapping>
 
 
     <!-- send sms mapping --> 
 
 
-     <servlet-mapping>
+  <!-- <servlet-mapping>
         <servlet-name>SendSMS</servlet-name>
         <url-pattern>/school/sendSMS</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> !-->
 
 
 

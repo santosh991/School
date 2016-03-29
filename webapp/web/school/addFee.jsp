@@ -5,6 +5,9 @@
 
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.money.TermFeeDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.money.TermFee"%>
+
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
@@ -61,6 +64,16 @@
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
+
+    TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
+
+    TermFee termFee  = new TermFee();
+
+    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
+           termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
+       }
+   
+
    
     
 
@@ -84,7 +97,7 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL(ENTER PAYMENT DETAILS): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %> <b> </li> <br>
+     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL(ENTER PAYMENT DETAILS): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=termFee.getTermAmount()%> <b> </li> <br>
 
         <li>
             <a href="fee.jsp">Back</a> <span class="divider">/</span>

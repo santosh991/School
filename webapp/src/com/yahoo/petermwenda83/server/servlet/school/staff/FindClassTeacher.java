@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.staff.StaffDetails;
+import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
@@ -30,12 +31,13 @@ public class FindClassTeacher extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final String ERROR_STAFF_NOT_FOUND = " The staff number you provided was not found in the system.";
+	final String ERROR_STAFF_NOT_FOUND = " The employee number you provided was not found in the system.";
 	final String STAFF_FIND_SUCCESS = "The staff was found , proceed";
-    final String ERROR_NO_EMP_NO = "You didn't provide any staff  number?.";
+    final String ERROR_NO_EMP_NO = "You didn't provide any employee number.";
+    final String ERROR = "Something went wrong check the employee number.";
     
     private static StaffDetailsDAO staffDetailsDAO;
-
+    private static StaffDAO staffDAO;
     /**  
     *
     * @param config
@@ -45,18 +47,23 @@ public class FindClassTeacher extends HttpServlet{
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
        staffDetailsDAO = StaffDetailsDAO.getInstance();
-      
+       staffDAO  = StaffDAO.getInstance();
    }
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
 
 	   HttpSession session = request.getSession(true);
        String employeeNumber = StringUtils.trimToEmpty(request.getParameter("employeeNumber"));
+       String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
       
        Map<String, String> paramHash = new HashMap<>();   
 
        if(StringUtils.isBlank(employeeNumber)){
 		     session.setAttribute(SessionConstants.STAFF_FIND_ERROR, ERROR_NO_EMP_NO); 
+		   
+	   }
+       if(StringUtils.isBlank(schooluuid)){
+		     session.setAttribute(SessionConstants.STAFF_FIND_ERROR, ERROR); 
 		   
 	   }else if(staffDetailsDAO.getStaffDetailByemployeeNo(employeeNumber)==null){ 
 		   session.setAttribute(SessionConstants.STAFF_FIND_ERROR, ERROR_STAFF_NOT_FOUND); 
@@ -64,18 +71,25 @@ public class FindClassTeacher extends HttpServlet{
 	   }else{
 		   
 		   StaffDetails staff = staffDetailsDAO.getStaffDetailByemployeeNo(employeeNumber);
-		   paramHash.put("staffuuid", staff.getStaffUuid()); 
-		   paramHash.put("staffNumber", staff.getEmployeeNo());
-		   paramHash.put("firstname", staff.getFirstName()); 
-		   paramHash.put("lastname", staff.getLastName()); 
-		   paramHash.put("surname", staff.getSurname()); 
 		   
-		 
+		  if(staffDAO.getStaff(schooluuid, staff.getStaffUuid()) !=null){
+			  
+			   paramHash.put("staffuuid", staff.getStaffUuid()); 
+			   paramHash.put("staffNumber", staff.getEmployeeNo());
+			   paramHash.put("firstname", staff.getFirstName()); 
+			   paramHash.put("lastname", staff.getLastName()); 
+			   paramHash.put("surname", staff.getSurname()); 
+			   
+			   session.setAttribute(SessionConstants.STAFF_PARAM, paramHash); 
+		       session.setAttribute(SessionConstants.STAFF_FIND_SUCCESS, STAFF_FIND_SUCCESS);  
+		       
+		  }else{
+			  session.setAttribute(SessionConstants.STAFF_FIND_ERROR, ERROR);   
+		  }
 		   
-	       session.setAttribute(SessionConstants.STAFF_FIND_SUCCESS, STAFF_FIND_SUCCESS);     
 	   }
  
-       session.setAttribute(SessionConstants.STAFF_PARAM, paramHash); 
+      
        response.sendRedirect("addclassTecaher.jsp");  
 	   return;
        

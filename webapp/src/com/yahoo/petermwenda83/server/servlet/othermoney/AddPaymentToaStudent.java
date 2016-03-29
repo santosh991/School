@@ -310,7 +310,7 @@ public class AddPaymentToaStudent extends HttpServlet{
 				String username = africasTalking.getUsername();
 				String apiKey   = africasTalking.getApiKey();
 				String message = "";
-				message = "HI " + parentname + ", your " + genderfinderHash.get(StudentUuid)+ " " + studNameHash.get(StudentUuid) + " Adm.No " + studentAdmNoHash.get(StudentUuid) + " has been added additional charges  of type " + type + " ,amount " + nf.format(typeAmount) + ", Fee balance is " + feebalance;
+				message = "HI " + parentname + ", your " + genderfinderHash.get(StudentUuid)+ " " + studNameHash.get(StudentUuid) + " Adm.No " + studentAdmNoHash.get(StudentUuid) + " has been added additional charges  of type " + type + " ,amount " + nf.format(typeAmount) + " Term " + examConfig.getTerm() + " Year " + examConfig.getYear() +", Fee balance is " + feebalance;
 
 
 				africasTalking.setMessage(message); 

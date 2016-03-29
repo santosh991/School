@@ -10,22 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.yahoo.petermwenda83.bean.smsapi.AfricasTalking;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
-public class SendSMS extends HttpServlet{
+public class SendSMS extends HttpServlet{/*
 	
 	
 	final String SMS_SEND_SUCCESS = "SMS was sent Successfully.";
 	final String SMS_SEND_ERROR = "Something went wrong while sendig the SMS.";
-	/**  
+	*//**  
     *
     * @param config
     * @throws ServletException
-    */
+    *//*
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
@@ -91,9 +88,9 @@ public class SendSMS extends HttpServlet{
          doPost(request, response);
      }
    
-   /**
+   *//**
 	 * 
-	 */
+	 *//*
 	private static final long serialVersionUID = 5115859501386056513L;
 
-}
+*/}

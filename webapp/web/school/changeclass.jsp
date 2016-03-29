@@ -90,7 +90,7 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :STUDENT PROMOTION PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+     <li> <b> <%=schoolname%> :Change Class: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
 
         <li>

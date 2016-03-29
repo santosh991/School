@@ -87,33 +87,18 @@ public class ChangeStudentStatus extends HttpServlet{
 		List<Student> studentList = new ArrayList<>();
 		studentList = studentDAO.getAllStudentList(school.getUuid());
 
-
-
-		//String json = "";
-		// int count = 0;
 		if(studentList !=null){
 			for(Student student : studentList){
-
-				if(studentAmountDAO.changeStatus(STATUS_NOT_DEDUCTED, school.getUuid(), student.getUuid())){
-					// json = new Gson().toJson(" Student(s) Updated ");    				 
-					session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, COMMITT_SUCCESS); 
-					response.sendRedirect("termCommitt.jsp");  
-
-				}else{
-					session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, COMMITT_ERROR); 
-					response.sendRedirect("prepareCommitt.jsp");  
-
-					// json = new Gson().toJson(" SOMETHING WENT WRONG , START THE PROCESS ONCE MORE UNTILL EVERYTHINH IS FINE ");
-				}
-
-				// count ++;
-
-			}
-			// out.println( json + " Total Number of Students = "+count);
+				studentAmountDAO.changeStatus(STATUS_NOT_DEDUCTED, school.getUuid(), student.getUuid());
+				
+			  }
+			
+		
+				session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, COMMITT_SUCCESS); 
+			
 		}
-
-		//out.flush();
-		// out.close();	
+		
+	    response.sendRedirect("termCommitt.jsp");
 		return;
 
 	}
