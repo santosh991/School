@@ -42,6 +42,7 @@ public class UpdateStudentBasic extends HttpServlet{
 	final String ERROR_ADMNO_EXIST = "Admission number already exist in the system.";
 	final String STUDENT_UPDATE_ERROR = "An error occured while updating student.";
 	final String STUDENT_UPDATE_SUCCESS = "Student updated successfully";
+	
 	final String STATUS_ACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	private static StudentDAO studentDAO;
@@ -136,7 +137,7 @@ public class UpdateStudentBasic extends HttpServlet{
 		     
 	   }else{
 		   
-		   Student student = studentDAO.getStudentObjByadmNo(schooluuid, admnumber);
+		   Student student = studentDAO.getStudentByuuid(schooluuid, studentUuid);
 		   student.setSchoolAccountUuid(schooluuid); 
 		   student.setStatusUuid(STATUS_ACTIVE); 
 		   student.setAdmno(admnumber);

@@ -670,13 +670,14 @@ CREATE TABLE  TermFee (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
-    Term text,
+    Term text, 
+    Year text,
     TermAmount float NOT NULL CHECK (TermAmount>=0)
   
    
 
 );
-\COPY TermFee(Uuid,SchoolAccountUuid,Term,TermAmount) FROM '/tmp/TermFee.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY TermFee(Uuid,SchoolAccountUuid,Term,Year,TermAmount) FROM '/tmp/TermFee.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE TermFee OWNER TO school;
 
 
@@ -737,6 +738,27 @@ CREATE TABLE  StudentOtherMonies (
 );
 \COPY StudentOtherMonies(Uuid,StudentUuid,OtherstypeUuid,AmountPiad,Term,Year) FROM '/tmp/StudentOtherMonies.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE StudentOtherMonies OWNER TO school;
+
+
+
+-- -------------------
+-- Table  RevertedMoney
+-- -------------------
+
+CREATE TABLE  RevertedMoney (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    StudentUuid text REFERENCES student(uuid),
+    OtherstypeUuid text REFERENCES Otherstype(uuid),
+    Amount float ,
+    Term text,
+    Year text
+  
+   
+
+);
+\COPY RevertedMoney(Uuid,StudentUuid,OtherstypeUuid,Amount,Term,Year) FROM '/tmp/RevertedMoney.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE RevertedMoney OWNER TO school;
 
 
 -- -------------------

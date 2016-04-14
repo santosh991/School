@@ -81,15 +81,18 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
    
-   
+     String stffID = "";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
-     
+     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     stffID = request.getParameter("staffuuid");
 
      
      TeacherSubClassDAO teacherSubClassDAO = TeacherSubClassDAO.getInstance();
      List<TeacherSubClass> teachersubclassList = new ArrayList<TeacherSubClass>(); 
-     teachersubclassList = teacherSubClassDAO.getSubjectsANDClassesList(stffID); 
+     if(teacherSubClassDAO.getSubjectsANDClassesList(stffID) !=null){
+      teachersubclassList = teacherSubClassDAO.getSubjectsANDClassesList(stffID);
+      }
+      
      
      HashMap<String, String> subjectHash = new HashMap<String, String>();
      HashMap<String, String> subjectCodeHash = new HashMap<String, String>();
@@ -135,6 +138,10 @@
     <li> <b> <%=schoolname%> :MY SUBJECTS TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
         <li>
+            <a href="staff.jsp">Back</a> <span class="divider">/</span>
+        </li>
+
+         <li>
             <a href="examUpload.jsp">Upload Exam</a> <span class="divider">/</span>
         </li>
          
@@ -163,8 +170,8 @@
                         <th>Subject </th>
                         <th>Code </th>
                         <th>Scores </th>
-                        <th>Download</th>
-                        <th>Download</th>
+                      <!--  <th>Download</th>
+                        <th>Download</th> -->
                         <th>Download</th>
                         <th>Download</th>
                         
@@ -190,7 +197,7 @@
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="View" /> 
                                 </form>                          
                                </td>  
-
+                               <!--
                                <td class="center">
                                 <form name="edit" method="POST" action="exportText" target="_blank"> 
                                 <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">
@@ -206,7 +213,7 @@
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="CSV" /> 
                                 </form>                          
                                </td>  
-
+                                  -->
                                 <td class="center">
                                 <form name="edit" method="POST" action="exportExcelxlsx" target="_blank"> 
                                 <input type="hidden" name="subjectuuidToken" value="<%=cs.getSubjectUuid()%>">

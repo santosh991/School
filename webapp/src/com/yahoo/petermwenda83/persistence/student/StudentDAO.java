@@ -269,7 +269,7 @@ public class StudentDAO extends GenericDAO implements SchoolStudentDAO {
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("UPDATE Student SET ClassRoomUuid =?, Firstname =?," 
 			        +"Lastname =?,Surname =?,Gender =?,DOB =?,"
-			        + "Bcertno =?,County =?,SysUser=?,StatusUuid =?,Admno =? WHERE Uuid = ? AND SchoolAccountUuid = ?; ");
+			        + "Bcertno =?,County =?,SysUser=?,StatusUuid =?,Admno =? WHERE Uuid = ? AND SchoolAccountUuid = ?;");
 		){
 			  
 			    pstmt.setString(1, student.getClassRoomUuid());

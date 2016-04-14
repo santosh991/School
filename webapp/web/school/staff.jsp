@@ -203,6 +203,7 @@
                         <th>Phone </th>
                         <th>ID NO</th>
                         <th>County </th>
+                        <th>Subjects </th>
                         <th>More </th>
                         <th>Update </th>
 
@@ -261,6 +262,13 @@
                              out.println("<td width=\"30%\" class=\"center\">" + staffdetail.getCounty() + "</td>");
                              
                                             }  %>
+
+                                <td class="center">
+                                <form name="Subject" method="POST" action="mySubjects.jsp"> 
+                                <input type="hidden" name="staffuuid" value="<%=s.getUuid()%>">
+                                <input class="btn btn-success" type="submit" name="Subject" id="submit" value="Subjects" /> 
+                                </form>                          
+                                </td>             
 
                                 <td class="center">
                                 <form name="view" method="POST" action="viewStaff.jsp"> 

@@ -213,18 +213,18 @@
                 <tbody>
                     
                     <tr>
-                         <td class="center"><%=gradingSystem.getGradeAplain() %></td>
-                         <td class="center"><%=gradingSystem.getGradeAminus() %></td>
-                         <td class="center"><%=gradingSystem.getGradeBplus() %></td>
-                         <td class="center"><%=gradingSystem.getGradeBplain() %></td>  
-                         <td class="center"><%=gradingSystem.getGradeBminus() %></td>
-                         <td class="center"><%=gradingSystem.getGradeCplus() %></td>
-                         <td class="center"><%=gradingSystem.getGradeCplain() %></td>
-                         <td class="center"><%=gradingSystem.getGradeCminus() %></td>  
-                         <td class="center"><%=gradingSystem.getGradeDplus() %></td>
-                         <td class="center"><%=gradingSystem.getGradeDplain() %></td>
-                         <td class="center"><%=gradingSystem.getGradeDminus() %></td>
-                         <td class="center"><%=gradingSystem.getGradeE() %></td>  
+                         <td class="center"> 100 - <%=gradingSystem.getGradeAplain()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeAplain()%> - <%=gradingSystem.getGradeAminus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeAminus()%> - <%=gradingSystem.getGradeBplus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeBplus()%> - <%=gradingSystem.getGradeBplain()%> </td>  
+                         <td class="center"> <%=gradingSystem.getGradeBplain()%> - <%=gradingSystem.getGradeBminus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeBminus()%> - <%=gradingSystem.getGradeCplus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeCplus()%> - <%=gradingSystem.getGradeCplain()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeCplain()%> - <%=gradingSystem.getGradeCminus()%> </td>  
+                         <td class="center"> <%=gradingSystem.getGradeCminus()%> - <%=gradingSystem.getGradeDplus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDplus()%> - <%=gradingSystem.getGradeDplain()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDplain()%> - <%=gradingSystem.getGradeDminus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDminus()%> - <%=gradingSystem.getGradeE()%> </td>  
                          <td class="center">
                                 <form name="edit" method="POST" action="updateGradingScale.jsp" > 
                                 <input type="hidden" name="schoolUuid" value="<%=gradingSystem.getSchoolAccountUuid()%>">

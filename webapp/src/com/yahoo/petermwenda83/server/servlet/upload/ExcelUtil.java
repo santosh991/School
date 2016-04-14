@@ -231,7 +231,7 @@ public class ExcelUtil {
 				        ts.setSubjectUuid(sub.getUuid()); 
 						
 						if(teacherSubClassDAO.getSubjectClass(ts) ==null){
-							return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
+							//return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
 						}
 			    	 
 			    	 

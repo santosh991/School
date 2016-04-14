@@ -95,7 +95,7 @@
      if(classTeacher !=null){
            classroomuuid = classTeacher.getClassRoomUuid();
          }
-      
+       classroomuuid = request.getParameter("classroomuuid");
       //languages
       final String ENG_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
       final String KISWA_UUID = "66027e51-b1ad-4b10-8250-63af64d23323";
@@ -280,6 +280,9 @@
     <ul class="breadcrumb">
 
     <li> <b> <%=schoolname%> :EXAM MANAGEMENT PANEL FOR <%=roomHash.get(classroomuuid)%> TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+         <li>
+            <a href="classTeachers.jsp">Back</a> <span class="divider">/</span>
+        </li>
          
     </ul>
 </div>

@@ -251,14 +251,22 @@ public class PrintStatement extends HttpServlet {
 
 		try {
 			document.open();
-
+			
+			Paragraph preface = new Paragraph();
+			preface.add(new Paragraph(PDF_TITLE, normalText));
+			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
+			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()))),normalText));
+			preface.add(new Paragraph("Printed on: " + formatter.format(new Date()) + " Term: " + examConfig2.getTerm()+" Year: " + examConfig2.getYear()+"\n\n", normalText));
+			document.add(preface);
+			
 			Date admissionDate = stuudent.getAdmissionDate();
 			String regterm = stuudent.getRegTerm();
 
 			String admYear = yearformatter.format(admissionDate);
 
 			compute(admYear,regterm,school,stuudent,examConfig2);
-
+			
+			
 
 			document.close();
 		}
@@ -284,11 +292,11 @@ public class PrintStatement extends HttpServlet {
 		//if initial term is 1, compute and move to term 2
 		if(Integer.parseInt(regterm) == 1){
 
-			Paragraph preface = new Paragraph();
+			/*Paragraph preface = new Paragraph();
 			preface.add(new Paragraph(PDF_TITLE, normalText));
 			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-
+*/
 
 			//table here
 			PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
@@ -374,7 +382,7 @@ public class PrintStatement extends HttpServlet {
 					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
 							+ "               "+"Term Fee ="+nf.format(termfee.getTermAmount()), smallBold));
-					closeHeader.setBackgroundColor(baseColor);
+					//closeHeader.setBackgroundColor(baseColor);
 					closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 					closeHeader.setColspan(6); 		
 
@@ -455,9 +463,11 @@ public class PrintStatement extends HttpServlet {
 
 			//END
 
-			document.add(preface);
+			//document.add(preface);
+			Paragraph emptyline = new Paragraph(("                              "));
 			document.add(OtherPayTable); 
 			document.add(myTable); 
+			document.add(emptyline);
 
 			nextyear = Integer.parseInt(admYear);
 			nextterm = 2;
@@ -473,11 +483,11 @@ public class PrintStatement extends HttpServlet {
 		if(Integer.parseInt(regterm) == 2){
 
 
-			Paragraph preface = new Paragraph();
+			/*Paragraph preface = new Paragraph();
 			preface.add(new Paragraph(PDF_TITLE, normalText));
 			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-
+*/
 			//table here
 			PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 			countHeader.setBackgroundColor(baseColor);
@@ -561,7 +571,7 @@ public class PrintStatement extends HttpServlet {
 					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
 							+ "               "+"Term Fee ="+nf.format(termfee.getTermAmount()), smallBold));
-					closeHeader.setBackgroundColor(baseColor);
+					//closeHeader.setBackgroundColor(baseColor);
 					closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 					closeHeader.setColspan(6); 		
 
@@ -583,7 +593,7 @@ public class PrintStatement extends HttpServlet {
 			mycountHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell ptypeHeader = new PdfPCell(new Paragraph("Payment Type",boldFont));
-			ptypeHeader.setBackgroundColor(baseColor);
+		    ptypeHeader.setBackgroundColor(baseColor);
 			ptypeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell amountpaidHeader = new PdfPCell(new Paragraph("Amount",boldFont));
@@ -643,9 +653,12 @@ public class PrintStatement extends HttpServlet {
 			}
 
 			//END
-			document.add(preface);
+			//document.add(preface);
+			Paragraph emptyline = new Paragraph(("                              "));
 			document.add(OtherPayTable); 
 			document.add(myTable); 
+			document.add(emptyline);
+
 
 			nextyear = Integer.parseInt(admYear);
 			nextterm = 3;
@@ -662,11 +675,11 @@ public class PrintStatement extends HttpServlet {
 
 
 
-			Paragraph preface = new Paragraph();
+			/*Paragraph preface = new Paragraph();
 			preface.add(new Paragraph(PDF_TITLE, normalText));
 			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-
+*/
 
 			//table here
 			PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
@@ -751,7 +764,7 @@ public class PrintStatement extends HttpServlet {
 					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
 							+ "               "+"Term Fee ="+nf.format(termfee.getTermAmount()), smallBold));
-					closeHeader.setBackgroundColor(baseColor);
+					//closeHeader.setBackgroundColor(baseColor);
 					closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 					closeHeader.setColspan(6); 		
 
@@ -829,9 +842,12 @@ public class PrintStatement extends HttpServlet {
 			}
 
 			//END
-			document.add(preface);
+			//document.add(preface);
+			Paragraph emptyline = new Paragraph(("                              "));
 			document.add(OtherPayTable); 
 			document.add(myTable); 
+			document.add(emptyline);
+
 
 			nextterm = 1;
 			nextyear = Integer.parseInt(admYear) + 1;
@@ -882,12 +898,12 @@ public class PrintStatement extends HttpServlet {
 		String regterm = Integer.toString(nextterm);
 		String admYear = Integer.toString(nextyear);
 
-
+/*
 		Paragraph preface = new Paragraph();
 		preface.add(new Paragraph(PDF_TITLE, normalText));
 		preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 		preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-
+*/
 
 		//table here
 		PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
@@ -982,7 +998,7 @@ public class PrintStatement extends HttpServlet {
 			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 					+ "                "+"Fee Balance ="+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
 					+ "                "+"Term Fee ="+nf.format(termFeenew.getTermAmount()), smallBold));
-			closeHeader.setBackgroundColor(baseColor);
+			//closeHeader.setBackgroundColor(baseColor);
 			closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			closeHeader.setColspan(6); 
 
@@ -1063,9 +1079,12 @@ public class PrintStatement extends HttpServlet {
 		}
 
 		//END document.add(OtherPayTable); 
-		document.add(preface);
+		//document.add(preface);
+		Paragraph emptyline = new Paragraph(("                              "));
 		document.add(OtherPayTable); 
 		document.add(myTable); 
+		document.add(emptyline);
+
 
 		nextterm = 2;
 		int thisyear = nextyear;
@@ -1090,11 +1109,11 @@ public class PrintStatement extends HttpServlet {
 		String admYear = Integer.toString(nextyear);
 
 
-		Paragraph preface = new Paragraph();
+		/*Paragraph preface = new Paragraph();
 		preface.add(new Paragraph(PDF_TITLE, normalText));
 		preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 		preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-
+*/
 		//table here
 		PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 		countHeader.setBackgroundColor(baseColor);
@@ -1188,7 +1207,7 @@ public class PrintStatement extends HttpServlet {
 			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 					+ "                "+"Fee Balance ="+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
 					+ "                "+"Term Fee ="+nf.format(termFeenew.getTermAmount()), smallBold));
-			closeHeader.setBackgroundColor(baseColor);
+			//closeHeader.setBackgroundColor(baseColor);
 			closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			closeHeader.setColspan(6); 
 
@@ -1264,9 +1283,12 @@ public class PrintStatement extends HttpServlet {
 		}
 
 		//END document.add(OtherPayTable); 
-		document.add(preface);
+		//document.add(preface);
+		Paragraph emptyline = new Paragraph(("                              "));
 		document.add(OtherPayTable); 
 		document.add(myTable); 
+		document.add(emptyline);
+
 
 
 		nextterm = 3;
@@ -1297,12 +1319,12 @@ public class PrintStatement extends HttpServlet {
 
 
 
-		Paragraph preface = new Paragraph();
+		/*Paragraph preface = new Paragraph();
 		preface.add(new Paragraph(PDF_TITLE, normalText));
 		preface.add(new Paragraph(PDF_SUBTITLE, normalText));
 		preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
 
-
+*/
 
 		//table here
 		PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
@@ -1397,7 +1419,7 @@ public class PrintStatement extends HttpServlet {
 			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 					+ "                "+"Fee Balance ="+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
 					+ "                "+"Term Fee ="+nf.format(termFeenew.getTermAmount()), smallBold));
-			closeHeader.setBackgroundColor(baseColor);
+			//closeHeader.setBackgroundColor(baseColor);
 			closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			closeHeader.setColspan(6); 
 
@@ -1475,9 +1497,12 @@ public class PrintStatement extends HttpServlet {
 		}
 
 		//END document.add(OtherPayTable); 
-		document.add(preface);
+		//document.add(preface);
+		Paragraph emptyline = new Paragraph(("                              "));
 		document.add(OtherPayTable); 
 		document.add(myTable); 
+		document.add(emptyline);
+
 		nextterm = 1;
 		int nextyr = nextyear + 1;
 

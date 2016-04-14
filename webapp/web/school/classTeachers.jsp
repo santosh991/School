@@ -83,9 +83,14 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
    
-   
+     String stffID = "";
+     String classuuid = "";
+     String room  ="";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+    
+     ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
+     RoomDAO roomDAO = RoomDAO.getInstance();
 
      HashMap<String, String> staffHash = new HashMap<String, String>();
      StaffDetailsDAO staffDetailsDAO = StaffDetailsDAO.getInstance();
@@ -95,7 +100,6 @@
           staffHash.put(sd.getStaffUuid(),sd.getFirstName()+" "+sd.getLastName()+" "+sd.getSurname());
          }
 
-     ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
      List<ClassTeacher> classteacherList = new ArrayList<ClassTeacher>(); 
      classteacherList = classTeacherDAO.getClassTeacherList();
      
@@ -109,7 +113,6 @@
      staffList = staffDAO.getStaffList(accountuuid);
 
      HashMap<String, String> roomHash = new HashMap<String, String>();
-     RoomDAO roomDAO = RoomDAO.getInstance();
      List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
      classroomList = roomDAO.getAllRooms(accountuuid); 
       for(ClassRoom c : classroomList){
@@ -199,6 +202,7 @@
                         <th>*</th>
                         <th>Teacher</th>
                         <th>Class </th>
+                        <th>Results </th>
                         <th>Download </th>
                         <th>FeeList </th>
                         <th>Action </th>
@@ -217,7 +221,66 @@
                              out.println("<tr>"); 
                              out.println("<td width=\"3%\" >" + count + "</td>"); 
                              out.println("<td width=\"20%\" class=\"center\">" + staffHash.get(s.getUuid())  + "</td>"); 
-                             out.println("<td width=\"15%\" class=\"center\">" + roomHash.get(classHash.get(s.getUuid())) + "</td>");         
+                             out.println("<td width=\"15%\" class=\"center\">" + roomHash.get(classHash.get(s.getUuid())) + "</td>"); 
+
+                              
+                                  stffID = ct.getTeacherUuid();
+                                  ClassTeacher ct2 = new ClassTeacher();
+                                 if(stffID !=null){  
+                                   ct2 = classTeacherDAO.getClassTeacherByteacherId(stffID); 
+                                   if(ct2 !=null){
+                                   classuuid = ct2.getClassRoomUuid();
+                                      }
+                                          }
+
+                                
+                                 ClassRoom cr = roomDAO.getroom(accountuuid, classuuid);
+                                  if(cr !=null){
+                                  room = cr.getRoomName(); 
+                                   }
+                                   
+                                    final String FORM1 = "FORM 1";
+                                    final String FORM2 = "FORM 2";
+                                    final String FORM3 = "FORM 3";
+                                    final String FORM4 = "FORM 4";
+
+
+
+
+
+
+                            if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){
+                                if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
+                                            %>
+                                    <td class="center" width="8%">
+                                    <form name="edit" method="POST" action="exam.jsp"> 
+                                    <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                    <input class="btn btn-success" type="submit" name="edit" id="submit" value="Results" /> 
+                                    </form>  
+                                    </td>  
+                                           <%
+                                 }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
+                                   %>
+
+                                <td class="center" width="8%">
+                                <form name="edit" method="POST" action="examIndex.jsp"> 
+                                <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Results" /> 
+                                </form>  
+                                </td>  
+
+                               <%
+                                }else{
+              
+                                response.sendRedirect("../index.jsp");
+                                       }
+                 
+                                     }
+
+
+
+
+
                                %> 
                                 <td class="center" width="20%">
                                 <form name="edit" method="POST" action="exportExcel" target="_blank"> 

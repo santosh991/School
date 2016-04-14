@@ -47,8 +47,11 @@ import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
+import com.yahoo.petermwenda83.bean.money.ClosingBalance;
 import com.yahoo.petermwenda83.bean.money.StudentAmount;
+import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
+import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.bean.staff.StaffDetails;
@@ -59,8 +62,11 @@ import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
+import com.yahoo.petermwenda83.persistence.money.ClosingBalanceDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
+import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
+import com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
 import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
@@ -105,6 +111,11 @@ public class ReportForm2 extends HttpServlet{
 	private static TermFeeDAO termFeeDAO;
 	private static TeacherSubClassDAO teacherSubClassDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
+	private static StudentOtherMoniesDAO studentOtherMoniesDAO;
+	private static StudentFeeDAO studentFeeDAO;
+	private static ClosingBalanceDAO closingBalanceDAO;
+	
+	
 
 	String classroomuuid = "";String schoolusername = "";String stffID = "";
 
@@ -183,6 +194,9 @@ public class ReportForm2 extends HttpServlet{
 		termFeeDAO = TermFeeDAO.getInstance();
 		teacherSubClassDAO = TeacherSubClassDAO.getInstance();
 		staffDetailsDAO = StaffDetailsDAO.getInstance();
+		studentOtherMoniesDAO = StudentOtherMoniesDAO.getInstance();
+		studentFeeDAO = StudentFeeDAO.getInstance();
+		closingBalanceDAO = ClosingBalanceDAO.getInstance();
 
 		USER = System.getProperty("user.name");
 		path = "/home/"+USER+"/school/logo/logo.png";
@@ -1613,10 +1627,9 @@ public class ReportForm2 extends HttpServlet{
 					feeTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 
-					double amountpaid = 0.0;
-					double balance = 0.0;
-					//examConfig.getTerm()
-					double termfee = termFee.getTermAmount();
+                    //fee balance
+					
+
 					String currentTermstr = examConfig.getTerm();
 					String correctTermstr = "";
 					int correctTermint = 0;
@@ -1632,14 +1645,80 @@ public class ReportForm2 extends HttpServlet{
 
 					TermFee termFeenex = termFeeDAO.getTermFee(school.getUuid(),correctTermstr); 
 					double nexttermfee = termFeenex.getTermAmount(); 
+					
+					double other_m_amount = 0;
+					double other_m_totals = 0;
 
-					amountpaid = studentAmount.getAmount();
-					balance =  termfee - amountpaid;
+					List<StudentOtherMonies>  stuOthermoniList = new ArrayList<>(); 
+					if(studentOtherMoniesDAO.getStudentOtherList(uuid,examConfig.getTerm(),examConfig.getYear()) !=null){
+						stuOthermoniList = studentOtherMoniesDAO.getStudentOtherList(uuid,examConfig.getTerm(),examConfig.getYear());
+					}  
+					
+					
+	                
+					if(stuOthermoniList !=null){
+						for(StudentOtherMonies som  : stuOthermoniList){
+							other_m_amount = som.getAmountPiad();
+							other_m_totals +=other_m_amount;
+						}
+					}
+					
+					
+					List<StudentFee> feelist = new ArrayList<>();
+					if(studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),uuid,examConfig.getTerm(),examConfig.getYear()) !=null){
+						feelist = studentFeeDAO.getStudentFeeByStudentUuidList(school.getUuid(),uuid,examConfig.getTerm(),examConfig.getYear());
+	                  
+					}
+					
+					double totalpaid = 0;
+					double paid = 0;
+					if(list !=null) {
+						totalpaid = 0;
+						paid = 0;
+						for(StudentFee fee : feelist){
+							//System.out.println(formatedFirstname+" "+formatedLastname+"fee="+fee.getAmountPaid());
+							paid = fee.getAmountPaid();
+							totalpaid +=paid;
+							
+						} 
+					}
+
+
+					// we should find previous term balance or over payments
+					String previuosyear = "";
+					String currentyear = examConfig.getYear();
+					int currentyearint = Integer.parseInt(currentyear);
+					int previousyearint = 0;
+
+					String currenttermStr = examConfig.getTerm();
+					int currenttermint = Integer.parseInt(currenttermStr);// can either be 1, 2, or 3
+					int previousterm = currenttermint - 1;// if c = 3 , p = 2 // if c = 2 , p = 1 // if c = 1 p = 3
+					if(previousterm == 0){
+						previousterm = 3;
+						previousyearint = currentyearint - 1;
+						previuosyear = Integer.toString(previousyearint);
+					}else{
+						previuosyear = examConfig.getYear();
+					}
+					String previoustermStr = Integer.toString(previousterm);
+					//now we have the previous term , we get the term amount (previous)
+					//from closing balance, we add the amount, negative balance means dues, positive balance means over pay
+
+					double prevtermbalance = 0;
+					ClosingBalance closingBalance = new ClosingBalance();
+					if(closingBalanceDAO.getClosingBalanceByStudentId(school.getUuid(), uuid, previoustermStr, previuosyear) !=null){
+						closingBalance = closingBalanceDAO.getClosingBalanceByStudentId(school.getUuid(),uuid, previoustermStr, previuosyear);
+
+					}
+					prevtermbalance =0;
+					prevtermbalance = closingBalance.getClosingAmount();
 
 					Locale locale = new Locale("en","KE"); 
 					NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+					
+					//end fee balance
 
-					PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(balance)+" \nNext Term Fee " + nf.format(nexttermfee) ,boldFont));
+					PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(termFee.getTermAmount() - prevtermbalance - totalpaid + other_m_totals)+" \nNext Term Fee " + nf.format(nexttermfee) ,boldFont));
 					feeCell.setBackgroundColor(Colorgrey);
 					feeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 

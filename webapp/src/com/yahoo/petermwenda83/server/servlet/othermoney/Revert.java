@@ -14,8 +14,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.yahoo.petermwenda83.bean.exam.ExamConfig;
+import com.yahoo.petermwenda83.bean.othermoney.RevertedMoney;
 import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies;
+import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
+import com.yahoo.petermwenda83.persistence.othermoney.RevertedMoneyDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
@@ -34,6 +38,8 @@ public class Revert extends HttpServlet{
 	
 	
 	private static StudentOtherMoniesDAO studentOtherMoniesDAO;
+	private static RevertedMoneyDAO revertedMoneyDAO;
+	private static ExamConfigDAO examConfigDAO;
 	private static StudentAmountDAO studentAmountDAO;
 	/**  
     *
@@ -44,7 +50,9 @@ public class Revert extends HttpServlet{
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
        studentOtherMoniesDAO = StudentOtherMoniesDAO.getInstance();
+       revertedMoneyDAO = RevertedMoneyDAO.getInstance();
        studentAmountDAO = StudentAmountDAO.getInstance();
+       examConfigDAO = ExamConfigDAO.getInstance();
        
    }
    
@@ -70,11 +78,26 @@ public class Revert extends HttpServlet{
 		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_TRANS_NOT_REVERTED); 
 			   
 	   }else{
+		   
+		   ExamConfig examConfig = new ExamConfig();
+			if(examConfigDAO.getExamConfig(schooluuid) !=null){
+				examConfig = examConfigDAO.getExamConfig(schooluuid);
+			}
+		   
 		   double theamount = Double.parseDouble(amount);
 		   StudentOtherMonies studentOtherMonies = new StudentOtherMonies();
 		   studentOtherMonies.setStudentUuid(studentuuid);
 		   studentOtherMonies.setOtherstypeUuid(typeuuid);
+		   
+		   RevertedMoney revertedMoney = new RevertedMoney();
+		   revertedMoney.setStudentUuid(studentuuid); 
+		   revertedMoney.setOtherstypeUuid(typeuuid);
+		   revertedMoney.setAmount(theamount);
+		   revertedMoney.setTerm(examConfig.getTerm());
+		   revertedMoney.setYear(examConfig.getYear());
+		   
 		   studentAmountDAO.deductAmount(schooluuid, studentuuid, theamount);
+		   revertedMoneyDAO.putstudentUuid(revertedMoney);
 		   
 		   if(studentOtherMoniesDAO.deleteStudentOtherMonies(studentOtherMonies)){ 
 			   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_SUCCESS, SUCCESS_TRANS_REVERTED); 
