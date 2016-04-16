@@ -41,6 +41,7 @@ import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.othermoney.Otherstype;
+import com.yahoo.petermwenda83.bean.othermoney.RevertedMoney;
 import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies;
 import com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
@@ -52,6 +53,7 @@ import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.OtherstypeDAO;
+import com.yahoo.petermwenda83.persistence.othermoney.RevertedMoneyDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
@@ -102,6 +104,7 @@ public class PrintStatement extends HttpServlet {
 	private static TermFeeDAO termFeeDAO;
 	private static RoomDAO roomDAO;
 	private static StudentAmountDAO studentAmountDAO;
+	private static RevertedMoneyDAO revertedMoneyDAO;
 
 	private static StudentOtherMoniesDAO studentOtherMoniesDAO;
 
@@ -142,6 +145,7 @@ public class PrintStatement extends HttpServlet {
 		roomDAO = RoomDAO.getInstance();
 		studentAmountDAO = StudentAmountDAO.getInstance();
 		studentOtherMoniesDAO = StudentOtherMoniesDAO.getInstance();
+		revertedMoneyDAO = RevertedMoneyDAO.getInstance();
 
 
 		USER = System.getProperty("user.name");
@@ -266,7 +270,66 @@ public class PrintStatement extends HttpServlet {
 
 			compute(admYear,regterm,school,stuudent,examConfig2);
 			
+			//Reverted money
+			PdfPCell mycountHeader = new PdfPCell(new Paragraph("S.N",boldFont));
+			mycountHeader.setBackgroundColor(baseColor);
+			mycountHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			PdfPCell ptypeHeader = new PdfPCell(new Paragraph("Payment Type",boldFont));
+			ptypeHeader.setBackgroundColor(baseColor);
+			ptypeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			PdfPCell amountrevertedHeader = new PdfPCell(new Paragraph("Amount Reverted",boldFont));
+			amountrevertedHeader.setBackgroundColor(baseColor);
+			amountrevertedHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			PdfPCell oTernHeader = new PdfPCell(new Paragraph("Term",boldFont));
+			oTernHeader.setBackgroundColor(baseColor);
+			oTernHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			PdfPCell pYearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+			pYearHeader.setBackgroundColor(baseColor);
+			pYearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			
+			PdfPTable reveertTable;
+
+			reveertTable = new PdfPTable(5); 
+			reveertTable.addCell(mycountHeader);
+			reveertTable.addCell(ptypeHeader);
+			reveertTable.addCell(amountrevertedHeader);
+			reveertTable.addCell(oTernHeader);
+			reveertTable.addCell(pYearHeader);
+			reveertTable.setWidthPercentage(100); 
+			reveertTable.setWidths(new int[]{8,35,40,35,35});   
+			reveertTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+			
+			OtherstypeDAO otherstypeDAO = OtherstypeDAO.getInstance();
+			List<Otherstype> othertypeList = new ArrayList<Otherstype>(); 
+			othertypeList = otherstypeDAO.gettypeList(school.getUuid());  
+			HashMap<String, String> moneytypeHash = new HashMap<String, String>(); 
+
+			if(othertypeList !=null){
+				for(Otherstype om : othertypeList){
+					moneytypeHash.put(om.getUuid(),om.getType());
+				}
+			}
+			
+			List<RevertedMoney> revertedList = new ArrayList<RevertedMoney>(); 
+			revertedList = revertedMoneyDAO.getRevertedMoneyList(stuudent.getUuid());
+			
+			int rcount = 1;
+			for(RevertedMoney rmoney : revertedList){
+				reveertTable.addCell(new Paragraph(rcount+"",boldFont));
+				reveertTable.addCell(new Paragraph(moneytypeHash.get(rmoney.getOtherstypeUuid())+"",boldFont));
+				reveertTable.addCell(new Paragraph(nf.format(rmoney.getAmount())+"",boldFont));
+				reveertTable.addCell(new Paragraph(rmoney.getTerm()+"",boldFont));
+				reveertTable.addCell(new Paragraph(rmoney.getYear()+"",boldFont));
+				rcount++;
+			}
+			
+			Paragraph emptyline = new Paragraph(("                              "));
+			document.add(emptyline); 
+			document.add(reveertTable); 
 
 			document.close();
 		}

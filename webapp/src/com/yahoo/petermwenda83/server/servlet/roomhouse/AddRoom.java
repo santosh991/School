@@ -30,7 +30,7 @@ public class AddRoom extends HttpServlet{
 	final String ERROR_EMPTY_SCH_ID = "Something went wrong";
 	final String ERROR_ROOM_EXIST = "A room with the given name exist";
 	final String ERROR_ROOM_ADD = "Error occured while adding Class room";
-	final String SUCCESS_ROOM_ADD = "Class room added successfully";
+	final String SUCCESS_ROOM_ADD = "Classroom added successfully";
 	
 	private static RoomDAO roomDAO;
 	ClassRoom classRoom;
@@ -69,7 +69,7 @@ public class AddRoom extends HttpServlet{
     	   
     	    classRoom = new ClassRoom();
     	    classRoom.setSchoolAccountUuid(schooluuid);
-    	    classRoom.setRoomName(roomname);
+    	    classRoom.setRoomName(roomname.toUpperCase());
     	    
     	    if(roomDAO.putroom(classRoom)){
     	    	session.setAttribute(SessionConstants.ROOM_REG_SUCCESS, SUCCESS_ROOM_ADD); 

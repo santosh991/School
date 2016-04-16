@@ -328,14 +328,14 @@ public class AddPaymentToaStudent extends HttpServlet{
 				String thecost ="";
 
 				//System.out.println(message.replaceAll("[\r\n]+", " "));  
-
 				SmsSend smsSend = new SmsSend();
+				if(realphone !=null && message.replaceAll("[\r\n]+", " ") !=null){
 				smsSend.setStatus("failed");
 				smsSend.setPhoneNo(realphone);
 				smsSend.setMessageId(message.replaceAll("[\r\n]+", " "));
 				smsSend.setCost("1");
 				smsSendDAO.putSmsSend(smsSend);
-
+				}
 
 				try {
 					JSONArray results = gateway.sendMessage(africasTalking.getRecipients(), africasTalking.getMessage());
@@ -346,13 +346,15 @@ public class AddPaymentToaStudent extends HttpServlet{
 						thenumber = result.getString("number");
 						themessage = message;
 						thecost = result.getString("cost");
-
+                        
+						if(smsSend !=null){
 						SmsSend smsSend2 = smsSendDAO.getSmsSend(smsSend.getUuid());
 						smsSend2.setStatus(thestatus);
 						smsSend2.setPhoneNo(thenumber);
 						smsSend2.setMessageId(themessage.replaceAll("[\r\n]+", " "));
 						smsSend2.setCost(thecost);
 						smsSendDAO.updateSmsSend(smsSend2); 
+						}
 
 					}
 

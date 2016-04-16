@@ -160,7 +160,7 @@
                 <fieldset>
                     <div class="control-group" id="javascript" javaScriptCheck="<%=notNull%>">
                          
-                    <input type="file" name="file" required="true"/>
+                    <input type="file" name="file" required="true" multiple/>
 
                    <div class="form-actions">                        
                         <button type="submit" class="btn btn-primary">Upload File</button>           

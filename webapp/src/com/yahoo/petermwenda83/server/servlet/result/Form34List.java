@@ -190,6 +190,7 @@ public class Form34List extends HttpServlet{
 		stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
 
 		examID = StringUtils.trimToEmpty(request.getParameter("examID"));
+		stffID = StringUtils.trimToEmpty(request.getParameter("staffid"));
 
 		String pdf = schoolusername+"results.pdf";
 		response.setHeader("Content-Disposition", "inline; filename= "+pdf );

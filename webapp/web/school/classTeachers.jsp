@@ -6,6 +6,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.student.StudentDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
+
 <%@page import="com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.StaffDetails"%>
 
@@ -119,6 +122,10 @@
            roomHash.put(c.getUuid() , c.getRoomName());
             
             }
+
+     StudentDAO studentDAO = StudentDAO.getInstance();
+     List<Student> studentList = new ArrayList(); 
+     int studentCount =0;
     
     
 
@@ -202,6 +209,7 @@
                         <th>*</th>
                         <th>Teacher</th>
                         <th>Class </th>
+                        <th>Students </th>
                         <th>Results </th>
                         <th>Download </th>
                         <th>FeeList </th>
@@ -218,20 +226,31 @@
                        for(Staff s : staffList) {
                              for(ClassTeacher ct : classteacherList) {
                              if(StringUtils.equals(s.getUuid(), ct.getTeacherUuid())) {
-                             out.println("<tr>"); 
-                             out.println("<td width=\"3%\" >" + count + "</td>"); 
-                             out.println("<td width=\"20%\" class=\"center\">" + staffHash.get(s.getUuid())  + "</td>"); 
-                             out.println("<td width=\"15%\" class=\"center\">" + roomHash.get(classHash.get(s.getUuid())) + "</td>"); 
 
-                              
-                                  stffID = ct.getTeacherUuid();
+                                 stffID = ct.getTeacherUuid();
                                   ClassTeacher ct2 = new ClassTeacher();
                                  if(stffID !=null){  
                                    ct2 = classTeacherDAO.getClassTeacherByteacherId(stffID); 
                                    if(ct2 !=null){
                                    classuuid = ct2.getClassRoomUuid();
                                       }
-                                          }
+                                  }
+
+                                    studentList = studentDAO.getAllStudents(accountuuid,classuuid); 
+                                    
+                                     for(Student stude : studentList){
+                                        stude.getUuid();
+                                        studentCount++;
+                                      }
+
+
+                             out.println("<tr>"); 
+                             out.println("<td width=\"3%\" >" + count + "</td>"); 
+                             out.println("<td width=\"15%\" class=\"center\">" + staffHash.get(s.getUuid())  + "</td>"); 
+                             out.println("<td width=\"8%\" class=\"center\">" + roomHash.get(classHash.get(s.getUuid())) + "</td>"); 
+                             out.println("<td width=\"8%\" class=\"center\">" + studentCount + "</td>"); 
+                             studentCount = 0;
+                              
 
                                 
                                  ClassRoom cr = roomDAO.getroom(accountuuid, classuuid);
@@ -255,6 +274,7 @@
                                     <td class="center" width="8%">
                                     <form name="edit" method="POST" action="exam.jsp"> 
                                     <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                    <input type="hidden" name="staffid" value="<%=ct.getTeacherUuid()%>">
                                     <input class="btn btn-success" type="submit" name="edit" id="submit" value="Results" /> 
                                     </form>  
                                     </td>  
@@ -265,6 +285,7 @@
                                 <td class="center" width="8%">
                                 <form name="edit" method="POST" action="examIndex.jsp"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input type="hidden" name="staffid" value="<%=ct.getTeacherUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Results" /> 
                                 </form>  
                                 </td>  
@@ -282,21 +303,21 @@
 
 
                                %> 
-                                <td class="center" width="20%">
+                                <td class="center" width="8%">
                                 <form name="edit" method="POST" action="exportExcel" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 
                                 </form>                          
                                 </td>  
 
-                                <td class="center" width="20%">
+                                <td class="center" width="8%">
                                 <form name="edit" method="POST" action="perClassFinanceReport" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="FeeList" /> 
                                 </form>                          
                                 </td>  
 
-                                <td class="center" width="20%">
+                                <td class="center" width="8%">
                                 <form name="edit" method="POST" action="changeclass.jsp"> 
                                 <input type="hidden" name="currentclassroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input type="hidden" name="teachername" value="<%=staffHash.get(s.getUuid())%>">

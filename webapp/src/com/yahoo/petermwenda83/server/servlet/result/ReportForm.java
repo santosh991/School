@@ -229,6 +229,7 @@ public class ReportForm extends HttpServlet{
 		if(session !=null){
 			schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
 			stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+			stffID = StringUtils.trimToEmpty(request.getParameter("staffid"));
 
 		}
 		net.sf.ehcache.Element element;

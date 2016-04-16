@@ -34,7 +34,8 @@ public class Revert extends HttpServlet{
 	 */
 	private static final long serialVersionUID = 8723382962188024179L;
 	final String SUCCESS_TRANS_REVERTED = "Transaction Reverted successfully.";
-	 final String ERROR_TRANS_NOT_REVERTED = "Something went wrong while Reverting the Transaction .";
+	final String ERROR_TRANS_NOT_REVERTED = "Something went wrong while Reverting the Transaction .";
+	final String ERROR_TRANS_NOT_REVERTED_WRONG_TERM_YEAR = "Transaction not reverted, confirm the term and year.";
 	
 	
 	private static StudentOtherMoniesDAO studentOtherMoniesDAO;
@@ -66,23 +67,32 @@ public class Revert extends HttpServlet{
        String typeuuid = StringUtils.trimToEmpty(request.getParameter("typeuuid"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        String amount = StringUtils.trimToEmpty(request.getParameter("amount"));
-       
+       String term = StringUtils.trimToEmpty(request.getParameter("term"));
+       String year = StringUtils.trimToEmpty(request.getParameter("year"));
+      
+	   ExamConfig examConfig = new ExamConfig();
+		if(examConfigDAO.getExamConfig(schooluuid) !=null){
+			examConfig = examConfigDAO.getExamConfig(schooluuid);
+		}
+	
        
        if(studentOtherMoniesDAO.getStudentOtherMonies(studentuuid, typeuuid) ==null){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANS_NOT_REVERTED); 
 		   
 	   }else if(StringUtils.isBlank(schooluuid)){
-		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_TRANS_NOT_REVERTED); 
+		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANS_NOT_REVERTED); 
 			   
 	   }else if(StringUtils.isBlank(amount)){
-		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_TRANS_NOT_REVERTED); 
+		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANS_NOT_REVERTED); 
+			   
+	   }else if(!StringUtils.equals(term, examConfig.getTerm())){
+		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANS_NOT_REVERTED_WRONG_TERM_YEAR); 
+			   
+	   }else if(!StringUtils.equals(year, examConfig.getYear())){
+		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_TRANS_NOT_REVERTED_WRONG_TERM_YEAR); 
 			   
 	   }else{
 		   
-		   ExamConfig examConfig = new ExamConfig();
-			if(examConfigDAO.getExamConfig(schooluuid) !=null){
-				examConfig = examConfigDAO.getExamConfig(schooluuid);
-			}
 		   
 		   double theamount = Double.parseDouble(amount);
 		   StudentOtherMonies studentOtherMonies = new StudentOtherMonies();

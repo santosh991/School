@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
@@ -50,7 +51,7 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 	}
 
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBook(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -82,37 +83,32 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		return studentBook; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBookByStudentId(java.lang.String)
 	 */
 	@Override
-	public StudentBook getStudentBookByStudentId(String studentUuid) {
-		StudentBook studentBook = null;
-        ResultSet rset = null;
-        try(
-        		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentBook WHERE studentUuid = ?;");       
-        		
-        		){
-        	
-        	 pstmt.setString(1, studentUuid);
-	         rset = pstmt.executeQuery();
-	     while(rset.next()){
-	
-	    	 studentBook  = beanProcessor.toBean(rset,StudentBook.class);
-	   }
-        	
-        	
-        	
-        }catch(SQLException e){
-        	 logger.error("SQL Exception when getting studentBook");
-             logger.error(ExceptionUtils.getStackTrace(e));
-             System.out.println(ExceptionUtils.getStackTrace(e));
-        }
-		return studentBook; 
+	public List<StudentBook> getStudentBookByStudentId(String studentUuid) {
+		List<StudentBook> bookList = new ArrayList<>();
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM StudentBook WHERE studentUuid = ?;");
+				) {
+			psmt.setString(1, studentUuid);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				bookList = beanProcessor.toBeanList(rset, StudentBook.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a StudentBook List for"+studentUuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return bookList;
+		
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBookByISBN(java.lang.String)
 	 */
 	@Override
@@ -142,7 +138,7 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		return studentBook; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBookByBorrowStatus(java.lang.String)
 	 */
 	@Override
@@ -172,7 +168,7 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		return studentBook; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#putStudentBook(com.yahoo.petermwenda83.bean.book.StudentBook)
 	 */
 	@Override
@@ -202,7 +198,7 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#updateStudentBook(com.yahoo.petermwenda83.bean.book.StudentBook)
 	 */
 	@Override
@@ -231,7 +227,7 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#deleteStudentBook(com.yahoo.petermwenda83.bean.book.StudentBook)
 	 */
 	@Override
@@ -258,7 +254,7 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 			return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#StudentBookList()
 	 */
 	@Override

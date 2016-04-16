@@ -574,6 +574,8 @@
                                <input type="hidden" name="typeuuid" value="<%=sotheO.getOtherstypeUuid()%>">
                                <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                                <input type="hidden" name="amount" value="<%=itemcost%>">
+                               <input type="hidden" name="term" value="<%=itemterm%>">
+                               <input type="hidden" name="year" value="<%=itemyear%>">
                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Revert" />
                                </form>  
                                </td>   </tr>

@@ -3,6 +3,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.book.BookDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.book.Book"%>
+
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
@@ -66,8 +69,11 @@
     String schoolname = school.getSchoolName();
 
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    BookDAO bookDAO = BookDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
+    List<Book> bookslist = new ArrayList<Book>();
+    bookslist = bookDAO.getBookList(accountuuid);
 
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
@@ -111,6 +117,42 @@
                
     <div class="box span12">
         <div class="box-content">
+
+        <table class="table table-striped table-bordered bootstrap-datatable ">
+                <thead>
+                    <tr >
+                        <th>*</th>
+                        <th>ISBN</th>
+                        <th>Author</th>                
+                        <th>Publisher</th>
+                        <th>Title</th>
+                        <th>BookStatus</th>
+                        <th>BorrowStatus</th>
+                    </tr>
+                </thead>   
+                <tbody>
+                    <%
+                     int count = 1;
+                    for(Book bk : bookslist){
+                     %>
+
+                    <tr>
+                         <td width="3%"><%=count%></td>
+                         <td class="center"><%=bk.getISBN()%></td> 
+                         <td class="center"><%=bk.getAuthor()%></td>
+                         <td class="center"><%=bk.getPublisher()%></td>
+                         <td class="center"><%=bk.getTitle()%></td>
+                         <td class="center"><%=bk.getBookStatus()%></td>
+                         <td class="center"><%=bk.getBorrowStatus()%></td>
+                    </tr>
+
+                    <%
+                          count++;
+                       }
+                            
+                    %>
+                </tbody>
+            </table>  
         
                 
 

@@ -8,8 +8,7 @@
   You may obtain a copy of the License at: http://opensource.org/licenses/OSL-3.0
 
   Disclaimer
-  This SOFTWARE PRODUCT is provided BY THE PROVIDER "AS-IS" (The buyer buys the product in whatever condition it presently
-  exist,the buyer accept THE PRODUCT "with all faults").
+  This SOFTWARE PRODUCT is provided BY THE PROVIDER "AS-IS".
   THE PROVIDER  makes no representations or warranties of any kind WHATSOEVER concerning the safety,inaccuracies and other harmful results that may arise out of using THE PRODUCT for non-intended purposes.
   THE DEVELOPER will not be liable for ANY data loss AND OR any other harm connected with using this PRODUCT contrary to the spesifications provided by THE PROVIDER in the terms and conditions.
 

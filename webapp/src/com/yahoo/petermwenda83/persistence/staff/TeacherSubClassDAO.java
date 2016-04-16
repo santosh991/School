@@ -232,13 +232,31 @@ public class TeacherSubClassDAO extends GenericDAO  implements SchoolTeacherSubC
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolTeacherSubClassDAO#deleteSubjectClass(com.yahoo.petermwenda83.bean.staff.TeacherSubClass)
 	 */
 	@Override
 	public boolean deleteSubjectClass(TeacherSubClass subClass) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = true; 
+        try(
+        	Connection conn = dbutils.getConnection();
+           	PreparedStatement pstmt = conn.prepareStatement("DELETE FROM TeacherSubClass WHERE TeacherUuid = ? AND SubjectUuid =? AND ClassRoomUuid =? ;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, subClass.getTeacherUuid());
+        	 pstmt.setString(2, subClass.getSubjectUuid());
+        	 pstmt.setString(3, subClass.getClassRoomUuid());
+	         pstmt.executeUpdate();
+	     
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when deletting TeacherSubClass " + subClass);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             success = false;
+             
+        }
+        
+		return success; 
 	}
 
 	/**

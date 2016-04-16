@@ -9,6 +9,9 @@
 <%@page import="com.yahoo.petermwenda83.persistence.othermoney.TermOtherMoniesDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
+
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
@@ -86,7 +89,9 @@
        }
     
 
-    
+     RoomDAO roomDAO = RoomDAO.getInstance();
+     List<ClassRoom> classroomList = new ArrayList<ClassRoom>(); 
+     classroomList = roomDAO.getAllRooms(accountuuid); 
      
     
 
@@ -139,50 +144,8 @@
 
 
 
-    <%  
-
-                      HashMap<String, Student> paramHash = (HashMap<String, Student>) session.getAttribute(SessionConstants.STUENT_O_M_PARAM);
-                       
-
-                            if (paramHash == null) {
-                             paramHash = new HashMap<String, Student>();
-                            }
-
-                            Student student = new Student();
-                            student = paramHash.get("studentObj");
-
-
-                               String fullname = "";
-
-                               String formatedFirstname = "";
-                               String formatedLastname = "";
-                               String formatedSurname = "";
-
-                               String firstNameLowecase  = "";
-                               String lastNameLowecase  = "";
-                               String surNameLowecase  = "";
-
-                               String admNumber =""; 
-                               String studentuuid ="";                              
-
-                               if(student !=null){
-
-                                   admNumber = student.getAdmno();
-                                   studentuuid = student.getUuid();
-                                   firstNameLowecase = student.getFirstname().toLowerCase();
-                                   lastNameLowecase =student.getLastname().toLowerCase();
-                                   surNameLowecase = student.getSurname().toLowerCase();
-
-                                   formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
-                                   formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
-                                   formatedSurname = surNameLowecase.substring(0,1).toUpperCase()+surNameLowecase.substring(1); 
-
-                                   fullname = formatedFirstname +" "+formatedLastname+" "+formatedSurname;
- 
-                                 }
-
-
-
+                                 <%  
+     
                                 String addErrStr = "";
                                 String addsuccessStr = "";
                              
@@ -205,93 +168,56 @@
                                   } 
 
 
-
-
-
-                           
-
             %>
 
 
-    <table class="table table-striped  ">
-                <thead>
-                    <tr >             
-                        <th></th>
-                        <th></th>
-                        <th>Search</th>
-                    </tr>
-                </thead>   
 
-                <tbody >
-
-                              <form name="view" method="POST" action="findStudentOM"> 
-
-                               <td width="8%" class="center">                              
-                              <p><b>Student Admission Number:</b><p>                                                    
-                               </td> 
-
-                                <td width="10%" class="center">                              
-                                   <input class="input-xlarge focused" id="receiver" type="text" name="AdmNo" 
-                                    value=""  >                                                    
-                               </td> 
-
-                               <td width="10%" class="center">                                
-                            <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
-                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Find" />                                                         
-                               </td> 
-                               </form> 
-
-
-                </tbody>                  
-            </table>  
-
-
-
-            <table class="table ">
-                <thead>
-                    <tr >             
-                        <th>Student AdmNo</th>
-                        <th>Student name</th>
-                    </tr>
-                </thead>   
-                <tbody >
-                    <%  
-                               out.println("<tr>"); 
-                               out.println("<td width=\"10%\" class=\"center\">" + admNumber + "</td>");  
-                               out.println("<td width=\"10%\" class=\"center\">" + fullname+ "</td>");    
-                             
-                    %> 
-
-                </tbody>                  
-            </table>  
-
-
-
-
-            <form  class="form-horizontal"   action="addPaymentToaStudent" method="POST" >
+            <form  class="form-horizontal"   action="addPaymentTOStudentperClasss" method="POST" >
                  <fieldset>
+
+
+                 <div class="control-group" id="divid">
+                        <label class="control-label" for="class">Select class</label>
+                        <div class="controls">
+                            <select name="classUuid" >
+                                <option value="">select one</option>
+                                 <%
+                                    int class_count = 1;
+                                    if (classroomList != null) {
+                                        for (ClassRoom cc : classroomList) {
+                                %>
+                                <option value="<%=cc.getUuid()%>"><%=cc.getRoomName()%></option>
+                                <%
+                                            class_count++;
+                                        }
+                                    }
+                                %>
+                            </select>                           
+                          
+                        </div>
+                    </div> 
+
                     
                            
 
-                                     <div class="control-group">
-                                        <label class="control-label" for="name">Type of Money*:</label>
-                                        <div class="controls">
-                                         <select name="OtherstypeUuid" >
-                                           <option value="">Please select one</option> 
-                       <%               
+                  <div class="control-group">
+                      <label class="control-label" for="name">Type of Money*:</label>
+                         <div class="controls">
+                             <select name="moneyTypeUuid" >
+                                  <option value="">Please select one</option> 
+                                      <%               
                              
-                   
-                         int count = 1;
-                         double amount = 0;
-                        if(othertypeList !=null){
-                       for(Otherstype ot : othertypeList) {
-                              amount = 0;
-                             if(termOtherMoniesHash.get(ot.getUuid()) !=null){
-                              termOtherMonies = termOtherMoniesHash.get(ot.getUuid());
-                              amount = termOtherMonies.getAmount();
-                             }
-                            %>
-                    <option value="<%=ot.getUuid()%>"> <%= ot.getType()+" "+amount%> </option>
+                                int count = 1;
+                                   double amount = 0;
+                                    if(othertypeList !=null){
+                                       for(Otherstype ot : othertypeList) {
+                                        amount = 0;
+                                      if(termOtherMoniesHash.get(ot.getUuid()) !=null){
+                                       termOtherMonies = termOtherMoniesHash.get(ot.getUuid());
+                                       amount = termOtherMonies.getAmount();
+                                     }
+                                 %>
+                     <option value="<%=ot.getUuid()%>"> <%= ot.getType()+" "+amount%> </option>
                             <%
                           
                           count++;
@@ -299,15 +225,14 @@
                           } 
                      }
                     %>
-                                          </select>   
-                                        </div>
-                                    </div> 
+                  </select>   
+                </div>
+              </div> 
 
                                     
-                                    <div class="form-actions">
-                                        <input type="hidden" name="StudentUuid" value="<%=studentuuid%>">
-                                        <button type="submit" class="btn btn-primary">Assign</button>
-                                    </div> 
+              <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Assign</button>
+              </div> 
 
               </fieldset>
               </form>

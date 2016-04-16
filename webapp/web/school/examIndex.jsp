@@ -85,9 +85,10 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
    
-   
+     String stffID ="";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     stffID = request.getParameter("staffid");
      String classroomuuid = "";
 
      ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
@@ -96,6 +97,7 @@
            classroomuuid = classTeacher.getClassRoomUuid();
          }
        classroomuuid = request.getParameter("classroomuuid");
+      
       //languages
       final String ENG_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
       final String KISWA_UUID = "66027e51-b1ad-4b10-8250-63af64d23323";
@@ -310,7 +312,8 @@
                     <td width="10%" class="center">    
                     <form  class=""   action="form34List" method="POST" target="_blank">
                      <fieldset>                     
-                     <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
+                     <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" > 
+                     <input type="hidden" name="staffid" value="<%=stffID%>" >      
                      <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Performance List</button> 
                      </fieldset>
                      </form>                                      
@@ -319,7 +322,8 @@
                     <td width="10%" class="center">                              
                     <form  class=""   action="form34List" method="POST" target="_blank">
                      <fieldset>
-                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
+                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" > 
+                     <input type="hidden" name="staffid" value="<%=stffID%>" >    
                      <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Performance List</button> 
                      </fieldset>
                      </form>                                             
@@ -328,7 +332,8 @@
                     <td width="10%" class="center">                              
                      <form  class=""   action="reportForm" method="POST" target="_blank">
                      <fieldset>                     
-                     <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >      
+                     <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >   
+                     <input type="hidden" name="staffid" value="<%=stffID%>" >    
                      <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Report Form</button> 
                      </fieldset>
                      </form>                                            
@@ -337,7 +342,8 @@
                     <td width="10%" class="center">                              
                     <form  class=""   action="reportForm2" method="POST" target="_blank">
                      <fieldset>
-                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >    
+                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >  
+                     <input type="hidden" name="staffid" value="<%=stffID%>" >   
                      <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Report Form</button> 
                      </fieldset>
                      </form>                                         

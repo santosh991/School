@@ -24,7 +24,7 @@ public interface SchoolStudentBookDAO {
 	 * @param studentUuid
 	 * @return
 	 */
-	public StudentBook getStudentBookByStudentId(String studentUuid);
+	public List<StudentBook> getStudentBookByStudentId(String studentUuid);
 	/**
 	 * 
 	 * @param ISBN

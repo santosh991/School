@@ -86,8 +86,6 @@ public class ExcelUtil {
         
         try{
         	
-        	int count = 1;
-   		
         
    		
    		String subject = "";
@@ -117,10 +115,24 @@ public class ExcelUtil {
    		
    	      String examcode = exam;
         	
-        	
+   	        int count = 1;
     		for(int i=0; i<=totalRow; i++){
     			XSSFRow row = mySheet.getRow(i);
     			int totalColumn = row.getLastCellNum();
+    			
+    			String outof = "";
+    			XSSFCell cell1_score = row.getCell((short)1);
+    			String score_cell = cell1_score+""; 
+    			String [] score_cell_parts;
+				score_cell_parts = score_cell.split("-");
+				String part2_score = "";
+				part2_score = score_cell_parts[1];  
+				outof = part2_score;
+    			//System.out.println("outof ="+outof);
+    			
+    			if(StringUtils.isBlank(outof) || StringUtils.isEmpty(outof)){ 
+					//return ("Check that you have indicated 'outof' in your file"); 
+				 }
     			
     			 if(totalColumn >2){
     					return ("Invalid Number of comlumns on line \"" + count);
@@ -186,14 +198,14 @@ public class ExcelUtil {
 				    		 StringUtils.equalsIgnoreCase(examcode, "c2")){
 			    		 double thisscore = Double.parseDouble(scorestr);
 				    	 if(dblescore <=0 || dblescore >30) {
-				    		 return ("Invalid cat 1 score on line \"" + count);
+				    		 //return ("Invalid cat 1 score on line \"" + count);
 				    	 }
 			    	 }
     				
     				 if(StringUtils.equalsIgnoreCase(examcode, "et")){
 			    		 double thisscore = Double.parseDouble(scorestr);
 			    		 if(dblescore <=0 || dblescore >70) {
-				    		 return ("Invalid end term score on line \"" + count);
+				    		// return ("Invalid end term score on line \"" + count);
 				    	 }
 			    	 }
 			    	 
@@ -235,10 +247,6 @@ public class ExcelUtil {
 						}
 			    	 
 			    	 
-			    	 
-			    	 
-			    	 
-			    	 
     				
     			}
     			
@@ -272,6 +280,9 @@ public class ExcelUtil {
    		String exam = "";
    	    String studentuuid = "";
    	    String formated = "";
+   	    String outof = "";
+   	    
+   	    
    	    ExamConfig  examConfig = examConfigDAO.getExamConfig(school.getUuid());
         String filename = uploadedFile.getName().replaceAll("_", " "); 
    		
@@ -297,9 +308,14 @@ public class ExcelUtil {
 			}
 		
 			for(int j=0; j<totalColumn; j++){
-    			XSSFCell cell = row.getCell((short)j);
     			if(i==0){
-    				//System.out.println("Headers value: "+cell);
+    				XSSFCell cell1_score = row.getCell((short)1);
+    				String score_cell = cell1_score+""; 
+    				String [] score_cell_parts;
+    				score_cell_parts = score_cell.split("-");
+    				String part2_score = "";
+    				part2_score = score_cell_parts[1];  
+    				outof = part2_score;
     			}else if(i >0){
     				
 				
@@ -375,11 +391,19 @@ public class ExcelUtil {
 						     }else if(StringUtils.contains(roomname, FORMFOUR)){
 						    	 classesuuid = FORM4;
 						     }
-						       
-			    	
-			    	
-			    	
+						
+			    	   // System.out.println("outof = "+outof); 
 			    	 
+			    	    /*This is cat1 score, it should be out of 30 , else converted out of 30.
+			    	     *  eg score/outof*30
+			    	     *  
+			    	     *   30/30*30 =30
+			    	     *   
+			    	     *   32/40*30 = 
+			    	     *   20/40*30 = 
+			    	     */
+						     
+						int i_outof = Integer.parseInt(outof);    
 						if(StringUtils.equalsIgnoreCase(exam, "c1")){
 							
 							CatOne catOne = new CatOne();
@@ -389,11 +413,11 @@ public class ExcelUtil {
 							catOne.setClassesUuid(classesuuid);
 							catOne.setSubjectUuid(subjectuuid);
 							catOne.setStudentUuid(studentuuid);
-							catOne.setCatOne(score); 
+							catOne.setCatOne((score/i_outof)*30);  // convert to 30
 							catOne.setTerm(examConfig.getTerm());
 							catOne.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(catOne);	
-						  //s  System.out.println("catOne="+catOne);
+						  //System.out.println("catOne="+catOne);
 						}
 			            
 						if(StringUtils.equalsIgnoreCase(exam, "c2")){
@@ -404,7 +428,7 @@ public class ExcelUtil {
 				            catwo.setClassesUuid(classesuuid); 
 				            catwo.setSubjectUuid(subjectuuid);
 				            catwo.setStudentUuid(studentuuid);
-				            catwo.setCatTwo(score); 
+				            catwo.setCatTwo((score/i_outof)*30); // convert to 30
 				            catwo.setTerm(examConfig.getTerm());
 				            catwo.setYear(examConfig.getYear()); 
 						    examEgineDAO.putScore(catwo);
@@ -418,7 +442,7 @@ public class ExcelUtil {
 					            endterm.setClassesUuid(classesuuid); 
 					            endterm.setSubjectUuid(subjectuuid);
 					            endterm.setStudentUuid(studentuuid);
-					            endterm.setEndTerm(score); 
+					            endterm.setEndTerm((score/i_outof)*70); //convert to 70
 					            endterm.setTerm(examConfig.getTerm());
 					            endterm.setYear(examConfig.getYear()); 
 							    examEgineDAO.putScore(endterm);

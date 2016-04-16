@@ -67,7 +67,7 @@ public class AddHouse extends HttpServlet{
     	   
     	    house = new House();
     	    house.setSchoolAccountUuid(schooluuid);
-    	    house.setHouseName(housename);
+    	    house.setHouseName(housename.toUpperCase());
     	    
     	    if(houseDAO.putHouse(house)){
     	    	session.setAttribute(SessionConstants.HOUSE_REG_SUCCESS, SUCCESS_HOUSE_ADD); 

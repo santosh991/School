@@ -103,7 +103,7 @@
             <a href="addnewClass.jsp">New Class</a> <span class="divider">/</span>
       </li> 
       <li>
-            <a href="">Back</a> <span class="divider">/</span>
+            <a href="settings.jsp">Back</a> <span class="divider">/</span>
       </li>
 
     </ul>

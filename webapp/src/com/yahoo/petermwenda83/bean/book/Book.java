@@ -5,7 +5,7 @@ package com.yahoo.petermwenda83.bean.book;
 
 import com.yahoo.petermwenda83.bean.StorableBean;
 
-/**
+/** 
  * @author peter
  *
  */

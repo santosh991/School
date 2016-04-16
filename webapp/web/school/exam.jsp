@@ -86,9 +86,10 @@
     session.setMaxInactiveInterval(SessionConstants.SESSION_TIMEOUT);
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
    
-   
+     String stffID ="";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     stffID = request.getParameter("staffid");
      String classroomuuid = "";
 
      ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
@@ -98,6 +99,7 @@
          }
 
     classroomuuid = request.getParameter("classroomuuid");
+    
 
       //languages
       final String ENG_UUID = "D0F7EC32-EA25-7D32-8708-2CC132446";
@@ -312,7 +314,8 @@
                     <td width="10%" class="center">    
                     <form  class=""   action="classList" method="POST" target="_blank">
                     <fieldset>                      
-                    <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >     
+                    <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" > 
+                    <input type="hidden" name="staffid" value="<%=stffID%>" >     
                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Performance List</button> 
                     </fieldset>
                     </form>                                          
@@ -321,7 +324,8 @@
                     <td width="10%" class="center">                              
                     <form  class=""   action="reportForm12" method="POST" target="_blank">
                     <fieldset>                    
-                    <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >         
+                    <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >  
+                    <input type="hidden" name="staffid" value="<%=stffID%>" >        
                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form</button>                
                     </fieldset>
                     </form>                                                

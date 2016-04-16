@@ -227,6 +227,11 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AssignSubjectClass</servlet-class>
     </servlet>  
 
+     <servlet>
+        <servlet-name>DeleteTeacherSubject</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.DeleteTeacherSubject</servlet-class>
+    </servlet>  
+
 
     <servlet>
         <servlet-name>AddClassTeacher</servlet-name>
@@ -352,6 +357,11 @@
      <servlet>
         <servlet-name>AddPaymentToaStudent</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.AddPaymentToaStudent</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddPaymentTOStudentperClasss</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.othermoney.AddPaymentTOStudentperClasss</servlet-class>
     </servlet>
 
      <servlet>
@@ -696,6 +706,11 @@
         <url-pattern>/school/assignSubjectClass</url-pattern>
     </servlet-mapping>
 
+     <servlet-mapping>
+        <servlet-name>DeleteTeacherSubject</servlet-name>
+        <url-pattern>/school/deleteTeacherSubject</url-pattern>
+    </servlet-mapping>
+
 
    
     <servlet-mapping>
@@ -838,6 +853,11 @@
      <servlet-mapping>
         <servlet-name>AddPaymentToaStudent</servlet-name>
         <url-pattern>/school/addPaymentToaStudent</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddPaymentTOStudentperClasss</servlet-name>
+        <url-pattern>/school/addPaymentTOStudentperClasss</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>

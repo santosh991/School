@@ -153,7 +153,7 @@ public class ExportExcelxlsx extends HttpServlet{
 		 response.setHeader("Content-Disposition","attachment; filename="+subjectCode+"."+classCode+"."+examCode+".xlsx");
 		 
 		 XSSFWorkbook  xf = new XSSFWorkbook();
-		
+		 String outof = "";
 		   try {
 			
 			   
@@ -161,6 +161,17 @@ public class ExportExcelxlsx extends HttpServlet{
 		        XSSFSheet sheet =xf.createSheet();
 		        sheet.setColumnWidth(0, 2500); 
 		        sheet.setColumnWidth(1, 2000); 
+		        
+
+                if(StringUtils.equalsIgnoreCase(examCode, "c1")){
+              	  outof ="-30";
+                }else if(StringUtils.equalsIgnoreCase(examCode, "c2")){
+              	  outof ="-30";
+                }else if(StringUtils.equalsIgnoreCase(examCode, "et")){
+              	  outof ="-70";
+                }else{
+              	  outof ="-100";
+                }
 		       
 		        XSSFRow r1 = sheet.createRow(0);
 		        
@@ -168,7 +179,7 @@ public class ExportExcelxlsx extends HttpServlet{
                   c11.setCellValue(ch.createRichTextString("Adm No")); 
                  
                 XSSFCell c12 = r1.createCell(1);
-                 c12.setCellValue(ch.createRichTextString("Scores"));
+                 c12.setCellValue(ch.createRichTextString("Scores"+outof));
                 
                 
                 int i=1;

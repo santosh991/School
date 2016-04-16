@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import com.yahoo.petermwenda83.bean.book.Book;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
-/**
+/** 
  * @author peter
  *
  */
@@ -50,7 +50,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 	}
 
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#getBookByISBN(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Book WHERE schoolAccountUuid = ? AND ISBN = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Books WHERE schoolAccountUuid = ? AND ISBN = ?;");       
         		
         		){
         	
@@ -81,7 +81,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		return book; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#getBookByUUID(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -90,7 +90,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Book WHERE schoolAccountUuid = ? AND Uuid = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Books WHERE schoolAccountUuid = ? AND Uuid = ?;");       
         		
         		){
         	
@@ -112,7 +112,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		return book; 
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#putBook(com.yahoo.petermwenda83.bean.book.Book)
 	 */
 	@Override
@@ -120,7 +120,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		boolean success = true;
 		
 		  try(   Connection conn = dbutils.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Book" 
+				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Books" 
 			        		+"(Uuid,SchoolAccountUuid,ISBN,Author,Publisher,Title,BookStatus,BorrowStatus) VALUES (?,?,?,?,?,?,?,?);");
 		             ){
 			   
@@ -144,7 +144,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#updateBook(com.yahoo.petermwenda83.bean.book.Book)
 	 */
 	@Override
@@ -152,7 +152,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
-	             PreparedStatement pstmt = conn.prepareStatement("UPDATE Book SET Author = ? ,Publisher =?,"
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE Books SET Author = ? ,Publisher =?,"
 			        + "Title =? ,BookStatus =? ,BorrowStatus =? WHERE Uuid = ? AND SchoolAccountUuid =? AND ISBN =? ;");
 	               ) {           			 	            
 			 
@@ -177,7 +177,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#deleteBook(com.yahoo.petermwenda83.bean.book.Book)
 	 */
 	@Override
@@ -185,7 +185,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		boolean success = true; 
 	      try(
 	      		  Connection conn = dbutils.getConnection();
-	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Book"
+	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Books"
 	         	      		+ " WHERE ISBN =?;");       
 	      		
 	      		){
@@ -204,7 +204,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 			return success;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#getBookList(java.lang.String)
 	 */
 	@Override
@@ -212,7 +212,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		List<Book> bookList = new ArrayList<>();
 		try(
 				Connection conn = dbutils.getConnection();
-				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Book WHERE "
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Books WHERE "
 						+ "schoolAccountUuid = ?;");
 				) {
 			psmt.setString(1, schoolAccountUuid);
