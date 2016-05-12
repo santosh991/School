@@ -112,23 +112,26 @@
     HashMap<String, String> classroomHash = new HashMap<String, String>();
     RoomDAO roomDAO = RoomDAO.getInstance();
     List<ClassRoom> classList = new ArrayList<ClassRoom>();
+
     classList = roomDAO.getAllRooms(accountuuid);
+    if(classList !=null){
     for(ClassRoom cr : classList){
        classroomHash.put(cr.getUuid(), cr.getRoomName()); 
          }
+       }
 
     
     StudentPrimary studentPrimary = new StudentPrimary();
     HashMap<String, StudentPrimary> studentPrimaryHash = new HashMap<String, StudentPrimary>();
     PrimaryDAO primaryDAO = PrimaryDAO.getInstance();
     List<StudentPrimary> studentPrimaryList = new ArrayList<StudentPrimary>();
-    studentPrimaryList = primaryDAO.getAllPrimary(); 
+
+       studentPrimaryList = primaryDAO.getAllPrimary(); 
+       if(studentPrimaryList !=null){
        for(StudentPrimary sprimary : studentPrimaryList){
          studentPrimaryHash.put(sprimary.getStudentUuid(), sprimary); 
          }
-
-       
-    //incount = statistics.getAllIncomingCount();
+       }
 
 
      int ussdCount = 0;
@@ -284,7 +287,8 @@
                     String kcpemark = "";
                     String kcpeyear = ""; 
                     String gender = "";
-
+                      
+                      if(studentList !=null){
                     for(Student s : studentList){
                    
 
@@ -369,6 +373,7 @@
                     <%
                           ussdCount++;
                        }
+                     }
                             
                     %>
                 </tbody>

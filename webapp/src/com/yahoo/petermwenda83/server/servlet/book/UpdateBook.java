@@ -13,27 +13,24 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.book.Book;
 import com.yahoo.petermwenda83.persistence.book.BookDAO;
+import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 public class UpdateBook extends HttpServlet{
-	
-	final String BOOK_STATUS_REFERENCE = "Reference";
-	final String BPPK_STATUS_SHORTLOAD = "Shortloan";
-	
-	final String BORROW_STATUS_BORROWED = "Borrowed";
-	final String BORROW_STATUS_AVAILABLE = "Available";
 	
 	final String EMPTY_BOOK_ISBN = "Book ISBN can't be empty";
 	final String EMPTY_BOOK_AUTHOR = "Book author can't be empty";
 	final String EMPTY_BOOK_PUBLISHER = "Book publisher can't be empty";
 	final String EMPTY_BOOK_TITTLE = "Book title can't be empty";
+	final String EMPTY_CATEGORY = "Select Book Category";
 	
 	final String ERROR_BOOK_EXIST = "A book with the given ISBN/Book Number already exist";
+	
 	final String ERROR_SOMETHING_WENT_WRONG = "Sorry, something went wrong while updating the book";
 	final String SUCCESS_BOOK_UPDATED = "The book was successfully updated";
 	
 	private static BookDAO bookDAO;
 	Book book;
-	/**  
+	/**   
     *
     * @param config
     * @throws ServletException
@@ -49,51 +46,56 @@ public class UpdateBook extends HttpServlet{
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
 
-       HttpSession session = request.getSession(true);
+       HttpSession session = request.getSession(true);//
        
-       String isbn = StringUtils.trimToEmpty(request.getParameter("isbn"));
-       String author = StringUtils.trimToEmpty(request.getParameter("author"));
-       String publisher = StringUtils.trimToEmpty(request.getParameter("publisher"));
-       String title = StringUtils.trimToEmpty(request.getParameter("title"));
+       String bookuuid = StringUtils.trimToEmpty(request.getParameter("bookuuid"));
+       String isbn = StringUtils.trimToEmpty(request.getParameter("bkISBN"));
+       String author = StringUtils.trimToEmpty(request.getParameter("bkAUTHOR"));
+       String publisher = StringUtils.trimToEmpty(request.getParameter("bkPUBLISHER"));
+       String title = StringUtils.trimToEmpty(request.getParameter("bkTitle"));
        String bookstatus = StringUtils.trimToEmpty(request.getParameter("bookstatus"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
-       
-if(StringUtils.isBlank(isbn)){
+       //System.out.println("bookuuid="+bookuuid); 
+       if(StringUtils.isBlank(isbn)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, EMPTY_BOOK_ISBN); 
     	   
        }else if(StringUtils.isBlank(author)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, EMPTY_BOOK_AUTHOR); 
     	   
        }else if(StringUtils.isBlank(publisher)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, EMPTY_BOOK_PUBLISHER); 
     	   
        }else if(StringUtils.isBlank(title)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, EMPTY_BOOK_TITTLE); 
     	   
        }else if(StringUtils.isBlank(bookstatus)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, EMPTY_CATEGORY); 
     	   
        }else if(StringUtils.isBlank(schooluuid)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, ERROR_SOMETHING_WENT_WRONG); 
     	   
-       }else if(bookDAO.getBookByISBN(schooluuid, isbn) !=null){
+       }else if(StringUtils.isBlank(bookuuid)){
+    	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, ERROR_SOMETHING_WENT_WRONG); 
     	   
        }else{
     	   
     	   
-    	   book = new Book();
+    	   book = bookDAO.getBookByUUID(schooluuid, bookuuid);
            book.setISBN(isbn);
            book.setAuthor(author);
            book.setPublisher(publisher);
            book.setTitle(title);
            book.setBookStatus(bookstatus);
-           book.setBorrowStatus(BORROW_STATUS_AVAILABLE);
            
            if(bookDAO.updateBook(book)){
-        	   
-        	   
-        	 
+        	   session.setAttribute(SessionConstants.BOOK_UPDATE_SUCCESS, SUCCESS_BOOK_UPDATED); 
            }else{
-        	   
+        	   session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, ERROR_SOMETHING_WENT_WRONG); 
            }    
        }
-       
-       
-       
+      
+	response.sendRedirect("lib.jsp");  
+	return;
        
    }
    
@@ -103,6 +105,10 @@ if(StringUtils.isBlank(isbn)){
               throws ServletException, IOException {
           doPost(request, response);
       }
-   
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4014004421955048608L;
 
 }

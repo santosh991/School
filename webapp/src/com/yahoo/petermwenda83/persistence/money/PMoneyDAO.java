@@ -381,6 +381,56 @@ public class PMoneyDAO extends GenericDAO implements SchoolPMoneyDAO {
 		return depositeList;
 	}
 
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.money.SchoolPMoneyDAO#getWithdrawList(java.lang.String)
+	 */
+	@Override
+	public List<Withdraw> getWithdrawList(String StudentUuid) {
+		List<Withdraw> withdrawList = null;
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Withdraw WHERE "
+						+ "StudentUuid = ?;");
+				) {
+			psmt.setString(1, StudentUuid);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				withdrawList = beanProcessor.toBeanList(rset, Withdraw.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Withdraw List for student"+StudentUuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return withdrawList;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.money.SchoolPMoneyDAO#getDepositList(java.lang.String)
+	 */
+	@Override
+	public List<Deposit> getDepositList(String StudentUuid) {
+		List<Deposit> depositeList = null;
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM Deposit WHERE "
+						+ "StudentUuid = ?;");
+				) {
+			psmt.setString(1, StudentUuid);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				depositeList = beanProcessor.toBeanList(rset, Deposit.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Deposit List for student"+StudentUuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return depositeList;
+	}
+
 	
 
 }

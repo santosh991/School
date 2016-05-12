@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Help Parnel</title>
+
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content=".">
+        <meta name="author" content="Peter Mwenda" >
+        
+         <script src="../js/jquery/jquery-1.8.2.min.js"></script>  
+         <script src="../js/jquery/jquery-1.7.2.min.js"></script>
+         <script src="../js/searchstudent.js"></script>
+         
+         
+        <link href="../css/bootstrap/bootstrap-cerulean.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-bottom: 40px;
+            }
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+        </style>
+        <!-- jQuery --> 
+        
+        <link href="../css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+        <link href="../css/fastech/charisma-app.css" rel="stylesheet">
+        <link href="../css/jquery/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+        <link href='../css/fastech/fullcalendar.css' rel='stylesheet'>
+        <link href='../css/fastech/fullcalendar.print.css' rel='stylesheet'  media='print'>
+        <link href='../css/fastech/chosen.css' rel='stylesheet'>
+        <link href='../css/fastech/uniform.default.css' rel='stylesheet'>
+        <link href='../css/fastech/colorbox.css' rel='stylesheet'>
+        <link href='../css/jquery/jquery.cleditor.css' rel='stylesheet'>
+        <link href='../css/jquery/jquery.noty.css' rel='stylesheet'>
+        <link href='../css/fastech/noty_theme_default.css' rel='stylesheet'>
+        <link href='../css/fastech/elfinder.min.css' rel='stylesheet'>
+        <link href='../css/fastech/elfinder.theme.css' rel='stylesheet'>
+        <link href='../css/jquery/jquery.iphone.toggle.css' rel='stylesheet'>
+        <link href='../css/fastech/opa-icons.css' rel='stylesheet'>
+        <link href='../css/fastech/uploadify.css' rel='stylesheet'>
+        <link href='../css/fastech/template.css' rel='stylesheet'>
+        <link href='../css/fastech/checkpass.css' rel='stylesheet'>
+        <link href='../css/fastech/styles.css' rel='stylesheet'>
+
+         <link rel="stylesheet" href="../css/reset.css" type="text/css" media="all">
+        <link rel="stylesheet" href="../css/site.css" type="text/css" media="all">
+</head>
+<body>
+
+<div class="rrow-fluid sortable"> 
+    <div class="box span12">
+        <div class="box-content">
+        <b>___________________________________________________________________________________________________________________________________</b> <br>
+        <p align="center">SCHOOL MANAGEMENT SYSTEM USER MANNUAL</p>
+
+        <table>
+            <tr>
+                <td width="5%">Code</td>
+                <td width="8%">Description</td>
+            </tr>
+
+            <tr>
+                <td>C1</td>
+                <td>CAT 1</td>
+            </tr>
+
+            <tr>
+                <td>C2</td>
+                <td>CAT 2</td>
+            </tr>
+
+            <tr>
+                <td>ET</td>
+                <td>END TERM</td>
+            </tr>
+
+            <tr>
+                <td>P1</td>
+                <td>PAPER 1</td>
+            </tr>
+
+             <tr>
+                <td>P2</td>
+                <td>PAPER 2</td>
+            </tr>
+
+             <tr>
+                <td>P3</td>
+                <td>PAPER 3</td>
+            </tr>
+
+        </table>
+        
+               
+                   
+      <b>___________________________________________________________________________________________________________________________________</b> <br>
+      
+      <em>EXAM MANAGEMENT:</em> <br>
+      <ol> 
+      <em>Downloading marksheet</em>
+      <li>Locate the menu named "STAFF" and click on it,a parnel will open.</li>
+      <li>Locate the staff for which you want to download the marksheet.</li> 
+      <li>See the column named "subjects" and click on it.</li>
+      <li>Subjects belonging to the selected staff and the corresponding class will be listed.</li>
+      <li>See the colums named "Scores" and "Download".</li>
+      <li>See the button named "Excel xlsx" and "Excel xls on the "download" column.</li>
+      <li>Clicking on either of these buttons will download an excel sheet.</li>
+      <li>Notice that the excel file is named <code> subjetCode.classCode.examCode.extension</code> </li>
+      <li>Open the excel file.</li>
+      <li>The excel containes admission numbers for students in a particular class.</li>
+      <li>Feed the marks against the admission numbers.</li>
+      <li>Save the excel file and Close it.</li>
+      </ol> 
+      <b>___________________________________________________________________________________________________________________________________</b> <br>
+      <em>Filling the marks</em>
+      <ol>
+      <li>Once you open the file, see the column "Adm No" with admission numbers for student in the particular class.</li>
+      <li>See also the column "Scores-30", Note: The value 30 means that the exam is out of 30.</li>
+      <li>Modify the value to a value of your choice,NB: The exam will be computed out of that value.</li>
+      </ol>
+      <b>___________________________________________________________________________________________________________________________________</b> <br>
+      <em>Upload exam</em>
+      <ol> 
+      <li>Locate the menu named "STAFF" and click on it,a parnel will open.</li>
+      <li>Locate the staff for which you want to upload exam .</li>
+      <li>See the column named "subjects" and click on it.</li>
+      <li>Now see the button "Upload Exam" ,click on it.</li>
+      <li>A new parnel opens, See the button "Choose file" and click on it.</li>
+      <li>Select the excel file you have just prepared (or any other file) and click "Upload File".</li>
+      <li>Note the Message returned. If it's a success message, you can proceed to view the score.</li>
+      <li>Otherwise correct the error and upload the file again.</li>
+      </ol>
+      <b>___________________________________________________________________________________________________________________________________</b> <br>
+      <em>View the score</em>
+      <ol> 
+      <li>Locate the menu named "STAFF" and click on it,a parnel will open.</li>
+      <li>Choose a staff of your choice. See the column named "subjects" and click on it.</li>
+      <li>Subjects belonging to the selected staff and the corresponding class will be listed.</li>
+      <li>See the button named "view" on the "Scores" column.</li>
+      <li>Clicking on this button will help you view the just uploaded scores for the selected subject.</li>
+      </ol>
+      <b>___________________________________________________________________________________________________________________________________</b> <br>
+      <em>Exam results</em>
+      <ol> 
+      <li>Locate the menu named "STAFF" and click on it,a parnel will open.</li>
+      <li>See the sub-menu named "Class Teachers" and click on it.</li>
+      <li>A new parnel will open with the list of all class teachers with their corresponding classes.</li>
+      <li>See the following buttons "Results","ClassList","FeeList","Change Class".</li>
+      <em>Results</em>
+      <li>Click on this button to download and/or print class performance list and student report card.</li>
+      <li>For form 3 and 4, see the follwing buttons:</li>
+      <ul>
+      <li>Standard ClassList: Class list that comprises paper1,paper2 and paper 3 exams.</li>
+      <li>Non-Standard ClassList: Class list that comprises cat1,cat2 and endTerm exams.</li>
+      <li>Standard ReportCard: Report card that comprises paper1,paper2 and paper 3 exams.</li>
+      <li>Non-Standard ReportCard: Report card that comprises cat1,cat2 and endTerm exams.</li>
+      </ul>
+      <li>Click on the desired button to download the report.</li>
+       NB:<br>The button FeeList will download excel with students fee balance for the particular class.<br>
+          The button ClassList will download classList with students basic details.<br>
+          The other button Change Class is used to change the class teacher.
+      </ol>
+      <b>___________________________________________________________________________________________________________________________________</b> <br>
+  
+
+
+
+
+ 
+
+     <b>Download System Mannual <a href="../resources/userGuide.pdf" target="_blank">here</a></b> <br>
+     <b>___________________________________________________________________________________________________________________________________</b> <br>
+     
+    </div>
+
+</div>
+</div>
+</body>
+</html>

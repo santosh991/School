@@ -5,9 +5,6 @@
 <%@page import="com.yahoo.petermwenda83.persistence.money.StudentFeeDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.money.StudentFee"%>
 
-<%@page import="com.yahoo.petermwenda83.persistence.money.TermFeeDAO"%>
-<%@page import="com.yahoo.petermwenda83.bean.money.TermFee"%>
-
 <%@page import="com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies"%>
 
@@ -16,6 +13,9 @@
 
 <%@page import="com.yahoo.petermwenda83.persistence.othermoney.TermOtherMoniesDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.money.TermFeeDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.money.TermFee"%>
 
 <%@page import="com.yahoo.petermwenda83.bean.student.Student"%>
 
@@ -85,12 +85,6 @@
         examConfig = examConfigDAO.getExamConfig(accountuuid);
        }
 
-    TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
-
-    TermFee termFee  = new TermFee();
-    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
-           termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
-       }
 
 
      StudentOtherMoniesDAO studentOtherMoniesDAO = StudentOtherMoniesDAO.getInstance();
@@ -116,6 +110,16 @@
       HashMap<String, String> moneytypeHash = new HashMap<String, String>(); 
       HashMap<String, String> termHash = new HashMap<String, String>(); 
       HashMap<String, String> yearHash = new HashMap<String, String>(); 
+
+      
+    TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
+
+    TermFee termFee  = new TermFee();
+
+    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
+           termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
+       }
+   
 
      if(othertypeList !=null){
      for(Otherstype om : othertypeList){
@@ -152,21 +156,20 @@
 
 
 <div>
-    <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=termFee.getTermAmount()%><b> </li> <br>
+    <ul class="breadcrumb">    
+     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%= nf.format(termFee.getTermAmount())%><b> </li> <br>
 
         <li>
-            <a href="feeIndex.jsp">Back</a> <span class="divider">/</span>
-        </li>
-
-
-        <li>
-            <a href="addFee.jsp">New Payment Info</a> <span class="divider">/</span>
+            <a href="addFee.jsp">Pay Fee</a> <span class="divider">/</span>
         </li>
 
          <li>
             <a href="newPayment.jsp">Add new Payment</a> <span class="divider">/</span>
-        </li>
+         </li>
+
+          <li>
+            <a href="pocketM.jsp">Pocket Money</a> <span class="divider">/</span>
+         </li>
 
 
          
@@ -388,8 +391,6 @@
 		                     if(studentfeeList !=null){
 		                   for(StudentFee sfee : studentfeeList){
 
-
-
                                total = sfee.getAmountPaid();
                                totalpaid = totalpaid + total;
                                out.println("<tr>"); 
@@ -474,7 +475,7 @@
                                   }
 
 
-                               double termfee = termFee.getTermAmount();
+                               double termfee = examConfig.getTermAmount();
 					                     double balance =  termfee - mybalance;
                                out.println("<tr>"); 
                                out.println("<td width=\"10%\" class=\"center\">" + nf.format(mybalance) + "</td>");  

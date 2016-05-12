@@ -278,8 +278,8 @@ public class PerClassFinanceReport extends HttpServlet{
 		//create other rows
 		if(studentList != null){
 			for(Student stu :studentList){
+				if(StringUtils.equals(stu.getStatusUuid(), STATUS_ACTIVE)){
 				other_m_totals = 0;
-
 				String firstNameLowecase = stu.getFirstname().toLowerCase();
 				String lastNameLowecase = stu.getLastname().toLowerCase();
 				String surNameLowecase = stu.getSurname().toLowerCase();
@@ -384,6 +384,7 @@ public class PerClassFinanceReport extends HttpServlet{
 
 				i++;
 				count++;      	  
+			}
 			}
 		}
 		xf.write(out);

@@ -15,21 +15,20 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.book.Book;
 import com.yahoo.petermwenda83.persistence.book.BookDAO;
+import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 public class AddBook extends HttpServlet{
 	
-	final String BOOK_STATUS_REFERENCE = "Reference";
-	final String BPPK_STATUS_SHORTLOAD = "Shortloan";
-	
-	final String BORROW_STATUS_BORROWED = "Borrowed";
 	final String BORROW_STATUS_AVAILABLE = "Available";
 	
 	final String EMPTY_BOOK_ISBN = "Book ISBN can't be empty";
 	final String EMPTY_BOOK_AUTHOR = "Book author can't be empty";
 	final String EMPTY_BOOK_PUBLISHER = "Book publisher can't be empty";
 	final String EMPTY_BOOK_TITTLE = "Book title can't be empty";
+	final String EMPTY_CATEGORY = "Select Book Category";
 	
 	final String ERROR_BOOK_EXIST = "A book with the given ISBN/Book Number already exist";
+	
 	final String ERROR_SOMETHING_WENT_WRONG = "Sorry, something went wrong while adding the book";
 	final String SUCCESS_BOOK_ADDED = "The book was successfully added";
 	
@@ -56,10 +55,10 @@ public class AddBook extends HttpServlet{
 
        HttpSession session = request.getSession(true);
        
-       String isbn = StringUtils.trimToEmpty(request.getParameter("isbn"));
-       String author = StringUtils.trimToEmpty(request.getParameter("author"));
-       String publisher = StringUtils.trimToEmpty(request.getParameter("publisher"));
-       String title = StringUtils.trimToEmpty(request.getParameter("title"));
+       String isbn = StringUtils.trimToEmpty(request.getParameter("bkISBN"));
+       String author = StringUtils.trimToEmpty(request.getParameter("bkAUTHOR"));
+       String publisher = StringUtils.trimToEmpty(request.getParameter("bkPUBLISHER"));
+       String title = StringUtils.trimToEmpty(request.getParameter("bkTitle"));
        String bookstatus = StringUtils.trimToEmpty(request.getParameter("bookstatus"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        
@@ -68,26 +67,34 @@ public class AddBook extends HttpServlet{
        bookMap.put("author", author);
        bookMap.put("publisher", publisher);
        bookMap.put("title", title);
-       bookMap.put("bookstatus", bookstatus);
+       //bookMap.put("bookstatus", bookstatus);
        
        if(StringUtils.isBlank(isbn)){
-    	   
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_ISBN); 
+    	  
        }else if(StringUtils.isBlank(author)){
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_AUTHOR); 
     	   
        }else if(StringUtils.isBlank(publisher)){
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_PUBLISHER); 
     	   
        }else if(StringUtils.isBlank(title)){
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_TITTLE); 
     	   
        }else if(StringUtils.isBlank(bookstatus)){
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_CATEGORY); 
     	   
        }else if(StringUtils.isBlank(schooluuid)){
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, ERROR_SOMETHING_WENT_WRONG); 
     	   
        }else if(bookDAO.getBookByISBN(schooluuid, isbn) !=null){
+    	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, ERROR_BOOK_EXIST); 
     	   
        }else{
     	   
     	   
     	   book = new Book();
+    	   book.setSchoolAccountUuid(schooluuid);
            book.setISBN(isbn);
            book.setAuthor(author);
            book.setPublisher(publisher);
@@ -96,20 +103,19 @@ public class AddBook extends HttpServlet{
            book.setBorrowStatus(BORROW_STATUS_AVAILABLE);
            
            if(bookDAO.putBook(book)){
-        	   
-        	   
+        	   session.setAttribute(SessionConstants.BOOK_ADD_SUCCESS, SUCCESS_BOOK_ADDED); 
         	   bookMap.clear();
            }else{
-        	   
+        	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, ERROR_SOMETHING_WENT_WRONG); 
            }    
        }
-       
-       
+      
        //redirect
        //bookhashmap
-       
-       
-       
+       session.setAttribute(SessionConstants.BOOK_ADD_PARAM, bookMap); 
+       response.sendRedirect("newBook.jsp");  
+	   return;
+      
    }
    
 
@@ -118,6 +124,9 @@ public class AddBook extends HttpServlet{
               throws ServletException, IOException {
           doPost(request, response);
       }
-   
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 866786016607851370L;
 
 }

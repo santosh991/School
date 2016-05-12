@@ -27,6 +27,9 @@
 <%@page import="java.math.RoundingMode"%>
 <%@page import="java.text.DecimalFormat"%>
 
+<%@page import="java.text.NumberFormat"%>
+<%@page import="java.util.Locale"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
  <%
@@ -76,6 +79,9 @@
 
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+
+    Locale locale = new Locale("en","KE"); 
+    NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
     
  %>
 
@@ -178,6 +184,7 @@
                                 <input type="hidden" name="schoolUuid" value="<%=examConfig.getSchoolAccountUuid()%>">
                                 <input type="hidden" name="term" value="<%=examConfig.getTerm()%>">
                                 <input type="hidden" name="year" value="<%=examConfig.getYear()%>">
+                                <input type="hidden" name="termfee" value="<%=examConfig.getTermAmount()%>">
                                 <input type="hidden" name="exam" value="<%=examConfig.getExam()%>">
                                 <input type="hidden" name="exammode" value="<%=examConfig.getExamMode()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update" /> 
@@ -213,17 +220,17 @@
                 <tbody>
                     
                     <tr>
-                         <td class="center"> 100 - <%=gradingSystem.getGradeAplain()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeAplain()%> - <%=gradingSystem.getGradeAminus()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeAminus()%> - <%=gradingSystem.getGradeBplus()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeBplus()%> - <%=gradingSystem.getGradeBplain()%> </td>  
-                         <td class="center"> <%=gradingSystem.getGradeBplain()%> - <%=gradingSystem.getGradeBminus()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeBminus()%> - <%=gradingSystem.getGradeCplus()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeCplus()%> - <%=gradingSystem.getGradeCplain()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeCplain()%> - <%=gradingSystem.getGradeCminus()%> </td>  
-                         <td class="center"> <%=gradingSystem.getGradeCminus()%> - <%=gradingSystem.getGradeDplus()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeDplus()%> - <%=gradingSystem.getGradeDplain()%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeDplain()%> - <%=gradingSystem.getGradeDminus()%> </td>
+                         <td class="center"> 100 - <%=gradingSystem.getGradeAplain()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeAplain()%> - <%=gradingSystem.getGradeAminus()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeAminus()%> - <%=gradingSystem.getGradeBplus()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeBplus()%> - <%=gradingSystem.getGradeBplain()+1%> </td>  
+                         <td class="center"> <%=gradingSystem.getGradeBplain()%> - <%=gradingSystem.getGradeBminus()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeBminus()%> - <%=gradingSystem.getGradeCplus()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeCplus()%> - <%=gradingSystem.getGradeCplain()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeCplain()%> - <%=gradingSystem.getGradeCminus()+1%> </td>  
+                         <td class="center"> <%=gradingSystem.getGradeCminus()%> - <%=gradingSystem.getGradeDplus()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDplus()%> - <%=gradingSystem.getGradeDplain()+1%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDplain()%> - <%=gradingSystem.getGradeDminus()+1%> </td>
                          <td class="center"> <%=gradingSystem.getGradeDminus()%> - <%=gradingSystem.getGradeE()%> </td>  
                          <td class="center">
                                 <form name="edit" method="POST" action="updateGradingScale.jsp" > 

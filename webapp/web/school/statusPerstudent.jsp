@@ -92,9 +92,12 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :STUDENT STATUS CHANGE PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+     <li> <b> <%=schoolname%> :STUDENT DEACTIVTION PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
           <li>
             <a href="settings.jsp">Back</a> <span class="divider">/</span>
+        </li>
+         <li>
+            <a href="status.jsp">Deactivate per Class</a> <span class="divider">/</span>
         </li>
 
         
@@ -145,7 +148,7 @@
             
 
 
-            <h3><i class="icon-edit"></i>STATUS FOR:</h3>  
+            <h3><i class="icon-edit"></i>DEACTIVATE A STUDENT:</h3>  
 
                <form  class="form-horizontal"   action="changeStatusPerStudent" method="POST" >
                <fieldset>

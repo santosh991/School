@@ -84,7 +84,7 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :HOUSE/DOMITORY MANAGEMENT : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
+     <li> <b> <%=schoolname%> :MISCELLANEOUS SETTING : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
        <li>
             <a href="newClass.jsp">Class Room</a> <span class="divider">/</span>
       </li>
@@ -92,11 +92,21 @@
             <a href="promote.jsp">Promotion</a> <span class="divider">/</span>
       </li>
        <li>
-            <a href="status.jsp">Status Change</a> <span class="divider">/</span>
+            <a href="statusPerstudent.jsp">Deactivate Student</a> <span class="divider">/</span>
       </li>
+
+       <li>
+            <a href="activateStudent.jsp">Activate Student</a> <span class="divider">/</span>
+        </li>
+
+         <li>
+            <a href="">Student Clearance</a> <span class="divider">/</span>
+        </li>
+
        <li>
             <a href="sendsms.jsp">Send message</a> <span class="divider">/</span>
       </li>
+
 
     </ul>
 </div>

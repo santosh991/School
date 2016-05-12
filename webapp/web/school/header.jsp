@@ -176,7 +176,7 @@
           <li class="divider"></li>
           <li><a href="../schoolLogout">Logout</a></li>
           <li><a href="profile.jsp">Profile</a></li>
-          <li ><a href="help.jsp">Help</a></li>
+          <li ><a href="help.html" target="_blank">Help</a></li>
           </ul>
           </div>
 
@@ -223,11 +223,10 @@
 
 			  <%  if(StringUtils.equals(staffPosition,pos_Pricipal)){ %>
 			    <a href="studentIndex.jsp">STUDENTS</a>
-			    <a href="feeIndex.jsp">FINANCE</a>
-                <a href="mySubjects.jsp">MY SUBJECTS</a>
+			    <a href="fee.jsp">FINANCE</a>
 			    <a href="reports.jsp">REPORTS</a>
 			    <a href="staff.jsp">STAFF</a>
-                <a href="examConfig.jsp">EXAM</a>
+          <a href="examConfig.jsp">EXAM</a>
 			    
 			   
 			       <% }  %>
@@ -238,7 +237,7 @@
 			    <a href="studentIndex.jsp">STUDENTS</a>
 			    <a href="reports.jsp">REPORTS</a>
 			    <a href="examConfig.jsp">EXAM</a>
-                <a href="mySubjects.jsp">MY SUBJECTS</a>
+          <a href="mySubjects.jsp">MY SUBJECTS</a>
 			       <% }  %>
 
 			     <!--CM-CURRICULUM MASTER-->
@@ -280,7 +279,7 @@
                <!--BURSAR -->
 
 			   <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
-			     <a href="feeIndex.jsp">FINANCE</a>
+			     <a href="fee.jsp">FINANCE</a>
            <a href="studentIndex.jsp">STUDENTS</a>
 			      <% }  %>
 
@@ -291,8 +290,7 @@
 			     <%  if(StringUtils.equals(staffPosition,pos_Secretary)){ %>
 			   
 			         <a href="studentIndex.jsp">STUDENTS</a>
-               <a href="feeIndex.jsp">FINANCE</a>
-
+             
 			      <% }  %>
 			    
 			    

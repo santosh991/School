@@ -148,6 +148,24 @@ public class SessionConstants {
     final public static String EXAM_CONFIG_UPDATE_ERROR = "Exam Config update error";
 	final public static String EXAM_CONFIG_UPDATE_SUCCESS = "Exam Config update Successfully";
 	final public static String EXAM_CONFIG_UPDATE_PARAM = "Exam Config Parameters";
+	
+	
+	//BOOK MANAGEMENT
+	 final public static String BOOK_BORROW_ERROR = "Book Borrow error";
+     final public static String BOOK_BORROW_SUCCESS = "Book Borrowed Successfully"; 
+     
+     final public static String BOOK_RETURN_ERROR = "Book Return error"; 
+     final public static String BOOK_RETURN_SUCCESS = "Book Return Successfully";
+     
+     final public static String BOOK_ADD_ERROR = "Book Add error"; 
+     final public static String BOOK_ADD_SUCCESS = "Book Add Successfully";
+     final public static String BOOK_ADD_PARAM = "Book Add Param"; 
+     
+     final public static String BOOK_UPDATE_ERROR = "Book Update error"; 
+     final public static String BOOK_UPDATE_SUCCESS = "Book Update Successfully";
+     
+     
+     
 	/**
 	 * 
 	 */

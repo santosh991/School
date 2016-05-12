@@ -25,6 +25,9 @@
 <%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
 
+<%@page import="java.text.NumberFormat"%>
+<%@page import="java.util.Locale"%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -83,6 +86,9 @@
    
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+
+    Locale locale = new Locale("en","KE"); 
+    NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
      
 
  %>
@@ -97,7 +103,7 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL(ENTER PAYMENT DETAILS): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=termFee.getTermAmount()%> <b> </li> <br>
+     <li> <b> <%=schoolname%> :FEE MANAGEMENT PANEL(ENTER PAYMENT DETAILS): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear() %>  TERM FEE : <%=nf.format(termFee.getTermAmount())%> <b> </li> <br>
 
         <li>
             <a href="fee.jsp">Back</a> <span class="divider">/</span>

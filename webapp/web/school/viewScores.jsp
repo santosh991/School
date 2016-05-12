@@ -188,8 +188,8 @@
      <li> <b> <%=schoolname%> :SCORES FOR:  <%=roomHash.get(classroomuuid2)%> TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
 
-        <li>
-            <a href="mySubjects.jsp">Back</a> <span class="divider">/</span>
+       <li>
+            <a href="staff.jsp">Back</a> <span class="divider">/</span>
         </li>
 
         

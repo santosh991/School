@@ -74,6 +74,7 @@ import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
+import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionStatistics;
 
@@ -1247,54 +1248,54 @@ public class ReportForm12 extends HttpServlet{
 					String gradeE = Integer.toString(gradingSystem.getGradeE());
 
 
-					PdfPCell gradeA = new PdfPCell(new Paragraph(maxscore+"-"+aplain,boldFont));
+					PdfPCell gradeA = new PdfPCell(new Paragraph(maxscore+"-"+(gradingSystem.getGradeAplain()+1),boldFont));
 					gradeA.setBackgroundColor(baseColor);
 					gradeA.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeAminus = new PdfPCell(new Paragraph(aplain+"-"+aminus,boldFont));
+					PdfPCell gradeAminus = new PdfPCell(new Paragraph(aplain+"-"+(gradingSystem.getGradeAminus()+1),boldFont));
 					gradeAminus.setBackgroundColor(baseColor);
 					gradeAminus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeBplus = new PdfPCell(new Paragraph(aminus+"-"+bplus,boldFont));
+					PdfPCell gradeBplus = new PdfPCell(new Paragraph(aminus+"-"+(gradingSystem.getGradeBplus()+1),boldFont));
 					gradeBplus.setBackgroundColor(baseColor);
 					gradeBplus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeBplain = new PdfPCell(new Paragraph(bplus+"-"+bplain,boldFont));
+					PdfPCell gradeBplain = new PdfPCell(new Paragraph(bplus+"-"+(gradingSystem.getGradeBplain()+1),boldFont));
 					gradeBplain.setBackgroundColor(baseColor);
 					gradeBplain.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeBminus = new PdfPCell(new Paragraph(bplain+"-"+bminus,boldFont));
+					PdfPCell gradeBminus = new PdfPCell(new Paragraph(bplain+"-"+(gradingSystem.getGradeBminus()+1),boldFont));
 					gradeBminus.setBackgroundColor(baseColor);
 					gradeBminus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeCplus = new PdfPCell(new Paragraph(bminus+"-"+cplus,boldFont));
+					PdfPCell gradeCplus = new PdfPCell(new Paragraph(bminus+"-"+(gradingSystem.getGradeCplus()+1),boldFont));
 					gradeCplus.setBackgroundColor(baseColor);
 					gradeCplus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeCplain = new PdfPCell(new Paragraph(cplus+"-"+cplain,boldFont));
+					PdfPCell gradeCplain = new PdfPCell(new Paragraph(cplus+"-"+(gradingSystem.getGradeCplain()+1),boldFont));
 					gradeCplain.setBackgroundColor(baseColor);
 					gradeCplain.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeCminus = new PdfPCell(new Paragraph(cplain+"-"+cminus,boldFont));
+					PdfPCell gradeCminus = new PdfPCell(new Paragraph(cplain+"-"+(gradingSystem.getGradeCminus()+1),boldFont));
 					gradeCminus.setBackgroundColor(baseColor);
 					gradeCminus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeDplus = new PdfPCell(new Paragraph(cminus+"-"+dplus,boldFont));
+					PdfPCell gradeDplus = new PdfPCell(new Paragraph(cminus+"-"+(gradingSystem.getGradeDplus()+1),boldFont));
 					gradeDplus.setBackgroundColor(baseColor);
 					gradeDplus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeDplain = new PdfPCell(new Paragraph(dplus+"-"+dplain,boldFont));
+					PdfPCell gradeDplain = new PdfPCell(new Paragraph(dplus+"-"+(gradingSystem.getGradeDplain()+1),boldFont));
 					gradeDplain.setBackgroundColor(baseColor);
 					gradeDplain.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell gradeDminus = new PdfPCell(new Paragraph(dplain+"-"+dminus,boldFont));
+					PdfPCell gradeDminus = new PdfPCell(new Paragraph(dplain+"-"+(gradingSystem.getGradeDminus()+1),boldFont));
 					gradeDminus.setBackgroundColor(baseColor);
 					gradeDminus.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					PdfPCell gradeEE = new PdfPCell(new Paragraph(dminus+"-"+gradeE,boldFont));
 					gradeEE.setBackgroundColor(baseColor);
 					gradeEE.setHorizontalAlignment(Element.ALIGN_LEFT);
-
+					
 					PdfPTable gradeTable = new PdfPTable(12);  
 					
 					gradeTable.addCell(gradeA);
@@ -1640,10 +1641,10 @@ public class ReportForm12 extends HttpServlet{
 					feeCell.setBackgroundColor(Colorgrey);
 					feeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell DateCell = new PdfPCell(new Paragraph((("Clossing date : " +formatter.format(new Date()))+" \n Next Term Opening date :_________________ ")+"\n",boldFont));
+					PdfPCell DateCell = new PdfPCell(new Paragraph(("Clossing date : " +PropertiesConfig.getConfigValue("CLOSING_DATE")+" \nNext Term Opening date :" +PropertiesConfig.getConfigValue("OPENING_DATE"))+"\n",boldFont));
 					DateCell.setBackgroundColor(Colorgrey);
 					DateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-
+					
 					feeTable.addCell(feeCell);
 					feeTable.addCell(DateCell);
 

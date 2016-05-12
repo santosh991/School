@@ -86,8 +86,9 @@
 
     int studentCount = 0;
 
-    if(studentList !=null){
+   
     studentList = studentDAO.getAllStudentList(accountuuid); 
+     if(studentList !=null){
     for(Student stu : studentList) {
        studentHash.put(stu.getUuid(),stu);
        studentCount ++;
@@ -98,7 +99,9 @@
     ExamConfig examConfig = new ExamConfig();
 
     if(examConfigDAO.getExamConfig(accountuuid) !=null){
+    if(examConfigDAO.getExamConfig(accountuuid)!=null){
         examConfig = examConfigDAO.getExamConfig(accountuuid);
+        }
        }
     
 
@@ -107,7 +110,9 @@
     TermFee termFee  = new TermFee();
 
     if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
+    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm())!=null){
            termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
+           }
        }
    
 
@@ -115,7 +120,9 @@
     StudentAmountDAO studentAmountDAO = StudentAmountDAO.getInstance();
 
     if(studentAmountDAO.getAmountList(accountuuid) !=null){
+         if(studentAmountDAO.getAmountList(accountuuid)!=null){
            feeList = studentAmountDAO.getAmountList(accountuuid);
+           }
      }
     
 

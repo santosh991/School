@@ -108,6 +108,10 @@
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> :NEW PAYMENT PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
        <li>
+            <a href="fee.jsp">Back</a> <span class="divider">/</span>
+      </li>
+
+       <li>
             <a href="addPayment.jsp">Add new</a> <span class="divider">/</span>
       </li>
 

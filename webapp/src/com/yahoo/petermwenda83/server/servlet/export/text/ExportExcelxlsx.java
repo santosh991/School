@@ -185,7 +185,8 @@ public class ExportExcelxlsx extends HttpServlet{
                 int i=1;
                 
                 for(Student s : studentList){
-     			  
+                	 final String STATUS_ACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+               	  if(StringUtils.equals(s.getStatusUuid(), STATUS_ACTIVE)){
      			   studentAdmno = s.getAdmno();
      			  
      			   //System.out.println(studentAdmno); 
@@ -202,7 +203,7 @@ public class ExportExcelxlsx extends HttpServlet{
       		      
            	  i++;
                 
-           	  
+               }
 		   }
 		        
               xf.write(out);

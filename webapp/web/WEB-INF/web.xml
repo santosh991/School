@@ -3,6 +3,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 
+
+
+
 <servlet>
         <servlet-name>Log4jInit</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.init.Log4jInit</servlet-class>
@@ -324,6 +327,12 @@
     </servlet>
 
 
+   <servlet>
+        <servlet-name>StudentClearance</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.money.reports.StudentClearance</servlet-class>
+    </servlet>
+
+
 
 
 
@@ -428,6 +437,17 @@
     </servlet>
 
 
+    <servlet>
+        <servlet-name>ActivateByClass</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.promote.ActivateByClass</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>ActivatePerStudent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.promote.ActivatePerStudent</servlet-class>
+    </servlet>
+
+
 
   <!-- classroom and house/domitories-->
 
@@ -467,7 +487,26 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.result.classes.ClassMean</servlet-class>
         </servlet>
 
+ <!-- Library Management -->
+        <servlet>
+        <servlet-name>BorrowBook</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.book.BorrowBook</servlet-class>
+        </servlet>
 
+         <servlet>
+        <servlet-name>ReturnBook</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.book.ReturnBook</servlet-class>
+        </servlet>
+
+         <servlet>
+        <servlet-name>AddBook</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.book.AddBook</servlet-class>
+        </servlet>
+
+         <servlet>
+        <servlet-name>UpdateBook</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.book.UpdateBook</servlet-class>
+        </servlet>
 
 
 
@@ -743,32 +782,10 @@
 
 
 
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
      <servlet-mapping>
         <servlet-name>UploadExam</servlet-name>
         <url-pattern>/school/resultUpload</url-pattern>
     </servlet-mapping>
-
-
-
-
-
-
-
 
 
 
@@ -824,11 +841,16 @@
     <servlet-mapping> 
         <servlet-name>UpdateFeeDetails</servlet-name>
         <url-pattern>/school/updateFeeDetail</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
 
     <servlet-mapping> 
         <servlet-name>Revert</servlet-name>
         <url-pattern>/school/revert</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping> 
+        <servlet-name>StudentClearance</servlet-name>
+        <url-pattern>/school/studentClearance</url-pattern>
     </servlet-mapping>
 
 
@@ -915,6 +937,16 @@
         <url-pattern>/school/changeStatusPerStudent</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>ActivateByClass</servlet-name>
+        <url-pattern>/school/activateByClass</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ActivatePerStudent</servlet-name>
+        <url-pattern>/school/activatePerStudent</url-pattern>
+    </servlet-mapping>
+
 
 
     <!--classroom/domitory mapping -->
@@ -957,6 +989,29 @@
     </servlet-mapping>
 
 
+
+    <!-- Libraray Management  mapping --> 
+    <servlet-mapping>
+        <servlet-name>BorrowBook</servlet-name>
+        <url-pattern>/school/borrowBook</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>ReturnBook</servlet-name>
+        <url-pattern>/school/returnBook</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>AddBook</servlet-name>
+        <url-pattern>/school/addBook</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>UpdateBook</servlet-name>
+        <url-pattern>/school/updateBook</url-pattern>
+    </servlet-mapping>
+
+
     <!-- send sms mapping --> 
 
 
@@ -995,18 +1050,6 @@
         <servlet-name>AddRootUser</servlet-name>
         <url-pattern>/admin/addRootUser</url-pattern>
     </servlet-mapping>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

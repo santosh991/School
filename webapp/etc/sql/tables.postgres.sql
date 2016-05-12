@@ -160,7 +160,7 @@ CREATE TABLE Student(
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
     StatusUuid text REFERENCES Status(Uuid),
     ClassRoomUuid text REFERENCES ClassRoom(Uuid),
-    AdmNo text ,
+    AdmNo text UNIQUE NOT NULL ,
     FirstName text ,
     LastName text ,
     SurName text ,
@@ -586,6 +586,7 @@ ALTER TABLE GradingSystem OWNER TO school;
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
     Term text,
     Year text,
+    TermAmount float,
     Exam text,
     ExamMode text
    
@@ -593,7 +594,7 @@ ALTER TABLE GradingSystem OWNER TO school;
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY ExamConfig(Uuid,SchoolAccountUuid,Term,Year,Exam,ExamMode) FROM '/tmp/ExamConfig.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY ExamConfig(Uuid,SchoolAccountUuid,Term,Year,TermAmount,Exam,ExamMode) FROM '/tmp/ExamConfig.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ExamConfig OWNER TO school;
 
 
@@ -864,14 +865,14 @@ CREATE TABLE  StudentBook (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
     StudentUuid text REFERENCES student(uuid),
-    ISBN text REFERENCES Books(ISBN),
+    BookUuid text REFERENCES Books(Uuid),
     BorrowStatus text,
     BorrowDate timestamp with time zone DEFAULT now(),
     ReturnDate text
    
 
 );
-\COPY StudentBook(Uuid,StudentUuid,ISBN,BorrowStatus,BorrowDate,ReturnDate) FROM '/tmp/StudentBook.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY StudentBook(Uuid,StudentUuid,BookUuid,BorrowStatus,BorrowDate,ReturnDate) FROM '/tmp/StudentBook.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE StudentBook OWNER TO school;
 
 

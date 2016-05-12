@@ -52,16 +52,35 @@ public interface SchoolPMoneyDAO {
 	public boolean deductBalance(PocketMoney money,double amount);
 	  /**
 	   * 
+	   * @param StudentUuid
+	   * @param Term
+	   * @param Year
+	   * @return
+	   */
+	  
+	public List<Withdraw> getWithdrawList(String StudentUuid,String Term,String Year);
+	  /**
+	   * 
+	   * @param StudentUuidString
+	   * @param Term
+	   * @param Year
+	   * @return
+	   */
+	   
+	public List<Deposit> getDepositList(String StudentUuid,String Term,String Year);
+	
+	/**
+	   * 
 	   * @param studedntUuid
 	   * @return
 	   */
-	public List<Withdraw> getWithdrawList(String StudentUuid,String Term,String Year);
+	public List<Withdraw> getWithdrawList(String StudentUuid);
 	  /**
 	   * 
 	   * @param studedntUuid
 	   * @return
 	   */
-	public List<Deposit> getDepositList(String StudentUuidString,String Term,String Year);
+	public List<Deposit> getDepositList(String StudentUuidString);
 	
 	
 	

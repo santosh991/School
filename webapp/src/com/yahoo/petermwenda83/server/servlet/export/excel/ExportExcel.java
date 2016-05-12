@@ -261,6 +261,9 @@ public class ExportExcel extends HttpServlet{
         //create other rows
         if(studentList != null){
           for(Student stu :studentList){
+        	 final String STATUS_ACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+        	  if(StringUtils.equals(stu.getStatusUuid(), STATUS_ACTIVE)){
+        		  //System.out.println("status="+stu.getStatusUuid());
         	  String schoolname = "";
         	  String index = "";
         	  String year = "";
@@ -341,8 +344,9 @@ public class ExportExcel extends HttpServlet{
         	       
         	  i++;
         	  count++;      	  
-          }
-    }
+          }//end if status
+    }//end for
+  }//end if
           xf.write(out);
           out.flush();          
           out.close();

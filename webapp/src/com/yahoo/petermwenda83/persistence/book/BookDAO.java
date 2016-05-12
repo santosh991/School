@@ -74,7 +74,7 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
         	
         	
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting Book");
+        	 logger.error("SQL Exception when getting Book with ISBN"+ISBN);
              logger.error(ExceptionUtils.getStackTrace(e));
              System.out.println(ExceptionUtils.getStackTrace(e));
         }
@@ -105,12 +105,76 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
         	
         	
         }catch(SQLException e){
-        	 logger.error("SQL Exception when getting Book");
+        	 logger.error("SQL Exception when getting Book with Uuid"+Uuid);
              logger.error(ExceptionUtils.getStackTrace(e));
              System.out.println(ExceptionUtils.getStackTrace(e));
         }
 		return book; 
 	}
+	
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#getBookByBookStatus(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Book getBookByBookStatus(String ISBN, String BookStatus) {
+		Book book = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Books WHERE ISBN = ? AND BookStatus = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, ISBN);
+        	 pstmt.setString(2, BookStatus);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 book  = beanProcessor.toBean(rset,Book.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting Book with status "+BookStatus);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+		return book; 
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#getBookByBorrowStatus(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Book getBookByBorrowStatus(String ISBN, String BorrowStatus) {
+		Book book = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Books WHERE ISBN = ? AND BorrowStatus = ?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, ISBN);
+        	 pstmt.setString(2, BorrowStatus);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 book  = beanProcessor.toBean(rset,Book.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting Book with BorrowStatus"+BorrowStatus);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+		return book; 
+	}
+
 
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolBookDAO#putBook(com.yahoo.petermwenda83.bean.book.Book)
@@ -152,19 +216,18 @@ public class BookDAO extends GenericDAO implements SchoolBookDAO {
 		boolean success = true;
 		
 		  try (  Connection conn = dbutils.getConnection();
-	             PreparedStatement pstmt = conn.prepareStatement("UPDATE Books SET Author = ? ,Publisher =?,"
-			        + "Title =? ,BookStatus =? ,BorrowStatus =? WHERE Uuid = ? AND SchoolAccountUuid =? AND ISBN =? ;");
+	             PreparedStatement pstmt = conn.prepareStatement("UPDATE Books SET ISBN =?, Author = ? ,Publisher =?,"
+			        + "Title =? ,BookStatus =? ,BorrowStatus =? WHERE Uuid = ? AND SchoolAccountUuid =?;");
 	               ) {           			 	            
 			 
-	          
-	            pstmt.setString(1, book.getAuthor());
-	            pstmt.setString(2, book.getPublisher());
-	            pstmt.setString(3, book.getTitle());
-	            pstmt.setString(4, book.getBookStatus());
-	            pstmt.setString(5, book.getBorrowStatus());
-	            pstmt.setString(6, book.getUuid());
-	            pstmt.setString(7, book.getSchoolAccountUuid());
-	            pstmt.setString(8, book.getISBN());
+			    pstmt.setString(1, book.getISBN());
+	            pstmt.setString(2, book.getAuthor());
+	            pstmt.setString(3, book.getPublisher());
+	            pstmt.setString(4, book.getTitle());
+	            pstmt.setString(5, book.getBookStatus());
+	            pstmt.setString(6, book.getBorrowStatus());
+	            pstmt.setString(7, book.getUuid());
+	            pstmt.setString(8, book.getSchoolAccountUuid());
 	            pstmt.executeUpdate();
 
 		  } catch (SQLException e) {

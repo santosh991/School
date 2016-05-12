@@ -129,11 +129,16 @@
                         <div class='wrapper'>
                     
                             <div id="spam-check">
+                                        <h1> <a href="index.jsp">ReCaptcha</a> </h1>
+                                        <br>
+
                                 <span id="captchaGuidelines">Type the characters you see in the image below</span><br>
                                 <img id="captcha" src=<% out.println("\"" + fontImageUrl + "\"");%> width="80" height="40" /> <br>
                                 <input type="text" name="captchaAnswer" id="captchaAnswer" size="5" class="input_normal"/>
                                 <input type="hidden" name="captchaHidden" id="captchaHidden"
                                        value=<% out.println("\"" + URLEncoder.encode(encryptedCaptcha, "UTF-8") + "\"");%> />
+                                             
+
                             </div>
                         </div>
                       </div>

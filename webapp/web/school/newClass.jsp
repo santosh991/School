@@ -99,12 +99,13 @@
 <div>
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> :CLASS-ROOMS MANAGEMENT (ADD NEW CLASS-ROOM): TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>  
-     <li>
-            <a href="addnewClass.jsp">New Class</a> <span class="divider">/</span>
-      </li> 
       <li>
             <a href="settings.jsp">Back</a> <span class="divider">/</span>
       </li>
+     <li>
+            <a href="addnewClass.jsp">New Class</a> <span class="divider">/</span>
+      </li> 
+     
 
     </ul>
 </div>

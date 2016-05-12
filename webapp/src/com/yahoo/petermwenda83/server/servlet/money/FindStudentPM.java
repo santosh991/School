@@ -98,14 +98,14 @@ public class FindStudentPM extends HttpServlet{
 		   
 		   List<Deposit> pmDList = new ArrayList<>(); 
 		   List<Withdraw> pmWList = new ArrayList<>();
-		   if(pMoneyDAO.getDepositList(student.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
-			   pmDList = pMoneyDAO.getDepositList(student.getUuid(),examConfig.getTerm(),examConfig.getYear());
+		   if(pMoneyDAO.getDepositList(student.getUuid()) !=null){
+			   pmDList = pMoneyDAO.getDepositList(student.getUuid());
 			   DListparamHash.put("depositList", pmDList);
 			   
 		   }
 		  
-		   if(pMoneyDAO.getWithdrawList(student.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
-			   pmWList = pMoneyDAO.getWithdrawList(student.getUuid(),examConfig.getTerm(),examConfig.getYear());
+		   if(pMoneyDAO.getWithdrawList(student.getUuid()) !=null){
+			   pmWList = pMoneyDAO.getWithdrawList(student.getUuid());
 			   WListparamHash.put("withdrawList", pmWList); 
 			   
 		   }

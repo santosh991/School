@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.yahoo.petermwenda83.bean.StorableBean;
 
-/**
+/** 
  * @author peter
  *
  */
@@ -15,7 +15,7 @@ public class StudentBook extends StorableBean{
 	
 	
 	String studentUuid;
-	String ISBN;
+	String bookUuid;
 	String borrowStatus;
 	Date borrowDate;
     String returnDate;
@@ -25,7 +25,7 @@ public class StudentBook extends StorableBean{
 	 */
 	public StudentBook() {
 		studentUuid = "";
-		ISBN = "";
+		bookUuid = "";
 		borrowStatus = "";
 		borrowDate = new Date();
 		returnDate = "";
@@ -46,17 +46,17 @@ public class StudentBook extends StorableBean{
 	}
 
 	/**
-	 * @return the iSBN
+	 * @return the bookUuid
 	 */
-	public String getISBN() {
-		return ISBN;
+	public String getBookUuid() {
+		return bookUuid;
 	}
 
 	/**
-	 * @param iSBN the iSBN to set
+	 * @param bookUuid the bookUuid to set
 	 */
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setBookUuid(String bookUuid) {
+		this.bookUuid = bookUuid;
 	}
 
 	/**
@@ -110,8 +110,8 @@ public class StudentBook extends StorableBean{
 		builder.append(getUuid()); 
 		builder.append(",studentUuid=");
 		builder.append(studentUuid);
-		builder.append(",ISBN=");
-		builder.append(ISBN);
+		builder.append(",bookUuid=");
+		builder.append(bookUuid);
 		builder.append(",borrowStatus=");
 		builder.append(borrowStatus);
 		builder.append(",borrowDate=");

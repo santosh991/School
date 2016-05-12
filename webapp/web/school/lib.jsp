@@ -99,13 +99,10 @@
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> : LIBRARY MANAGEMENT : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
       <li>
-            <a href="">Add Book</a> <span class="divider">/</span>
+            <a href="newBook.jsp">New Book</a> <span class="divider">/</span>
       </li>
        <li>
-            <a href="">Borrow</a> <span class="divider">/</span>
-      </li>
-       <li>
-            <a href="">Return</a> <span class="divider">/</span>
+            <a href="return.jsp">Return</a> <span class="divider">/</span>
       </li>
 
     </ul>
@@ -118,7 +115,57 @@
     <div class="box span12">
         <div class="box-content">
 
-        <table class="table table-striped table-bordered bootstrap-datatable ">
+         <%
+                                String borrowError = "";
+                                String borrowSuccess = "";
+
+                                String updateError = "";
+                                String updateSuccess = "";
+                                session = request.getSession(false);
+                                     borrowError = (String) session.getAttribute(SessionConstants.BOOK_BORROW_ERROR);
+                                     borrowSuccess = (String) session.getAttribute(SessionConstants.BOOK_BORROW_SUCCESS); 
+
+                                     updateError = (String) session.getAttribute(SessionConstants.BOOK_UPDATE_ERROR);
+                                     updateSuccess = (String) session.getAttribute(SessionConstants.BOOK_UPDATE_SUCCESS); 
+
+                                if(session != null) {
+                                     borrowError = (String) session.getAttribute(SessionConstants.BOOK_BORROW_ERROR);
+                                     borrowSuccess = (String) session.getAttribute(SessionConstants.BOOK_BORROW_SUCCESS);
+
+                                     updateError = (String) session.getAttribute(SessionConstants.BOOK_UPDATE_ERROR);
+                                     updateSuccess = (String) session.getAttribute(SessionConstants.BOOK_UPDATE_SUCCESS); 
+                                }                        
+
+                                if (StringUtils.isNotEmpty(borrowError)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + borrowError);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(borrowSuccess)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + borrowSuccess);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.BOOK_BORROW_SUCCESS, null);
+                                  } 
+
+                                  if (StringUtils.isNotEmpty(updateError)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + updateError);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.BOOK_UPDATE_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(updateSuccess)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + updateSuccess);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.BOOK_UPDATE_SUCCESS, null);
+                                  } 
+
+
+                     %>
+
+        <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr >
                         <th>*</th>
@@ -128,6 +175,8 @@
                         <th>Title</th>
                         <th>BookStatus</th>
                         <th>BorrowStatus</th>
+                        <th>Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>   
                 <tbody>
@@ -144,6 +193,25 @@
                          <td class="center"><%=bk.getTitle()%></td>
                          <td class="center"><%=bk.getBookStatus()%></td>
                          <td class="center"><%=bk.getBorrowStatus()%></td>
+                         <td class="center">
+                                <form name="Subject" method="POST" action="borrow.jsp"> 
+                                <input type="hidden" name="bkTitle" value="<%=bk.getTitle()%>">
+                                <input type="hidden" name="bookuuid" value="<%=bk.getUuid()%>">
+                                <input type="hidden" name="bkISBN" value="<%=bk.getISBN()%>">
+                                <input class="btn btn-success" type="submit" name="" id="submit" value="Borrow" /> 
+                                </form>                          
+                        </td> 
+
+                        <td class="center">
+                                <form name="" method="POST" action="updateBook.jsp"> 
+                                <input type="hidden" name="bookuuid" value="<%=bk.getUuid()%>">
+                                 <input type="hidden" name="bkISBN" value="<%=bk.getISBN()%>">
+                                 <input type="hidden" name="bkAUTHOR" value="<%=bk.getAuthor()%>">
+                                  <input type="hidden" name="bkPUBLISHER" value="<%=bk.getPublisher()%>">
+                                   <input type="hidden" name="bkTitle" value="<%=bk.getTitle()%>">
+                                <input class="btn btn-success" type="submit" name="" id="submit" value="Update" /> 
+                                </form>                          
+                        </td> 
                     </tr>
 
                     <%

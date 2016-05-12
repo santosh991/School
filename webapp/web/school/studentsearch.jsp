@@ -170,11 +170,23 @@
                          <td class="center"><%=kcpeyear%></td>
                          <td class="center"><%=dateFormatter.format(st.getAdmissionDate())%></td>    
                         <td class="center">
-                                <form name="view" method="POST" action="updateStudentBasic"> 
+                                <form name="view" method="POST" action="updateStudent.jsp"> 
+                                <input type="hidden" name="admNo" value="<%=st.getAdmno()%>">
+                                <input type="hidden" name="firstname" value="<%=formatedFirstname%>">
+                                <input type="hidden" name="lastname" value="<%=formatedLastname%>">
+                                <input type="hidden" name="surname" value="<%=formatedSurname%>">
+                                <input type="hidden" name="gender" value="<%=st.getGender()%>">
+                                <input type="hidden" name="dob" value="<%=st.getdOB()%>">
+                                <input type="hidden" name="BcertNo" value="<%=st.getBcertno()%>">
+                                <input type="hidden" name="county" value="<%=st.getCounty()%>">
+                                <input type="hidden" name="primary" value="<%=primaryschool%>">
+                                <input type="hidden" name="kcpeindex" value="<%=kcpeindex%>">
+                                <input type="hidden" name="kcpemark" value="<%=kcpemark%>">
+                                <input type="hidden" name="kcpeyear" value="<%=kcpeyear%>">
                                 <input type="hidden" name="studentUuid" value="<%=st.getUuid()%>">
                                 <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
-                                </form>                          
+                                </form>                               
                                </td>   
                                           
                     </tr>

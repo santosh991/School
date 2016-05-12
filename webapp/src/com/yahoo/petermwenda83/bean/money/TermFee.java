@@ -17,6 +17,7 @@ public class TermFee extends StorableBean{
 	private static final long serialVersionUID = 3556481789932595293L;
 	private String schoolAccountUuid;
 	private String term;
+	private String year;
 	private double termAmount;
 	
 	/** 
@@ -25,6 +26,7 @@ public class TermFee extends StorableBean{
 	public TermFee() {
 		schoolAccountUuid = "";
 		term = "";
+		year = "";
 		termAmount = 0.0;
 		
 
@@ -69,6 +71,24 @@ public class TermFee extends StorableBean{
 
 
 	/**
+	 * @return the year
+	 */
+	public String getYear() {
+		return year;
+	}
+
+
+
+	/**
+	 * @param year the year to set
+	 */
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+
+
+	/**
 	 * @return the termAmount
 	 */
 	public double getTermAmount() {
@@ -97,6 +117,8 @@ public class TermFee extends StorableBean{
 		builder.append(schoolAccountUuid); 
 		builder.append(", term =");
 		builder.append(term);
+		builder.append(", year =");
+		builder.append(year);
 		builder.append(", termAmount =");
 		builder.append(termAmount);
 		builder.append("]");

@@ -80,7 +80,7 @@ public class TestExamConfig {
 		e.setExamMode(EXAM_MODE_UPDATE); 
 		assertTrue(store.updateExamConfig(e)); 
 	}
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetExamConfigList() {
 		store = new ExamConfigDAO(databaseName, Host, databaseUsername, databasePassword, databasePort); 

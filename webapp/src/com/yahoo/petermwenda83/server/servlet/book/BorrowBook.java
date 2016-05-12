@@ -11,29 +11,35 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.yahoo.petermwenda83.bean.book.Book;
 import com.yahoo.petermwenda83.bean.book.StudentBook;
+import com.yahoo.petermwenda83.bean.student.Student;
+import com.yahoo.petermwenda83.persistence.book.BookDAO;
 import com.yahoo.petermwenda83.persistence.book.StudentBookDAO;
+import com.yahoo.petermwenda83.persistence.student.StudentDAO;
+import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 public class BorrowBook extends HttpServlet{
 	
 	
-	final String EMPTY_BOOK_STATUS = "You can't borrow a reference book";//reference , shortloan
-	final String EMPTY_BOOK_BORROW_STATUS = "This book is not available at the moment";//cleared , borrowed
+	final String BOOK__REFERENCE = "You can't borrow a reference book";//reference , shortloan
+	final String BOOK_NOT_AVALILABLE = "This book is not available at the moment";//cleared , borrowed
 	
 	final String BOOK_STATUS_REFERENCE = "Reference";
-	final String BPPK_STATUS_SHORTLOAD = "Shortloan";
-	
 	final String BORROW_STATUS_BORROWED = "Borrowed";
-	final String BORROW_STATUS_AVAILABLE = "Available";
 	
-	final String ERROR_NOT_AVAILABLE = "This book is not available at the moment";
+	final String ERROR_STUDENT_ADMNO_NOT_FOUND = "The admission number provided was not found.";
+	final String ERROR_BOOK_NOT_FOUND = "The book specified was not found.";
 
 	final String SUCCESS_BOOK_BORROWED = "The book was successfully borrowed";
-	final String ERROR_BOOK_NOT_BORROWED = "Something went wrong while borrowing the book";
+	final String ERROR_SOMETHING_WENT_WRONG = "Something went wrong while borrowing the book";
 	
 	
 	private static StudentBookDAO studentBookDAO;
-	StudentBook studentBook;
+	private static StudentDAO studentDAO;
+	private static BookDAO bookDAO;
+	
+	
 
 	/**  
     *
@@ -44,7 +50,8 @@ public class BorrowBook extends HttpServlet{
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
        studentBookDAO = StudentBookDAO.getInstance();
-      
+       studentDAO = StudentDAO.getInstance();
+       bookDAO = BookDAO.getInstance();
    }
    
    
@@ -54,40 +61,77 @@ public class BorrowBook extends HttpServlet{
        HttpSession session = request.getSession(true);
        
        String bookisbn = StringUtils.trimToEmpty(request.getParameter("bookisbn"));
-       String studentuuid = StringUtils.trimToEmpty(request.getParameter("studentuuid"));
+       String bookuuid = StringUtils.trimToEmpty(request.getParameter("bookuuid"));
+       String studentAdmNo = StringUtils.trimToEmpty(request.getParameter("admissionNo"));
+       String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
+       //System.out.println("bookuuid="+bookuuid);
        
        if(StringUtils.isBlank(bookisbn)){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, ERROR_BOOK_NOT_FOUND); 
     	   
-       }else if(StringUtils.isBlank(studentuuid)){
+       }
+       if(StringUtils.isBlank(bookuuid)){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, ERROR_SOMETHING_WENT_WRONG); 
+    	   
+       }else if(StringUtils.isBlank(studentAdmNo)){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, ERROR_STUDENT_ADMNO_NOT_FOUND); 
+    	   
+       }else if(StringUtils.isBlank(schooluuid)){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR,ERROR_SOMETHING_WENT_WRONG ); 
+    	   
+       }else if(bookDAO.getBookByBorrowStatus(bookisbn, BORROW_STATUS_BORROWED) !=null){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, BOOK_NOT_AVALILABLE); 
+    	   
+       }else if(bookDAO.getBookByBookStatus(bookisbn,BOOK_STATUS_REFERENCE ) !=null){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, BOOK__REFERENCE); 
+    	   
+       }else if(studentBookDAO.getStudentBook(bookuuid,BORROW_STATUS_BORROWED) !=null){
+    	   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, BOOK_NOT_AVALILABLE); 
     	   
        }else{
-    	   
-    	   studentBook = new StudentBook();
-    	   studentBook.setStudentUuid(studentuuid);
-    	   studentBook.setISBN(bookisbn); 
-    	   studentBook.setBorrowStatus(BORROW_STATUS_BORROWED);
-    	   
-    	   if(studentBookDAO.BorrowBook(studentBook)){
+    	   Book book;
+    	   Student student;
+    	   StudentBook studentBook;
+    	   student = studentDAO.getStudentObjByadmNo(schooluuid, studentAdmNo);
+    	   if(student !=null){
+    		   studentBook = new StudentBook();
+    		   studentBook.setStudentUuid(student.getUuid());
+    		   studentBook.setBookUuid(bookuuid); 
+    		   studentBook.setBorrowStatus(BORROW_STATUS_BORROWED);
     		   
+    		   book = bookDAO.getBookByUUID(schooluuid, bookuuid);
+    		   book.setBorrowStatus(BORROW_STATUS_BORROWED); 
+    		   bookDAO.updateBook(book);
+
+    		   if(studentBookDAO.BorrowBook(studentBook)){
+    			   session.setAttribute(SessionConstants.BOOK_BORROW_SUCCESS, SUCCESS_BOOK_BORROWED); 
+    		   }else{
+    			   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, ERROR_SOMETHING_WENT_WRONG); 
+    		   }
     	   }else{
-    		   
+    		   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR,ERROR_STUDENT_ADMNO_NOT_FOUND ); 
     	   }
-    	   
-    	   
     	   
        }
        
-       
-       
-       
+       response.sendRedirect("lib.jsp");  
+	   return; 
+     
    }
    
 
-   @Override
+/**
+ * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+ */
+@Override
       protected void doGet(HttpServletRequest request, HttpServletResponse response)
               throws ServletException, IOException {
           doPost(request, response);
       }
-   
+
+/**
+ * 
+ */
+private static final long serialVersionUID = 8351012024792795726L;
 
 }

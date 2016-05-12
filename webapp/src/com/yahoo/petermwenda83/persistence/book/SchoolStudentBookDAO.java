@@ -17,20 +17,27 @@ public interface SchoolStudentBookDAO {
 	 * @param studentUuid
 	 * @return
 	 */
-	public StudentBook getStudentBook(String studentUuid,String ISBN,String borrowStatus);
+	public StudentBook getStudentBookByStatus(String ISBookUuidBN,String borrowStatus);
+	/**
+	 * 
+	 * @param studentUuid
+	 * @param borrowStatus
+	 * @return
+	 */
+	public StudentBook getStudentBook(String studentUuid,String BookUuid);
 	
 	/**
 	 * 
 	 * @param studentUuid
 	 * @return
 	 */
-	public List<StudentBook> getStudentBookByStudentId(String studentUuid);
+	public List<StudentBook> getStudentBookByStudentId(String studentUuid,String borrowStatus);
 	/**
 	 * 
 	 * @param ISBN
 	 * @return
 	 */
-	public StudentBook getStudentBookByISBN(String ISBN);
+	public StudentBook getStudentBookByUuid(String BookUuid);
 	/**
 	 * 
 	 * @param borrowStatus
@@ -59,6 +66,6 @@ public interface SchoolStudentBookDAO {
 	 * 
 	 * @return
 	 */
-	public List<StudentBook> StudentBookList();
+	public List<StudentBook> getStudentBookList(String borrowStatus);
 
 }

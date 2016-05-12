@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import com.yahoo.petermwenda83.bean.book.StudentBook;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
-/**
+/** 
  * @author peter
  *
  */
@@ -55,18 +55,16 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBook(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public StudentBook getStudentBook(String studentUuid, String ISBN, String borrowStatus) {
+	public StudentBook getStudentBookByStatus(String BookUuid, String borrowStatus) {
 		StudentBook studentBook = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentBook WHERE studentUuid = ? AND ISBN =? AND borrowStatus =?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentBook WHERE BookUuid =? AND borrowStatus =?;");       
         		
         		){
-        	
-        	 pstmt.setString(1, studentUuid);
-        	 pstmt.setString(2, ISBN);
-        	 pstmt.setString(3, borrowStatus);
+        	 pstmt.setString(1, BookUuid);
+        	 pstmt.setString(2, borrowStatus);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -82,18 +80,50 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
         }
 		return studentBook; 
 	}
+	
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBook(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public StudentBook getStudentBook(String studentUuid, String BookUuid) {
+		StudentBook studentBook = null;
+        ResultSet rset = null;
+        try(
+        		  Connection conn = dbutils.getConnection();
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentBook WHERE studentUuid = ? AND BookUuid =?;");       
+        		
+        		){
+        	
+        	 pstmt.setString(1, studentUuid);
+        	 pstmt.setString(2, BookUuid);
+	         rset = pstmt.executeQuery();
+	     while(rset.next()){
+	
+	    	 studentBook  = beanProcessor.toBean(rset,StudentBook.class);
+	   }
+        	
+        	
+        	
+        }catch(SQLException e){
+        	 logger.error("SQL Exception when getting studentBook for student "+studentUuid);
+             logger.error(ExceptionUtils.getStackTrace(e));
+             System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+		return studentBook; 
+	}
 
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBookByStudentId(java.lang.String)
 	 */
 	@Override
-	public List<StudentBook> getStudentBookByStudentId(String studentUuid) {
+	public List<StudentBook> getStudentBookByStudentId(String studentUuid,String borrowStatus) {
 		List<StudentBook> bookList = new ArrayList<>();
 		try(
 				Connection conn = dbutils.getConnection();
-				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM StudentBook WHERE studentUuid = ?;");
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM StudentBook WHERE studentUuid = ? AND borrowStatus =?;");
 				) {
 			psmt.setString(1, studentUuid);
+			psmt.setString(2, borrowStatus);
 			try(ResultSet rset = psmt.executeQuery();){
 			
 				bookList = beanProcessor.toBeanList(rset, StudentBook.class);
@@ -112,16 +142,16 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#getStudentBookByISBN(java.lang.String)
 	 */
 	@Override
-	public StudentBook getStudentBookByISBN(String ISBN) {
+	public StudentBook getStudentBookByUuid(String BookUuid) {
 		StudentBook studentBook = null;
         ResultSet rset = null;
         try(
         		  Connection conn = dbutils.getConnection();
-           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentBook WHERE ISBN = ?;");       
+           	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM StudentBook WHERE BookUuid = ?;");       
         		
         		){
         	
-        	 pstmt.setString(1, ISBN);
+        	 pstmt.setString(1, BookUuid);
 	         rset = pstmt.executeQuery();
 	     while(rset.next()){
 	
@@ -177,12 +207,12 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		
 		  try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO StudentBook" 
-			        		+"(Uuid,StudentUuid,ISBN,BorrowStatus,BorrowDate,ReturnDate) VALUES (?,?,?,?,?,?);");
+			        		+"(Uuid,StudentUuid,BookUuid,BorrowStatus,BorrowDate,ReturnDate) VALUES (?,?,?,?,?,?);");
 		             ){
 			   
 	            pstmt.setString(1, studentBook.getUuid());
 	            pstmt.setString(2, studentBook.getStudentUuid());
-	            pstmt.setString(3, studentBook.getISBN());
+	            pstmt.setString(3, studentBook.getBookUuid());
 	            pstmt.setString(4, studentBook.getBorrowStatus());
 	            pstmt.setTimestamp(5, new Timestamp(studentBook.getBorrowDate().getTime()));
 	            pstmt.setString(6, studentBook.getReturnDate());
@@ -207,13 +237,13 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 		
 		  try (  Connection conn = dbutils.getConnection();
 	             PreparedStatement pstmt = conn.prepareStatement("UPDATE StudentBook SET BorrowStatus =?,"
-			        + "ReturnDate =?  WHERE ISBN = ? AND StudentUuid =? ;");
+			        + "ReturnDate =?  WHERE BookUuid = ? AND StudentUuid =? ;");
 	               ) {           			 	            
 			 
 	           
 	            pstmt.setString(1, studentBook.getBorrowStatus());
 	            pstmt.setString(2, studentBook.getReturnDate());
-	            pstmt.setString(3, studentBook.getISBN());
+	            pstmt.setString(3, studentBook.getBookUuid());
 	            pstmt.setString(4, studentBook.getStudentUuid());
 	            pstmt.executeUpdate();
 
@@ -236,11 +266,11 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 	      try(
 	      		  Connection conn = dbutils.getConnection();
 	         	  PreparedStatement pstmt = conn.prepareStatement("DELETE FROM StudentBook"
-	         	      		+ " WHERE ISBN =?;");       
+	         	      		+ " WHERE BookUuid =?;");       
 	      		
 	      		){
 	      	
-	      	     pstmt.setString(1, studentBook.getISBN());
+	      	     pstmt.setString(1, studentBook.getBookUuid());
 		         pstmt.executeUpdate();
 		     
 	      }catch(SQLException e){
@@ -258,23 +288,28 @@ public class StudentBookDAO extends GenericDAO implements SchoolStudentBookDAO {
 	 * @see com.yahoo.petermwenda83.persistence.book.SchoolStudentBookDAO#StudentBookList()
 	 */
 	@Override
-	public List<StudentBook> StudentBookList() {
-		List<StudentBook>  list = null;
-		 try(   
-		Connection conn = dbutils.getConnection();
-		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM StudentBook ;");   
-		ResultSet rset = pstmt.executeQuery();
-		  ) {
-	
-         list = beanProcessor.toBeanList(rset, StudentBook.class);
-
-	   } catch(SQLException e){
-		  logger.error("SQL Exception when getting all Deposit");
-	      logger.error(ExceptionUtils.getStackTrace(e));
-	      System.out.println(ExceptionUtils.getStackTrace(e));
-	   }
-      return list;
+	public List<StudentBook> getStudentBookList(String borrowStatus) {
+		List<StudentBook> studentBookList = new ArrayList<>();
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM StudentBook WHERE "
+						+ "borrowStatus = ?;");
+				) {
+			psmt.setString(1, borrowStatus);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				studentBookList = beanProcessor.toBeanList(rset, StudentBook.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Student Book List with borrowStatus"+borrowStatus);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return studentBookList;
 	
 	}
+
+	
 
 }

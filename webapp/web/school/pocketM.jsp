@@ -96,7 +96,7 @@
      <li> <b> <%=schoolname%> :POCKET MOMNEY MANAGEMENT PANEL FOR: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
 
         <li>
-            <a href="feeIndex.jsp">Back</a> <span class="divider">/</span>
+            <a href="fee.jsp">Back</a> <span class="divider">/</span>
         </li>
         
     </ul>
@@ -152,6 +152,7 @@
 
                     List<Deposit> depositList = new ArrayList<Deposit>();
                     depositList = depositListHash.get("depositList");
+                   // out.print(depositList);  
 
                     List<Withdraw> withdrawList = new ArrayList<Withdraw>();
                     withdrawList = withdrawListHash.get("withdrawList");
@@ -287,9 +288,9 @@
                 <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
                     <tr >
-                        <th></th>
-                        <th></th>
                         <th>Pocket Money Balance</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>   
                 <tbody >
@@ -334,6 +335,7 @@
                     int dcount = 1;
                     if(depositList !=null){
                     for(Deposit d : depositList){
+
                          amountDeposited = d.getAmount();
                          totaldeposit = totaldeposit + amountDeposited;
                          depositdate = dateFormatter.format(d.getDateCommitted());
@@ -408,10 +410,10 @@
             
             
              <%
-                     paramHash.clear();
+                     /*paramHash.clear();
                      pocketMHash.clear();
                      depositListHash.clear();
-                     withdrawListHash.clear();
+                     withdrawListHash.clear();*/
 
              %>
 

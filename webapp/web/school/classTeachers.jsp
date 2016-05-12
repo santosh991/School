@@ -145,7 +145,9 @@
 <div>
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> :CLASS TEACHERS PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
-
+       <li>
+            <a href="staff.jsp">Back</a> <span class="divider">/</span>
+        </li>
 
         <li>
             <a href="addclassTecaher.jsp">New Class Teacher</a> <span class="divider">/</span>
@@ -306,7 +308,7 @@
                                 <td class="center" width="8%">
                                 <form name="edit" method="POST" action="exportExcel" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Download" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="ClassList" /> 
                                 </form>                          
                                 </td>  
 

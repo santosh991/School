@@ -30,6 +30,20 @@ public interface SchoolBookDAO {
 	public Book getBookByUUID(String schoolAccountUuid,String Uuid);
 	/**
 	 * 
+	 * @param schoolAccountUuid
+	 * @param BookStatus
+	 * @return
+	 */
+	public Book getBookByBookStatus(String ISBN,String BookStatus);
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param BorrowStatus
+	 * @return
+	 */
+	public Book getBookByBorrowStatus(String ISBN,String BorrowStatus);
+	/**
+	 * 
 	 * @param book
 	 * @return
 	 */

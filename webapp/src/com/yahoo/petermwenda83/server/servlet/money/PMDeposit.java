@@ -69,7 +69,7 @@ public class PMDeposit extends HttpServlet{
        Map<String, String> paramHash = new HashMap<>();   
        paramHash.put("amount", amount);
       
-       System.out.println(amount); 
+      // System.out.println(amount); 
        
        if(StringUtils.isBlank(admissionNumber)){
     	   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, EMPTY_CREDENTIALS);
