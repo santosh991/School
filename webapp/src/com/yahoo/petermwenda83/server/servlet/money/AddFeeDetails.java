@@ -50,6 +50,7 @@ public class AddFeeDetails extends HttpServlet{
 	
 	
 	 final String ERROR_AMOUNT_NOT_IN_RANGE = "Fee can only be within the range of KSH 100 - KSH 100,000";
+	 final String ERROR_AMOUNT_NUMERIC = "Amount can only be numeric";
 	 final String ERROR_NO_SLIPNIMBER = "You didn't provide any admission  number?.";
 	 final String ERROR_SLIP_NO_EXIST = "The bank slip has already been registered.";
 	 final String ERROR_AMOUNT_NOT_ADDED = "Something went wrong, ammount not added.";
@@ -120,6 +121,12 @@ public class AddFeeDetails extends HttpServlet{
 	   }else if(!isNumericRange(Amountpaid)){
 		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, NUMBER_FORMAT_ERROR); 
 			   
+	   }else if(!isNumeric(Amountpaid)){
+    	   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_AMOUNT_NUMERIC); 
+    	   
+       }else if(!lengthValid(Amountpaid)){
+	 	   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_AMOUNT_NOT_IN_RANGE); 
+		   
 	   }else if(StringUtils.isBlank(slipNumber)){
 		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_NO_SLIPNIMBER); 
 			   
@@ -350,7 +357,24 @@ public class AddFeeDetails extends HttpServlet{
 	   return;
        
    }
-   
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
 /**
  * @param amount
  * @return
@@ -365,6 +389,21 @@ private boolean isNumericRange(String amount) {
 	}
 	
 	return valid;
+}
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean lengthValid(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	//System.out.println("lenght = " + length);
+	if(length<3 ||length>6){
+		isvalid = false;
+	}
+	return isvalid;
 }
    
    

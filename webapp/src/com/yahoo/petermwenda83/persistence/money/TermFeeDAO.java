@@ -7,10 +7,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
@@ -131,6 +134,31 @@ public class TermFeeDAO extends GenericDAO implements SchoolTermFeeDAO {
     } 
 		
 		return success;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.money.SchoolTermFeeDAO#termFeeList(java.lang.String)
+	 */
+	@Override
+	public List<TermFee> getTermFeeList(String schoolAccountUuid) {
+		List<TermFee> List = null;
+		try(
+				Connection conn = dbutils.getConnection();
+				PreparedStatement psmt= conn.prepareStatement("SELECT * FROM TermFee WHERE "
+						+ "schoolAccountUuid = ?;");
+				) {
+			psmt.setString(1, schoolAccountUuid);
+			try(ResultSet rset = psmt.executeQuery();){
+			
+				List = beanProcessor.toBeanList(rset, TermFee.class);
+			}
+		} catch (SQLException e) {
+			logger.error("SQLException when trying to get a Fee List for school " +schoolAccountUuid);
+            logger.error(ExceptionUtils.getStackTrace(e));
+            System.out.println(ExceptionUtils.getStackTrace(e)); 
+	    }
+		
+		return List;
 	}
 
 }

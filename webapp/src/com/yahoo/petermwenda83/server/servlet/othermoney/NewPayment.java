@@ -28,10 +28,11 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
  */
 public class NewPayment extends HttpServlet{
 	
-	
 	private static TermOtherMoniesDAO termOtherMoniesDAO;
 	private static OtherstypeDAO otherstypeDAO;
 	private static ExamConfigDAO examConfigDAO;
+	final String ERROR_AMOUNT_INVALID = "Invalid amount, amount ranges from KSH 100 - KSH 100,000";
+	final String ERROR_AMOUNT_NUMERIC = "Amount can only be numeric";
 	
 	Otherstype otherstype;
 	TermOtherMonies termOtherMonies;
@@ -69,7 +70,13 @@ public class NewPayment extends HttpServlet{
        }else if(StringUtils.isBlank(amount)){
     	   session.setAttribute(SessionConstants.OTHER_MONIES_ADD_ERROR, SessionConstants.OTHER_MONIES_ADD_ERROR); 
     	   
-       }else{
+       }else if(!isNumeric(amount)){
+    	   session.setAttribute(SessionConstants.OTHER_MONIES_ADD_ERROR, ERROR_AMOUNT_NUMERIC); 
+    	   
+       }else if(!lengthValid(amount)){
+	 	   session.setAttribute(SessionConstants.OTHER_MONIES_ADD_ERROR, ERROR_AMOUNT_INVALID); 
+		   
+	   }else{
     	   
     	   examConfig = new ExamConfig();
     	   examConfig = examConfigDAO.getExamConfig(schooluuid);
@@ -101,6 +108,38 @@ public class NewPayment extends HttpServlet{
         }
    
 
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		//System.out.println("lenght = " + length);
+		if(length<3 ||length>6){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
 /**
  * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  */

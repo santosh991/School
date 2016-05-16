@@ -134,9 +134,21 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.UpdateExamConfig</servlet-class>
     </servlet>
 
+     <servlet>
+        <servlet-name>UpdateMisc</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.misc.UpdateMisc</servlet-class>
+    </servlet>
+
+
+
    <servlet>
         <servlet-name>AddStaff</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.AddStaff</servlet-class>
+    </servlet>  
+
+     <servlet>
+        <servlet-name>ForgotPassword</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.ForgotPassword</servlet-class>
     </servlet>  
 
      <servlet>
@@ -650,10 +662,20 @@
         <url-pattern>/school/updateExamConfig</url-pattern>
     </servlet-mapping>  
 
+    <servlet-mapping>
+        <servlet-name>UpdateMisc</servlet-name>
+        <url-pattern>/school/updateMisc</url-pattern> 
+    </servlet-mapping>  
+
 
      <servlet-mapping>
         <servlet-name>AddStaff</servlet-name>
         <url-pattern>/school/addStaff</url-pattern>
+    </servlet-mapping> 
+
+    <servlet-mapping>
+        <servlet-name>ForgotPassword</servlet-name>
+        <url-pattern>/school/forgotPassword</url-pattern>
     </servlet-mapping>  
 
      <servlet-mapping>

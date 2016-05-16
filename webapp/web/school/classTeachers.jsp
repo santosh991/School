@@ -131,6 +131,7 @@
 
     DecimalFormat df = new DecimalFormat("0.00"); 
     df.setRoundingMode(RoundingMode.DOWN);
+    String status = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
                                         
 
  %>
@@ -241,8 +242,10 @@
                                     studentList = studentDAO.getAllStudents(accountuuid,classuuid); 
                                     
                                      for(Student stude : studentList){
+                                       if(StringUtils.equals(stude.getStatusUuid(), status)){
                                         stude.getUuid();
                                         studentCount++;
+                                        }
                                       }
 
 

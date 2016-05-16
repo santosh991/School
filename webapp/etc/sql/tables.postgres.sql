@@ -882,6 +882,22 @@ ALTER TABLE StudentBook OWNER TO school;
 
 
 
+--=========================
+-- 3.  Miscellanous
+-- =========================
+-- -------------------
+-- Table Miscellanous
+-- -------------------
+CREATE TABLE Miscellanous (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    Key text,
+    Value text 
 
+);
+-- import data from the CSV file for the Miscellanous CSV file
+\COPY Miscellanous(Uuid,SchoolAccountUuid,Key,Value) FROM '/tmp/Miscellanous.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE Miscellanous OWNER TO school;
 
 

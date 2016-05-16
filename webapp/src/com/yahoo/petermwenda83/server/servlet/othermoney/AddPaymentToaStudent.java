@@ -54,7 +54,8 @@ public class AddPaymentToaStudent extends HttpServlet{
 
 	final String MONEY_ASSIGNED_SUCCESS = "The money has been assigned successfully";
 	final String MONEY_ASSIGNED_ERROR = "Something went wrong while assigning the money";
-
+	final String ERROR_AMOUNT_INVALID = "Invalid amount, amount range from KSH 100 - KSH 100,000";
+	final String ERROR_AMOUNT_NUMERIC = "Amount can only be numeric";
 	final String EMPTY_FIELD = "Empty Fields not allowed";
 	final String ERROR_MONEY_ALREADY_ASSIGNED = "Payment type already added";
 	final String ERROR_DID_NOT_SEARCH_STUDENT = "It looks like you didn't search for any student";
@@ -372,6 +373,39 @@ public class AddPaymentToaStudent extends HttpServlet{
 
 	}
 
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		//System.out.println("lenght = " + length);
+		if(length<3 ||length>6){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */

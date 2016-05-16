@@ -33,16 +33,19 @@ import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 import com.yahoo.petermwenda83.persistence.student.HouseDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
+import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 public class AddSchool extends HttpServlet{
      
+	final String ERROR_PHONE_INVALID = "Phone number is invalid, the number must have 10 digits (e.g. 0718953974).";
 	private final String ERROR_EMPTY_SCHOOL_NAME = "School name can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_USERNAME = "School username can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_PASSWORD = "School password can't be empty";
 	private final String ERROR_EMPTY_SCHOOL_PHONE = "School phone number can't be empty";
+	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	private final String ERROR_EMPTY_SCHOOL_EMAIL = "School email address can't be empty";
 	private final String ERROR_EMPTY_POSTAL_ADDRESS = "School postal address can't be empty";
 	private final String ERROR_EMPTY_TOWN = "School home town address can't be empty";
@@ -131,7 +134,13 @@ public class AddSchool extends HttpServlet{
        }else if(StringUtils.isBlank(schoolphone)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_PHONE); 
     	   
-       }else if(StringUtils.isBlank(schoolemail)){
+       }else if(!isNumeric(schoolphone)){
+    	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_PHONE_NUMERIC); 
+    	   
+       }else if(!lengthValid(schoolphone)){
+	 	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_PHONE_INVALID); 
+		   
+	   }else if(StringUtils.isBlank(schoolemail)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_EMAIL); 
     	   
        }else if(!emailValidator.isValid(schoolemail)){		     
@@ -248,6 +257,38 @@ private void updateStudentCache(SchoolAccount accnt) {
 	cacheManager.getCache(CacheVariables.CACHE_ACCOUNTS_BY_UUID).put(new Element(accnt.getUuid(), accnt));
 }
 
+
+/**
+ * @param str
+ * @return
+ */
+public static boolean isNumeric(String str) {  
+  try  
+  {  
+    double d = Double.parseDouble(str);  
+    
+  }  
+  catch(NumberFormatException nfe)  
+  {  
+    return false;  
+  }  
+  return true;  
+}
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean lengthValid(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	//System.out.println("lenght = " + length);
+	if(length<10 ||length>10){
+		isvalid = false;
+	}
+	return isvalid;
+}
 
 
 @Override

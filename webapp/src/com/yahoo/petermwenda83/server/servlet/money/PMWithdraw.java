@@ -77,6 +77,9 @@ public class PMWithdraw extends HttpServlet{
        }else if(!isNumericRange(amount)){
 		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, NUMBER_FORMAT_ERROR); 
 			   
+	   }else if(!lengthValid(amount)){
+	 	   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_AMOUNT_NOT_IN_RANGE); 
+		   
 	   }else if(StringUtils.isBlank(schoolUuid)){
     	   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, EMPTY_CREDENTIALS);
     	   
@@ -126,6 +129,22 @@ private boolean isNumericRange(String amount) {
 	
 	return valid;
 }
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean lengthValid(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	//System.out.println("lenght = " + length);
+	if(length<3 ||length>6){
+		isvalid = false;
+	}
+	return isvalid;
+}
+   
    
 
 

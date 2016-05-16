@@ -4,6 +4,12 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.GradingSystem"%>
 
+<%@page import="com.yahoo.petermwenda83.persistence.money.TermFeeDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.money.TermFee"%>
+
+<%@page import="com.yahoo.petermwenda83.persistence.schoolaccount.MiscellanousDAO"%>
+<%@page import="com.yahoo.petermwenda83.bean.schoolaccount.Miscellanous"%>
+
 <%@page import="com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount"%>
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
@@ -65,6 +71,16 @@
     String schoolname = school.getSchoolName();
 
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
+    TermFeeDAO termFeeDAO = TermFeeDAO.getInstance();
+    MiscellanousDAO miscellanousDAO = MiscellanousDAO.getInstance();
+
+    List<TermFee> termlist = new ArrayList<TermFee>();
+    termlist = termFeeDAO.getTermFeeList(accountuuid);
+
+     List<Miscellanous> misclist = new ArrayList<Miscellanous>();
+     misclist = miscellanousDAO.getMiscellanousList(accountuuid);
+
+
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
     GradingSystemDAO gradingSystemDAO = GradingSystemDAO.getInstance();
@@ -196,6 +212,9 @@
                 </tbody>
             </table> 
 
+
+
+
              <h3><i class="icon-edit"></i> Grading Scale:</h3>  
             <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
@@ -220,18 +239,18 @@
                 <tbody>
                     
                     <tr>
-                         <td class="center"> 100 - <%=gradingSystem.getGradeAplain()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeAplain()%> - <%=gradingSystem.getGradeAminus()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeAminus()%> - <%=gradingSystem.getGradeBplus()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeBplus()%> - <%=gradingSystem.getGradeBplain()+1%> </td>  
-                         <td class="center"> <%=gradingSystem.getGradeBplain()%> - <%=gradingSystem.getGradeBminus()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeBminus()%> - <%=gradingSystem.getGradeCplus()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeCplus()%> - <%=gradingSystem.getGradeCplain()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeCplain()%> - <%=gradingSystem.getGradeCminus()+1%> </td>  
-                         <td class="center"> <%=gradingSystem.getGradeCminus()%> - <%=gradingSystem.getGradeDplus()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeDplus()%> - <%=gradingSystem.getGradeDplain()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeDplain()%> - <%=gradingSystem.getGradeDminus()+1%> </td>
-                         <td class="center"> <%=gradingSystem.getGradeDminus()%> - <%=gradingSystem.getGradeE()%> </td>  
+                         <td class="center"> 100 - <%=gradingSystem.getGradeAplain()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeAplain()-1%> - <%=gradingSystem.getGradeAminus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeAminus()-1%> - <%=gradingSystem.getGradeBplus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeBplus()-1%> - <%=gradingSystem.getGradeBplain()%> </td>  
+                         <td class="center"> <%=gradingSystem.getGradeBplain()-1%> - <%=gradingSystem.getGradeBminus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeBminus()-1%> - <%=gradingSystem.getGradeCplus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeCplus()-1%> - <%=gradingSystem.getGradeCplain()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeCplain()-1%> - <%=gradingSystem.getGradeCminus()%> </td>  
+                         <td class="center"> <%=gradingSystem.getGradeCminus()-1%> - <%=gradingSystem.getGradeDplus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDplus()-1%> - <%=gradingSystem.getGradeDplain()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDplain()-1%> - <%=gradingSystem.getGradeDminus()%> </td>
+                         <td class="center"> <%=gradingSystem.getGradeDminus()-1%> - <%=gradingSystem.getGradeE()%> </td>  
                          <td class="center">
                                 <form name="edit" method="POST" action="updateGradingScale.jsp" > 
                                 <input type="hidden" name="schoolUuid" value="<%=gradingSystem.getSchoolAccountUuid()%>">
@@ -253,6 +272,82 @@
 
                     </tr>
 
+                </tbody>
+            </table>  
+
+
+           <h3><i class="icon-edit"></i> School Fee:</h3>  
+             <table class="table table-striped table-bordered bootstrap-datatable ">
+                <thead>
+                    <tr >
+                        <th>*</th>
+                        <th>Term</th>
+                        <th>Year</th>                
+                        <th>Fee Amount</th>
+                     
+                    </tr>
+                </thead>   
+                <tbody>
+                    <%
+                     int feecount = 1;
+                    for(TermFee tfee : termlist){
+                     %>
+
+                    <tr>
+                         <td width="3%"><%=feecount%></td>
+                         <td class="center"><%=tfee.getTerm()%></td>   
+                         <td class="center"><%=tfee.getYear()%></td>
+                         <td class="center"><%=tfee.getTermAmount()%></td>
+                    </tr>
+
+                    <%
+                          feecount++;
+                       }
+                            
+                    %>
+                </tbody>
+            </table>  
+
+
+
+             <h3><i class="icon-edit"></i> Basic Variables:</h3>  
+             <table class="table table-striped table-bordered bootstrap-datatable ">
+                <thead>
+                    <tr >
+                        <th>*</th>
+                        <th>Key</th>
+                        <th>Value</th>              
+                        
+                     
+                    </tr>
+                </thead>   
+                <tbody>
+                    <%  //misclist   Miscellanous
+                     int misccount = 1;
+                    for(Miscellanous misc : misclist){
+
+                     %>
+
+                    <tr>
+                         <td width="3%"><%=misccount%></td>
+                         <td class="center"><%=misc.getKey()%> </td>   
+                         <td class="center"> <%= misc.getValue()%> </td>
+                          <td class="center">
+                                <form name="edit" method="POST" action="updateMisc.jsp" > 
+                                <input type="hidden" name="schoolUuid" value="<%=misc.getSchoolAccountUuid()%>">
+                                <input type="hidden" name="miscUuid" value="<%=misc.getUuid()%>">
+                                <input type="hidden" name="key" value="<%=misc.getKey()%>">
+                                <input type="hidden" name="value" value="<%=misc.getValue()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update" /> 
+                                </form>                          
+                         </td>  
+                    </tr>
+
+                    <%
+                          misccount++;
+                       }
+                            
+                    %>
                 </tbody>
             </table>  
 

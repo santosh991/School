@@ -1,5 +1,7 @@
 package com.yahoo.petermwenda83.persistence.money;
 
+import java.util.List;
+
 import com.yahoo.petermwenda83.bean.money.TermFee;
 
 public interface SchoolTermFeeDAO {
@@ -22,5 +24,11 @@ public interface SchoolTermFeeDAO {
 	 * @return
 	 */
 	public boolean updateTermFee(TermFee termFee); 
+	/**
+	 * 
+	 * @param termFee
+	 * @return
+	 */
+	public List<TermFee> getTermFeeList(String schoolAccountUuid); 
 
 }

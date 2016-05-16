@@ -37,7 +37,10 @@ public class AddStudentSponsor extends HttpServlet{
 	final String ERROR_EMPTY_COUNTRY = "Sponsor country can't be empty.";
 	final String ERROR_EMPTY_COUNTY = "Sponsor county can't be empty.";
 	final String ERROR_EMPTY_PHONE = "Sponsor phone can't be empty.";
+	final String ERROR_PHONE_INVALID = "Sponsor phone is invalid, phone number must have 10 digits (e.g. 0718953974).";
 	final String ERROR_EMPTY_NAME = "Sponsor name can't be empty.";
+	
+	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	
 	private static SponsorsDAO sponsorsDAO;
 	private static StudentDAO studentDAO;
@@ -98,7 +101,13 @@ public class AddStudentSponsor extends HttpServlet{
 	   }else if(StringUtils.isBlank(SponsorPhone)){ 
 		   session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, ERROR_EMPTY_PHONE); 
 		   
-	   }else if(StringUtils.isBlank(SponsorOccupation)){ 
+	   }else if(!isNumeric(SponsorPhone)){
+	 	   session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, ERROR_PHONE_NUMERIC); 
+		   
+	    }else if(!lengthValid(SponsorPhone)){
+		 	   session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, ERROR_PHONE_INVALID); 
+			   
+		}else if(StringUtils.isBlank(SponsorOccupation)){ 
 		   session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, ERROR_EMPTY_OCCUPATION); 
 		   
 	   }else if(StringUtils.isBlank(SponsorCountry)){ 
@@ -137,7 +146,37 @@ public class AddStudentSponsor extends HttpServlet{
        
    }
 
-   
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		//System.out.println("lenght = " + length);
+		if(length<10 ||length>10){
+			isvalid = false;
+		}
+		return isvalid;
+	}
    
 
 @Override

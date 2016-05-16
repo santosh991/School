@@ -5,9 +5,12 @@ package com.yahoo.petermwenda83.persistence.money;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.yahoo.petermwenda83.bean.money.Deposit;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 
 /**
@@ -76,5 +79,15 @@ public class TestTermFeeDAO {
 		t.setTermAmount(TERM_FEE_UPDATE);
 		assertTrue(store.updateTermFee(t)); 
 	}
-
+	
+	
+	//@Ignore
+	@Test
+	public final void testgetTermFeeList() {
+		store = new TermFeeDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
+		List<TermFee> dlist = store.getTermFeeList(SCHOOL_UUID);	
+		for (TermFee d : dlist) {
+			System.out.println(d);	
+		}
+	}
 }

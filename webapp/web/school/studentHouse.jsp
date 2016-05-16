@@ -154,6 +154,9 @@
       <li>
             <a href="addHouse.jsp">Assign House</a> <span class="divider">/</span>
       </li>
+       <li>
+            <a href="">Change House</a> <span class="divider">/</span>
+      </li>
 
        <li>
             <a href="newHouse.jsp">New House</a> <span class="divider">/</span>

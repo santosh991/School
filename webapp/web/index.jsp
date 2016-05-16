@@ -78,6 +78,24 @@
                                     out.println("</p>");                                    
                                     session.setAttribute(SessionConstants.SCHOOL_ACCOUNT_LOGIN_ERROR, null);
                                   } 
+
+
+
+                                String updatesuccessStr = "";
+                                session = request.getSession(false);
+                                     updatesuccessStr = (String) session.getAttribute(SessionConstants.STAFF_UPDATE_SUCCESS); 
+
+                                if(session != null) {
+                                    updatesuccessStr = (String) session.getAttribute(SessionConstants.STAFF_UPDATE_SUCCESS);
+                                }                        
+
+                                if (StringUtils.isNotEmpty(updatesuccessStr)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("Message : " + updatesuccessStr);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.STAFF_UPDATE_SUCCESS, null);
+                                  } 
+
                             %>
 
 
@@ -128,10 +146,7 @@
                         <div class="field_container">
                         <div class='wrapper'>
                     
-                            <div id="spam-check">
-                                        <h1> <a href="index.jsp">ReCaptcha</a> </h1>
-                                        <br>
-
+                            <div id="spam-check">                                        
                                 <span id="captchaGuidelines">Type the characters you see in the image below</span><br>
                                 <img id="captcha" src=<% out.println("\"" + fontImageUrl + "\"");%> width="80" height="40" /> <br>
                                 <input type="text" name="captchaAnswer" id="captchaAnswer" size="5" class="input_normal"/>
@@ -142,6 +157,7 @@
                             </div>
                         </div>
                       </div>
+                      <a href="school/resetPassword.jsp">Forgot Password?</a>
 
        </div>
       

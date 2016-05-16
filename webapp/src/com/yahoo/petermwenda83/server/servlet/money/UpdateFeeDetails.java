@@ -111,6 +111,12 @@ public class UpdateFeeDetails extends HttpServlet{
 	   }else if(!isNumericRange(amounttodeduct)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, NUMBER_FORMAT_ERROR); 
 			   
+	   }else if(!isNumeric(amounttodeduct)){
+    	   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, NUMBER_FORMAT_ERROR); 
+    	   
+       }else if(!lengthValid(amounttodeduct)){
+	 	   session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, ERROR_AMOUNT_NOT_IN_RANGE); 
+		   
 	   }else if(StringUtils.isBlank(systemUser)){
 		     session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, EMPTY_CREDENTIALS); 
 			   
@@ -179,6 +185,38 @@ private boolean isNumericRange(String amount) {
 		
 		return valid;
 }
+/**
+ * @param str
+ * @return
+ */
+public static boolean isNumeric(String str) {  
+  try  
+  {  
+    double d = Double.parseDouble(str);  
+    
+  }  
+  catch(NumberFormatException nfe)  
+  {  
+    return false;  
+  }  
+  return true;  
+}
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean lengthValid(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	//System.out.println("lenght = " + length);
+	if(length<3 ||length>6){
+		isvalid = false;
+	}
+	return isvalid;
+}
+
    
 
 /**

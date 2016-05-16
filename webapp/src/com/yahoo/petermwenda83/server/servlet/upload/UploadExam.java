@@ -58,7 +58,7 @@ public class UploadExam extends HttpServlet {
 	private Logger logger;
 	String staffUsername;
 	String schooluuid = "";
-	private UploadUtil uploadUtil;
+	//private UploadUtil uploadUtil;
 	private ExcelUtil excelUtil;
 	
 	private static StudentDAO studentDAO;
@@ -91,7 +91,7 @@ public class UploadExam extends HttpServlet {
        File repository = FileUtils.getTempDirectory();
        factory.setRepository(repository);
        
-       uploadUtil = new UploadUtil();
+     //  uploadUtil = new UploadUtil();
        excelUtil = new ExcelUtil();
        CacheManager mgr = CacheManager.getInstance();
        schoolCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
@@ -163,7 +163,7 @@ public class UploadExam extends HttpServlet {
        if(extension.trim().equalsIgnoreCase("xlsx") ||extension.trim().equalsIgnoreCase("xls")){ 
     	   feedback = excelUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
        }else if(extension.trim().equalsIgnoreCase("txt") || extension.trim().equalsIgnoreCase("csv")){
-    	   feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
+    	  // feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
        }
       
 	   session.setAttribute(UPLOAD_FEEDBACK,"<p class='error'>"+feedback+"<p>");
@@ -172,7 +172,7 @@ public class UploadExam extends HttpServlet {
 	          // Process the file into the database if it is ok
        if(StringUtils.equals(feedback, UPLOAD_SUCCESS)) {
     	   if(extension.trim().equalsIgnoreCase("txt") || extension.trim().equalsIgnoreCase("csv")){ 
-    		   uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO,studentDAO,roomDAO, subjectDAO,examConfigDAO);
+    		 //  uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO,studentDAO,roomDAO, subjectDAO,examConfigDAO);
     	   }else if(extension.trim().equalsIgnoreCase("xlsx") ||extension.trim().equalsIgnoreCase("xls")){
     		  excelUtil.saveResults(uploadedFile, stffID, school, examEgineDAO, studentDAO, roomDAO, subjectDAO, examConfigDAO); 
     	   }

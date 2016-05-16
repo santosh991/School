@@ -72,8 +72,6 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	    	 school  = beanProcessor.toBean(rset,SchoolAccount.class);
 	   }
      	
-     	
-     	
      }catch(SQLException e){
      	  logger.error("SQL Exception when getting SchoolAccount with Uuid: " + Uuid);
           logger.error(ExceptionUtils.getStackTrace(e));
@@ -215,8 +213,5 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	   
 		return list;
 	}
-
-	
-
 
 }

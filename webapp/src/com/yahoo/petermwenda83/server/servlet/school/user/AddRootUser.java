@@ -17,7 +17,6 @@ import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
-import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 
 /**
@@ -30,12 +29,13 @@ public class AddRootUser extends HttpServlet{
 	
 	private static StaffDAO staffDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
-    
+	final String ERROR_PHONE_INVALID = "Phone is invalid, phone number must have 10 digits (e.g. 0718953974).";
     final String ERROR_EMPTY_ACCOUNT = "Please Select an Account.";
     final String ERROR_EMPTY_CATEGORY = "Please Select a Category.";
     final String ERROR_EMPTY_POSITION = "Please Select a Position";
     final String ERROR_EMPTY_USERNAME = "Username can't be empty";
     final String ERROR_EMPTY_PASSWORD = "Password cant be empty";
+    final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
     
     final String ERROR_PRINCIPAL_EXIST = "Principal already added";
     
@@ -102,7 +102,13 @@ public class AddRootUser extends HttpServlet{
        }else if(StringUtils.isEmpty(principalusername)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_USERNAME); 
     	   
-       }else if(StringUtils.isEmpty(principalpassword)){
+       }else if(!isNumeric(phone)){
+    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_PHONE_NUMERIC); 
+    	   
+       }else if(!lengthValid(phone)){
+	 	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_PHONE_INVALID); 
+		   
+	}else if(StringUtils.isEmpty(principalpassword)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_PASSWORD); 
     	   
        }else if(staffDAO.getStaffByPosition(accountUuid, PRINCIPAL_POSITION) !=null){
@@ -150,7 +156,38 @@ public class AddRootUser extends HttpServlet{
        
 	}
    
-   
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		//System.out.println("lenght = " + length);
+		if(length<10 ||length>10){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
 
 @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)

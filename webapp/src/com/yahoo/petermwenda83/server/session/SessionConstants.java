@@ -165,6 +165,10 @@ public class SessionConstants {
      final public static String BOOK_UPDATE_SUCCESS = "Book Update Successfully";
      
      
+     //MISCELLANOUS
+     final public static String MISC_UPDATE_ERROR = "Book Update error"; 
+     final public static String MISC_UPDATE_SUCCESS = "Book Update Successfully";
+     
      
 	/**
 	 * 

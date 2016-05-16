@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -36,7 +35,7 @@ import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 
 public class ExcelUtil {
 
-	private static Logger logger = Logger.getLogger(ExcelUtil.class);
+	//private static Logger logger = Logger.getLogger(ExcelUtil.class);
 	private String[] examcodeArray;
 	private List<String> examcodeList;
 	
@@ -68,210 +67,200 @@ public class ExcelUtil {
 	 * @throws IOException 
 	 */
 	protected String inspectResultFile(File file,String schooluuid,String staffId,RoomDAO roomDAO,SubjectDAO subjectDAO,TeacherSubClassDAO teacherSubClassDAO,StudentDAO studentDAO) throws IOException {
+		
 		String feedback = UploadExam.UPLOAD_SUCCESS;
-		 // Creating Input Stream 
-        FileInputStream myInput =  new FileInputStream(file);
-        XSSFWorkbook myWorkBook = new XSSFWorkbook(myInput);
-   		XSSFSheet mySheet = myWorkBook.getSheetAt(0);
-   		int totalRow = mySheet.getLastRowNum();
-   		
-   		DecimalFormat rf = new DecimalFormat("0.0"); 
+		// Creating Input Stream 
+		FileInputStream myInput =  new FileInputStream(file);
+		XSSFWorkbook myWorkBook = new XSSFWorkbook(myInput);
+		XSSFSheet mySheet = myWorkBook.getSheetAt(0);
+		int totalRow = mySheet.getLastRowNum();
+
+		DecimalFormat rf = new DecimalFormat("0.0"); 
 		rf.setRoundingMode(RoundingMode.HALF_UP);
-			
-	    DecimalFormat rf2 = new DecimalFormat("0"); 
-	    rf2.setRoundingMode(RoundingMode.UP);
-	    
-	    DecimalFormat rf3 = new DecimalFormat("0"); 
-	    rf3.setRoundingMode(RoundingMode.DOWN);
-        
-        try{
-        	
-        
-   		
-   		String subject = "";
-   		String classroom = "";
-   		String exam = "";
-   		
-   		String filename = file.getName().replaceAll("_", " "); 
-   		
-   		String [] parts = filename.split("\\.");
-   		subject = parts[0];
-   		classroom = parts[1]; 
-   		exam = parts[2]; 
 
-   		if(subjectDAO.getSubjects(subject) ==null){
-   	    	  return ("subject code \"" + subject + "\" not found! ");
-   		    }
-   			
-   		  if(roomDAO.getroomByRoomName(schooluuid, classroom) ==null){
-   			  return ("class code \"" + classroom + "\" not found! ");
-   			}
-   	    
-   	     String code = StringUtils.lowerCase(StringUtils.trimToEmpty(exam) );
-   	        if(!examcodeList.contains(code)) {
-   	          return ("Invalid exam code \"" + code.toUpperCase()+"\"");
-   	    	 }
-   		
-   		
-   	      String examcode = exam;
-        	
-   	        int count = 1;
-    		for(int i=0; i<=totalRow; i++){
-    			XSSFRow row = mySheet.getRow(i);
-    			int totalColumn = row.getLastCellNum();
-    			
-    			String outof = "";
-    			XSSFCell cell1_score = row.getCell((short)1);
-    			String score_cell = cell1_score+""; 
-    			String [] score_cell_parts;
-				score_cell_parts = score_cell.split("-");
-				String part2_score = "";
-				part2_score = score_cell_parts[1];  
-				outof = part2_score;
-    			//System.out.println("outof ="+outof);
-    			
-    			if(StringUtils.isBlank(outof) || StringUtils.isEmpty(outof)){ 
-					//return ("Check that you have indicated 'outof' in your file"); 
-				 }
-    			
-    			 if(totalColumn >2){
-    					return ("Invalid Number of comlumns on line \"" + count);
-    				 }
-    			 
-    			
-    			
-    			for(int j=0; j<totalColumn; j++){
-    			XSSFCell cell = row.getCell((short)j);
-    			if(i==0){
-    				
-    			}else if(i >0){
-    				
-    				
-    				String scorestr =  row.getCell(1)+"";
-    				String admnostr = row.getCell(0)+"";
-    				
-    				double toformat = Double.parseDouble(scorestr);
-    				double dblescore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(toformat)))));
-    			    String formated = rf3.format(dblescore);
-    				
-    				boolean isNumeric = formated.chars().allMatch(x -> Character.isDigit(x));
-    			    if(!isNumeric) {  
-			    		return ("Invalid score " + scorestr + " on line \"" + count);
-			    	 }
-    				
-    				
-    				
-    				String score = (String) scorestr;
-    				
-    				
-    				
-    				switch (score){
-                    case "null":
-                    	return ("Blank score " + score + " on line \"" + count);
-                    	
-                    case "":
-                    	return ("Blank score " + score + " on line \"" + count);
-                    default:
-                       // System.out.println("Wrong score");
-                   break;   
-                        
-                     }
-    				
-    				
-    			
-    			    if(StringUtils.isBlank(score) ||StringUtils.isEmpty(score) || score == null){
-    			    	return ("Blank score " + score + " on line \"" + count);
-    			    }
-    			    
-    			   // System.out.println("score ="+score);
-    			    
-    				
-    			   
-    				
-    				
-    				boolean isNumericz = formated.chars().allMatch(x -> Character.isDigit(x));
-    			    if(!isNumericz) {  
-			    		return ("Invalid score " + formated + " on line \"" + count);
-			    	 }
-    				
-    				 if(StringUtils.equalsIgnoreCase(examcode, "c1") ||
-				    		 StringUtils.equalsIgnoreCase(examcode, "c2")){
-			    		 double thisscore = Double.parseDouble(scorestr);
-				    	 if(dblescore <=0 || dblescore >30) {
-				    		 //return ("Invalid cat 1 score on line \"" + count);
-				    	 }
-			    	 }
-    				
-    				 if(StringUtils.equalsIgnoreCase(examcode, "et")){
-			    		 double thisscore = Double.parseDouble(scorestr);
-			    		 if(dblescore <=0 || dblescore >70) {
-				    		// return ("Invalid end term score on line \"" + count);
-				    	 }
-			    	 }
-			    	 
-			    	 if(StringUtils.equalsIgnoreCase(examcode, "p1") ||
-					    	  StringUtils.equalsIgnoreCase(examcode, "p2") ||
-					    	  StringUtils.equalsIgnoreCase(examcode, "p3")){
-			    		 double thisscore = Double.parseDouble(scorestr);
-			    		 if(dblescore <=0 || dblescore >100) {
-				    		 return ("Invalid paper score on line \"" + count);
-				    	 }
-			    	 }		
-    				
-			    	 
+		DecimalFormat rf2 = new DecimalFormat("0"); 
+		rf2.setRoundingMode(RoundingMode.UP);
 
-			    	 String studentuuid = "";
-			    	 Student student = new Student();
-			    	 if(admnostr !=null){
-				    		student = studentDAO.getStudentObjByadmNo(schooluuid,admnostr);
-				    		if(student !=null){
-				    			studentuuid = student.getUuid();
-				    		}
-				    		
-				    	}
-			    	 
-			    	 if(studentDAO.getStudentByuuid(schooluuid,studentuuid)==null) {
-			    		 return ("Student with admNo \"" + admnostr + "\" on line \"" + count + "\" was not found in the System");
-			    	   }
-			          
-			    	 
-			    	    ClassRoom clss = roomDAO.getroomByRoomName(schooluuid, classroom);
-				        TeacherSubClass ts = new TeacherSubClass();  
-				        ts.setClassRoomUuid(clss.getUuid());
-				        ts.setTeacherUuid(staffId);
-				        Subject sub = subjectDAO.getSubjects(subject);
-				        ts.setSubjectUuid(sub.getUuid()); 
+		DecimalFormat rf3 = new DecimalFormat("0"); 
+		rf3.setRoundingMode(RoundingMode.DOWN);
+
+		try{
+
+			String subject = "";
+			String classroom = "";
+			String exam = "";
+
+			String filename = file.getName().replaceAll("_", " "); 
+
+			String [] parts = filename.split("\\.");
+			subject = parts[0];
+			classroom = parts[1]; 
+			exam = parts[2]; 
+
+			if(subjectDAO.getSubjects(subject) ==null){
+				return ("subject code \"" + subject + "\" not found! ");
+			}
+
+			if(roomDAO.getroomByRoomName(schooluuid, classroom) ==null){
+				return ("class code \"" + classroom + "\" not found! ");
+			}
+
+			String code = StringUtils.lowerCase(StringUtils.trimToEmpty(exam) );
+			if(!examcodeList.contains(code)) {
+				return ("Invalid exam code \"" + code.toUpperCase()+"\"");
+			}
+             
+			String outof = "";
+			String admnostr ="";
+			String scorestr ="";
+			int count = 1;
+			int totalColumn = 0;
+			for(int i=0; i<=totalRow; i++){
+				XSSFRow row = mySheet.getRow(i);
+				if(row !=null){
+				  totalColumn = row.getLastCellNum();
+				}
+				
+				for(int j=0; j<totalColumn; j++){
+	    			if(i==0){
+	    				XSSFCell cell1_score = row.getCell((short)1);
+	    				
+	    				String score_cell = cell1_score+""; 
+	    				
+	    				String [] score_cell_parts;
+	    				score_cell_parts = score_cell.split("-");
+	    				String part1_score = "";
+	    				String part2_score = "";
+	    				part1_score = score_cell_parts[0];   
+	    				part2_score = score_cell_parts[1];  
+	    				outof = part2_score;
+	    				
+						if (IsNull(part1_score)) { 
+							return ("Invalid/blank Character on line one ");
+						 }
 						
-						if(teacherSubClassDAO.getSubjectClass(ts) ==null){
-							//return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
+						if (IsNull(part2_score)) { 
+							return ("Invalid/blank outof ");
+						 }
+	    				
+	    				if(totalColumn >2){
+	    					return ("Invalid Number of comlumns on line \"" + count);
+	    				}
+	    				
+	    			}else if(i >0){
+	    				
+					admnostr = row.getCell(0)+"";
+					scorestr =  row.getCell(1)+"";
+					
+
+					if (StringUtils.isBlank(scorestr)) {
+						return ("Invalid/blank score " + scorestr + " on line \"" + count);
+					 }
+					
+					if(!isNumeric(outof)){
+						return ("Invalid outof " + outof);
+					}
+					
+
+					if(!isNumeric(scorestr)){
+						return ("Invalid score " + scorestr + " on line \"" + count);
+					}
+					
+
+					if(StringUtils.isBlank(scorestr) ||StringUtils.isEmpty(scorestr) || scorestr == null){
+						return ("Blank score " + scorestr + " on line \"" + count);
+					}
+
+
+					String studentuuid = "";
+					Student student = new Student();
+					if(admnostr !=null){
+						student = studentDAO.getStudentObjByadmNo(schooluuid,admnostr);
+						if(student !=null){
+							studentuuid = student.getUuid();
 						}
-			    	 
-			    	 
-    				
-    			}
-    			
-    			}
-    		}
-    		
-    		
-    		count++;
-         
-            
-    }
-    catch (Exception e){
-    	
-    }finally {
-    	myInput.close();
 
-    }
+					}
 
-   
-	    
+					if(studentDAO.getStudentByuuid(schooluuid,studentuuid)==null) {
+						return ("Student with admNo \"" + admnostr + "\" on line \"" + count + "\" was not found in the System");
+					}
+
+
+					ClassRoom clss = roomDAO.getroomByRoomName(schooluuid, classroom);
+					TeacherSubClass ts = new TeacherSubClass();  
+					ts.setClassRoomUuid(clss.getUuid());
+					ts.setTeacherUuid(staffId);
+					Subject sub = subjectDAO.getSubjects(subject);
+					ts.setSubjectUuid(sub.getUuid()); 
+
+					if(teacherSubClassDAO.getSubjectClass(ts) ==null){
+						//return ("Error! Confirm  that Subject \"" + subject +"\" or Class Room \"" + classroom + "\" really belongs to you.");
+					}
+
+				}//end if
+	    			
+	    			
+				}
+				
+				count++;
+			}
+		}
+		catch (Exception e){
+
+		}finally {
+			myInput.close();
+
+		}
+
+
+
 		return feedback;
 	}
 	
 	
 
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param string
+	 * @return
+	 */
+	private static boolean IsNull(String string) {
+		boolean isnull = false;
+		if(StringUtils.isEmpty(string) || StringUtils.isBlank(string)){
+			isnull = true;
+		}
+		return isnull; 
+	}
+
+
+	/**
+	 * @param uploadedFile
+	 * @param stffID
+	 * @param school
+	 * @param examEgineDAO
+	 * @param studentDAO
+	 * @param roomDAO
+	 * @param subjectDAO
+	 * @param examConfigDAO
+	 * @throws IOException
+	 */
 	public void saveResults(File uploadedFile,String stffID, SchoolAccount school, ExamEgineDAO examEgineDAO,
 			StudentDAO studentDAO, RoomDAO roomDAO, SubjectDAO subjectDAO,ExamConfigDAO examConfigDAO) throws IOException{
 		   
@@ -300,6 +289,7 @@ public class ExcelUtil {
 	
 		
 		try {
+			
 			int totalColumn = 0;
 		for(int i=0; i<=totalRow; i++){
 			XSSFRow row = mySheet.getRow(i);
@@ -318,7 +308,6 @@ public class ExcelUtil {
     				outof = part2_score;
     			}else if(i >0){
     				
-				
 				admnostr = row.getCell(0)+"";
 				scorestr =  row.getCell(1)+"";
 				
@@ -336,7 +325,6 @@ public class ExcelUtil {
 				double dblescore = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(toformat)))));
 			    formated = rf3.format(dblescore);
 			   
-				
     			 }
     			
     			
@@ -403,11 +391,13 @@ public class ExcelUtil {
 			    	     *   20/40*30 = 
 			    	     */
 						     
-						int i_outof = Integer.parseInt(outof);    
+						int i_outof = Integer.parseInt(outof); 
+
+
 						if(StringUtils.equalsIgnoreCase(exam, "c1")){
-							
+
 							CatOne catOne = new CatOne();
-				            catOne.setSchoolAccountUuid(school.getUuid());
+							catOne.setSchoolAccountUuid(school.getUuid());
 							catOne.setTeacherUuid(stffID);
 							catOne.setClassRoomUuid(classuuid); 
 							catOne.setClassesUuid(classesuuid);
@@ -416,87 +406,81 @@ public class ExcelUtil {
 							catOne.setCatOne((score/i_outof)*30);  // convert to 30
 							catOne.setTerm(examConfig.getTerm());
 							catOne.setYear(examConfig.getYear()); 
-						    examEgineDAO.putScore(catOne);	
-						  //System.out.println("catOne="+catOne);
-						}
-			            
-						if(StringUtils.equalsIgnoreCase(exam, "c2")){
+							examEgineDAO.putScore(catOne);	
+							//System.out.println("catOne="+catOne);
+						}else if(StringUtils.equalsIgnoreCase(exam, "c2")){
 							CatTwo catwo = new CatTwo();
-				            catwo.setSchoolAccountUuid(school.getUuid());
-				            catwo.setTeacherUuid(stffID);
-				            catwo.setClassRoomUuid(classuuid);  
-				            catwo.setClassesUuid(classesuuid); 
-				            catwo.setSubjectUuid(subjectuuid);
-				            catwo.setStudentUuid(studentuuid);
-				            catwo.setCatTwo((score/i_outof)*30); // convert to 30
-				            catwo.setTerm(examConfig.getTerm());
-				            catwo.setYear(examConfig.getYear()); 
-						    examEgineDAO.putScore(catwo);
-						   
-						}
-						if(StringUtils.equalsIgnoreCase(exam, "et")){
-							    EndTerm endterm = new EndTerm();
-					            endterm.setSchoolAccountUuid(school.getUuid());
-					            endterm.setTeacherUuid(stffID);
-					            endterm.setClassRoomUuid(classuuid);  
-					            endterm.setClassesUuid(classesuuid); 
-					            endterm.setSubjectUuid(subjectuuid);
-					            endterm.setStudentUuid(studentuuid);
-					            endterm.setEndTerm((score/i_outof)*70); //convert to 70
-					            endterm.setTerm(examConfig.getTerm());
-					            endterm.setYear(examConfig.getYear()); 
-							    examEgineDAO.putScore(endterm);
-							   
-						}
-						if(StringUtils.equalsIgnoreCase(exam, "p1")){
+							catwo.setSchoolAccountUuid(school.getUuid());
+							catwo.setTeacherUuid(stffID);
+							catwo.setClassRoomUuid(classuuid);  
+							catwo.setClassesUuid(classesuuid); 
+							catwo.setSubjectUuid(subjectuuid);
+							catwo.setStudentUuid(studentuuid);
+							catwo.setCatTwo((score/i_outof)*30); // convert to 30
+							catwo.setTerm(examConfig.getTerm());
+							catwo.setYear(examConfig.getYear()); 
+							examEgineDAO.putScore(catwo);
+
+						}else if(StringUtils.equalsIgnoreCase(exam, "et")){
+							EndTerm endterm = new EndTerm();
+							endterm.setSchoolAccountUuid(school.getUuid());
+							endterm.setTeacherUuid(stffID);
+							endterm.setClassRoomUuid(classuuid);  
+							endterm.setClassesUuid(classesuuid); 
+							endterm.setSubjectUuid(subjectuuid);
+							endterm.setStudentUuid(studentuuid);
+							endterm.setEndTerm((score/i_outof)*70); //convert to 70
+							endterm.setTerm(examConfig.getTerm());
+							endterm.setYear(examConfig.getYear()); 
+							examEgineDAO.putScore(endterm);
+
+						}else if(StringUtils.equalsIgnoreCase(exam, "p1")){
 							PaperOne p1 = new PaperOne();
-				            p1.setSchoolAccountUuid(school.getUuid());
-				            p1.setTeacherUuid(stffID);
-				            p1.setClassRoomUuid(classuuid);  
-				            p1.setClassesUuid(classesuuid); 
-				            p1.setSubjectUuid(subjectuuid);
-				            p1.setStudentUuid(studentuuid);
-				            p1.setPaperOne(score); 
-				            p1.setTerm(examConfig.getTerm());
-				            p1.setYear(examConfig.getYear()); 
-						   examEgineDAO.putScore(p1);
-						    
-					}
-						if(StringUtils.equalsIgnoreCase(exam, "p2")){
+							p1.setSchoolAccountUuid(school.getUuid());
+							p1.setTeacherUuid(stffID);
+							p1.setClassRoomUuid(classuuid);  
+							p1.setClassesUuid(classesuuid); 
+							p1.setSubjectUuid(subjectuuid);
+							p1.setStudentUuid(studentuuid);
+							p1.setPaperOne(score); 
+							p1.setTerm(examConfig.getTerm());
+							p1.setYear(examConfig.getYear()); 
+							examEgineDAO.putScore(p1);
+
+						}else if(StringUtils.equalsIgnoreCase(exam, "p2")){
 							PaperTwo p2 = new PaperTwo();
-				            p2.setSchoolAccountUuid(school.getUuid());
-				            p2.setTeacherUuid(stffID);
-				            p2.setClassRoomUuid(classuuid);
-				            p2.setClassesUuid(classesuuid); 
-				            p2.setSubjectUuid(subjectuuid);
-				            p2.setStudentUuid(studentuuid);
-				            p2.setPaperTwo(score); 
-				            p2.setTerm(examConfig.getTerm());
-				            p2.setYear(examConfig.getYear()); 
-						   examEgineDAO.putScore(p2);
-						   
-					}
-						if(StringUtils.equalsIgnoreCase(exam, "p3")){
+							p2.setSchoolAccountUuid(school.getUuid());
+							p2.setTeacherUuid(stffID);
+							p2.setClassRoomUuid(classuuid);
+							p2.setClassesUuid(classesuuid); 
+							p2.setSubjectUuid(subjectuuid);
+							p2.setStudentUuid(studentuuid);
+							p2.setPaperTwo(score); 
+							p2.setTerm(examConfig.getTerm());
+							p2.setYear(examConfig.getYear()); 
+							examEgineDAO.putScore(p2);
+
+						}else if(StringUtils.equalsIgnoreCase(exam, "p3")){
 							PaperThree p3 = new PaperThree();
-				            p3.setSchoolAccountUuid(school.getUuid());
-				            p3.setTeacherUuid(stffID);
-				            p3.setClassRoomUuid(classuuid);  
-				            p3.setClassesUuid(classesuuid); 
-				            p3.setSubjectUuid(subjectuuid);
-				            p3.setStudentUuid(studentuuid);
-				            p3.setPaperThree(score); 
-				            p3.setTerm(examConfig.getTerm());
-				            p3.setYear(examConfig.getYear()); 
-						   examEgineDAO.putScore(p3);
-						   
-					}
-						
-						
-					 	
-				    	
+							p3.setSchoolAccountUuid(school.getUuid());
+							p3.setTeacherUuid(stffID);
+							p3.setClassRoomUuid(classuuid);  
+							p3.setClassesUuid(classesuuid); 
+							p3.setSubjectUuid(subjectuuid);
+							p3.setStudentUuid(studentuuid);
+							p3.setPaperThree(score); 
+							p3.setTerm(examConfig.getTerm());
+							p3.setYear(examConfig.getYear()); 
+							examEgineDAO.putScore(p3);
+
+						}
+
+
+
+
 			    }
-			    
-			
+
+
 		      }
 		
 			

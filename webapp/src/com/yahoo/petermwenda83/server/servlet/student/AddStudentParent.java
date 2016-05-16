@@ -48,6 +48,9 @@ public class AddStudentParent extends HttpServlet{
 	final String FATHER_MOTHER_ADD_SUCCESS = "Details added successfully.";
 	final String ERROR_EMPTY_MOTHER_NAME = "Mother name cant be empty.";
 	final String ERROR_EMPTY_FATHER_NAME = "Father name cant be empty.";
+	final String ERROR_PHONE_INVALID = "Phone is invalid, the number must have 10 digits (e.g. 0718953974).";
+	
+	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	
 	
 	
@@ -143,6 +146,12 @@ public class AddStudentParent extends HttpServlet{
 	}else if(StringUtils.isBlank(FatherPhone)){ 
 			session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_EMPTY_FATHER_PHONE); 
 							  
+	}else if(!isNumeric(FatherPhone)){
+ 	   session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_PHONE_NUMERIC); 
+	   
+    }else if(!lengthValid(FatherPhone)){
+	 	   session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_PHONE_INVALID); 
+		   
 	}else if(StringUtils.isBlank(FatherOccupation)){ 
 		session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, ERROR_EMPTY_FATHER_OCCUPATION); 
 							  
@@ -227,6 +236,37 @@ public class AddStudentParent extends HttpServlet{
        
    }
 
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		//System.out.println("lenght = " + length);
+		if(length<10 ||length>10){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
    
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)

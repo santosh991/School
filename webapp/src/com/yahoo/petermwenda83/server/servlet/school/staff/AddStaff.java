@@ -21,6 +21,7 @@ import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
 import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
+import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 /**
@@ -36,7 +37,7 @@ public class AddStaff extends HttpServlet {
 	final  String pos_Deputy_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_DEPUTY"); 
 	private String principalId = "";
 	private String DeputyprincipalId = ""; 
-	
+	final String ERROR_PHONE_INVALID = "Staff phone is invalid, the number must have 10 digits (e.g. 0718953974).";
 	final String ERROR_SELECT_POSITION = "Please select a position"; 
 	final String ERROR_EMPTY_USERNAME = "username can't be empty";
 	final String ERROR_EMPTY_FIRSTNAME = "firstname can't be empty";
@@ -44,6 +45,7 @@ public class AddStaff extends HttpServlet {
 	final String ERROR_EMPTY_SURNAME = "surname can't be empty";
 	final String ERROR_EMPTY_GENDER = "Please select a gender";
 	final String ERROR_EMPTY_PHONE = "phone can't be empty";
+	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	final String ERROR_EMPTY_IDNO = "ID number can't be empty";
 	final String ERROR_EMPTY_COUNTY = "county can't be empty";
 	final String ERROR_EMPTY_DOB = "date of birth can't be empty";
@@ -148,7 +150,13 @@ public class AddStaff extends HttpServlet {
        }else if(StringUtils.isEmpty(phone)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_PHONE); 
     	   
-       }else if(StringUtils.isEmpty(idno)){
+       }else if(!isNumeric(phone)){
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_PHONE_NUMERIC); 
+    	   
+       }else if(!lengthValid(phone)){
+	 	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_PHONE_INVALID); 
+		   
+	   }else if(StringUtils.isEmpty(idno)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_IDNO); 
     	   
        }else if(StringUtils.isEmpty(county)){
@@ -197,6 +205,7 @@ public class AddStaff extends HttpServlet {
     	   
     	   if(staffDAO.putStaff(staff) && staffDetailsDAO.putSStaffDetail(staffDetail)){
     		   session.setAttribute(SessionConstants.STAFF_ADD_SUCCESS, STAFF_ADD_SUCSESS); 
+    		   paramHash.clear();
     	   }else{
     		   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, STAFF_ADD_ERROR); 
     	   }
@@ -209,7 +218,39 @@ public class AddStaff extends HttpServlet {
        
    }
    
-   
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		//System.out.println("lenght = " + length);
+		if(length<10 ||length>10){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
 
    @Override
       protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -78,6 +78,35 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
      
 		return staff; 
 	}
+	
+	
+	@Override
+	public Staff getStaffUsername(String username) {
+		Staff staff = null;
+        ResultSet rset = null;
+     try(
+     		      Connection conn = dbutils.getConnection();
+        	      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Staff WHERE Username = ?;");       
+     		
+     		){
+     	     pstmt.setString(1, username);
+	         rset = pstmt.executeQuery();
+	        while(rset.next()){
+	
+	    	 staff  = beanProcessor.toBean(rset,Staff.class);
+	   }
+     	
+     	
+     	
+     }catch(SQLException e){
+     	  logger.error("SQL Exception when getting Staff with Username: " + username);
+          logger.error(ExceptionUtils.getStackTrace(e));
+          System.out.println(ExceptionUtils.getStackTrace(e));
+     }
+     
+		return staff; 
+	}
+
 
 	/**
 	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaffByUsername(java.lang.String)
@@ -238,6 +267,5 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 		return list;
 	}
 
-	
 
 }

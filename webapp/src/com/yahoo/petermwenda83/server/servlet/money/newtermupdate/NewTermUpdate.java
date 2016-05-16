@@ -148,6 +148,9 @@ public class NewTermUpdate extends HttpServlet{
 		double previousFee = 0;
 		
 		 
+		int noOfStudent = 0;
+		int updatedStudent = 0;
+		String message = "";
 		
 		if(studentList !=null){
 			for(Student student : studentList){
@@ -199,17 +202,15 @@ public class NewTermUpdate extends HttpServlet{
 					
 						
 						if(closingBalanceDAO.putClosingBalance(closingBalance)){
-							session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, COMMITT_SUCCESS +" "+previousFee +" for Term  "  + previousTerm + " Deducted from each student"); 
-	
+							message = ", ";
 						}
 						
 					    
-						
+						updatedStudent++;
 						
 					}else{
-						  session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, COMMITT_ERROR); 
-							//json = new Gson().toJson("Some Students SKIPED,");
-
+						message = "***, ";
+							
 						} 
 					
 					
@@ -218,13 +219,18 @@ public class NewTermUpdate extends HttpServlet{
 				} 
 
 
-
+				noOfStudent++;
 			}
-			//out.println( previousFee + " for Term " + previousTerm + json + ",from each Student, Total Number of Students = "+count);
-		}
+			
+		}//if(studentList !=null){
 
 		//out.flush();
 		//out.close();	
+		
+		//response 
+		session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, COMMITT_SUCCESS +" "+message+"("+updatedStudent + " students of " + noOfStudent+")"); 
+		
+		
 		response.sendRedirect("feedback.jsp");  
 		return; 
 

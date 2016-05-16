@@ -33,6 +33,8 @@ public class UpdateStaff extends HttpServlet{
 	private static StaffDAO staffDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
 	
+	 
+    final String ERROR_PHONE_INVALID = "Phone number is invalid, the number must have 10 digits (e.g. 0718953974).";
 	final String ERROR_SELECT_POSITION = "Please select a position"; 
 	final String ERROR_EMPTY_CATEGORY = "Please select staff category"; 
 	final String ERROR_EMPTY_USERNAME = "username can't be empty";
@@ -41,6 +43,7 @@ public class UpdateStaff extends HttpServlet{
 	final String ERROR_EMPTY_SURNAME = "surname can't be empty";
 	final String ERROR_EMPTY_GENDER = "Please select a gender";
 	final String ERROR_EMPTY_PHONE = "phone can't be empty";
+	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	final String ERROR_EMPTY_IDNO = "ID number can't be empty";
 	final String ERROR_EMPTY_COUNTY = "county can't be empty";
 	final String ERROR_EMPTY_DOB = "date of birth can't be empty";
@@ -112,6 +115,12 @@ public class UpdateStaff extends HttpServlet{
        }else if(StringUtils.isEmpty(phone)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_PHONE); 
     	   
+       }else if(!isNumeric(phone)){
+    	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_PHONE_NUMERIC); 
+    	   
+       }else if(!lengthValid(phone)){
+    	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR,ERROR_PHONE_INVALID ); 
+    	   
        }else if(StringUtils.isEmpty(idno)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_IDNO); 
     	   
@@ -170,6 +179,39 @@ public class UpdateStaff extends HttpServlet{
        
        
    }
+   
+
+	/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean lengthValid(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	//System.out.println("lenght = " + length);
+	if(length<10 ||length>10){
+		isvalid = false;
+	}
+	return isvalid;
+}
    
    
 

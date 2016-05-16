@@ -50,6 +50,7 @@ public class UpdateExamConfig extends HttpServlet{
 	final String ERROR_EMPTY_FIELD = "Empty fields not allowed";
 	final String ERROR_YEAR_OUTSIDE_RANGE = "Check the year and try again";
 	final String ERROR_TERM_NOT_ALLOWED = "Term can't be greater that three";
+	final String ERROR_TERM_NUMERIC = "Term can only be numeric";
 	final String ERROR_EXAM_MODE_NOT_ALLOWED = "Exam Mode can only be  ON or OFF";
 	final String ERROR_EXAM_NOT_FOUND = "Exam code not found";
 	
@@ -92,7 +93,10 @@ public class UpdateExamConfig extends HttpServlet{
         if(StringUtils.isEmpty(year)){
     	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
     	   
-        }else if(theterm >3){
+        }else if(!isNumericRange(term)){
+		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_TERM_NUMERIC); 
+			   
+	   }else if(theterm >3){
     	  session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_TERM_NOT_ALLOWED); 
     	   
         }
@@ -132,10 +136,26 @@ public class UpdateExamConfig extends HttpServlet{
        
        }
        
-       response.sendRedirect("examConfig.jsp");  
+       response.sendRedirect("prepareCommitt.jsp");  
 	   return;
    }
    
+   /**
+    * @param amount
+    * @return
+    */
+   private boolean isNumericRange(String amount) {
+   	boolean valid = true;
+   	String regex = "[0-9]+";
+   	if(amount.matches(regex)){ 
+   		valid = true;
+   	}else{
+   		valid = false;
+   	}
+   	
+   	return valid;
+   }
+      
    
 
    @Override

@@ -25,7 +25,7 @@ public class ActivateByClass extends HttpServlet{
 	final String ERROR_STATUS_CHANGE = "Students activation failed";
 	final String EMPTY_FIELDS = "Empty fields not allowed";
 	
-	final String INACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+	final String ACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	
 	private static StudentDAO studentDAO;
@@ -59,7 +59,7 @@ public class ActivateByClass extends HttpServlet{
        for(Student stu : studentlist){
     	   Student student = new Student();
     	   student = studentDAO.getStudentByuuid(schooluuid, stu.getUuid());
-    	   student.setStatusUuid(INACTIVE); 
+    	   student.setStatusUuid(ACTIVE); 
     	   if(studentDAO.updateStudents(student)){
     		   //session response
     	       session.setAttribute(SessionConstants.STATUS_CHANGE_SUCCESS, SUCCESS_STATUS_CHANGE); 
