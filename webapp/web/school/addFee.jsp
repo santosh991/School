@@ -72,8 +72,8 @@
 
     TermFee termFee  = new TermFee();
 
-    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
-           termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
+    if(termFeeDAO.getFee(accountuuid,examConfig.getTerm(),examConfig.getYear()) !=null){
+           termFee = termFeeDAO.getFee(accountuuid,examConfig.getTerm(),examConfig.getYear());
        }
    
 
@@ -274,7 +274,7 @@
                              
                                 <p>Fields marked with a * are compulsory.</p>
 
-                  <form  class="form-horizontal"   action="addFeeDetails" method="POST" >
+                  <form  class="form-horizontal"   action="addFeeDetails" method="POST" autocomplete="off">
                   <fieldset>
                               
                               <div class="control-group">
@@ -290,6 +290,14 @@
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="slipNumber"
                                         value="<%= StringUtils.trimToEmpty(paramHash2.get("slipNumber")) %>"  >
+                                  </div>
+                              </div> 
+
+                              <div class="control-group">
+                                  <label class="control-label" for="schoolpassword">Security Key*:</label>
+                                  <div class="controls">
+                                      <input class="input-xlarge focused" id="receiver" type="text" name="schoolpassword"
+                                        value="" style="color: white;" autocomplete="off">
                                   </div>
                               </div> 
 

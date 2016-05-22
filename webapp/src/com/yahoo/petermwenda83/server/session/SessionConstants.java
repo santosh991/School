@@ -145,9 +145,9 @@ public class SessionConstants {
     public static final String FILE_UPLOAD_SUCCESS = "Filed uploaded Successfully";
     public static final String FILE_UPLOAD_ERROR = "Filed upload Error";
 	
-    final public static String EXAM_CONFIG_UPDATE_ERROR = "Exam Config update error";
-	final public static String EXAM_CONFIG_UPDATE_SUCCESS = "Exam Config update Successfully";
-	final public static String EXAM_CONFIG_UPDATE_PARAM = "Exam Config Parameters";
+    final public static String EXAM_CONFIG_UPDATE_ERROR = "Term Config update error";
+	final public static String EXAM_CONFIG_UPDATE_SUCCESS = "Term Config update Successfully";
+	final public static String EXAM_CONFIG_UPDATE_PARAM = "Term Config Parameters";
 	
 	
 	//BOOK MANAGEMENT

@@ -79,7 +79,7 @@ public class TestSmsSendDAO {
 	@Test
 	public final void testGetSmsSend() {
 		store = new SmsSendDAO(databaseName, Host, databaseUsername, databasePassword, databasePort); 
-		List<SmsSend> list = store.getSmsSend();
+		List<SmsSend> list = store.getSmsSendList("");
 		for (SmsSend ss : list) {
 			System.out.println(ss);
 		}

@@ -290,6 +290,9 @@
                       
                       if(studentList !=null){
                     for(Student s : studentList){
+
+                      String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                    if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
                    
 
                     String firstNameLowecase = s.getFirstname().toLowerCase();
@@ -323,9 +326,6 @@
                         kcpeyear = "";
                     }
 
-
-
-                    String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
                     if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
                        status = "Active";
                     }else{
@@ -372,6 +372,7 @@
 
                     <%
                           ussdCount++;
+                         }
                        }
                      }
                             

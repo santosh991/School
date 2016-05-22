@@ -172,8 +172,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
 
 	TermFee termFee = new TermFee();
-	if(termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm()) !=null){
-		termFee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+	if(termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
+		termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 	}
 
 	Student stuudent = new Student();
@@ -333,8 +333,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
 
 			TermFee termFeenew = new TermFee();
-			if(termFeeDAO.getTermFee(school.getUuid(),examConfig2.getTerm()) !=null){
-				termFeenew = termFeeDAO.getTermFee(school.getUuid(),examConfig2.getTerm());
+			if(termFeeDAO.getFee(school.getUuid(),examConfig2.getTerm(),examConfig.getYear()) !=null){
+				termFeenew = termFeeDAO.getFee(school.getUuid(),examConfig2.getTerm(),examConfig.getYear());
 			}
 			
 			double other_m_amount = 0;

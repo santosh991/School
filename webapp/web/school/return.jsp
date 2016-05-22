@@ -80,25 +80,40 @@
     BookDAO bookDAO = BookDAO.getInstance();
 
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
+
     List<StudentBook> studentBookslist = new ArrayList<StudentBook>();
     List<Book> bookslist = new ArrayList<Book>();
-    studentBookslist = studentBookDAO.getStudentBookList("Borrowed");//Borrowed
-    bookslist = bookDAO.getBookList(accountuuid);
+
+    if(studentBookDAO.getStudentBookList("Borrowed")!=null){
+         studentBookslist = studentBookDAO.getStudentBookList("Borrowed");
+       }
+
+       if(bookDAO.getBookList(accountuuid)!=null){
+           bookslist = bookDAO.getBookList(accountuuid);
+         }
 
     HashMap<String, String> bookHash = new HashMap<String, String>();
     HashMap<String, String> isbnHash = new HashMap<String, String>();
+     if(bookslist!=null){
     for(Book bk : bookslist){
         isbnHash.put(bk.getUuid(),bk.getISBN());
         bookHash.put(bk.getUuid(),bk.getTitle());
-       }
+        }
+      }
 
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
-     studentList = studentDAO.getAllStudentList(accountuuid); 
 
+     if(studentDAO.getAllStudentList(accountuuid)!=null){
+        studentList = studentDAO.getAllStudentList(accountuuid); 
+      }
+ 
      HashMap<String, Student> studentHash = new HashMap<String, Student>();
+
+     if(studentList!=null){
      for(Student stu : studentList){
          studentHash.put(stu.getUuid(),stu);
+          }
         }
 
    
@@ -106,7 +121,7 @@
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      
      SimpleDateFormat formatter;
-		   formatter = new SimpleDateFormat("dd, MMM yyyy");
+     formatter = new SimpleDateFormat("dd, MMM yyyy");
                              
 
  %>
@@ -177,12 +192,12 @@
                 <tbody>
                     <%
                      int count = 1;
+                     if(studentBookslist!=null){
                     for(StudentBook stbk : studentBookslist){
                           Student student = new Student();
                           if(studentHash.get(stbk.getStudentUuid()) !=null){
-                            student = studentHash.get(stbk.getStudentUuid()); 
-                          }
-                          //getBorrowDate()
+                             student = studentHash.get(stbk.getStudentUuid()); 
+                        
                      %>
 
                     <tr>
@@ -206,6 +221,8 @@
 
                     <%
                           count++;
+                            }
+                          }
                        }
                             
                     %>

@@ -20,7 +20,7 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 public class AddGradeScale extends HttpServlet{
 	
 	
-	final String ERROR_EMPTY_FIRLD = "Empty fields not allowed"; 
+	final String ERROR_EMPTY_FIRLD = "Empty fields/incorrect data type /range."; 
 	final String ERROR_SCALE_ADD_ERROR = "An error occured while updating grading scale"; 
 	final String ERROR_SCALE_ADD_SUCCESS = "Grading scale updated successfully"; 
 	
@@ -71,44 +71,38 @@ public class AddGradeScale extends HttpServlet{
 	   paramHash.put("Dm", Dm);
 	   paramHash.put("E", E);
        
-	   if(StringUtils.isEmpty(A)){
+	   if(StringUtils.isEmpty(A) || !isNumeric(A) || Integer.parseInt(A)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(Am)){
+       }else if(StringUtils.isEmpty(Am) ||!isNumeric(Am) || Integer.parseInt(Am)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(Bp)){
+       }else if(StringUtils.isEmpty(B) ||!isNumeric(B) || Integer.parseInt(B)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(B)){
+       }else if(StringUtils.isEmpty(Bm) ||!isNumeric(Bm) || Integer.parseInt(Bm)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(Bm)){
+       }else if(StringUtils.isEmpty(Cp) ||!isNumeric(Cp) || Integer.parseInt(Cp)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(Cp)){
+       }else if(StringUtils.isEmpty(C) ||!isNumeric(C) || Integer.parseInt(C)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(C)){
+       }else if(StringUtils.isEmpty(Cm) ||!isNumeric(Cm) || Integer.parseInt(Cm)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(Cm)){
+       }else if(StringUtils.isEmpty(D) ||!isNumeric(D) || Integer.parseInt(D)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(Dp)){
+       }else if(StringUtils.isEmpty(Dm) ||!isNumeric(Dm) || Integer.parseInt(Dm)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
-       }else if(StringUtils.isEmpty(D)){
-    	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
-    	   
-       }else if(StringUtils.isEmpty(Dm)){
-    	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
-    	   
-       }else if(StringUtils.isEmpty(E)){
+       }else if(StringUtils.isEmpty(E) ||!isNumeric(E) || Integer.parseInt(E)>100){
     	   session.setAttribute(SessionConstants.GRADE_ADD_ERROR, ERROR_EMPTY_FIRLD); 
     	   
        }else{
-    	   GradingSystem gradingSystem = new GradingSystem();
+    	   GradingSystem gradingSystem = gradingSystemDAO.getGradingSystem(schoolAccountUuid);
     	   gradingSystem.setSchoolAccountUuid(schoolAccountUuid); 
     	   gradingSystem.setGradeAplain(Integer.parseInt(A));
     	   gradingSystem.setGradeAminus(Integer.parseInt(Am));
@@ -137,6 +131,25 @@ public class AddGradeScale extends HttpServlet{
 	   return;
        
    }
+   
+   
+   /**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+      
   
 
    @Override

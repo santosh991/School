@@ -116,8 +116,8 @@
 
     TermFee termFee  = new TermFee();
 
-    if(termFeeDAO.getTermFee(accountuuid,examConfig.getTerm()) !=null){
-           termFee = termFeeDAO.getTermFee(accountuuid,examConfig.getTerm());
+    if(termFeeDAO.getFee(accountuuid,examConfig.getTerm(),examConfig.getYear()) !=null){
+           termFee = termFeeDAO.getFee(accountuuid,examConfig.getTerm(),examConfig.getYear());
        }
    
 
@@ -169,6 +169,10 @@
 
           <li>
             <a href="pocketM.jsp">Pocket Money</a> <span class="divider">/</span>
+         </li>
+
+          <li>
+            <a href="accountStatus.jsp">Account Status</a> <span class="divider">/</span>
          </li>
 
 

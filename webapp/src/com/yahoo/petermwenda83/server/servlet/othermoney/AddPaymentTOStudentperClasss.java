@@ -283,12 +283,12 @@ public class AddPaymentTOStudentperClasss extends HttpServlet{
 
 						//end
 						TermFee termfee = new TermFee();
-						if(termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm()) !=null){
+						if(termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
 
 							double other_m_amount = 0;
 							double other_m_totals = 0;
 
-							termfee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+							termfee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 
 							List<StudentOtherMonies>  stuOthermoniList = new ArrayList<>(); 
 							stuOthermoniList = studentOtherMoniesDAO.getStudentOtherList(stu.getUuid(),examConfig.getTerm(),examConfig.getYear());

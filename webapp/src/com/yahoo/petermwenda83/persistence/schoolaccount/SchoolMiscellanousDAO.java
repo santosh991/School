@@ -26,7 +26,7 @@ public interface SchoolMiscellanousDAO {
 	 * @return
 	 */
 	
-	public Miscellanous getKey(String key);
+	public Miscellanous getKey(String schoolAccountUuid,String key);
 	
 	/**
 	 * 

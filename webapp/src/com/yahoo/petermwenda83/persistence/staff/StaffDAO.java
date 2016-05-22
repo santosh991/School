@@ -256,16 +256,12 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 				 list = beanProcessor.toBeanList(rset, Staff.class);
 				}
 	        
-
 	  } catch(SQLException e){
 	  	 logger.error("SQL Exception when getting all Staff");
 	     logger.error(ExceptionUtils.getStackTrace(e));
 	     System.out.println(ExceptionUtils.getStackTrace(e)); 
 	  }
-
-		
 		return list;
 	}
-
 
 }

@@ -192,6 +192,11 @@
                         int count = 1;
                         if(studentList !=null){
                        for(Student ss : studentList) { 
+
+                         String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                    if(StringUtils.equals(ss.getStatusUuid(),statusUuid)){
+
+
                                 for(StudentHouse stuhouse : studenthouseList){
                                    if(StringUtils.equals(ss.getUuid(),stuhouse.getStudentUuid())){
                                         studentHouse = studentHouseHash.get(ss.getUuid());
@@ -210,6 +215,7 @@
                           count++;
                              }
                           } 
+                        }
                      }
                  }
                     %>

@@ -25,11 +25,10 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 public class ChangeClassTeacher extends HttpServlet{
 	
 
-	final String ERROR_TECAHER_HAS_CLASS = "The teacher is already assigned a class.";
-	final String ERROR_CLASS_HAS_TEACHER = "The class is already assigned a teacher.";
+	final String ERROR_CLASS_HAS_TEACHER = "The new class is already assigned a teacher.";
 	final String ERROR_CLASS_CHANGE_FAILED = "Class change failed";
 	final String EMPTY_FIELDS = "Emplty fileds not allowed";
-	final String SUCCESS_CLASS_CHANGED = "Change success";
+	final String SUCCESS_CLASS_CHANGED = "Class changed successfully";
 	
 	
 	private static ClassTeacherDAO classTeacherDAO;
@@ -69,13 +68,10 @@ public class ChangeClassTeacher extends HttpServlet{
        }else if(StringUtils.isBlank(newclassuuid)){
     	   session.setAttribute(SessionConstants.PROMOTE_CALSS_ERROR, EMPTY_FIELDS); 
     	   
-       }/*else if(classTeacherDAO.getClassTeacherByteacherId(currentclssteacher) !=null){ 
-		   session.setAttribute(SessionConstants.PROMOTE_CALSS_ERROR, ERROR_TECAHER_HAS_CLASS); 
-		  
-	   }else if(classTeacherDAO.getClassTeacherByclassId(newclassuuid) !=null){ 
+       }else if(classTeacherDAO.getClassTeacherByclassId(newclassuuid) !=null){ 
 		   session.setAttribute(SessionConstants.PROMOTE_CALSS_ERROR, ERROR_CLASS_HAS_TEACHER); 
 		  
-	   }*/else{
+	   }else{
     	   
     	   
     	   //get teacher's current class

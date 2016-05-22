@@ -47,5 +47,12 @@ public interface SchoolSmsSendDAO {
 	   * @return
 	   */
 	public List<SmsSend> getSmsSend();
+	
+	/**
+	 * 
+	 * @param status
+	 * @return
+	 */
+	public List<SmsSend> getSmsSendList(String status);
 
 }

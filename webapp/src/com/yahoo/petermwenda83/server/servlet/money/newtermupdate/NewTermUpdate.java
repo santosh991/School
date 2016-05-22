@@ -135,8 +135,8 @@ public class NewTermUpdate extends HttpServlet{
 		}
 
 		termFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),currentTerm) !=null){
-			termFee = termFeeDAO.getTermFee(school.getUuid(),currentTerm);
+		if(termFeeDAO.getFee(school.getUuid(),currentTerm,previousyear) !=null){
+			termFee = termFeeDAO.getFee(school.getUuid(),currentTerm,previousyear);
 		}
 
 		List<Student> studentList = new ArrayList<>();
@@ -155,6 +155,9 @@ public class NewTermUpdate extends HttpServlet{
 		if(studentList !=null){
 			for(Student student : studentList){
 				
+				String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
+				
 				StudentAmount studentAmount = new StudentAmount();
 
 				//get student status
@@ -171,8 +174,8 @@ public class NewTermUpdate extends HttpServlet{
 					//we find previous term fee					
 					TermFee	termFeePrev = new TermFee();
 					
-					if(termFeeDAO.getTermFee(school.getUuid(),previousTerm) !=null){
-						termFeePrev = termFeeDAO.getTermFee(school.getUuid(),previousTerm);
+					if(termFeeDAO.getFee(school.getUuid(),previousTerm,previousyear) !=null){
+						termFeePrev = termFeeDAO.getFee(school.getUuid(),previousTerm,previousyear);
 					}
 					
 					//this is prev term fee
@@ -221,6 +224,7 @@ public class NewTermUpdate extends HttpServlet{
 
 				noOfStudent++;
 			}
+		}
 			
 		}//if(studentList !=null){
 

@@ -77,8 +77,11 @@ public class PrintStatement extends HttpServlet {
 
 	SimpleDateFormat formatter = new SimpleDateFormat("dd, MMM yyyy");
 	SimpleDateFormat yearformatter = new SimpleDateFormat("yyyy");
-	BaseColor baseColor = new BaseColor(32,178,170);//maroon
-	BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
+	BaseColor baseColor = new BaseColor(255,255,255);//while   32,178,170)
+	BaseColor Colormagenta = new BaseColor(255,255,255);//  (176,196,222); magenta
+	BaseColor Colorgrey = new BaseColor(255,255,255);//  (128,128,128)gray,grey
+	//BaseColor baseColor = new BaseColor(32,178,170);//maroon
+	//BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
 	Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
 
 	private Cache schoolaccountCache;
@@ -424,7 +427,7 @@ public class PrintStatement extends HttpServlet {
 
 
 				TermFee termfee = new TermFee();
-				if(termFeeDAO.getTermFee(school.getUuid(),regterm) !=null){
+				if(termFeeDAO.getFee(school.getUuid(),regterm,admYear) !=null){
 					
 					double other_m_amount = 0;
 					double other_m_totals = 0;
@@ -440,7 +443,7 @@ public class PrintStatement extends HttpServlet {
 					}
 					
 					
-					termfee = termFeeDAO.getTermFee(school.getUuid(),regterm);
+					termfee = termFeeDAO.getFee(school.getUuid(),regterm,admYear);
 
 					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
@@ -613,7 +616,7 @@ public class PrintStatement extends HttpServlet {
 
 
 				TermFee termfee = new TermFee();
-				if(termFeeDAO.getTermFee(school.getUuid(),regterm) !=null){
+				if(termFeeDAO.getFee(school.getUuid(),regterm,admYear) !=null){
 					
 					double other_m_amount = 0;
 					double other_m_totals = 0;
@@ -629,7 +632,7 @@ public class PrintStatement extends HttpServlet {
 					}
 					
 					
-					termfee = termFeeDAO.getTermFee(school.getUuid(),regterm);
+					termfee = termFeeDAO.getFee(school.getUuid(),regterm,admYear);
 
 					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
@@ -806,7 +809,7 @@ public class PrintStatement extends HttpServlet {
 
 
 				TermFee termfee = new TermFee();
-				if(termFeeDAO.getTermFee(school.getUuid(),regterm) !=null){
+				if(termFeeDAO.getFee(school.getUuid(),regterm,admYear) !=null){
 					
 					double other_m_amount = 0;
 					double other_m_totals = 0;
@@ -822,7 +825,7 @@ public class PrintStatement extends HttpServlet {
 					}
 					
 					
-					termfee = termFeeDAO.getTermFee(school.getUuid(),regterm);
+					termfee = termFeeDAO.getFee(school.getUuid(),regterm,admYear);
 
 					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
 							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
@@ -961,13 +964,6 @@ public class PrintStatement extends HttpServlet {
 		String regterm = Integer.toString(nextterm);
 		String admYear = Integer.toString(nextyear);
 
-/*
-		Paragraph preface = new Paragraph();
-		preface.add(new Paragraph(PDF_TITLE, normalText));
-		preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-		preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-*/
-
 		//table here
 		PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 		countHeader.setBackgroundColor(baseColor);
@@ -1039,8 +1035,8 @@ public class PrintStatement extends HttpServlet {
 
 
 			TermFee termFeenew = new TermFee();
-			if(termFeeDAO.getTermFee(school.getUuid(),"1") !=null){
-				termFeenew = termFeeDAO.getTermFee(school.getUuid(),"1");
+			if(termFeeDAO.getFee(school.getUuid(),"1",admYear) !=null){
+				termFeenew = termFeeDAO.getFee(school.getUuid(),"1",admYear);
 			}
 
 
@@ -1249,8 +1245,8 @@ public class PrintStatement extends HttpServlet {
 
 
 			TermFee termFeenew = new TermFee();
-			if(termFeeDAO.getTermFee(school.getUuid(),"2") !=null){
-				termFeenew = termFeeDAO.getTermFee(school.getUuid(),"2");
+			if(termFeeDAO.getFee(school.getUuid(),"2",admYear) !=null){
+				termFeenew = termFeeDAO.getFee(school.getUuid(),"2",admYear);
 			}
 			
 			double other_m_amount = 0;
@@ -1461,8 +1457,8 @@ public class PrintStatement extends HttpServlet {
 
 
 			TermFee termFeenew = new TermFee();
-			if(termFeeDAO.getTermFee(school.getUuid(),"3") !=null){
-				termFeenew = termFeeDAO.getTermFee(school.getUuid(),"3");
+			if(termFeeDAO.getFee(school.getUuid(),"3",admYear) !=null){
+				termFeenew = termFeeDAO.getFee(school.getUuid(),"3",admYear);
 			}
 
 			double other_m_amount = 0;

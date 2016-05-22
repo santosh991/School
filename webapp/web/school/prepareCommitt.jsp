@@ -126,67 +126,56 @@
             
    
 
-                                  <p>
-                                  
-                                 <b style=color:red;>Term Update:<br>
-                                 NOTE: This command should only be committed after updating the system to a new term.<br>
-                                 If you have not done so, EVERYTHING will be in a mess.<br>
+                                <p>
+                                 <b style=color:red;> <em> WARNING!!!! The commands below invoke Batch Processing events. Read carefully.</em></b><br>
 
-                                 The System is not responsible for user's careless mistakes. <br>
+                                <b style=color:black;> 
+                                 NOTE: This is an irreversible and uninterruptible command and should only be invoked at the <u>beginning of a new Term and/or Year</u>.<br>
+                                 Please ensure you have done the following before you proceed:<br>
+                                 <ol>
+                                 <li>Submited all the previous Term exams.</li>
+                                 <li>Completed everything pertaining <u>Students Fee</u> for the previous Term and you are not intending to make any other fee changes for that Term whatsoever.</li>
+                                 <li>If that is not the case, go back to previous Term and/or Year  <a href="examConfig.jsp"> Back</a> </li>
+                                 </ol>
+                                  After you are done with "committ" command, confirm that all students account have been updated, updated account have the status "DEDUCTED".However, If you see the status "NOTDEDUCTED", you should do the following.
+                                  <ol>
+                                    <li>Click the control panel</li>
+                                    <li>Locate Term Configurations and click "Update". (Don't make any change to the values)</li>
+                                    <li>Click "Save changes"</li>
+                                    <li>You will be redirected to this page. Scroll to the bottom of the page and click on the button "Committ Fee"</li>
+                                    The button is only invoked when some students account fails to update for reasons like unexpected shutdown.<br>
+                                  </ol>
+                                  </b>
 
-                                 If you are not sure of what you are about to do please quit.</b> 
+                                <p>
+                                <b style=color:magenta;> If you have comprehended and understood the consequences of the command below, you can now initiate fee committ by clicking on the button <u>"Initiate Fee  Committ"</u> below, then proceed to committing the changes.  <br>
+                                
+                                </b> 
+                                </p>
 
-                   
+                                <p>
+                                  <b style=color:red> I don't understand this.</b>  <a href="examConfig.jsp">Please get me out of here</a> 
                                 </p>
 
 
+
+
                                 <p>
-                                  
                                 <form name="edit" method="POST" action="prepare" > 
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Initiate Fee  Committ" /> 
                                 </form>  
-
                                 <br>
-
                                 </p>
 
-                         <!--
-                                 <p>
-                                 <b style=color:red;> Other Payments Committ:<br>
-
-
-
-                                </b> 
-                                  
-                                <form name="edit" method="POST" action="otherItemsUpdate" > 
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Committ Other Payments" /> 
-                                </form>  
-
-                                </p>
-
-
-                            -->
-
-
-
-
-
-
-
-
-
-
+                      
+                                 
+                          
                                 <p>
-                                 <b style=color:red;>Previous Fee Committ failed??? Click below:<br>
-
-
-
-                                </b> 
-                                  
+                                <b style=color:red;>Previous Fee Committ failed??? Don't panic, Just click  the button below:<br>
+                                </b>  
                                 <form name="edit" method="POST" action="committ" > 
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Committ Fee" /> 
                                 </form>  
-
                                 </p>
 
 

@@ -40,6 +40,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -855,7 +856,7 @@ public class ReportForm2 extends HttpServlet{
 						studentAmount = studentAmountDAO.getStudentAmount(school.getUuid(), uuid);
 					}
 
-					TermFee termFee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+					TermFee termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 
 					engc1 = 0;kisc1 = 0;matc1 = 0;phyc1 = 0;chemc1 = 0;bioc1 = 0;
 					bsc1 = 0;agrc1 = 0;hscc1 = 0;comc1 = 0;crec1 = 0;hisc1 = 0;geoc1 = 0;
@@ -1228,9 +1229,9 @@ public class ReportForm2 extends HttpServlet{
 						cometstr = "";
 					}
 
-					BaseColor baseColor = new BaseColor(32,178,170);//maroon
-					BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
-					BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
+					BaseColor baseColor = new BaseColor(255,255,255);//while
+					BaseColor Colormagenta = new BaseColor(255,255,255);//  (176,196,222); magenta
+					BaseColor Colorgrey = new BaseColor(255,255,255);//  (128,128,128)gray,grey
 
 					Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
 
@@ -1253,7 +1254,7 @@ public class ReportForm2 extends HttpServlet{
 					cat2Header.setBackgroundColor(baseColor);
 					cat2Header.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell endtermHeader = new PdfPCell(new Paragraph("E.TERM",boldFont)); 
+					PdfPCell endtermHeader = new PdfPCell(new Paragraph("E.T",boldFont)); 
 					endtermHeader.setBackgroundColor(baseColor);
 					endtermHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -1648,7 +1649,7 @@ public class ReportForm2 extends HttpServlet{
 						correctTermstr = Integer.toString(correctTermint);
 					}
 
-					TermFee termFeenex = termFeeDAO.getTermFee(school.getUuid(),correctTermstr); 
+					TermFee termFeenex = termFeeDAO.getFee(school.getUuid(),correctTermstr,examConfig.getYear()); 
 					double nexttermfee = termFeenex.getTermAmount(); 
 					
 					double other_m_amount = 0;
@@ -1725,10 +1726,21 @@ public class ReportForm2 extends HttpServlet{
 					Miscellanous closingDate = new Miscellanous();
 					Miscellanous openingDate = new Miscellanous();
 					Miscellanous comments = new Miscellanous();
+					String cdate = "";
+					String odate = "";
+					String comment = "";
 					
-					closingDate = miscellanousDAO.getKey("CLOSING_DATE");
-					openingDate = miscellanousDAO.getKey("CLOSING_DATE");
-					comments = miscellanousDAO.getKey("HEAD_TEACHER_REMARKS");
+					closingDate = miscellanousDAO.getKey(school.getUuid(),"CLOSING_DATE");
+					cdate = closingDate.getValue();
+					
+					openingDate = miscellanousDAO.getKey(school.getUuid(),"OPENING_DATE");
+					odate = openingDate.getValue();
+					
+					comments = miscellanousDAO.getKey(school.getUuid(),"HEAD_TEACHER_REMARKS");
+					comment = comments.getValue();
+					
+					
+					
 
 
 					PdfPCell feeCell = new PdfPCell(new Paragraph("Closing Fee Balance  " + nf.format(termFee.getTermAmount() - prevtermbalance - totalpaid + other_m_totals)+" \n\n Next Term Fee " + nf.format(nexttermfee) ,boldFont));
@@ -1736,12 +1748,26 @@ public class ReportForm2 extends HttpServlet{
 					feeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 
-					PdfPCell DateCell = new PdfPCell(new Paragraph(("Clossing date : " +closingDate.getValue()+" \n\nNext Term Opening date :" +openingDate.getValue())+"\n",boldFont));
+					PdfPCell DateCell = new PdfPCell(new Paragraph(("Clossing date : " +cdate+" \n\nNext Term Opening date :" +odate)+"\n",boldFont));
 					DateCell.setBackgroundColor(Colorgrey);
 					DateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					feeTable.addCell(feeCell);
 					feeTable.addCell(DateCell);
+					
+					
+					//QR code start
+					Paragraph QRparagraph;
+					QRparagraph = new Paragraph(); 
+					BarcodeQRCode my_code = new BarcodeQRCode("AdmNo: " + studentAdmNoHash.get(uuid) + 
+							"\nName: " + studNameHash.get(uuid) + "PST " +(position-counttwo++)+ " OF " +Finalposition+ "\nMean: " + df.format(mean) + "\nGrade: "
+							+ computeGrade(mean) + "\nFee Bal: "
+							+ nf.format(termFee.getTermAmount() - prevtermbalance - totalpaid + other_m_totals),1,1, null);
+					
+					Image qr_image = my_code.getImage();
+					qr_image.scaleToFit(150, 150); 
+					QRparagraph.add(qr_image);
+					//QR code end
 
 
 
@@ -1750,7 +1776,7 @@ public class ReportForm2 extends HttpServlet{
 					commentTable.setWidths(new int[]{100,100}); 
 					commentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell commentCell = new PdfPCell(new Paragraph("Thank you " + firstnamee +" "+ comments.getValue() +" "+ classteacherRemarks(mean)+"\n",boldFont));
+					PdfPCell commentCell = new PdfPCell(new Paragraph("Thank you " + firstnamee +" "+ comment +" "+ classteacherRemarks(mean)+"\n",boldFont));
 					commentCell.setBackgroundColor(Colormagenta);
 					commentCell.setColspan(2); 
 					commentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -1784,6 +1810,7 @@ public class ReportForm2 extends HttpServlet{
 					document.add(feeTable);
 					document.add(emptyline); 
 					document.add(commentTable);
+					document.add(QRparagraph);
 
 					position++;
 					number=mean;
@@ -1808,6 +1835,11 @@ public class ReportForm2 extends HttpServlet{
 
 	}
 
+	/**
+	 * @param subjectid
+	 * @param classroomid
+	 * @return
+	 */
 	private String findSubTecher(String subjectid, String classroomid) {
 		String teachername = "";
 		String teacheruuid = "";
@@ -1823,9 +1855,13 @@ public class ReportForm2 extends HttpServlet{
 			teachername = "";
 		}
 		
-		return teachername.toLowerCase();
+		return teachername.substring(0, Math.min(teachername.length(), 5)).toLowerCase();
 	}
 
+	/**
+	 * @param score
+	 * @return
+	 */
 	private String classteacherRemarks(double score) {
 		String remarks = "";
 		double mean = score;
@@ -1863,6 +1899,10 @@ public class ReportForm2 extends HttpServlet{
 		return remarks;
 	}
 
+	/**
+	 * @param score
+	 * @return
+	 */
 	private String computeRemarks(double score) {
 		String remarks = "";
 		double mean = score;

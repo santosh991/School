@@ -21,6 +21,7 @@ import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.othermoney.Otherstype;
 import com.yahoo.petermwenda83.bean.othermoney.TermOtherMonies;
+import com.yahoo.petermwenda83.bean.schoolaccount.Miscellanous;
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.House;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
@@ -30,6 +31,7 @@ import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.OtherstypeDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.TermOtherMoniesDAO;
 import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
+import com.yahoo.petermwenda83.persistence.schoolaccount.MiscellanousDAO;
 import com.yahoo.petermwenda83.persistence.student.HouseDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
@@ -64,6 +66,7 @@ public class AddSchool extends HttpServlet{
 	private static HouseDAO houseDAO;
 	private static RoomDAO roomDAO;
 	private static TermFeeDAO termFeeDAO;
+	private static MiscellanousDAO miscellanousDAO;
 	
 	
 	private static TermOtherMoniesDAO termOtherMoniesDAO;
@@ -89,6 +92,7 @@ public class AddSchool extends HttpServlet{
        houseDAO = HouseDAO.getInstance();
        roomDAO = RoomDAO.getInstance();
        termFeeDAO = TermFeeDAO.getInstance();
+       miscellanousDAO = MiscellanousDAO.getInstance();
        
        termOtherMoniesDAO = TermOtherMoniesDAO.getInstance();
        otherstypeDAO = OtherstypeDAO.getInstance();
@@ -216,8 +220,9 @@ public class AddSchool extends HttpServlet{
 				   TermFee termFee = new TermFee();
 				   termFee.setSchoolAccountUuid(account.getUuid());
 				   termFee.setTerm(terms[i]); 
+				   termFee.setYear(examConfig.getYear());  
 				   termFee.setTermAmount(fee[i]);
-				   termFeeDAO.putTermFee(termFee);
+				   termFeeDAO.putFee(termFee);
 			   }
 			   
 			   String type =  "Trip-Coast";
@@ -234,6 +239,20 @@ public class AddSchool extends HttpServlet{
 	    		   termOtherMonies.setAmount(amount);
 	    		   termOtherMoniesDAO.putTermOtherMonies(termOtherMonies);
 	    	   }
+	    	   
+	    	  
+	    	   String [] key = {"CLOSING_DATE","OPENING_DATE","HEAD_TEACHER_REMARKS"};
+	    	   String [] value = {"Tue 03, April, 2016","Wed 07, May, 2016 "," for the fantastic term, it has been awesome to see you grow and develop, hope you have a wonderful holiday.\nFor your performance, all we can say is ..."};
+	    	   for(int i=0; i<key.length;i++){
+	    		   Miscellanous misc = new Miscellanous();
+				   misc.setSchoolAccountUuid(account.getUuid());
+				   misc.setKey(key[i]); 
+				   misc.setValue(value[i]);
+				   miscellanousDAO.putMiscellanous(misc);
+			   }
+	    	   
+	    	   
+	    	   
 			   
 	    	 
 			   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_SUCCESS, SCHOOL_ADD_SUCCESS);

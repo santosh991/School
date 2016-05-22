@@ -132,6 +132,35 @@
     <div class="box span12">
         <div class="box-content">
 
+        <%
+                  
+                    
+
+                                String updateErrStr = "";
+                                String updatesuccessStr = "";
+                                session = request.getSession(false);
+                                     updateErrStr = (String) session.getAttribute(SessionConstants.STUDENT_UPDATE_ERROR);
+                                     updatesuccessStr = (String) session.getAttribute(SessionConstants.STUDENT_UPDATE_SUCCESS); 
+                                    
+                    
+
+                                if (StringUtils.isNotEmpty(updateErrStr)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + updateErrStr);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, null);
+                                  } 
+                                   else if (StringUtils.isNotEmpty(updatesuccessStr)) {
+                                    out.println("<p style='color:green;'>");                                 
+                                    out.println("success: " + updatesuccessStr);
+                                    out.println("</p>");                                   
+                                    session.setAttribute(SessionConstants.STUDENT_UPDATE_SUCCESS, null);
+                                  } 
+                                  
+
+                           
+                     %>
+
                 <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr>
@@ -161,6 +190,9 @@
                         if(studentList !=null){
                        for(Student ss : studentList) { 
 
+                      String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                    if(StringUtils.equals(ss.getStatusUuid(),statusUuid)){
+
                        for(StudentParent stuparent : parentList){
                             if(StringUtils.equals(ss.getUuid(),stuparent.getStudentUuid())){
                                  studentParent = studentParentHash.get(ss.getUuid());
@@ -181,10 +213,20 @@
 
                                        %>
                                 <td class="center">
-                                <form name="view" method="POST" action=""> 
+                                <form name="view" method="POST" action="updateParent.jsp"> 
+                                <input type="hidden" name="studentParentUuid" value="<%=studentParent.getUuid()%>">
                                 <input type="hidden" name="studentUuid" value="<%=ss.getUuid()%>">
-                                <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
-                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
+                                <input type="hidden" name="FatherName" value="<%=studentParent.getFathername()%>">
+                                <input type="hidden" name="FatherPhone" value="<%=studentParent.getFatherphone()%>">
+                                <input type="hidden" name="FatherOccupation" value="<%=studentParent.getFatheroccupation()%>">
+                                <input type="hidden" name="FatherID" value="<%=studentParent.getFatherID()%>">
+                                <input type="hidden" name="FatherEmail" value="<%=studentParent.getFatherEmail()%>">
+                                <input type="hidden" name="MotherName" value="<%=studentParent.getMothername()%>">
+                                <input type="hidden" name="MotherPhone" value="<%=studentParent.getMotherphone()%>">
+                                <input type="hidden" name="MotherOccupation" value="<%=studentParent.getMotheroccupation()%>">
+                                <input type="hidden" name="MotherID" value="<%=studentParent.getMotherID()%>">
+                                <input type="hidden" name="MotherEmail" value="<%=studentParent.getMotherEmail()%>">
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Update" /> 
                                 </form>                          
                                 </td>    
 
@@ -192,8 +234,9 @@
 
 
                           count++;
-                          } 
-                         }
+                            } 
+                           }
+                          }
                          }
                      }
                     %>

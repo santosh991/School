@@ -83,28 +83,11 @@
 
 <div>
     <ul class="breadcrumb">
-     <li> <b> <%=schoolname%> :SEND SMS PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
+     <li> <b> <%=schoolname%> :DELETE SMS PANEL: TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
           <li>
-            <a href="settings.jsp">Back</a> <span class="divider">/</span>
+            <a href="sendsms.jsp">Back</a> <span class="divider">/</span>
           </li>
 
-          <li>
-            <a href="outPending.jsp">Out Going-Pending</a> <span class="divider">/</span>
-          </li>
-
-          <li>
-            <a href="outSuccess.jsp">Out Going-Success</a> <span class="divider">/</span>
-          </li>
-
-          <li>
-            <a href="outFailed.jsp">Out Going-Failed</a> <span class="divider">/</span>
-          </li>
-
-           <li>
-            <a href="deleteSms.jsp">Delete SMSes</a> <span class="divider">/</span>
-          </li>
-
-        
     </ul>
 </div>
 
@@ -148,50 +131,34 @@
                            
                      %>
 
+                     <form id="SendSMS" name="SendSMS" method="POST" action="deleteAllSMS">
+                      <fieldset>
+                      <div class="control-group">
+                        <label class="control-label" for="SMSCategory">Category*:</label>
+                         <div class="controls">
+                            <select name="SMScategory" >
+                                <option value="">Please select one</option> 
+                                <option value="failed">Pending</option>
+                                <option value="Invalid Phone Number">Failed</option>
+                                <option value="Success">Success</option>
+                               
+                            </select>                           
+                          
+                        </div>
+                    </div> 
 
 
+                    <div class="form-actions">
+                        <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                         <input type="hidden" name="systemuser" value="<%=staffUsername%>">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div> 
+
+                  </fieldset>
+                   
+                  </form>                  
 
 
-
-                     <form id="SendSMS" name="SendSMS" method="post" action="sendSMS"> <!--sendSMS-->
-                                <p>
-                                    <label for="destination">Destination</label>
-                                    <select id="destination" name="destination">
-                                    <option value="Parents">Parents</option>
-                                    <option value="Teaching Staff">Teaching Staff</option>
-                                    <option value="Non Teaching Staff">Non Teaching Staff</option>
-                                    </select>
-                                   
-                                   
-                                </p>
-                                <p>
-                                    <label for="source">Source</label>
-                                    <select id="source" name="source">
-                                    <option value="AfricasTalking">AfricasTalking</option>
-                                    </select>
-                                </p>
-                                <p>
-                                    <label for="smsText">Message</label>                                
-                                    <textarea id="smsText" name="smsText" cols="40" rows="5" 
-                                              onFocus="counterOutgoing()" onKeyDown="counterOutgoing()" onKeyUp="counterOutgoing() ">
-                                    </textarea>
-                                    <span id="characterCounter" class="counter">Characters typed: <span id="characters"></span></span>
-                                    <span id="creditCounter" class="counter">SMS credits to be used: <span id="credits"></span></span>
-                                </p>                                                                                          
-                                <p>
-                                    <span id="testSMSButtons">
-                                        <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
-                                        <button class="button" id="reset" type="button" onclick="initialiseOutgoing('smsText', 'characters', 'credits', 'characterCounter')">Reset</button>
-                                        <button type="submit" name="sendSMS" id="sendSMS" class="button">Send SMS</button>
-                                    </span>                                    
-                                </p>
-                            </form>                  
-
-<script type="text/javascript">
-	
-
-
-</script>
             
 
 

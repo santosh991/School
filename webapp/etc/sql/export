@@ -55,3 +55,7 @@
 
     contact me phone : 254718953974
                email : mwendapeter72@gmail.com
+
+
+
+               COPY smssend TO '/var/tmp/peter/sms.csv' WITH DELIMITER AS '|';

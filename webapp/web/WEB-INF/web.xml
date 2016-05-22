@@ -210,6 +210,12 @@
         <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentParent</servlet-class>
     </servlet>
 
+
+    <servlet>
+        <servlet-name>UpdateParent</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.student.UpdateParent</servlet-class>
+    </servlet>
+
     <servlet>
         <servlet-name>AddStudentHouse</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.student.AddStudentHouse</servlet-class>
@@ -256,6 +262,11 @@
     <servlet>
         <servlet-name>ChangeClassTeacher</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.ChangeClassTeacher</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DeleteTeacherClasss</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.school.staff.DeleteTeacherClasss</servlet-class>
     </servlet>
 
     <servlet>
@@ -524,10 +535,15 @@
 
 <!-- send sms-->
 
-       <!-- <servlet>
+        <servlet>
         <servlet-name>SendSMS</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.sms.send.SendSMS</servlet-class>
-        </servlet> -->
+        </servlet> 
+
+        <servlet>
+        <servlet-name>DeleteAllSMS</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.sms.send.DeleteAllSMS</servlet-class>
+        </servlet> 
 
 
 
@@ -736,6 +752,11 @@
         <url-pattern>/school/addStudentParent</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>UpdateParent</servlet-name>
+        <url-pattern>/school/updateParent</url-pattern>
+    </servlet-mapping>
+
      <servlet-mapping>
         <servlet-name>AddStudentHouse</servlet-name>
         <url-pattern>/school/addStudentHouse</url-pattern>
@@ -789,8 +810,13 @@
         <url-pattern>/school/changeClassTeacher</url-pattern>
     </servlet-mapping>
 
-
     <servlet-mapping>
+        <servlet-name>DeleteTeacherClasss</servlet-name>
+        <url-pattern>/school/deleteTeacherClasss</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>  
         <servlet-name>DeleteStudentSubject</servlet-name>
         <url-pattern>/school/deleteStudentSubject</url-pattern>
     </servlet-mapping>
@@ -1037,10 +1063,15 @@
     <!-- send sms mapping --> 
 
 
-  <!-- <servlet-mapping>
+   <servlet-mapping>
         <servlet-name>SendSMS</servlet-name>
         <url-pattern>/school/sendSMS</url-pattern>
-    </servlet-mapping> !-->
+    </servlet-mapping> 
+
+    <servlet-mapping>
+        <servlet-name>DeleteAllSMS</servlet-name>
+        <url-pattern>/school/deleteAllSMS</url-pattern>
+    </servlet-mapping> 
 
 
 

@@ -47,5 +47,12 @@ public interface SchoolParentsDAO {
 	 */
 	public List<StudentParent> getParentList();
 	
+	/**
+	 * 
+	 * @param studentUuid
+	 * @return
+	 */
+	public List<StudentParent> getParentListByStudent(String studentUuid);
+	
 	
 }

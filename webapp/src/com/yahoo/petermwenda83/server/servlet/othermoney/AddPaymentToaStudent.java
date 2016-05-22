@@ -59,6 +59,9 @@ public class AddPaymentToaStudent extends HttpServlet{
 	final String EMPTY_FIELD = "Empty Fields not allowed";
 	final String ERROR_MONEY_ALREADY_ASSIGNED = "Payment type already added";
 	final String ERROR_DID_NOT_SEARCH_STUDENT = "It looks like you didn't search for any student";
+	
+	final String ERROR_STUDENT_INACTIVE = "This student is Inactive.";
+	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 
 
 	private static StudentOtherMoniesDAO studentOtherMoniesDAO;
@@ -120,7 +123,6 @@ public class AddPaymentToaStudent extends HttpServlet{
 		HttpSession session = request.getSession(true);
 
 		String OtherstypeUuid = StringUtils.trimToEmpty(request.getParameter("OtherstypeUuid"));
-		//String AmountPiad = StringUtils.trimToEmpty(request.getParameter("AmountPiad"));
 		String StudentUuid = StringUtils.trimToEmpty(request.getParameter("StudentUuid"));
 
 
@@ -155,6 +157,15 @@ public class AddPaymentToaStudent extends HttpServlet{
 			session.setAttribute(SessionConstants.STUDENT_ADD_OTHER_MONIES_ADD_ERROR, ERROR_MONEY_ALREADY_ASSIGNED); 
 
 		}else{
+			
+
+			//get student name
+			Student stuudent = new Student();
+			if(studentDAO.getStudentByuuid(school.getUuid(), StudentUuid) !=null){
+				stuudent = studentDAO.getStudentByuuid(school.getUuid(), StudentUuid);
+			}
+			
+			 if(StringUtils.equals(stuudent.getStatusUuid(),statusUuid)){
 			
 			 List<Otherstype> othertypeList = new ArrayList<Otherstype>(); 
 		     othertypeList = otherstypeDAO.gettypeList(school.getUuid());  
@@ -206,11 +217,6 @@ public class AddPaymentToaStudent extends HttpServlet{
 			}
 
 
-			//get student name
-			Student stuudent = new Student();
-			if(studentDAO.getStudentByuuid(school.getUuid(), StudentUuid) !=null){
-				stuudent = studentDAO.getStudentByuuid(school.getUuid(), StudentUuid);
-			}
 
 			String genderfinder = "";
 			String gender = "";
@@ -280,12 +286,12 @@ public class AddPaymentToaStudent extends HttpServlet{
 
 				//end
 				TermFee termfee = new TermFee();
-				if(termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm()) !=null){
+				if(termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
 
 					double other_m_amount = 0;
 					double other_m_totals = 0;
 
-					termfee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+					termfee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 
 					List<StudentOtherMonies>  stuOthermoniList = new ArrayList<>(); 
 					stuOthermoniList = studentOtherMoniesDAO.getStudentOtherList(StudentUuid,examConfig.getTerm(),examConfig.getYear());
@@ -318,7 +324,7 @@ public class AddPaymentToaStudent extends HttpServlet{
 				africasTalking.setRecipients(realphone); 
 				// Create a new instance of our awesome gateway class
 				AfricasTalkingGateway gateway  = new AfricasTalkingGateway(username, apiKey);
-				//System.out.println("message ="+message);
+				
 				// Thats it, hit send and we'll take care of the rest. Any errors will
 				// be captured in the Exception class below
 
@@ -365,6 +371,10 @@ public class AddPaymentToaStudent extends HttpServlet{
 					e.printStackTrace(); 
 					
 				}
+				
+			 }else{
+	 			  session.setAttribute(SessionConstants.STUDENT_ADD_OTHER_MONIES_ADD_ERROR,ERROR_STUDENT_INACTIVE ); 
+	 		  }
 		
 		}
 
@@ -391,20 +401,7 @@ public class AddPaymentToaStudent extends HttpServlet{
 	  return true;  
 	}
 	
-	/**
-	 * @param mystring
-	 * @return
-	 */
-	private static boolean lengthValid(String mystring) {
-		boolean isvalid = true;
-		int length = 0;
-		length = mystring.length();
-		//System.out.println("lenght = " + length);
-		if(length<3 ||length>6){
-			isvalid = false;
-		}
-		return isvalid;
-	}
+	
 	
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)

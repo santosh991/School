@@ -7,16 +7,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.schoolaccount.SmsSend;
+import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
-/**
+/** 
+ * 
  * @author peter
  *
  */
@@ -181,22 +185,49 @@ public class SmsSendDAO extends GenericDAO implements SchoolSmsSendDAO {
 	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolSmsSendDAO#getSmsSend()
 	 */
 	@Override
-	public List<SmsSend> getSmsSend() {
-		List<SmsSend>  list = null;		
+	public List<SmsSend> getSmsSendList(String status) {
+		 List<SmsSend> list = null;
 		 try(   
-      		Connection conn = dbutils.getConnection();
-      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM SmsSend;");          		
-  		) {			     
-			try( ResultSet rset = pstmt.executeQuery();){
-	     	       
+	  		Connection conn = dbutils.getConnection();
+	  		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM SmsSend WHERE Status = ?;");   
+			) {
+			 pstmt.setString(1,status);
+
+			 try(ResultSet rset = pstmt.executeQuery();){
+				 
 				 list = beanProcessor.toBeanList(rset, SmsSend.class);
-	        }
-			
-      } catch(SQLException e){
-      	  logger.error("SQL Exception when getting all SmsSend");
-          logger.error(ExceptionUtils.getStackTrace(e));
-       }
+				}
+	        
+	  } catch(SQLException e){
+	  	 logger.error("SQL Exception when getting  SmsSend List");
+	     logger.error(ExceptionUtils.getStackTrace(e));
+	     System.out.println(ExceptionUtils.getStackTrace(e)); 
+	  }
 		return list;
+	}
+
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.schoolaccount.SchoolSmsSendDAO#getSmsSendList()
+	 */
+	@Override
+	public List<SmsSend> getSmsSend() {
+		List<SmsSend> list =new  ArrayList<>(); 
+		  try(   
+	      		Connection conn = dbutils.getConnection();
+	      		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM SmsSend ;");   
+	      		ResultSet rset = pstmt.executeQuery();
+	  		) {
+	      	
+	          list = beanProcessor.toBeanList(rset, SmsSend.class);
+
+	      } catch(SQLException e){
+	      	  logger.error("SQL Exception when getting all SmsSend");
+	          logger.error(ExceptionUtils.getStackTrace(e));
+	          System.out.println(ExceptionUtils.getStackTrace(e));
+	      }
+	   
+		return list;
+
 	}
 
 }

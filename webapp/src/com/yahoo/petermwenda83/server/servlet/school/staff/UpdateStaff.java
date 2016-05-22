@@ -18,6 +18,7 @@ import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
+import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 /**
@@ -38,6 +39,7 @@ public class UpdateStaff extends HttpServlet{
 	final String ERROR_SELECT_POSITION = "Please select a position"; 
 	final String ERROR_EMPTY_CATEGORY = "Please select staff category"; 
 	final String ERROR_EMPTY_USERNAME = "username can't be empty";
+	 final String ERROR_MAX_USERNAME = "Username can only have character length of 5.";
 	final String ERROR_EMPTY_FIRSTNAME = "firstname can't be empty";
 	final String ERROR_EMPTY_LASTNAME = "lastname can't be empty";
 	final String ERROR_EMPTY_SURNAME = "surname can't be empty";
@@ -99,6 +101,9 @@ public class UpdateStaff extends HttpServlet{
     	   
        }else if(StringUtils.isEmpty(username)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_USERNAME); 
+    	   
+       }else if(!Wordlength(username)){
+    	   //session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_MAX_USERNAME); 
     	   
        }else if(StringUtils.isEmpty(firstname)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_FIRSTNAME); 
@@ -208,6 +213,20 @@ private static boolean lengthValid(String mystring) {
 	length = mystring.length();
 	//System.out.println("lenght = " + length);
 	if(length<10 ||length>10){
+		isvalid = false;
+	}
+	return isvalid;
+}
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean Wordlength(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	if(length>5){
 		isvalid = false;
 	}
 	return isvalid;

@@ -11,19 +11,41 @@ public interface SchoolTermFeeDAO {
 	 * @param schoolAccountUuid
 	 * @return
 	 */
-	public TermFee getTermFee(String schoolAccountUuid,String Term);
+	//public TermFee getTermFee(String schoolAccountUuid,String Term);
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param Term
+	 * @param Year
+	 * @return
+	 */
+	public TermFee getFee(String schoolAccountUuid,String Term,String Year);
 	/**
 	 * 
 	 * @param termFee
 	 * @return
 	 */
-	public boolean putTermFee(TermFee termFee);
+	//public boolean putTermFee(TermFee termFee);
 	/**
 	 * 
 	 * @param termFee
 	 * @return
 	 */
-	public boolean updateTermFee(TermFee termFee); 
+	public boolean putFee(TermFee termFee);
+	/**
+	 * 
+	 * @param termFee
+	 * @return
+	 */
+	//public boolean updateTermFee(TermFee termFee); 
+	
+	
+	/**
+	 * 
+	 * @param termFee
+	 * @return
+	 */
+	public boolean updateFee(TermFee termFee); 
 	/**
 	 * 
 	 * @param termFee

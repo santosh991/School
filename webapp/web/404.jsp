@@ -44,7 +44,7 @@ Contacts, Mobile: +254718953974
         <p>
            Looks like something went wrong.<br /><br />
             We can't find the page you are looking for.<br /><br />
-            <!-- go back <a href="<%= contextPath %>/admin/home.jsp">Home Page</a>. -->
+            go back <a href="<%= contextPath %>/school/schoolIndex.jsp">Home Page</a>
         </p>
       </div>
     </body>

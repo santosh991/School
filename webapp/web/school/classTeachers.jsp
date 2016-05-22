@@ -276,7 +276,7 @@
                             if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){
                                 if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
                                             %>
-                                    <td class="center" width="8%">
+                                    <td class="center" width="5%">
                                     <form name="edit" method="POST" action="exam.jsp"> 
                                     <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                     <input type="hidden" name="staffid" value="<%=ct.getTeacherUuid()%>">
@@ -287,7 +287,7 @@
                                  }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
                                    %>
 
-                                <td class="center" width="8%">
+                                <td class="center" width="5%">
                                 <form name="edit" method="POST" action="examIndex.jsp"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input type="hidden" name="staffid" value="<%=ct.getTeacherUuid()%>">
@@ -308,27 +308,35 @@
 
 
                                %> 
-                                <td class="center" width="8%">
+                                <td class="center" width="5%">
                                 <form name="edit" method="POST" action="exportExcel" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="ClassList" /> 
                                 </form>                          
                                 </td>  
 
-                                <td class="center" width="8%">
+                                <td class="center" width="5%">
                                 <form name="edit" method="POST" action="perClassFinanceReport" target="_blank"> 
                                 <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="FeeList" /> 
                                 </form>                          
                                 </td>  
 
-                                <td class="center" width="8%">
+                                <td class="center" width="5%">
                                 <form name="edit" method="POST" action="changeclass.jsp"> 
                                 <input type="hidden" name="currentclassroomuuid" value="<%=ct.getClassRoomUuid()%>">
                                 <input type="hidden" name="teachername" value="<%=staffHash.get(s.getUuid())%>">
                                 <input type="hidden" name="classroomname" value="<%=roomHash.get(classHash.get(s.getUuid()))%>">
                                 <input type="hidden" name="teacheruuid" value="<%=ct.getTeacherUuid()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Change Class" /> 
+                                </form>                          
+                                </td>  
+
+                                 <td class="center" width="5%">
+                                <form name="edit" method="POST" action="deleteTeacherClasss"> 
+                                <input type="hidden" name="currentclassroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input type="hidden" name="teacheruuid" value="<%=ct.getTeacherUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Remove" /> 
                                 </form>                          
                                 </td>  
                                <%

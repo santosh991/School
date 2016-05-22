@@ -181,8 +181,8 @@ public class AllStudentsFinaceReport extends HttpServlet{
 
        
 		TermFee termFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm()) !=null){
-			termFee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+		if(termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
+			termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 		}
 		
 

@@ -37,6 +37,10 @@ public class PMWithdraw extends HttpServlet{
 	final String NUMBER_FORMAT_ERROR = "Amount can only be Numeric";
 	final String EMPTY_AMOUNT = "Amount cant be empty";
 	
+	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, they can not Withdraw Pocket Money";
+	
+	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+	
 	 private static StudentDAO studentDAO;
 	 private static PMoneyDAO pMoneyDAO;
 	 private static ExamConfigDAO examConfigDAO;
@@ -93,6 +97,8 @@ public class PMWithdraw extends HttpServlet{
 			   student = studentDAO.getStudentObjByadmNo(schoolUuid, admissionNumber);
 			   
 		   }
+		   
+		   if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
 		   examConfig = examConfigDAO.getExamConfig(schoolUuid);
 		   Withdraw w = new Withdraw();
     	   w.setStudentUuid(student.getUuid());
@@ -106,6 +112,10 @@ public class PMWithdraw extends HttpServlet{
     	   }else{
     		   session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_WITHDRAW_FAILED);
     	   }
+    	   
+		   }else{
+	 			  session.setAttribute(SessionConstants.STUDENT_FIND_ERROR,ERROR_STUDENT_INACTIVE ); 
+	 		  }
     	 
        }
        session.setAttribute(SessionConstants.STUENT_POCKET_MONEY_PARAM, paramHash); 

@@ -198,17 +198,17 @@
 
                if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
                  %>
-                   <a href="exam.jsp">MY CLASS</a>
+                 <!--  <a href="exam.jsp">MY CLASS</a>  -->
 		     
 		        <%
 	            }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
 	            %>
-	             <a href="examIndex.jsp">MY CLASS</a>
+	            <!-- <a href="examIndex.jsp">MY CLASS</a> -->
 	           
 		        <%
 	           }else{
 	          
-		       response.sendRedirect("../index.jsp");
+		      // response.sendRedirect("../index.jsp");
 	           }
                  
 

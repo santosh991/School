@@ -38,9 +38,12 @@ public class AddStudentSponsor extends HttpServlet{
 	final String ERROR_EMPTY_COUNTY = "Sponsor county can't be empty.";
 	final String ERROR_EMPTY_PHONE = "Sponsor phone can't be empty.";
 	final String ERROR_PHONE_INVALID = "Sponsor phone is invalid, phone number must have 10 digits (e.g. 0718953974).";
+	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, you can not assign them a sponsor.";
 	final String ERROR_EMPTY_NAME = "Sponsor name can't be empty.";
 	
 	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
+	
+	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	private static SponsorsDAO sponsorsDAO;
 	private static StudentDAO studentDAO;
@@ -121,6 +124,8 @@ public class AddStudentSponsor extends HttpServlet{
 		   
 	   }else{
 		   
+		   if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
+		   
 		StudentSponsor sponsor = new StudentSponsor();
 		sponsor.setStudentUuid(studentUuid);
 		sponsor.setSponsorName(SponsorName);
@@ -137,6 +142,10 @@ public class AddStudentSponsor extends HttpServlet{
 		  }else{
 			  session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR, SPONSOR_ADD_ERROR);   
 		  }
+		  
+		   }else{
+ 			  session.setAttribute(SessionConstants.SPONSOR_ADD_ERROR,ERROR_STUDENT_INACTIVE ); 
+ 		  }
 	   }
        
        session.setAttribute(SessionConstants.STUDENT_SPONSOR_PARAM, sponsorParamHash); 

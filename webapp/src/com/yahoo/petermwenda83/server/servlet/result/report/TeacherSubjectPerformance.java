@@ -588,7 +588,7 @@ public class TeacherSubjectPerformance extends HttpServlet {
 						studentAmount = studentAmountDAO.getStudentAmount(school.getUuid(), uuid);
 					}
 
-					TermFee termFee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+					TermFee termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 
 
 
@@ -1069,7 +1069,7 @@ public class TeacherSubjectPerformance extends HttpServlet {
 						correctTermstr = Integer.toString(correctTermint);
 					}
 
-					TermFee termFeenex = termFeeDAO.getTermFee(school.getUuid(),correctTermstr); 
+					TermFee termFeenex = termFeeDAO.getFee(school.getUuid(),correctTermstr,examConfig.getYear()); 
 					double nexttermfee = termFeenex.getTermAmount(); 
 
 					amountpaid = studentAmount.getAmount();

@@ -307,9 +307,9 @@ public class Form34List extends HttpServlet{
 			
 
 
-			BaseColor baseColor = new BaseColor(32,178,170);//maroon
-			BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
-			BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
+			BaseColor baseColor = new BaseColor(255,255,255);//while
+			BaseColor Colormagenta = new BaseColor(255,255,255);//  (176,196,222); magenta
+			BaseColor Colorgrey = new BaseColor(255,255,255);//  (128,128,128)gray,grey
 
 			Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
 

@@ -49,10 +49,11 @@ public class AddStudentParent extends HttpServlet{
 	final String ERROR_EMPTY_MOTHER_NAME = "Mother name cant be empty.";
 	final String ERROR_EMPTY_FATHER_NAME = "Father name cant be empty.";
 	final String ERROR_PHONE_INVALID = "Phone is invalid, the number must have 10 digits (e.g. 0718953974).";
+	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, you can not assign them a parent.";
 	
 	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	
-	
+	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	private static StudentDAO studentDAO;
 	private static ParentsDAO parentsDAO;
@@ -196,6 +197,8 @@ public class AddStudentParent extends HttpServlet{
 		   
 	}else{
 		
+		if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
+		
 		    RelativePhone = "not-set";
 	        RelativeName = "not-set";
 	        MotherOccupation = "not-set";
@@ -225,6 +228,10 @@ public class AddStudentParent extends HttpServlet{
 	    }else{
 	    	session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR, FATHER_MOTHER_ADD_ERROR); 	
 	    }
+	    
+		 }else{
+			  session.setAttribute(SessionConstants.FATHER_MOTHER_ADD_ERROR,ERROR_STUDENT_INACTIVE ); 
+		  }
 	   
 	   session.setAttribute(SessionConstants.PARENT_PARAM, paramHash);    
    

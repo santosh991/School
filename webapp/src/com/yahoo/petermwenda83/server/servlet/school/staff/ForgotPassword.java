@@ -97,7 +97,7 @@ public class ForgotPassword extends HttpServlet{
    				newpassword = RandomStringUtils.randomAlphabetic(5); 
    				
    				String message = "";
-   				message = "HI " + username + ", your password is " +newpassword; 
+   				message = "HI " + username + ", your new password is " +newpassword; 
    				africasTalking.setMessage(message); 
 				africasTalking.setRecipients(realphone); 
 				// Create a new instance the gateway class

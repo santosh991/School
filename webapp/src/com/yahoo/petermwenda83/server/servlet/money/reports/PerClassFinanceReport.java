@@ -209,8 +209,8 @@ public class PerClassFinanceReport extends HttpServlet{
 
 
 		TermFee termFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm()) !=null){
-			termFee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+		if(termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
+			termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 		}
 
 
@@ -225,18 +225,18 @@ public class PerClassFinanceReport extends HttpServlet{
 
 		CellStyle style = xf.createCellStyle();
 		style.setAlignment(CellStyle.ALIGN_CENTER);
-		style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+		//style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
 		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 
 		CellStyle style2 = xf.createCellStyle();
 		style2.setAlignment(CellStyle.ALIGN_LEFT);
-		style2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); 
+		//style2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); 
 		style2.setFillPattern(CellStyle.DIAMONDS); 
 
 		XSSFFont font = xf.createFont();
 		font.setFontName(XSSFFont.DEFAULT_FONT_NAME);  
 		font.setFontHeightInPoints((short)11);
-		font.setColor(IndexedColors.MAROON.getIndex()); 
+		//font.setColor(IndexedColors.MAROON.getIndex()); 
 		style.setFont(font); 
 
 		XSSFRow r0 = s.createRow(0);

@@ -33,6 +33,9 @@ public class BorrowBook extends HttpServlet{
 
 	final String SUCCESS_BOOK_BORROWED = "The book was successfully borrowed";
 	final String ERROR_SOMETHING_WENT_WRONG = "Something went wrong while borrowing the book";
+	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, they can not borrow a book";
+	
+	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	
 	private static StudentBookDAO studentBookDAO;
@@ -94,6 +97,7 @@ public class BorrowBook extends HttpServlet{
     	   StudentBook studentBook;
     	   student = studentDAO.getStudentObjByadmNo(schooluuid, studentAdmNo);
     	   if(student !=null){
+    		   if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
     		   studentBook = new StudentBook();
     		   studentBook.setStudentUuid(student.getUuid());
     		   studentBook.setBookUuid(bookuuid); 
@@ -108,6 +112,9 @@ public class BorrowBook extends HttpServlet{
     		   }else{
     			   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR, ERROR_SOMETHING_WENT_WRONG); 
     		   }
+    		  }else{
+    			  session.setAttribute(SessionConstants.BOOK_BORROW_ERROR,ERROR_STUDENT_INACTIVE ); 
+    		  }
     	   }else{
     		   session.setAttribute(SessionConstants.BOOK_BORROW_ERROR,ERROR_STUDENT_ADMNO_NOT_FOUND ); 
     	   }

@@ -20,9 +20,9 @@ public class AddExamConfig extends HttpServlet{
 	final String ERROR_EMPTY_YEAR = "Please select year"; 
 	final String ERROR_EMPTY_EXAM = "Please select exam"; 
 	final String ERROR_EMPTY_EXAM_MODE = "Please select exam mode"; 
-	final String ERROR_EXAM_CONGIGURED = "Exam configuratioins already exist"; 
-	final String ERROR_ECAMC_ADD_ERROR = "An error occured while adding exam configurations"; 
-	final String ERROR_ECAMC_ADD_ADD_SUCCESS = "Exam configurations added successfully"; 
+	final String ERROR_EXAM_CONGIGURED = "Term configuratioins already exist"; 
+	final String ERROR_ECAMC_ADD_ERROR = "An error occured while adding Term configurations"; 
+	final String ERROR_ECAMC_ADD_ADD_SUCCESS = "Term configurations added successfully"; 
 	
 	private static ExamConfigDAO examConfigDAO;
 

@@ -43,6 +43,7 @@ public class AddStaff extends HttpServlet {
 	final String ERROR_EMPTY_FIRSTNAME = "firstname can't be empty";
 	final String ERROR_EMPTY_LASTNAME = "lastname can't be empty";
 	final String ERROR_EMPTY_SURNAME = "surname can't be empty";
+	 final String ERROR_MAX_USERNAME = "Username can only have character length of 5.";
 	final String ERROR_EMPTY_GENDER = "Please select a gender";
 	final String ERROR_EMPTY_PHONE = "phone can't be empty";
 	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
@@ -134,6 +135,9 @@ public class AddStaff extends HttpServlet {
     	   
        }else if(StringUtils.isEmpty(username)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_USERNAME); 
+    	   
+       }else if(!Wordlength(username)){
+    	  // session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_MAX_USERNAME); 
     	   
        }else if(StringUtils.isEmpty(firstname)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_FIRSTNAME); 
@@ -246,6 +250,21 @@ public class AddStaff extends HttpServlet {
 		length = mystring.length();
 		//System.out.println("lenght = " + length);
 		if(length<10 ||length>10){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
+	
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean Wordlength(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		if(length>5){
 			isvalid = false;
 		}
 		return isvalid;

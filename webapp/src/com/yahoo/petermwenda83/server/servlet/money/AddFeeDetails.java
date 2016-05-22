@@ -6,6 +6,7 @@ package com.yahoo.petermwenda83.server.servlet.money;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -27,6 +28,7 @@ import com.yahoo.petermwenda83.bean.money.ClosingBalance;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies;
+import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.schoolaccount.SmsSend;
 import com.yahoo.petermwenda83.bean.smsapi.AfricasTalking;
 import com.yahoo.petermwenda83.bean.student.Student;
@@ -39,8 +41,13 @@ import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO;
 import com.yahoo.petermwenda83.persistence.schoolaccount.SmsSendDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
+import com.yahoo.petermwenda83.server.cache.CacheVariables;
 import com.yahoo.petermwenda83.server.servlet.sms.send.AfricasTalkingGateway;
+import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
+
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 
 /**  
  * @author peter
@@ -52,12 +59,17 @@ public class AddFeeDetails extends HttpServlet{
 	 final String ERROR_AMOUNT_NOT_IN_RANGE = "Fee can only be within the range of KSH 100 - KSH 100,000";
 	 final String ERROR_AMOUNT_NUMERIC = "Amount can only be numeric";
 	 final String ERROR_NO_SLIPNIMBER = "You didn't provide any admission  number?.";
-	 final String ERROR_SLIP_NO_EXIST = "The bank slip has already been registered.";
-	 final String ERROR_AMOUNT_NOT_ADDED = "Something went wrong, ammount not added.";
-	 final String UNEXPECTED_ERROR = "Looks like you didn'd serch for a student.";
-	 final String ERROR_NO_AMOUNT = "You didn't provide any admission  number?.";
-	 final String SUCCESS_AMOUNT_NOT_ADDED = "Fee detils successfully added.";
+	 final String ERROR_SLIP_NO_EXIST = "This bank slip has already been registered.";
+	 final String ERROR_AMOUNT_NOT_ADDED = "Something went wrong, amount not added.";
+	 final String UNEXPECTED_ERROR = "Looks like you didn'd search for a student.";
+	 final String ERROR_NO_AMOUNT = "You didn't provide any admission  number!.";
+	 final String SUCCESS_AMOUNT_NOT_ADDED = "Fee details successfully added.";
 	 final String NUMBER_FORMAT_ERROR = "Amount can only be Numeric";
+	 final String INCORRECT_SCHOL_PASSWORD = "Incorrect Security Key";
+	 
+	 final String ERROR_STUDENT_INACTIVE = "This student is Inactive, they can not Pay Fee";
+	 
+	 final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	 
 	 HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
 	 HashMap<String, String>genderfinderHash = new HashMap<String, String>();
@@ -77,7 +89,7 @@ public class AddFeeDetails extends HttpServlet{
 	 
 	 Locale locale = new Locale("en","KE"); 
      NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
-	
+     private Cache schoolaccountCache;	
 
 	/**  
     *
@@ -95,6 +107,8 @@ public class AddFeeDetails extends HttpServlet{
        parentsDAO = ParentsDAO.getInstance();
        smsSendDAO = SmsSendDAO.getInstance();
        closingBalanceDAO = ClosingBalanceDAO.getInstance();
+       CacheManager mgr = CacheManager.getInstance();
+       schoolaccountCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
    }
    
    
@@ -108,10 +122,25 @@ public class AddFeeDetails extends HttpServlet{
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        String systemuser = StringUtils.trimToEmpty(request.getParameter("systemuser"));
        String studentuuid = StringUtils.trimToEmpty(request.getParameter("studentuuid"));
+       String schoolpassword = StringUtils.trimToEmpty(request.getParameter("schoolpassword"));
        
        Map<String, String> addparamHash = new HashMap<>(); 
        addparamHash.put("Amountpaid", Amountpaid);
        addparamHash.put("slipNumber", slipNumber);
+       
+       SchoolAccount school = new SchoolAccount();
+       String  schoolusername = "";
+       if(session !=null){
+    	 schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
+    	 
+    	      }
+    	   net.sf.ehcache.Element element;
+    	   
+    	   element = schoolaccountCache.get(schoolusername);
+    	   if(element !=null){
+    	   school = (SchoolAccount) element.getObjectValue();
+    	      }
+    	  
        
       
        
@@ -145,12 +174,23 @@ public class AddFeeDetails extends HttpServlet{
 	   }else if(studentFeeDAO.getStudentFeeByTransactionId(schooluuid, slipNumber) !=null){
 		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_SLIP_NO_EXIST); 
 			   
+	   }else if(!StringUtils.equals(SecurityUtil.getMD5Hash(schoolpassword), school.getPassword())){
+		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, INCORRECT_SCHOL_PASSWORD); 
+			   
 	   }else{
 		   
 		   ExamConfig examConfig = new ExamConfig();
 		   if(examConfigDAO.getExamConfig(schooluuid) !=null){
 			   examConfig = examConfigDAO.getExamConfig(schooluuid);
 		   }
+		   
+		 //get student 
+		   Student stuudent = new Student();
+		   if(studentDAO.getStudentByuuid(schooluuid, studentuuid) !=null){
+			   stuudent = studentDAO.getStudentByuuid(schooluuid, studentuuid);
+		   }
+		   
+		   if(StringUtils.equals(stuudent.getStatusUuid(),statusUuid)){
 		   
 		   
 		   double amountTopay =  Double.parseDouble(Amountpaid);
@@ -159,7 +199,7 @@ public class AddFeeDetails extends HttpServlet{
 		   StudentFee studentFee = new StudentFee();
 		   studentFee.setSchoolAccountUuid(schooluuid);
 		   studentFee.setStudentUuid(studentuuid);
-		   studentFee.setTransactionID(slipNumber.toUpperCase()); 
+		   studentFee.setTransactionID("KE " + slipNumber.toUpperCase() + "-" + new Date()); 
 		   studentFee.setAmountPaid(amountTopay);  
 		   studentFee.setTerm(examConfig.getTerm());
 		   studentFee.setYear(examConfig.getYear());
@@ -191,11 +231,7 @@ public class AddFeeDetails extends HttpServlet{
 		   }
 		  
 		   
-		   //get student name
-		   Student stuudent = new Student();
-		   if(studentDAO.getStudentByuuid(schooluuid, studentuuid) !=null){
-			   stuudent = studentDAO.getStudentByuuid(schooluuid, studentuuid);
-		   }
+		   
 		  
 		   String genderfinder = "";
 		   String gender = "";
@@ -267,12 +303,12 @@ public class AddFeeDetails extends HttpServlet{
 				
 				//end
 				TermFee termfee = new TermFee();
-				if(termFeeDAO.getTermFee(schooluuid,examConfig.getTerm()) !=null){
+				if(termFeeDAO.getFee(schooluuid,examConfig.getTerm(),examConfig.getYear()) !=null){
 					
 					double other_m_amount = 0;
 					double other_m_totals = 0;
 					
-					termfee = termFeeDAO.getTermFee(schooluuid,examConfig.getTerm());
+					termfee = termFeeDAO.getFee(schooluuid,examConfig.getTerm(),examConfig.getYear());
 					
 					List<StudentOtherMonies>  stuOthermoniList = new ArrayList<>(); 
 					stuOthermoniList = studentOtherMoniesDAO.getStudentOtherList(studentuuid,examConfig.getTerm(),examConfig.getYear());
@@ -349,8 +385,14 @@ public class AddFeeDetails extends HttpServlet{
 		     catch (Exception e) {
 		    	e.printStackTrace(); 
 		      }
-		    
+		      
+		      
+		   }else{
+ 			  session.setAttribute(SessionConstants.STUDENT_FIND_ERROR,ERROR_STUDENT_INACTIVE ); 
+ 		  }
 		   }
+		   
+		   
        
        session.setAttribute(SessionConstants.STUENT_FEE_ADD_PARAM, addparamHash); 
        response.sendRedirect("addFee.jsp");  

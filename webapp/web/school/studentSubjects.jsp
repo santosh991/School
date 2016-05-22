@@ -107,7 +107,13 @@
 <div>
     <ul class="breadcrumb">
      <li> <b> <%=schoolname%> :STUDENTS-SUBJECT MANAGEMENT PANEL : TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>   
+
+        <li>
+            <a href="studentIndex.jsp">Back</a> <span class="divider">/</span>
+        </li>
     </ul>
+
+
 </div>
 
 

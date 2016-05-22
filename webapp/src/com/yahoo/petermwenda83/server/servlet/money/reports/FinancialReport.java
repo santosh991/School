@@ -158,8 +158,8 @@ public class FinancialReport extends HttpServlet{
 		}
 
 		TermFee termFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm()) !=null){
-			termFee = termFeeDAO.getTermFee(school.getUuid(),examConfig.getTerm());
+		if(termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear()) !=null){
+			termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 		}
 
 
@@ -396,8 +396,8 @@ public class FinancialReport extends HttpServlet{
 		
 
 		TermFee termoneFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),"1") !=null){
-			termoneFee = termFeeDAO.getTermFee(school.getUuid(),"1");
+		if(termFeeDAO.getFee(school.getUuid(),"1",examConfig.getYear()) !=null){
+			termoneFee = termFeeDAO.getFee(school.getUuid(),"1",examConfig.getYear());
 			termOneFee = termoneFee.getTermAmount();
 		}
 
@@ -459,8 +459,8 @@ public class FinancialReport extends HttpServlet{
 
 
 		TermFee termtwoFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),"2") !=null){
-			termtwoFee = termFeeDAO.getTermFee(school.getUuid(),"2");
+		if(termFeeDAO.getFee(school.getUuid(),"2",examConfig.getYear()) !=null){
+			termtwoFee = termFeeDAO.getFee(school.getUuid(),"2",examConfig.getYear());
 			termTwoFee = termtwoFee.getTermAmount();
 		}
         
@@ -531,8 +531,8 @@ public class FinancialReport extends HttpServlet{
 		prevoverpay = 0;
 		
 		TermFee termthreeFee = new TermFee();
-		if(termFeeDAO.getTermFee(school.getUuid(),"3") !=null){
-			termthreeFee = termFeeDAO.getTermFee(school.getUuid(),"3");
+		if(termFeeDAO.getFee(school.getUuid(),"3",examConfig.getYear()) !=null){
+			termthreeFee = termFeeDAO.getFee(school.getUuid(),"3",examConfig.getYear());
 			termThreeFee = termthreeFee.getTermAmount();
 		}
 

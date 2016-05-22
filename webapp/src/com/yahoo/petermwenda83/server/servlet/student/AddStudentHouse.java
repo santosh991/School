@@ -30,11 +30,15 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 public class AddStudentHouse extends HttpServlet{
 	
 	final String ERROR_STUDENT_HAS_ANOTHER_ROOM = "This student has already been assigend another house.";
+	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, they can not be assigned a house.";
 	final String ERROR_STUDENT_HAS_ROOM = "This student has already been assigend a house.";
 	final String HOUSE_ADD_ERROR = "An error occured while assigning student a house";
 	final String ERROR = "Unexpected error occured, find a student first";
 	final String HOUSE_ADD_SUCESS = "House assigned successfully";
 	final String ERROR_EMPTY_HOUSE = "Please select a house.";
+	
+	
+	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
 	private static StudentHouseDAO studentHouseDAO;
 	private static StudentDAO studentDAO;
@@ -89,6 +93,7 @@ public class AddStudentHouse extends HttpServlet{
 		     session.setAttribute(SessionConstants.HOUSE_ADD_ERROR, ERROR_STUDENT_HAS_ANOTHER_ROOM); 
 		     
 	   }else{
+		   if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
 		   StudentHouse studentHouse = new StudentHouse();
 		   studentHouse.setStudentUuid(studentUuid);
 		   studentHouse.setHouseUuid(houseUuid);
@@ -98,6 +103,10 @@ public class AddStudentHouse extends HttpServlet{
 		   }else{
 			   session.setAttribute(SessionConstants.HOUSE_ADD_ERROR, HOUSE_ADD_ERROR);
 		   }
+		   
+		   }else{
+ 			  session.setAttribute(SessionConstants.HOUSE_ADD_ERROR,ERROR_STUDENT_INACTIVE ); 
+ 		  }
 		
 	   session.setAttribute(SessionConstants.HOUSE_PARAM, paramHash);   
 	   }

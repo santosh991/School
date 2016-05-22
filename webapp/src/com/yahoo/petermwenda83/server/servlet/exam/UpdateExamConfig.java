@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
+import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 /**
@@ -35,6 +36,7 @@ public class UpdateExamConfig extends HttpServlet{
 	
 	
 	private static ExamConfigDAO examConfigDAO;
+	private static TermFeeDAO termFeeDAO;
 
 	
 	TermFee termFee;
@@ -47,10 +49,11 @@ public class UpdateExamConfig extends HttpServlet{
 	private List<String> exammodeList;
 	
 	
-	final String ERROR_EMPTY_FIELD = "Empty fields not allowed";
-	final String ERROR_YEAR_OUTSIDE_RANGE = "Check the year and try again";
-	final String ERROR_TERM_NOT_ALLOWED = "Term can't be greater that three";
+	final String ERROR_EMPTY_FIELD = "Empty fields are not allowed.";
+	final String ERROR_YEAR_OUTSIDE_RANGE = "Confirm that the year you entered is correct and try again";
+	final String ERROR_TERM_NOT_ALLOWED = "Term value can't be greater that three (3)";
 	final String ERROR_TERM_NUMERIC = "Term can only be numeric";
+	final String ERROR_YEAR_NUMERIC = "Year can only be numeric";
 	final String ERROR_EXAM_MODE_NOT_ALLOWED = "Exam Mode can only be  ON or OFF";
 	final String ERROR_EXAM_NOT_FOUND = "Exam code not found";
 	
@@ -68,6 +71,7 @@ public class UpdateExamConfig extends HttpServlet{
 		
 		exammodeArray = new String[] {"ON","OFF"};
 		exammodeList = Arrays.asList(exammodeArray);
+		 termFeeDAO = TermFeeDAO.getInstance();
 	
 		
    }
@@ -86,21 +90,24 @@ public class UpdateExamConfig extends HttpServlet{
        Calendar calendar = Calendar.getInstance();
        final int YEAR = calendar.get(Calendar.YEAR);
        int currentYearplusone = YEAR+1;
-       int theyear = Integer.parseInt(year);
-       int theterm = Integer.parseInt(term);
-       
-       
-        if(StringUtils.isEmpty(year)){
+      
+       if(StringUtils.isEmpty(term)){
     	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
-    	   
-        }else if(!isNumericRange(term)){
-		     session.setAttribute(SessionConstants.STUDENT_FIND_ERROR, ERROR_TERM_NUMERIC); 
+       }
+       else if(!isNumeric(term)){
+		     session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_TERM_NUMERIC); 
 			   
-	   }else if(theterm >3){
+	   }else if(Integer.parseInt(term) >3 || Integer.parseInt(term) ==0){
     	  session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_TERM_NOT_ALLOWED); 
     	   
-        }
-        else if(theyear>currentYearplusone){
+       }else if(StringUtils.isEmpty(year)){
+   	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_EMPTY_FIELD); 
+   	   
+       }else if(!isNumeric(year)){
+		     session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_YEAR_NUMERIC); 
+			   
+	   }
+        else if(Integer.parseInt(year)>currentYearplusone || Integer.parseInt(year)<YEAR){ 
     	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, ERROR_YEAR_OUTSIDE_RANGE); 
     	   
         }else if(StringUtils.isEmpty(exam)){
@@ -121,40 +128,67 @@ public class UpdateExamConfig extends HttpServlet{
       }else{
     	   
     	
-       ExamConfig examConfig = new ExamConfig();
-       examConfig.setSchoolAccountUuid(schoolAccountUuid);
+       ExamConfig examConfig = examConfigDAO.getExamConfig(schoolAccountUuid);
+       updatTermFee(examConfig,year);
+       //examConfig.setSchoolAccountUuid(schoolAccountUuid);
        examConfig.setTerm(term);
        examConfig.setYear(year);
        examConfig.setExam(exam);
        examConfig.setExamMode(exammode); 
-       
        if(examConfigDAO.updateExamConfig(examConfig)){
-    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS);  
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS +" Confirm please!! [ new Term is " + examConfig.getTerm() +" and new Year is " + examConfig.getYear() + " ]"); 
+    	   response.sendRedirect("prepareCommitt.jsp");  
+    	   
        }else{
-    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, SessionConstants.EXAM_CONFIG_UPDATE_ERROR);  
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, SessionConstants.EXAM_CONFIG_UPDATE_ERROR); 
+    	    
        }
        
        }
        
-       response.sendRedirect("prepareCommitt.jsp");  
+        response.sendRedirect("examConfig.jsp"); 
 	   return;
    }
    
+
    /**
-    * @param amount
-    * @return
+    * When we increment year new year fee is generated 
+    * 
+    * @param examConf
+    * @param year2 
     */
-   private boolean isNumericRange(String amount) {
-   	boolean valid = true;
-   	String regex = "[0-9]+";
-   	if(amount.matches(regex)){ 
-   		valid = true;
-   	}else{
-   		valid = false;
-   	}
-   	
-   	return valid;
+   private void updatTermFee(ExamConfig examConf, String year) {
+	  if(Integer.parseInt(year) > Integer.parseInt(examConf.getYear())){
+		  String [] terms = {"1","2","3"};
+		   double [] fee = {18700,15900,14000};
+		   for(int i=0; i<terms.length;i++){
+			   TermFee termFee = new TermFee();
+			   termFee.setSchoolAccountUuid(examConf.getSchoolAccountUuid()); 
+			   termFee.setTerm(terms[i]); 
+			   termFee.setYear(year);  
+			   termFee.setTermAmount(fee[i]);
+			   termFeeDAO.putFee(termFee);
+		   }
+	  }
+	 
    }
+
+/**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
       
    
 

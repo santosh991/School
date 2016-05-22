@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.yahoo.petermwenda83.bean.schoolaccount.SchoolAccount;
 import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
@@ -89,7 +91,10 @@ public class ChangeStudentStatus extends HttpServlet{
 
 		if(studentList !=null){
 			for(Student student : studentList){
-				studentAmountDAO.changeStatus(STATUS_NOT_DEDUCTED, school.getUuid(), student.getUuid());
+				   String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+                   if(StringUtils.equals(student.getStatusUuid(),statusUuid)){
+				      studentAmountDAO.changeStatus(STATUS_NOT_DEDUCTED, school.getUuid(), student.getUuid());
+                   }
 				
 			  }
 			

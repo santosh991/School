@@ -303,9 +303,9 @@ public class ClassList extends HttpServlet{
 	   try {
 		   document.open();
 
-		   BaseColor baseColor = new BaseColor(32,178,170);//maroon
-		   BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
-		   BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
+		   BaseColor baseColor = new BaseColor(255,255,255);//while
+		   //BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
+		   //BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
 
 		   Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
 
@@ -367,10 +367,10 @@ public class ClassList extends HttpServlet{
 
 		   //table here
 		   PdfPCell CountHeader = new PdfPCell(new Paragraph("*",boldFont));
-		   CountHeader.setBackgroundColor(baseColor);
+		   //CountHeader.setBackgroundColor(baseColor);
 		   CountHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 		   PdfPCell admNoHeader = new PdfPCell(new Paragraph("ADM NO",boldFont));
-		   admNoHeader.setBackgroundColor(baseColor);
+		   //admNoHeader.setBackgroundColor(baseColor);
 
 		   PdfPCell nameHeader = new PdfPCell(new Paragraph("NAME",boldFont));
 		   nameHeader.setBackgroundColor(baseColor);

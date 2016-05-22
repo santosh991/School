@@ -127,7 +127,7 @@
    
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
-     studentList = studentDAO.getStudentList(school , 0 , 1000); 
+     studentList = studentDAO.getAllStudentList(accountuuid); 
 
     HashMap<String, String> classroomHash = new HashMap<String, String>();
     RoomDAO roomDAO = RoomDAO.getInstance();

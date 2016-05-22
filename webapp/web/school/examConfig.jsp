@@ -176,7 +176,7 @@
 
         %>
             
-   
+   <h3><i class="icon-edit"></i> Term Configurations :</h3>  
 <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
                     <tr>
@@ -277,7 +277,7 @@
 
 
            <h3><i class="icon-edit"></i> School Fee:</h3>  
-             <table class="table table-striped table-bordered bootstrap-datatable ">
+             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                     <tr >
                         <th>*</th>

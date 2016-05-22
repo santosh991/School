@@ -11,6 +11,7 @@ import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.bean.student.guardian.StudentParent;
 import com.yahoo.petermwenda83.persistence.GenericDAO;
 
@@ -199,7 +200,31 @@ public class ParentsDAO extends GenericDAO  implements SchoolParentsDAO {
 	  return list;
 	}
 
-	
-	
+	/**
+	 * @see com.yahoo.petermwenda83.persistence.guardian.SchoolParentsDAO#getParentListByStudent(java.lang.String)
+	 */
+	@Override
+	public List<StudentParent> getParentListByStudent(String studentUuid) {
+		List<StudentParent> list = null;
+		 try(   
+	  		Connection conn = dbutils.getConnection();
+	  		PreparedStatement  pstmt = conn.prepareStatement("SELECT * FROM StudentParent WHERE studentUuid = ?;");   
+			) {
+			 pstmt.setString(1,studentUuid);
 
+			 try(ResultSet rset = pstmt.executeQuery();){
+					
+				 list = beanProcessor.toBeanList(rset, StudentParent.class);
+			}
+	        
+	  } catch(SQLException e){
+	  	 logger.error("SQL Exception when getting Parent List By StudentUuid " +studentUuid);
+	     logger.error(ExceptionUtils.getStackTrace(e));
+	     System.out.println(ExceptionUtils.getStackTrace(e)); 
+	  }
+
+		
+		return list;
+	}
+	
 }
