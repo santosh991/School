@@ -226,12 +226,12 @@ public class PerClassFinanceReport extends HttpServlet{
 		CellStyle style = xf.createCellStyle();
 		style.setAlignment(CellStyle.ALIGN_CENTER);
 		//style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
-		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		//style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 
 		CellStyle style2 = xf.createCellStyle();
 		style2.setAlignment(CellStyle.ALIGN_LEFT);
 		//style2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); 
-		style2.setFillPattern(CellStyle.DIAMONDS); 
+		//style2.setFillPattern(CellStyle.DIAMONDS); 
 
 		XSSFFont font = xf.createFont();
 		font.setFontName(XSSFFont.DEFAULT_FONT_NAME);  

@@ -16,10 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
-
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,11 +67,11 @@ import net.sf.ehcache.CacheManager;
  * 
  */
 public class Form34List extends HttpServlet{
-
-
-	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD);
-	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLDITALIC);
-	private Font normalText = new Font(Font.FontFamily.COURIER, 12);
+	
+	private Font normalText = new Font(Font.FontFamily.COURIER, 8,Font.BOLD);
+	private Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.NORMAL);
+	
 	private Document document;
 	private PdfWriter writer;
 	private Cache schoolaccountCache, statisticsCache;
@@ -248,9 +245,8 @@ public class Form34List extends HttpServlet{
 				+ "P.O BOX "+school.getPostalAddress()+"\n" 
 				+ ""+school.getTown() +" Kenya\n" 
 				+ "" + school.getMobile()+"\n"
-				+ "" + school.getEmail()+"\n";
-		// + "Class: "+roomHash.get(classroomuuid)+"\n"; 
-
+				+ "" + school.getEmail()+"\n\n";
+		
 		document = new Document(PageSize.A4, 46, 46, 64, 64);
 
 		try {
@@ -268,7 +264,7 @@ public class Form34List extends HttpServlet{
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
 
-
+		 return;
 	}
 
 
@@ -311,15 +307,13 @@ public class Form34List extends HttpServlet{
 			BaseColor Colormagenta = new BaseColor(255,255,255);//  (176,196,222); magenta
 			BaseColor Colorgrey = new BaseColor(255,255,255);//  (128,128,128)gray,grey
 
-			Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
-
 			Paragraph emptyline = new Paragraph(("                              "));
 			PdfPTable prefaceTable = new PdfPTable(2);  
 			prefaceTable.setWidthPercentage(100); 
 			prefaceTable.setWidths(new int[]{100,100}); 
 
 			Paragraph content = new Paragraph();
-			content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n") , boldFont));
+			content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n") , normalText));
 
 
 
@@ -463,7 +457,7 @@ public class Form34List extends HttpServlet{
 			myTable.addCell(meanHeader);
 			myTable.addCell(gradeHeader);
 			myTable.setWidthPercentage(103); 
-			myTable.setWidths(new int[]{15,30,54,15,15,15,15,15,15,15,15,15,15,15,15,17,25,20,15});   
+			myTable.setWidths(new int[]{15,30,52,15,15,16,15,15,15,15,15,15,15,15,15,17,25,20,15});   
 			myTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			String studeadmno = "";
@@ -963,31 +957,31 @@ public class Form34List extends HttpServlet{
 
 
 					if(Double.parseDouble(totalz)==number){
-						 myTable.addCell(new Paragraph(" "+(count-counttwo++),boldFont));
+						 myTable.addCell(new Paragraph(" "+(count-counttwo++),smallBold));
 					}
 					else{
 						counttwo=1;
-						 myTable.addCell(new Paragraph(" "+count,boldFont));
+						 myTable.addCell(new Paragraph(" "+count,smallBold));
 					}
 
-					  myTable.addCell(new Paragraph(studeadmno,boldFont));
-					   myTable.addCell(new Paragraph(studename,boldFont));				   
-					   myTable.addCell(new Paragraph(engscorestr,boldFont));
-					   myTable.addCell(new Paragraph(kswscorestr,boldFont));
-					   myTable.addCell(new Paragraph(matscorestr,boldFont));
-					   myTable.addCell(new Paragraph(physcorestr,boldFont));
-					   myTable.addCell(new Paragraph(chemscorestr,boldFont));
-					   myTable.addCell(new Paragraph(bioscorestr,boldFont));
-					   myTable.addCell(new Paragraph(histscorestr,boldFont));
-					   myTable.addCell(new Paragraph(crescorestr,boldFont));				   
-					   myTable.addCell(new Paragraph(geoscorestr,boldFont));
-					   myTable.addCell(new Paragraph(bsscorestr,boldFont));
-					   myTable.addCell(new Paragraph(agriscorestr,boldFont));
-					   myTable.addCell(new Paragraph(hscscorestr,boldFont));
-					   myTable.addCell(new Paragraph(comscorestr,boldFont));				   
-					   myTable.addCell(new Paragraph(df.format(Double.parseDouble(totalz)),boldFont));				   
-					   myTable.addCell(new Paragraph(df.format(mean),boldFont));
-					   myTable.addCell(new Paragraph(computeGrade(mean),boldFont));
+					  myTable.addCell(new Paragraph(studeadmno,smallBold));
+					   myTable.addCell(new Paragraph(studename,smallBold));				   
+					   myTable.addCell(new Paragraph(engscorestr,smallBold));
+					   myTable.addCell(new Paragraph(kswscorestr,smallBold));
+					   myTable.addCell(new Paragraph(matscorestr,smallBold));
+					   myTable.addCell(new Paragraph(physcorestr,smallBold));
+					   myTable.addCell(new Paragraph(chemscorestr,smallBold));
+					   myTable.addCell(new Paragraph(bioscorestr,smallBold));
+					   myTable.addCell(new Paragraph(histscorestr,smallBold));
+					   myTable.addCell(new Paragraph(crescorestr,smallBold));				   
+					   myTable.addCell(new Paragraph(geoscorestr,smallBold));
+					   myTable.addCell(new Paragraph(bsscorestr,smallBold));
+					   myTable.addCell(new Paragraph(agriscorestr,smallBold));
+					   myTable.addCell(new Paragraph(hscscorestr,smallBold));
+					   myTable.addCell(new Paragraph(comscorestr,smallBold));				   
+					   myTable.addCell(new Paragraph(df.format(Double.parseDouble(totalz)),smallBold));				   
+					   myTable.addCell(new Paragraph(df.format(mean),smallBold));
+					   myTable.addCell(new Paragraph(computeGrade(mean),smallBold));
 					   
 					count++;
 					studentcount++;
@@ -997,7 +991,7 @@ public class Form34List extends HttpServlet{
 				}
 			}
 			Paragraph classname = new Paragraph();
-			classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid) +" (CLASS MEAN :"+df2.format(classmean)+")\n",smallBold));
+			classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid) +" (CLASS MEAN :"+df2.format(classmean) + ",  GRADE : "+computeGrade(classmean)+  ")\n",smallBold));
 
 			//document.add(prefaceTable);
 			document.add(emptyline);

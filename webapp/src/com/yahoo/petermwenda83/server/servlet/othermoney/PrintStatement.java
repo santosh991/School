@@ -4,6 +4,7 @@
 package com.yahoo.petermwenda83.server.servlet.othermoney;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,11 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
@@ -37,7 +40,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.money.ClosingBalance;
-import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.othermoney.Otherstype;
@@ -49,7 +51,6 @@ import com.yahoo.petermwenda83.bean.student.Student;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.money.ClosingBalanceDAO;
-import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.OtherstypeDAO;
@@ -79,15 +80,18 @@ public class PrintStatement extends HttpServlet {
 	SimpleDateFormat yearformatter = new SimpleDateFormat("yyyy");
 	BaseColor baseColor = new BaseColor(255,255,255);//while   32,178,170)
 	BaseColor Colormagenta = new BaseColor(255,255,255);//  (176,196,222); magenta
-	BaseColor Colorgrey = new BaseColor(255,255,255);//  (128,128,128)gray,grey
+	BaseColor Colorgrey = new BaseColor(128,128,128);//  (128,128,128)gray,grey
 	//BaseColor baseColor = new BaseColor(32,178,170);//maroon
 	//BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
-	Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	
 
 	private Cache schoolaccountCache;
 
-	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
-	private Font normalText = new Font(Font.FontFamily.COURIER, 8,Font.UNDERLINE);
+	
+	private Font normalText = new Font(Font.FontFamily.COURIER, 8,Font.BOLD);
+	private Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.NORMAL);
+	
 	private Document document;
 	private PdfWriter writer;
 
@@ -106,7 +110,7 @@ public class PrintStatement extends HttpServlet {
 	private static ClosingBalanceDAO closingBalanceDAO;
 	private static TermFeeDAO termFeeDAO;
 	private static RoomDAO roomDAO;
-	private static StudentAmountDAO studentAmountDAO;
+	//private static StudentAmountDAO studentAmountDAO;
 	private static RevertedMoneyDAO revertedMoneyDAO;
 
 	private static StudentOtherMoniesDAO studentOtherMoniesDAO;
@@ -146,7 +150,7 @@ public class PrintStatement extends HttpServlet {
 		examConfigDAO = ExamConfigDAO.getInstance();
 		termFeeDAO = TermFeeDAO.getInstance();
 		roomDAO = RoomDAO.getInstance();
-		studentAmountDAO = StudentAmountDAO.getInstance();
+		//studentAmountDAO = StudentAmountDAO.getInstance();
 		studentOtherMoniesDAO = StudentOtherMoniesDAO.getInstance();
 		revertedMoneyDAO = RevertedMoneyDAO.getInstance();
 
@@ -214,13 +218,13 @@ public class PrintStatement extends HttpServlet {
 
 
 
-		PDF_TITLE = "STUDENT FEES PAYMENT REPORT \n";
+		PDF_TITLE = "STUDENT FEES PAYMENT REPORT";
 
 		PDF_SUBTITLE =     school.getSchoolName()+"\n"
 				+ "P.O BOX "+school.getPostalAddress()+"\n" 
 				+ ""+school.getTown().toUpperCase()+ " - Kenya\n" 
 				+ "" + school.getMobile()+"\n"
-				+ "" + school.getEmail()+"\n"; 
+				+ "" + school.getEmail()+"\n\n"; 
 
 		document = new Document(PageSize.A4, 40, 40, 60, 60);
 
@@ -254,17 +258,36 @@ public class PrintStatement extends HttpServlet {
 	}
 
 	private void populatePDFDocument(SchoolAccount school, ExamConfig examConfig2, Student stuudent,
-			String path2) {
+			String path) {
 
 		try {
 			document.open();
 			
 			Paragraph preface = new Paragraph();
-			preface.add(new Paragraph(PDF_TITLE, normalText));
-			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()))),normalText));
-			preface.add(new Paragraph("Printed on: " + formatter.format(new Date()) + " Term: " + examConfig2.getTerm()+" Year: " + examConfig2.getYear()+"\n\n", normalText));
+			preface.add(createImage(path));
+			
+			PdfPTable containerTable = new PdfPTable(2);  
+			containerTable.setWidthPercentage(100); 
+			containerTable.setWidths(new int[]{100,100}); 
+			containerTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+			
+			PdfPCell contheader = new PdfPCell(); 
+			//contheader = new PdfPCell(new Paragraph((PDF_TITLE) +"",normalText));
+			contheader = new PdfPCell(new Paragraph((PDF_SUBTITLE) +"",normalText));
+			contheader.setBackgroundColor(Colormagenta);
+			contheader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			PdfPCell bodyheader = new PdfPCell();
+			bodyheader = new PdfPCell(new Paragraph((PDF_TITLE + " FOR " + "\nADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" + "STUDENT NAME : " + studNameHash.get(stuudent.getUuid()) + "Printed on: " + formatter.format(new Date()) + "\nTerm: " + examConfig2.getTerm()+" Year: " + examConfig2.getYear()),normalText));
+			bodyheader.setBackgroundColor(Colormagenta);
+			bodyheader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
+			containerTable.addCell(contheader);
+			containerTable.addCell(bodyheader);
+			Paragraph empline = new Paragraph(("                              "));
 			document.add(preface);
+			document.add(containerTable);
+			document.add(empline);
 			
 			Date admissionDate = stuudent.getAdmissionDate();
 			String regterm = stuudent.getRegTerm();
@@ -322,11 +345,11 @@ public class PrintStatement extends HttpServlet {
 			
 			int rcount = 1;
 			for(RevertedMoney rmoney : revertedList){
-				reveertTable.addCell(new Paragraph(rcount+"",boldFont));
-				reveertTable.addCell(new Paragraph(moneytypeHash.get(rmoney.getOtherstypeUuid())+"",boldFont));
-				reveertTable.addCell(new Paragraph(nf.format(rmoney.getAmount())+"",boldFont));
-				reveertTable.addCell(new Paragraph(rmoney.getTerm()+"",boldFont));
-				reveertTable.addCell(new Paragraph(rmoney.getYear()+"",boldFont));
+				reveertTable.addCell(new Paragraph(rcount+"",smallBold));
+				reveertTable.addCell(new Paragraph(moneytypeHash.get(rmoney.getOtherstypeUuid())+"",smallBold));
+				reveertTable.addCell(new Paragraph(nf.format(rmoney.getAmount())+"",smallBold));
+				reveertTable.addCell(new Paragraph(rmoney.getTerm()+"",smallBold));
+				reveertTable.addCell(new Paragraph(rmoney.getYear()+"",smallBold));
 				rcount++;
 			}
 			
@@ -340,8 +363,8 @@ public class PrintStatement extends HttpServlet {
 			logger.error("DocumentException while writing into the document");
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
-
-
+		 return;
+ 
 	}
 
 
@@ -357,12 +380,6 @@ public class PrintStatement extends HttpServlet {
 
 		//if initial term is 1, compute and move to term 2
 		if(Integer.parseInt(regterm) == 1){
-
-			/*Paragraph preface = new Paragraph();
-			preface.add(new Paragraph(PDF_TITLE, normalText));
-			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-*/
 
 			//table here
 			PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
@@ -382,11 +399,11 @@ public class PrintStatement extends HttpServlet {
 			paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + "1",boldFont));
-			termHeader.setBackgroundColor(baseColor);
+			termHeader.setBackgroundColor(Colorgrey);
 			termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
-			yearHeader.setBackgroundColor(baseColor);
+			yearHeader.setBackgroundColor(Colorgrey);
 			yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPTable myTable = new PdfPTable(6); 
@@ -412,12 +429,12 @@ public class PrintStatement extends HttpServlet {
 			if(list !=null){
 				for(StudentFee fee : list){
 
-					myTable.addCell(new Paragraph(mycount+"",boldFont));
-					myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",boldFont));
-					myTable.addCell(new Paragraph(fee.getTransactionID()+"",boldFont));
-					myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",boldFont));
-					myTable.addCell(new Paragraph(regterm,boldFont));
-					myTable.addCell(new Paragraph(admYear,boldFont));
+					myTable.addCell(new Paragraph(mycount+"",smallBold));
+					myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",smallBold));
+					myTable.addCell(new Paragraph(fee.getTransactionID()+"",smallBold));
+					myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",smallBold));
+					myTable.addCell(new Paragraph(regterm,smallBold));
+					myTable.addCell(new Paragraph(admYear,smallBold));
 
 					totalpaid +=fee.getAmountPaid();
 					mycount++;
@@ -445,9 +462,9 @@ public class PrintStatement extends HttpServlet {
 					
 					termfee = termFeeDAO.getFee(school.getUuid(),regterm,admYear);
 
-					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
-							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
-							+ "               "+"Term Fee ="+nf.format(termfee.getTermAmount()), smallBold));
+					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid = " + nf.format(totalpaid) +""
+							+ "               " + " Fee Balance = " +nf.format(    (( termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
+							+ "               " + " Term Fee = " +nf.format(termfee.getTermAmount()), smallBold));
 					//closeHeader.setBackgroundColor(baseColor);
 					closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 					closeHeader.setColspan(6); 		
@@ -471,11 +488,11 @@ public class PrintStatement extends HttpServlet {
 			amountpaidHeader.setBackgroundColor(baseColor);
 			amountpaidHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell oTernHeader = new PdfPCell(new Paragraph("Term",boldFont));
+			PdfPCell oTernHeader = new PdfPCell(new Paragraph("Term ",boldFont));
 			oTernHeader.setBackgroundColor(baseColor);
 			oTernHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-			PdfPCell pYearHeader = new PdfPCell(new Paragraph("Year",boldFont));
+			PdfPCell pYearHeader = new PdfPCell(new Paragraph("Year" ,boldFont));
 			pYearHeader.setBackgroundColor(baseColor);
 			pYearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
@@ -517,11 +534,11 @@ public class PrintStatement extends HttpServlet {
 
 					somtype = moneytypeHash.get(som.getOtherstypeUuid()); 
 
-					OtherPayTable.addCell(new Paragraph(countOther+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(somtype+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(som.getTerm()+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(som.getYear()+"",boldFont));
+					OtherPayTable.addCell(new Paragraph(countOther+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(somtype+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(som.getTerm()+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(som.getYear()+"",smallBold));
 
 					countOther++;
 				}
@@ -534,26 +551,18 @@ public class PrintStatement extends HttpServlet {
 			document.add(OtherPayTable); 
 			document.add(myTable); 
 			document.add(emptyline);
-
-			nextyear = Integer.parseInt(admYear);
-			nextterm = 2;
-
-			cmputeMoveTerm2(nextterm,nextyear,school,stuudent,examConfig2); // 2 , 2016
-
-
-
+			
+           
+            	nextyear = Integer.parseInt(admYear);
+    			nextterm = 2;
+            	cmputeMoveTerm2(nextterm,nextyear,school,stuudent,examConfig2); // 2 , 2016
+           
 		}
 
 
 		//if initial term is 2 , compute and move to term 3
 		if(Integer.parseInt(regterm) == 2){
 
-
-			/*Paragraph preface = new Paragraph();
-			preface.add(new Paragraph(PDF_TITLE, normalText));
-			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-*/
 			//table here
 			PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 			countHeader.setBackgroundColor(baseColor);
@@ -572,11 +581,11 @@ public class PrintStatement extends HttpServlet {
 			paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + "2",boldFont));
-			termHeader.setBackgroundColor(baseColor);
+			termHeader.setBackgroundColor(Colorgrey);
 			termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
-			yearHeader.setBackgroundColor(baseColor);
+			yearHeader.setBackgroundColor(Colorgrey);
 			yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPTable myTable = new PdfPTable(6); 
@@ -602,12 +611,12 @@ public class PrintStatement extends HttpServlet {
 			if(list !=null){
 				for(StudentFee fee : list){
 
-					myTable.addCell(new Paragraph(mycount+"",boldFont));
-					myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",boldFont));
-					myTable.addCell(new Paragraph(fee.getTransactionID()+"",boldFont));
-					myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",boldFont));
-					myTable.addCell(new Paragraph(regterm,boldFont));
-					myTable.addCell(new Paragraph(admYear,boldFont));
+					myTable.addCell(new Paragraph(mycount+"",smallBold));
+					myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",smallBold));
+					myTable.addCell(new Paragraph(fee.getTransactionID()+"",smallBold));
+					myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",smallBold));
+					myTable.addCell(new Paragraph(regterm,smallBold));
+					myTable.addCell(new Paragraph(admYear,smallBold));
 
 
 					totalpaid +=fee.getAmountPaid();
@@ -634,9 +643,9 @@ public class PrintStatement extends HttpServlet {
 					
 					termfee = termFeeDAO.getFee(school.getUuid(),regterm,admYear);
 
-					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
-							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
-							+ "               "+"Term Fee ="+nf.format(termfee.getTermAmount()), smallBold));
+					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid = " + nf.format( totalpaid) +""
+							+ "               " + " Fee Balance = " +nf.format(    (( termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
+							+ "               " + " Term Fee = " +nf.format(termfee.getTermAmount()), smallBold));
 					//closeHeader.setBackgroundColor(baseColor);
 					closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 					closeHeader.setColspan(6); 		
@@ -708,11 +717,11 @@ public class PrintStatement extends HttpServlet {
 
 					somtype = moneytypeHash.get(som.getOtherstypeUuid()); 
 
-					OtherPayTable.addCell(new Paragraph(countOther+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(somtype+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(som.getTerm()+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(som.getYear()+"",boldFont));
+					OtherPayTable.addCell(new Paragraph(countOther+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(somtype+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(som.getTerm()+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(som.getYear()+"",smallBold));
 
 					countOther++;
 				}
@@ -740,13 +749,6 @@ public class PrintStatement extends HttpServlet {
 		if(Integer.parseInt(regterm) == 3){
 
 
-
-			/*Paragraph preface = new Paragraph();
-			preface.add(new Paragraph(PDF_TITLE, normalText));
-			preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-			preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-*/
-
 			//table here
 			PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 			countHeader.setBackgroundColor(baseColor);
@@ -765,11 +767,11 @@ public class PrintStatement extends HttpServlet {
 			paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + "3",boldFont));
-			termHeader.setBackgroundColor(baseColor);
+			termHeader.setBackgroundColor(Colorgrey);
 			termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
-			yearHeader.setBackgroundColor(baseColor);
+			yearHeader.setBackgroundColor(Colorgrey);
 			yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			PdfPTable myTable = new PdfPTable(6); 
@@ -795,12 +797,12 @@ public class PrintStatement extends HttpServlet {
 			if(list !=null){
 				for(StudentFee fee : list){
 
-					myTable.addCell(new Paragraph(mycount+"",boldFont));
-					myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",boldFont));
-					myTable.addCell(new Paragraph(fee.getTransactionID()+"",boldFont));
-					myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",boldFont));
-					myTable.addCell(new Paragraph(regterm,boldFont));
-					myTable.addCell(new Paragraph(admYear,boldFont));
+					myTable.addCell(new Paragraph(mycount+"",smallBold));
+					myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",smallBold));
+					myTable.addCell(new Paragraph(fee.getTransactionID()+"",smallBold));
+					myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",smallBold));
+					myTable.addCell(new Paragraph(regterm,smallBold));
+					myTable.addCell(new Paragraph(admYear,smallBold));
 
 
 					totalpaid +=fee.getAmountPaid();
@@ -827,9 +829,9 @@ public class PrintStatement extends HttpServlet {
 					
 					termfee = termFeeDAO.getFee(school.getUuid(),regterm,admYear);
 
-					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
-							+ "               "+"Fee Balance ="+nf.format(    ((termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
-							+ "               "+"Term Fee ="+nf.format(termfee.getTermAmount()), smallBold));
+					PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid = " + nf.format( totalpaid) +""
+							+ "               " + " Fee Balance = " +nf.format(    (( termfee.getTermAmount() + other_m_totals) - totalpaid)   )    +""
+							+ "               " + " Term Fee = " +nf.format(termfee.getTermAmount()), smallBold));
 					//closeHeader.setBackgroundColor(baseColor);
 					closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 					closeHeader.setColspan(6); 		
@@ -897,11 +899,11 @@ public class PrintStatement extends HttpServlet {
 
 					somtype = moneytypeHash.get(som.getOtherstypeUuid()); 
 
-					OtherPayTable.addCell(new Paragraph(countOther+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(somtype+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(som.getTerm()+"",boldFont));
-					OtherPayTable.addCell(new Paragraph(som.getYear()+"",boldFont));
+					OtherPayTable.addCell(new Paragraph(countOther+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(somtype+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(som.getTerm()+"",smallBold));
+					OtherPayTable.addCell(new Paragraph(som.getYear()+"",smallBold));
 					
 					countOther++;
 				}
@@ -920,14 +922,6 @@ public class PrintStatement extends HttpServlet {
 			computeNext(nextterm,nextyear,school,stuudent,examConfig2);
 
 		}
-
-
-
-
-
-
-
-
 
 
 	}
@@ -982,11 +976,11 @@ public class PrintStatement extends HttpServlet {
 		paydateHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + regterm,boldFont));
-		termHeader.setBackgroundColor(baseColor);
+		termHeader.setBackgroundColor(Colorgrey);
 		termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
-		yearHeader.setBackgroundColor(baseColor);
+		yearHeader.setBackgroundColor(Colorgrey);
 		yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPTable myTable = new PdfPTable(6); 
@@ -1012,12 +1006,12 @@ public class PrintStatement extends HttpServlet {
 		if(list !=null){
 			for(StudentFee fee : list){
 
-				myTable.addCell(new Paragraph(mycount+"",boldFont));
-				myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",boldFont));
-				myTable.addCell(new Paragraph(fee.getTransactionID()+"",boldFont));
-				myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",boldFont));
-				myTable.addCell(new Paragraph(regterm,boldFont));
-				myTable.addCell(new Paragraph(admYear,boldFont));
+				myTable.addCell(new Paragraph(mycount+"",smallBold));
+				myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",smallBold));
+				myTable.addCell(new Paragraph(fee.getTransactionID()+"",smallBold));
+				myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",smallBold));
+				myTable.addCell(new Paragraph(regterm,smallBold));
+				myTable.addCell(new Paragraph(admYear,smallBold));
 
 
 				totalpaid +=fee.getAmountPaid();
@@ -1054,9 +1048,9 @@ public class PrintStatement extends HttpServlet {
 			}
 
 			prevtermbalance = closingBalance.getClosingAmount();
-			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
-					+ "                "+"Fee Balance ="+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
-					+ "                "+"Term Fee ="+nf.format(termFeenew.getTermAmount()), smallBold));
+			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid = " + nf.format(totalpaid) +""
+					+ "                " + " Fee Balance = "+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
+					+ "                " + " Term Fee = " +nf.format(termFeenew.getTermAmount()) , smallBold));
 			//closeHeader.setBackgroundColor(baseColor);
 			closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			closeHeader.setColspan(6); 
@@ -1127,11 +1121,11 @@ public class PrintStatement extends HttpServlet {
 
 				somtype = moneytypeHash.get(som.getOtherstypeUuid()); 
 
-				OtherPayTable.addCell(new Paragraph(countOther+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(somtype+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(som.getTerm()+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(som.getYear()+"",boldFont));
+				OtherPayTable.addCell(new Paragraph(countOther+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(somtype+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(som.getTerm()+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(som.getYear()+"",smallBold));
 
 				countOther++;
 			}
@@ -1167,12 +1161,6 @@ public class PrintStatement extends HttpServlet {
 		String regterm = Integer.toString(nextterm);
 		String admYear = Integer.toString(nextyear);
 
-
-		/*Paragraph preface = new Paragraph();
-		preface.add(new Paragraph(PDF_TITLE, normalText));
-		preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-		preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-*/
 		//table here
 		PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 		countHeader.setBackgroundColor(baseColor);
@@ -1192,11 +1180,11 @@ public class PrintStatement extends HttpServlet {
 
 
 		PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + regterm,boldFont));
-		termHeader.setBackgroundColor(baseColor);
+		termHeader.setBackgroundColor(Colorgrey);
 		termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
-		yearHeader.setBackgroundColor(baseColor);
+		yearHeader.setBackgroundColor(Colorgrey);
 		yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPTable myTable = new PdfPTable(6); 
@@ -1222,12 +1210,12 @@ public class PrintStatement extends HttpServlet {
 		if(list !=null){
 			for(StudentFee fee : list){
 
-				myTable.addCell(new Paragraph(mycount+"",boldFont));
-				myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",boldFont));
-				myTable.addCell(new Paragraph(fee.getTransactionID()+"",boldFont));
-				myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",boldFont));
-				myTable.addCell(new Paragraph(regterm,boldFont));
-				myTable.addCell(new Paragraph(admYear,boldFont));
+				myTable.addCell(new Paragraph(mycount+"",smallBold));
+				myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",smallBold));
+				myTable.addCell(new Paragraph(fee.getTransactionID()+"",smallBold));
+				myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",smallBold));
+				myTable.addCell(new Paragraph(regterm,smallBold));
+				myTable.addCell(new Paragraph(admYear,smallBold));
 
 
 				totalpaid +=fee.getAmountPaid();
@@ -1263,9 +1251,9 @@ public class PrintStatement extends HttpServlet {
 			}
 
 			prevtermbalance = closingBalance.getClosingAmount();
-			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
-					+ "                "+"Fee Balance ="+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
-					+ "                "+"Term Fee ="+nf.format(termFeenew.getTermAmount()), smallBold));
+			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid = " + nf.format(totalpaid) +""
+					+ "                " + " Fee Balance = "+nf.format( termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
+					+ "                " + " Term Fee = " +nf.format(termFeenew.getTermAmount()), smallBold));
 			//closeHeader.setBackgroundColor(baseColor);
 			closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			closeHeader.setColspan(6); 
@@ -1331,11 +1319,11 @@ public class PrintStatement extends HttpServlet {
 
 				somtype = moneytypeHash.get(som.getOtherstypeUuid()); 
 
-				OtherPayTable.addCell(new Paragraph(countOther+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(somtype+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(som.getTerm()+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(som.getYear()+"",boldFont));
+				OtherPayTable.addCell(new Paragraph(countOther+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(somtype+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(som.getTerm()+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(som.getYear()+"",smallBold));
 
 				countOther++;
 			}
@@ -1377,14 +1365,6 @@ public class PrintStatement extends HttpServlet {
 		String admYear = Integer.toString(nextyear);
 
 
-
-		/*Paragraph preface = new Paragraph();
-		preface.add(new Paragraph(PDF_TITLE, normalText));
-		preface.add(new Paragraph(PDF_SUBTITLE, normalText));
-		preface.add(new Paragraph(("ADM N0 : " + studentAdmNoHash.get(stuudent.getUuid()) +"\n" +("STUDENT : " + studNameHash.get(stuudent.getUuid()) +"\n\n")),normalText));
-
-*/
-
 		//table here
 		PdfPCell countHeader = new PdfPCell(new Paragraph("S.N",boldFont));
 		countHeader.setBackgroundColor(baseColor);
@@ -1404,11 +1384,11 @@ public class PrintStatement extends HttpServlet {
 
 
 		PdfPCell termHeader = new PdfPCell(new Paragraph("Term " + regterm,boldFont));
-		termHeader.setBackgroundColor(baseColor);
+		termHeader.setBackgroundColor(Colorgrey);
 		termHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPCell yearHeader = new PdfPCell(new Paragraph("Year " + admYear,boldFont));
-		yearHeader.setBackgroundColor(baseColor);
+		yearHeader.setBackgroundColor(Colorgrey);
 		yearHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		PdfPTable myTable = new PdfPTable(6); 
@@ -1434,12 +1414,12 @@ public class PrintStatement extends HttpServlet {
 		if(list !=null){
 			for(StudentFee fee : list){
 
-				myTable.addCell(new Paragraph(mycount+"",boldFont));
-				myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",boldFont));
-				myTable.addCell(new Paragraph(fee.getTransactionID()+"",boldFont));
-				myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",boldFont));
-				myTable.addCell(new Paragraph(regterm,boldFont));
-				myTable.addCell(new Paragraph(admYear,boldFont));
+				myTable.addCell(new Paragraph(mycount+"",smallBold));
+				myTable.addCell(new Paragraph(nf.format(fee.getAmountPaid())+"",smallBold));
+				myTable.addCell(new Paragraph(fee.getTransactionID()+"",smallBold));
+				myTable.addCell(new Paragraph(formatter.format(fee.getDatePaid())+"",smallBold));
+				myTable.addCell(new Paragraph(regterm,smallBold));
+				myTable.addCell(new Paragraph(admYear,smallBold));
 
 
 				totalpaid +=fee.getAmountPaid();
@@ -1475,9 +1455,9 @@ public class PrintStatement extends HttpServlet {
 			}
 
 			prevtermbalance = closingBalance.getClosingAmount();
-			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid =" + nf.format(totalpaid) +""
-					+ "                "+"Fee Balance ="+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
-					+ "                "+"Term Fee ="+nf.format(termFeenew.getTermAmount()), smallBold));
+			PdfPCell closeHeader = new PdfPCell(new Paragraph("Total Paid = " + nf.format(totalpaid) +""
+					+ "                " + " Fee Balance = "+nf.format(termFeenew.getTermAmount() - prevtermbalance - totalpaid + other_m_totals) +" "
+					+ "                " + " Term Fee = " +nf.format(termFeenew.getTermAmount()), smallBold));
 			//closeHeader.setBackgroundColor(baseColor);
 			closeHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
 			closeHeader.setColspan(6); 
@@ -1545,11 +1525,11 @@ public class PrintStatement extends HttpServlet {
 
 				somtype = moneytypeHash.get(som.getOtherstypeUuid()); 
 
-				OtherPayTable.addCell(new Paragraph(countOther+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(somtype+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(som.getTerm()+"",boldFont));
-				OtherPayTable.addCell(new Paragraph(som.getYear()+"",boldFont));
+				OtherPayTable.addCell(new Paragraph(countOther+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(somtype+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(nf.format(som.getAmountPiad())+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(som.getTerm()+"",smallBold));
+				OtherPayTable.addCell(new Paragraph(som.getYear()+"",smallBold));
 
 				countOther++;
 			}
@@ -1572,6 +1552,34 @@ public class PrintStatement extends HttpServlet {
 
 	
 	
+
+	/**
+	 * @param realPath
+	 * @return
+	 */
+	private Element createImage(String realPath) {
+		Image imgLogo = null;
+
+		try {
+			imgLogo = Image.getInstance(realPath);
+			imgLogo.scaleToFit(100, 100);
+			imgLogo.setAlignment(Element.ALIGN_CENTER);
+
+		} catch (BadElementException e) {
+			logger.error("BadElementException Exception while creating an image");
+			logger.error(ExceptionUtils.getStackTrace(e));
+
+		} catch (MalformedURLException e) {
+			logger.error("MalformedURLException for the path");
+			logger.error(ExceptionUtils.getStackTrace(e));
+
+		} catch (IOException e) {
+			logger.error("IOException while creating an image");
+			logger.error(ExceptionUtils.getStackTrace(e));
+		}
+
+		return imgLogo;
+	}
 
 
 

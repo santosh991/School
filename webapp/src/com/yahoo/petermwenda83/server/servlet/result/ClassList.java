@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -71,9 +70,10 @@ import net.sf.ehcache.CacheManager;
  */
 public class ClassList extends HttpServlet{
 
-	private Font bigFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
-	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
-	private Font normalText = new Font(Font.FontFamily.COURIER, 8);
+	private Font normalText = new Font(Font.FontFamily.COURIER, 8,Font.BOLD);
+	private Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.NORMAL);
+	
 	private Cache schoolaccountCache, statisticsCache;
 	private Document document;
 	private PdfWriter writer;
@@ -257,15 +257,6 @@ public class ClassList extends HttpServlet{
 		   logger.error(ExceptionUtils.getStackTrace(e));
 	   }
 
-	   
-	   if(perfomanceList == null || pDistinctList == null){
-		   
-		   session.setAttribute(SessionConstants.ERROR_REPORT_NO_PAGES, SessionConstants.ERROR_REPORT_NO_PAGES);  
-		   
-	   }
-	   
-	   
-	   response.sendRedirect("exam.jsp");  
 	   return;
 	   
         }
@@ -307,12 +298,10 @@ public class ClassList extends HttpServlet{
 		   //BaseColor Colormagenta = new BaseColor(176,196,222);//magenta
 		   //BaseColor Colorgrey = new BaseColor(128,128,128);//gray,grey
 
-		   Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLDITALIC);
-
 		   Paragraph emptyline = new Paragraph(("                              "));
 
 		   Paragraph content = new Paragraph();
-		   content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n\n") , boldFont));
+		   content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n\n") , normalText));
 
 		   // Paragraph classname = new Paragraph();
 		   // classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid)+"\n",smallBold));
@@ -463,7 +452,7 @@ public class ClassList extends HttpServlet{
 		   myTable.addCell(meanHeader);
 		   myTable.addCell(gradeHeader);       
 		   myTable.setWidthPercentage(103); 
-		   myTable.setWidths(new int[]{15,30,54,15,15,15,15,15,15,15,15,15,15,15,15,17,25,20,15});   
+		   myTable.setWidths(new int[]{15,30,52,15,15,16,15,15,15,15,15,15,15,15,15,17,25,20,15});   
 		   myTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 		   String studeadmno = "",studename = "";double number = 0.0;
@@ -686,24 +675,24 @@ public class ClassList extends HttpServlet{
 				   
 				   
 				   
-				   myTable.addCell(new Paragraph(studeadmno,boldFont));
-				   myTable.addCell(new Paragraph(studename,boldFont));				   
-				   myTable.addCell(new Paragraph(engscorestr,boldFont));
-				   myTable.addCell(new Paragraph(kswscorestr,boldFont));
-				   myTable.addCell(new Paragraph(matscorestr,boldFont));
-				   myTable.addCell(new Paragraph(physcorestr,boldFont));
-				   myTable.addCell(new Paragraph(chemscorestr,boldFont));
-				   myTable.addCell(new Paragraph(bioscorestr,boldFont));
-				   myTable.addCell(new Paragraph(histscorestr,boldFont));
-				   myTable.addCell(new Paragraph(crescorestr,boldFont));				   
-				   myTable.addCell(new Paragraph(geoscorestr,boldFont));
-				   myTable.addCell(new Paragraph(bsscorestr,boldFont));
-				   myTable.addCell(new Paragraph(agriscorestr,boldFont));
-				   myTable.addCell(new Paragraph(hscscorestr,boldFont));
-				   myTable.addCell(new Paragraph(compscorestr,boldFont));				   
-				   myTable.addCell(new Paragraph(df.format(Double.parseDouble(totalz)),boldFont));				   
-				   myTable.addCell(new Paragraph(df.format(mean),boldFont));
-				   myTable.addCell(new Paragraph(computeGrade(mean),boldFont));
+				   myTable.addCell(new Paragraph(studeadmno,smallBold));
+				   myTable.addCell(new Paragraph(studename,smallBold));				   
+				   myTable.addCell(new Paragraph(engscorestr,smallBold));
+				   myTable.addCell(new Paragraph(kswscorestr,smallBold));
+				   myTable.addCell(new Paragraph(matscorestr,smallBold));
+				   myTable.addCell(new Paragraph(physcorestr,smallBold));
+				   myTable.addCell(new Paragraph(chemscorestr,smallBold));
+				   myTable.addCell(new Paragraph(bioscorestr,smallBold));
+				   myTable.addCell(new Paragraph(histscorestr,smallBold));
+				   myTable.addCell(new Paragraph(crescorestr,smallBold));				   
+				   myTable.addCell(new Paragraph(geoscorestr,smallBold));
+				   myTable.addCell(new Paragraph(bsscorestr,smallBold));
+				   myTable.addCell(new Paragraph(agriscorestr,smallBold));
+				   myTable.addCell(new Paragraph(hscscorestr,smallBold));
+				   myTable.addCell(new Paragraph(compscorestr,smallBold));				   
+				   myTable.addCell(new Paragraph(df.format(Double.parseDouble(totalz)),smallBold));				   
+				   myTable.addCell(new Paragraph(df.format(mean),smallBold));
+				   myTable.addCell(new Paragraph(computeGrade(mean),smallBold));
 				  
 				   count++;
 				   studentcount++;
@@ -714,7 +703,7 @@ public class ClassList extends HttpServlet{
 		   }
 
 		   Paragraph classname = new Paragraph();
-		   classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid) +" (CLASS MEAN :"+df2.format(classmean) +")\n",smallBold));
+		   classname.add(new Paragraph("CLASS PERFORMANCE LIST FOR: "+roomHash.get(classroomuuid) +" (CLASS MEAN :"+df2.format(classmean) + ",  GRADE : "+computeGrade(classmean) +")\n",smallBold));
 
 
 		   document.add(prefaceTable);

@@ -107,8 +107,6 @@
     Element element;
    
 
-    int incount = 0;  // Generic counter
-
     if ((element = accountsCache.get(username)) != null) {
         school = (SchoolAccount) element.getObjectValue();
     }
@@ -127,7 +125,7 @@
    
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
-     studentList = studentDAO.getAllStudentList(accountuuid); 
+     studentList = studentDAO.getStudentList(school , 0 , 15); 
 
     HashMap<String, String> classroomHash = new HashMap<String, String>();
     RoomDAO roomDAO = RoomDAO.getInstance();
@@ -159,6 +157,38 @@
     SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");
 
 
+     int ussdCount = 0;
+     StudentPaginator paginator = new StudentPaginator(accountuuid);
+     StudentPage studentpage;
+
+     studentpage = (StudentPage) session.getAttribute("currentPage");
+        String referrer = request.getHeader("referer");
+        String pageParam = (String) request.getParameter("page");
+
+        // We are to give the first page
+        if (studentpage == null
+                || !StringUtils.endsWith(referrer, "schoolIndex.jsp")
+                || StringUtils.equalsIgnoreCase(pageParam, "first")) {
+              studentpage = paginator.getFirstPage();
+
+            //We are to give the last page
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "last")) {
+             studentpage = paginator.getLastPage();
+
+            // We are to give the previous page
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "previous")) {
+            studentpage = paginator.getPrevPage(studentpage);
+
+            // We are to give the next page 
+        } else if (StringUtils.equalsIgnoreCase(pageParam, "next"))  {
+           studentpage = paginator.getNextPage(studentpage);
+        }
+
+        session.setAttribute("currentPage", studentpage);
+        studentList = studentpage.getContents();
+        ussdCount = (studentpage.getPageNum() - 1) * studentpage.getPagesize() + 1;
+
+
 
 %> 
 
@@ -176,8 +206,7 @@
     <div class="box span12">
         <div class="box-content">
 
-            <div>
-            <table class="table table-striped table-bordered bootstrap-datatable datatable">
+            <table class="table table-striped table-bordered bootstrap-datatable ">
                 <thead>
                     <tr >
                         <th>*</th>
@@ -258,7 +287,7 @@
                     }
                     %>
                     <tr class="tabledit">
-                         <td width="3%"><%=count%></td>
+                         <td width="3%"><%=ussdCount%></td>
                          <td class="center"><%=s.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
                          <td class="center"><%=gender%></td>
@@ -279,7 +308,7 @@
                     </tr>
 
                     <%
-                          count++;
+                          ussdCount++;
                        }
                    }
                             
@@ -287,8 +316,32 @@
                 </tbody>
             </table>  
 
-             
-        </div>
+             <div id="pagination">
+                <form name="pageForm" method="post" action="schoolIndex.jsp">                                
+                    <%                                            
+                        if (!studentpage.isFirstPage()) {
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="First" />
+                        <input class="toolbarBtn" type="submit" name="page" value="Previous" />
+                    <%
+                        }
+                    %>
+                    <span class="pageInfo">Page 
+                        <span class="pagePosition currentPage"><%= studentpage.getPageNum()%></span> of 
+                        <span class="pagePosition"><%= studentpage.getTotalPage()%></span>
+                    </span>   
+                    <%
+                        if (!studentpage.isLastPage()) {                        
+                    %>
+                        <input class="toolbarBtn" type="submit" name="page" value="Next">  
+                        <input class="toolbarBtn" type="submit" name="page" value="Last">
+                    <%
+                       }
+                    %>                                
+                </form>
+            </div>
+
+      
     </div><!--/span-->
 
 </div><!--/row-->

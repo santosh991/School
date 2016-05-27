@@ -18,7 +18,6 @@ public class ExamConfig extends StorableBean{
 	private String schoolAccountUuid;
 	private String Term;
 	private String Year;
-	private double termAmount;
 	private String Exam;
 	private String ExamMode;
 
@@ -29,7 +28,6 @@ public class ExamConfig extends StorableBean{
 		schoolAccountUuid = "";
 		Term = "";
 		Year = "";
-		termAmount = 0;
 		Exam = "";
 		ExamMode = "";
 	}
@@ -77,20 +75,6 @@ public class ExamConfig extends StorableBean{
 	}
 
 	/**
-	 * @return the termAmount
-	 */
-	public double getTermAmount() {
-		return termAmount;
-	}
-
-	/**
-	 * @param termAmount the termAmount to set
-	 */
-	public void setTermAmount(double termAmount) {
-		this.termAmount = termAmount;
-	}
-
-	/**
 	 * @return the exam
 	 */
 	public String getExam() {
@@ -129,8 +113,6 @@ public class ExamConfig extends StorableBean{
 		builder.append(", Year=");
 		builder.append(Year);
 		builder.append(", termAmount=");
-		builder.append(termAmount);
-		builder.append(", Exam=");
 		builder.append(Exam);
 		builder.append(", ExamMode=");
 		builder.append(ExamMode);

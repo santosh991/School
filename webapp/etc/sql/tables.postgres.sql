@@ -586,7 +586,6 @@ ALTER TABLE GradingSystem OWNER TO school;
     SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
     Term text,
     Year text,
-    TermAmount float,
     Exam text,
     ExamMode text
    
@@ -594,7 +593,7 @@ ALTER TABLE GradingSystem OWNER TO school;
 );
 
 -- import data from the CSV file for the Accounts table
-\COPY ExamConfig(Uuid,SchoolAccountUuid,Term,Year,TermAmount,Exam,ExamMode) FROM '/tmp/ExamConfig.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY ExamConfig(Uuid,SchoolAccountUuid,Term,Year,Exam,ExamMode) FROM '/tmp/ExamConfig.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ExamConfig OWNER TO school;
 
 

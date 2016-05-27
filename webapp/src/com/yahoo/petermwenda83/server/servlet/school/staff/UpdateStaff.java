@@ -102,9 +102,6 @@ public class UpdateStaff extends HttpServlet{
        }else if(StringUtils.isEmpty(username)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_USERNAME); 
     	   
-       }else if(!Wordlength(username)){
-    	   //session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_MAX_USERNAME); 
-    	   
        }else if(StringUtils.isEmpty(firstname)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_FIRSTNAME); 
     	   

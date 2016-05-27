@@ -137,7 +137,7 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 */
 	@Override
 	public List<Perfomance> getPerfomanceList(String schoolAccountUuid,String classRoomUuid,String Term,String Year) {
-		List<Perfomance> list = new ArrayList<>();
+		List<Perfomance> list =null;
         try (
         		 Connection conn = dbutils.getConnection();
      	         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Perfomance WHERE"
@@ -166,7 +166,7 @@ public class PerfomanceDAO extends GenericDAO  implements SchoolPerfomanceDAO {
 	 */
 	@Override
 	public List<Perfomance> getPerfomanceListDistinct(String schoolAccountUuid, String classRoomUuid,String Term,String Year) {
-		List<Perfomance> list = new ArrayList<>();
+		List<Perfomance> list = null;
         try (
         		 Connection conn = dbutils.getConnection();
         		 PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT studentuuid FROM perfomance WHERE"

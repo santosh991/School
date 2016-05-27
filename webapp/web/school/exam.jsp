@@ -302,6 +302,21 @@
         <div class="box span12">
         <div class="box-content">
 
+        <%
+                                String err = "";
+                                session = request.getSession(false);
+                                err = (String) session.getAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR);
+                                
+                                if (StringUtils.isNotEmpty(err)) {
+                                    out.println("<p style='color:red;'>");                 
+                                    out.println("error: " + err);
+                                    out.println("</p>");                                 
+                                    session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, null);
+                                  } 
+                                  
+
+        %>
+
 
         <table class="table table-striped  ">
                 <thead>

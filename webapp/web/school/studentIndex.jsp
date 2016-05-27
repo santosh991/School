@@ -87,8 +87,6 @@
     Element element;
    
 
-    int incount = 0;  // Generic counter
-
     if ((element = accountsCache.get(username)) != null) {
         school = (SchoolAccount) element.getObjectValue();
     }
@@ -407,10 +405,7 @@
 
             </div>
 
-       <br>   <br>   <br>
-
-
-
+      
 
         </div>
     </div><!--/span-->

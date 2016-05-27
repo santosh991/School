@@ -137,6 +137,7 @@
                                  <li>Completed everything pertaining <u>Students Fee</u> for the previous Term and you are not intending to make any other fee changes for that Term whatsoever.</li>
                                  <li>If that is not the case, go back to previous Term and/or Year  <a href="examConfig.jsp"> Back</a> </li>
                                  </ol>
+                                 <!--
                                   After you are done with "committ" command, confirm that all students account have been updated, updated account have the status "DEDUCTED".However, If you see the status "NOTDEDUCTED", you should do the following.
                                   <ol>
                                     <li>Click the control panel</li>
@@ -151,10 +152,10 @@
                                 <b style=color:magenta;> If you have comprehended and understood the consequences of the command below, you can now initiate fee committ by clicking on the button <u>"Initiate Fee  Committ"</u> below, then proceed to committing the changes.  <br>
                                 
                                 </b> 
-                                </p>
+                                </p> -->
 
                                 <p>
-                                  <b style=color:red> I don't understand this.</b>  <a href="examConfig.jsp">Please get me out of here</a> 
+                                  <b style=color:red> I don't understand this.</b>  <a href="studentIndex.jsp">Please get me out of here</a> 
                                 </p>
 
 

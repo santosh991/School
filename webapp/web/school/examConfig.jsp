@@ -200,7 +200,7 @@
                                 <input type="hidden" name="schoolUuid" value="<%=examConfig.getSchoolAccountUuid()%>">
                                 <input type="hidden" name="term" value="<%=examConfig.getTerm()%>">
                                 <input type="hidden" name="year" value="<%=examConfig.getYear()%>">
-                                <input type="hidden" name="termfee" value="<%=examConfig.getTermAmount()%>">
+                               
                                 <input type="hidden" name="exam" value="<%=examConfig.getExam()%>">
                                 <input type="hidden" name="exammode" value="<%=examConfig.getExamMode()%>">
                                 <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update" /> 

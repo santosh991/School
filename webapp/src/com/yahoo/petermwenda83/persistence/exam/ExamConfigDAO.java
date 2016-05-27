@@ -89,16 +89,15 @@ public class ExamConfigDAO extends GenericDAO implements SchoolExamConfigDAO {
 		boolean success = true;
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ExamConfig" 
-			        		+"(Uuid,SchoolAccountUuid,Term,Year,TermAmount,Exam,ExamMode) VALUES (?,?,?,?,?,?,?);");
+			        		+"(Uuid,SchoolAccountUuid,Term,Year,Exam,ExamMode) VALUES (?,?,?,?,?,?);");
        		){
 			   
 			    pstmt.setString(1, examConfig.getUuid());
 			    pstmt.setString(2, examConfig.getSchoolAccountUuid());
 			    pstmt.setString(3, examConfig.getTerm());
 	            pstmt.setString(4, examConfig.getYear());
-	            pstmt.setDouble(5, examConfig.getTermAmount());
-	            pstmt.setString(6, examConfig.getExam());
-	            pstmt.setString(7, examConfig.getExamMode());
+	            pstmt.setString(5, examConfig.getExam());
+	            pstmt.setString(6, examConfig.getExamMode());
 	           
 	            pstmt.executeUpdate();
 			 
@@ -120,14 +119,13 @@ public class ExamConfigDAO extends GenericDAO implements SchoolExamConfigDAO {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
         	PreparedStatement pstmt = conn.prepareStatement("UPDATE ExamConfig SET Term=?,"
-        			+ "Year=?,TermAmount=?,Exam =?, ExamMode=? WHERE SchoolAccountUuid = ?;");
+        			+ "Year=?,Exam =?, ExamMode=? WHERE SchoolAccountUuid = ?;");
         	) { 
 	            pstmt.setString(1, examConfig.getTerm());
 	            pstmt.setString(2, examConfig.getYear());
-	            pstmt.setDouble(3, examConfig.getTermAmount());
-	            pstmt.setString(4, examConfig.getExam());
-	            pstmt.setString(5, examConfig.getExamMode());
-	            pstmt.setString(6, examConfig.getSchoolAccountUuid());
+	            pstmt.setString(3, examConfig.getExam());
+	            pstmt.setString(4, examConfig.getExamMode());
+	            pstmt.setString(5, examConfig.getSchoolAccountUuid());
                 pstmt.executeUpdate(); 
 
         } catch (SQLException e) {

@@ -479,7 +479,7 @@
                                   }
 
 
-                               double termfee = examConfig.getTermAmount();
+                               double termfee = termFee.getTermAmount();
 					                     double balance =  termfee - mybalance;
                                out.println("<tr>"); 
                                out.println("<td width=\"10%\" class=\"center\">" + nf.format(mybalance) + "</td>");  
