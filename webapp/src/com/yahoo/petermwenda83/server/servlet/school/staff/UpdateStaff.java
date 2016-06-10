@@ -18,6 +18,7 @@ import com.yahoo.petermwenda83.bean.staff.Staff;
 import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
+import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
@@ -34,12 +35,19 @@ public class UpdateStaff extends HttpServlet{
 	private static StaffDAO staffDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
 	
+	final  String pos_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_PRINCIPAL"); 
+	final  String pos_Deputy_Pricipal =(String)  PropertiesConfig.getConfigValue("POSITION_DEPUTY"); 
+	private String principalId = "";
+	private String DeputyprincipalId = ""; 
+	
 	 
     final String ERROR_PHONE_INVALID = "Phone number is invalid, the number must have 10 digits (e.g. 0718953974).";
+    final String ERROR_USERNAME_PASSWORD_MATCH = "Usernme and National Id number can't be the same";
+    final String ERROR_EMP_NO_EMPTY = "Employee Number can't be empty";
 	final String ERROR_SELECT_POSITION = "Please select a position"; 
 	final String ERROR_EMPTY_CATEGORY = "Please select staff category"; 
 	final String ERROR_EMPTY_USERNAME = "username can't be empty";
-	 final String ERROR_MAX_USERNAME = "Username can only have character length of 5.";
+	final String ERROR_MAX_USERNAME = "Username can only have character length of 5.";
 	final String ERROR_EMPTY_FIRSTNAME = "firstname can't be empty";
 	final String ERROR_EMPTY_LASTNAME = "lastname can't be empty";
 	final String ERROR_EMPTY_SURNAME = "surname can't be empty";
@@ -54,6 +62,16 @@ public class UpdateStaff extends HttpServlet{
 	
 	final String STAFF_UPDATE_SUCSESS = "Staff updated successfully";
 	final String STAFF_UPDATE_ERROR = " An error occured while updating staff";
+	
+	final String NAME_ERROR = "Name format error/incorrent lenght.";
+	
+
+	final String ERROR_PRINCIPAL_EXIST = "Principal already added";
+	final String ERROR_DPRINCIPAL_EXIST = "Deputy Principal already added";
+	
+	final String STAFF_USERNAME_EXIST= "Staff Username already exist";
+	final String STAFF_EMP_NO_EXIST = "Employee Number already exist";
+	
 
 	/**
 	
@@ -65,7 +83,6 @@ public class UpdateStaff extends HttpServlet{
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
-       //CacheManager mgr = CacheManager.getInstance();
        staffDAO = StaffDAO.getInstance();
        staffDetailsDAO = StaffDetailsDAO.getInstance();
    }
@@ -93,7 +110,15 @@ public class UpdateStaff extends HttpServlet{
        String category = StringUtils.trimToEmpty(request.getParameter("category"));
        String staffUuid = StringUtils.trimToEmpty(request.getParameter("staffUuid"));
        
-      if(StringUtils.isEmpty(category)){
+       principalId = " ";
+	   DeputyprincipalId = "";
+       if(StringUtils.equals(PositionUuid, pos_Pricipal)){
+    	   principalId = pos_Pricipal;
+       }if(StringUtils.equals(PositionUuid, pos_Deputy_Pricipal)){
+    	   DeputyprincipalId = pos_Deputy_Pricipal;
+       }
+       
+     /* if(StringUtils.isEmpty(category)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_CATEGORY); 
     	   
        }else if(StringUtils.isEmpty(PositionUuid)){
@@ -102,7 +127,10 @@ public class UpdateStaff extends HttpServlet{
        }else if(StringUtils.isEmpty(username)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_USERNAME); 
     	   
-       }else if(StringUtils.isEmpty(firstname)){
+       }else if(StringUtils.isEmpty(employeeNo)){
+    	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMP_NO_EMPTY); 
+    	   
+       }else*/ if(StringUtils.isEmpty(firstname)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_FIRSTNAME); 
     	   
        }else if(StringUtils.isEmpty(lastname)){
@@ -111,7 +139,16 @@ public class UpdateStaff extends HttpServlet{
        }else if(StringUtils.isEmpty(surname)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_SURNAME); 
     	   
-       }else if(StringUtils.isEmpty(gender)){
+       }else if(!Wordlength(firstname)){
+	 	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(lastname)){
+	 	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(surname)){
+	 	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isEmpty(gender)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_GENDER); 
     	   
        }else if(StringUtils.isEmpty(phone)){
@@ -126,6 +163,9 @@ public class UpdateStaff extends HttpServlet{
        }else if(StringUtils.isEmpty(idno)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_IDNO); 
     	   
+       }else if(StringUtils.equalsIgnoreCase(username, idno)){
+    	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_USERNAME_PASSWORD_MATCH); 
+    	   
        }else if(StringUtils.isEmpty(county)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_COUNTY); 
     	   
@@ -138,24 +178,31 @@ public class UpdateStaff extends HttpServlet{
        }else if(StringUtils.isEmpty(schooluuid)){
     	   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, ERROR_EMPTY_STAFF_ID); 
     	   
-       }else{
+       }/*else if(staffDAO.getStaffByPosition(schooluuid, principalId) !=null){
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_PRINCIPAL_EXIST); 
     	   
-    	   // String countyLowecase = county.toLowerCase();
-			//String formatedcounty = countyLowecase.substring(0,1).toUpperCase()+countyLowecase.substring(1);
-			
+       }else if(staffDAO.getStaffByPosition(schooluuid, DeputyprincipalId) !=null){
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_DPRINCIPAL_EXIST); 
     	   
+       }else if(staffDetailsDAO.getStaffDetailByemployeeNo(employeeNo) !=null){ 
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR,STAFF_EMP_NO_EXIST );  
+    	   
+       }else if(staffDAO.getStaffByUsername(schooluuid, username) !=null){ 
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, STAFF_USERNAME_EXIST); 
+    	   
+       }*/else{
     	   
     	   Staff staff =staffDAO.getStaff(schooluuid, staffUuid);
-    	   staff.setUuid(staffUuid); 
-    	   staff.setCategory(category);
-    	   staff.setPassword(idno);
-    	   staff.setPositionUuid(PositionUuid);
-    	   staff.setSchoolAccountUuid(schooluuid);
-    	   staff.setUserName(username); 
+    	  // staff.setUuid(staffUuid); 
+    	  // staff.setCategory(category);
+    	  // staff.setPassword(idno);
+    	  // staff.setPositionUuid(PositionUuid);
+    	  // staff.setSchoolAccountUuid(schooluuid);
+    	  // staff.setUserName(username); 
     	   
     	   StaffDetails staffDetail = staffDetailsDAO.getStaffDetail(staffUuid);
     	   staffDetail.setStaffUuid(staff.getUuid()); 
-    	   staffDetail.setEmployeeNo(employeeNo);
+    	   //staffDetail.setEmployeeNo(employeeNo);
     	   staffDetail.setFirstName(firstname.toUpperCase());
     	   staffDetail.setLastName(lastname.toUpperCase());
     	   staffDetail.setSurname(surname.toUpperCase()); 
@@ -168,7 +215,7 @@ public class UpdateStaff extends HttpServlet{
     	   staffDetail.setCounty(county);
     	   staffDetail.setSysUser(sysUser);
     	   
-    	   if(staffDAO.updateStaff(staff) && staffDetailsDAO.updateSStaffDetail(staffDetail)){ 
+    	   if(staffDetailsDAO.updateSStaffDetail(staffDetail)){ 
     		   session.setAttribute(SessionConstants.STAFF_UPDATE_SUCCESS, STAFF_UPDATE_SUCSESS); 
     	   }else{
     		   session.setAttribute(SessionConstants.STAFF_UPDATE_ERROR, STAFF_UPDATE_ERROR); 
@@ -208,7 +255,6 @@ private static boolean lengthValid(String mystring) {
 	boolean isvalid = true;
 	int length = 0;
 	length = mystring.length();
-	//System.out.println("lenght = " + length);
 	if(length<10 ||length>10){
 		isvalid = false;
 	}
@@ -223,7 +269,7 @@ private static boolean Wordlength(String mystring) {
 	boolean isvalid = true;
 	int length = 0;
 	length = mystring.length();
-	if(length>5){
+	if(length<3){
 		isvalid = false;
 	}
 	return isvalid;

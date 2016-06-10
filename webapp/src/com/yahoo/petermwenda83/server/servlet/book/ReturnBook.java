@@ -17,6 +17,7 @@ import com.yahoo.petermwenda83.bean.book.Book;
 import com.yahoo.petermwenda83.bean.book.StudentBook;
 import com.yahoo.petermwenda83.persistence.book.BookDAO;
 import com.yahoo.petermwenda83.persistence.book.StudentBookDAO;
+import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 public class ReturnBook extends HttpServlet{
@@ -28,6 +29,8 @@ public class ReturnBook extends HttpServlet{
 
 	final String SUCCESS_BOOK_RETURN = "The book was successfully returned";
 	final String ERROR_BOOK_RETURN = "Something went wrong while returning the book";
+	
+	final String ERROR_INCORRECT_SEC_KEY = "The security key entered was incorrect";
 
 	
 	private static StudentBookDAO studentBookDAO;
@@ -57,14 +60,21 @@ public class ReturnBook extends HttpServlet{
        String bookisbn = StringUtils.trimToEmpty(request.getParameter("bkISBN"));
        String studentuuid = StringUtils.trimToEmpty(request.getParameter("studentUuid"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
-       //System.out.println("bookuuid="+bookuuid);
+       String securityKey = StringUtils.trimToEmpty(request.getParameter("securityKey"));
+       
+    
+       
        if(StringUtils.isBlank(bookisbn)){
-    	   session.setAttribute(SessionConstants.BOOK_RETURN_ERROR, ERROR_BOOK_RETURN+"1"); 
+    	   session.setAttribute(SessionConstants.BOOK_RETURN_ERROR, ERROR_BOOK_RETURN); 
     	   
        }else if(StringUtils.isBlank(studentuuid)){
-    	   session.setAttribute(SessionConstants.BOOK_RETURN_ERROR, ERROR_BOOK_RETURN+"2"); 
+    	   session.setAttribute(SessionConstants.BOOK_RETURN_ERROR, ERROR_BOOK_RETURN); 
     	   
-       }else{
+       }else if(!StringUtils.equals(securityKey, PropertiesConfig.getConfigValue("BOOK_SECURITY_KEY"))){
+    	   session.setAttribute(SessionConstants.BOOK_RETURN_ERROR, ERROR_INCORRECT_SEC_KEY); 
+    	
+       }
+       else{
     	   
     	   SimpleDateFormat formatter;
 		   formatter = new SimpleDateFormat("dd, MMM yyyy");

@@ -60,37 +60,38 @@
 
 
 
-
-
-
-
+    <servlet>
+        <servlet-name>ReportFormF1</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportFormF1</servlet-class>
+    </servlet>
 
     <servlet>
-        <servlet-name>ClassList</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ClassList</servlet-class>
+        <servlet-name>ClassListF1</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ClassListF1</servlet-class>
     </servlet>
+
+
+
+
+
 
      <servlet>
-        <servlet-name>Form34List</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.Form34List</servlet-class>
+        <servlet-name>ReportFormF3_4_c1_c2_et</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportFormF3_4_c1_c2_et</servlet-class>
     </servlet>
 
     <servlet>
-        <servlet-name>ReportForm</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm</servlet-class>
+        <servlet-name>ReportFormF3_4_p1_p2_p3</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportFormF3_4_p1_p2_p3</servlet-class>
     </servlet>
 
-     <servlet>
-        <servlet-name>ReportForm2</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm2</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>ReportForm12</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ReportForm12</servlet-class>
+      <servlet>
+        <servlet-name>ClassListF3_4</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.ClassListF3_4</servlet-class>
     </servlet>
 
 
+    
 
 
 
@@ -132,6 +133,12 @@
      <servlet>
         <servlet-name>UpdateExamConfig</servlet-name>
         <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.UpdateExamConfig</servlet-class>
+    </servlet>
+
+
+     <servlet>
+        <servlet-name>UpdateTermYear</servlet-name>
+        <servlet-class>com.yahoo.petermwenda83.server.servlet.exam.UpdateTermYear</servlet-class>
     </servlet>
 
      <servlet>
@@ -498,18 +505,6 @@
 
 
 
-     <!-- examination analysis-->
-
-        <servlet>
-        <servlet-name>ClassMeans</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.perstream.ClassMeans</servlet-class>
-        </servlet>
-
-        <servlet>
-        <servlet-name>ClassMean</servlet-name>
-        <servlet-class>com.yahoo.petermwenda83.server.servlet.result.classes.ClassMean</servlet-class>
-        </servlet>
-
  <!-- Library Management -->
         <servlet>
         <servlet-name>BorrowBook</servlet-name>
@@ -602,29 +597,51 @@
         <url-pattern>/fontImageGenerator</url-pattern>
     </servlet-mapping> 
 
-    <servlet-mapping>
-        <servlet-name>ClassList</servlet-name>
-        <url-pattern>/school/classList</url-pattern>
-    </servlet-mapping> 
+    
+   <!--  general repert form  -->
 
     <servlet-mapping>
-        <servlet-name>Form34List</servlet-name>
-        <url-pattern>/school/form34List</url-pattern>
+        <servlet-name>Form34Card</servlet-name>
+        <url-pattern>/school/form34Card</url-pattern> 
+    </servlet-mapping> 
+
+
+
+
+
+
+    <!-- general report form end  -->
+
+
+<servlet-mapping>
+        <servlet-name>ClassListF1</servlet-name>
+        <url-pattern>/school/classListF1</url-pattern> 
     </servlet-mapping> 
 
      <servlet-mapping>
-        <servlet-name>ReportForm</servlet-name>
-        <url-pattern>/school/reportForm</url-pattern>
+        <servlet-name>ReportFormF1</servlet-name>
+        <url-pattern>/school/reportFormF1</url-pattern>
     </servlet-mapping>
 
+    
+
+
+
+
+
+    <servlet-mapping>
+        <servlet-name>ClassListF3_4</servlet-name>
+        <url-pattern>/school/classListF3_4</url-pattern>
+    </servlet-mapping> 
+
      <servlet-mapping>
-        <servlet-name>ReportForm2</servlet-name>
-        <url-pattern>/school/reportForm2</url-pattern>
+        <servlet-name>ReportFormF3_4_c1_c2_et</servlet-name>
+        <url-pattern>/school/reportFormF3_4_c1_c2_et</url-pattern> 
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>ReportForm12</servlet-name>
-        <url-pattern>/school/reportForm12</url-pattern>
+        <servlet-name>ReportFormF3_4_p1_p2_p3</servlet-name>
+        <url-pattern>/school/reportFormF3_4_p1_p2_p3</url-pattern>
     </servlet-mapping>
 
 
@@ -676,6 +693,11 @@
      <servlet-mapping>
         <servlet-name>UpdateExamConfig</servlet-name>
         <url-pattern>/school/updateExamConfig</url-pattern>
+    </servlet-mapping>  
+
+     <servlet-mapping>
+        <servlet-name>UpdateTermYear</servlet-name>
+        <url-pattern>/school/updateTermYear</url-pattern>
     </servlet-mapping>  
 
     <servlet-mapping>

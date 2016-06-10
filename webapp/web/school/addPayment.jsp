@@ -119,7 +119,7 @@
                                         <label class="control-label" for="name">Payment type*:</label>
                                         <div class="controls">
                                          <input class="input-xlarge focused" id="receiver" type="text" name="type" 
-                                            value="" > 
+                                            value=""style="text-transform: capitalize;" > 
 
                                         </div>
                                     </div>  

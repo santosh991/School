@@ -119,7 +119,7 @@
                      <div class="control-group">
                         <label class="control-label" for="FatherName">Parent 1 Full Name</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  name="FatherName" type="text" value="<%=request.getParameter("FatherName")%>">
+                            <input class="input-xlarge focused"  name="FatherName" type="text" value="<%=request.getParameter("FatherName")%>" style="text-transform: capitalize;">
                         </div>
                     </div>
                     
@@ -133,7 +133,7 @@
                     <div class="control-group">
                         <label class="control-label" for="FatherOccupation">Parent 1 Occupation</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"   name="FatherOccupation" type="text" value="<%=request.getParameter("FatherOccupation")%>">
+                            <input class="input-xlarge focused"   name="FatherOccupation" type="text" value="<%=request.getParameter("FatherOccupation")%>" style="text-transform: capitalize;">
                         </div>
                     </div>
 
@@ -161,7 +161,7 @@
                     <div class="control-group">
                         <label class="control-label" for="MotherName">Parent 2 Full Name</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  name="MotherName" type="text" value="<%=request.getParameter("MotherName")%>">
+                            <input class="input-xlarge focused"  name="MotherName" type="text" value="<%=request.getParameter("MotherName")%>" style="text-transform: capitalize;">
                         </div>
                     </div>
                     
@@ -175,7 +175,7 @@
                     <div class="control-group">
                         <label class="control-label" for="MotherOccupation">Parent 2 Occupation</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"   name="MotherOccupation" type="text" value="<%=request.getParameter("MotherOccupation")%>">
+                            <input class="input-xlarge focused"   name="MotherOccupation" type="text" value="<%=request.getParameter("MotherOccupation")%>" style="text-transform: capitalize;">
                         </div>
                     </div>
 

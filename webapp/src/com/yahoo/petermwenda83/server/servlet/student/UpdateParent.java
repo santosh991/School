@@ -179,7 +179,6 @@ private static boolean lengthValid(String mystring) {
 	boolean isvalid = true;
 	int length = 0;
 	length = mystring.length();
-	//System.out.println("lenght = " + length);
 	if(length<10 ||length>10){
 		isvalid = false;
 	}

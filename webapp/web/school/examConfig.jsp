@@ -186,6 +186,7 @@
                         <th>Exam</th>                
                         <th>Exam Mode</th>
                         <th>Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>   
                 <tbody>
@@ -200,10 +201,19 @@
                                 <input type="hidden" name="schoolUuid" value="<%=examConfig.getSchoolAccountUuid()%>">
                                 <input type="hidden" name="term" value="<%=examConfig.getTerm()%>">
                                 <input type="hidden" name="year" value="<%=examConfig.getYear()%>">
-                               
                                 <input type="hidden" name="exam" value="<%=examConfig.getExam()%>">
                                 <input type="hidden" name="exammode" value="<%=examConfig.getExamMode()%>">
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update Exam Code" /> 
+                                </form>                          
+                         </td>  
+                         <td class="center">
+                                <form name="edit" method="POST" action="updateTermYear.jsp" > 
+                                <input type="hidden" name="schoolUuid" value="<%=examConfig.getSchoolAccountUuid()%>">
+                                <input type="hidden" name="term" value="<%=examConfig.getTerm()%>">
+                                <input type="hidden" name="year" value="<%=examConfig.getYear()%>">
+                                <input type="hidden" name="exam" value="<%=examConfig.getExam()%>">
+                                <input type="hidden" name="exammode" value="<%=examConfig.getExamMode()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update Term/Year" /> 
                                 </form>                          
                          </td>  
 

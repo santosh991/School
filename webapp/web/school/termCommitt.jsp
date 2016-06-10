@@ -123,9 +123,9 @@
             
                                 <p > <b style=color:red;>
                                   
-                                <em>NOTE that this is an irreversible command, if you are SURE of what you are doing proceed</em> <br>
+                                <em>NOTE that this is an irreversible command, proceed if you are SURE</em> <br>
 
-                               <em> If you are NOT SURE please QUIT. </em>  </b>
+                                 </b>
 
 
                                 </p>
@@ -134,7 +134,7 @@
                                 <p >
                                   
                                 <form name="edit" method="POST" action="committ" > 
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Committ Now" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Update Now" /> 
                                 </form>  
 
                                 </p>

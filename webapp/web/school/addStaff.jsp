@@ -198,7 +198,7 @@
                     </div>  
 
                     <div class="control-group">
-                        <label class="control-label" for="name">Employee Number:</label>
+                        <label class="control-label" for="name">Employee Number*:</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="employeeNo" 
                              value="<%= StringUtils.trimToEmpty(paramHash.get("employeeNo")) %>"  >                                    
@@ -210,16 +210,16 @@
                         <label class="control-label" for="name">FirstName*:</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="firstname" 
-                             value="<%= StringUtils.trimToEmpty(paramHash.get("firstname")) %>"  >                                    
+                             value="<%= StringUtils.trimToEmpty(paramHash.get("firstname")) %>" style="text-transform: capitalize;"  >                                    
                         </div>
                     </div> 
 
 
                     <div class="control-group">
-                        <label class="control-label" for="name">LastName*:</label>
+                        <label class="control-label" for="name">MiddleName*:</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="lastname"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("lastname")) %>"  >
+                              value="<%= StringUtils.trimToEmpty(paramHash.get("lastname")) %>"  style="text-transform: capitalize;">
                         </div>
                     </div> 
 
@@ -228,7 +228,7 @@
                         <label class="control-label" for="name">SurName*:</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="surname"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("surname")) %>"  >
+                              value="<%= StringUtils.trimToEmpty(paramHash.get("surname")) %>" style="text-transform: capitalize;" >
                         </div>
                     </div> 
 
@@ -281,7 +281,7 @@
                         <label class="control-label" for="name">County*:</label>
                         <div class="controls">
                             <input class="input-xlarge focused" id="receiver" type="text" name="county"
-                              value="<%= StringUtils.trimToEmpty(paramHash.get("county")) %>"  >
+                              value="<%= StringUtils.trimToEmpty(paramHash.get("county")) %>" style="text-transform: capitalize;" >
                         </div>
                     </div>  
 

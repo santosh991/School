@@ -98,15 +98,12 @@ ALTER TABLE SchoolAccount OWNER TO school;
 CREATE TABLE Subject (
     Id SERIAL PRIMARY KEY,
     Uuid text UNIQUE NOT NULL,
-    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
     SubjectCode text UNIQUE ,
     SubjectName text,
-    SubjectCategory text,
-    SysUser text,
-    RegistrationDate timestamp with time zone DEFAULT now()
+    SubjectCategory text
 );
 -- import data from the CSV file for the status table
-\COPY Subject(Uuid,SchoolAccountUuid,SubjectCode,SubjectName,SubjectCategory,SysUser,RegistrationDate) FROM '/tmp/Subject.csv' WITH DELIMITER AS '|' CSV HEADER
+\COPY Subject(Uuid,SubjectCode,SubjectName,SubjectCategory) FROM '/tmp/Subject.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE Subject OWNER TO school;
 
 
@@ -571,7 +568,7 @@ ALTER TABLE Perfomance OWNER TO school;
    
 );
 
--- import data from the CSV file for the Accounts table
+-- import data from the CSV file for the GradingSystem table
 \COPY GradingSystem(Uuid,SchoolAccountUuid,GradeAplain,GradeAminus,GradeBplus,GradeBplain,GradeBminus,GradeCplus,GradeCplain,GradeCminus,GradeDplus,GradeDplain,GradeDminus,GradeE) FROM '/tmp/GradingSystem.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE GradingSystem OWNER TO school;
 
@@ -592,13 +589,54 @@ ALTER TABLE GradingSystem OWNER TO school;
    
 );
 
--- import data from the CSV file for the Accounts table
+-- import data from the CSV file for the ExamConfig table
 \COPY ExamConfig(Uuid,SchoolAccountUuid,Term,Year,Exam,ExamMode) FROM '/tmp/ExamConfig.csv' WITH DELIMITER AS '|' CSV HEADER
 ALTER TABLE ExamConfig OWNER TO school;
 
 
 
 
+-- -------------------
+-- Table BarWeight
+-- -------------------
+ CREATE TABLE  BarWeight (
+    Id SERIAL PRIMARY KEY,
+    Uuid text UNIQUE NOT NULL,
+    SchoolAccountUuid text REFERENCES SchoolAccount(uuid),
+    StudentUuid text REFERENCES Student(Uuid),
+    Year text,
+    WeightOne float, 
+    WeightTwo float, 
+    WeightThree float 
+   
+   
+);
+
+-- import data from the CSV file for the BarWeight table
+\COPY BarWeight(Uuid,SchoolAccountUuid,StudentUuid,Year,WeightOne,WeightTwo,WeightThree) FROM '/tmp/BarWeight.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE BarWeight OWNER TO school;
+
+
+
+
+-- -------------------
+-- Table Deviation
+-- -------------------
+ CREATE TABLE  Deviation (
+    Id SERIAL PRIMARY KEY,
+    uuid text UNIQUE NOT NULL,
+    studentUuid text REFERENCES Student(Uuid),
+    year text,
+    devOne float,
+    devTwo float,
+    devThree float
+
+   
+   
+);
+-- import data from the CSV file for the Accounts table
+--\COPY Exam(uuid,studentUuid,year,devOne,devTwo,devThree) FROM '/tmp/Exam.csv' WITH DELIMITER AS '|' CSV HEADER
+ALTER TABLE Exam OWNER TO school;
 
 
 

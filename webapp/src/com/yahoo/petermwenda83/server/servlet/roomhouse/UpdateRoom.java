@@ -25,11 +25,12 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
 public class UpdateRoom extends HttpServlet{
 	
 	
-	final String EMPTY_ROOM = "Class room name can't be empty";
+	final String EMPTY_ROOM = "Class-room name can't be empty";
 	final String ERROR_EMPTY_SCH_ID = "Something went wrong";
-	final String ERROR_ROOM_EXIST = "A room with the given name exist";
-	final String ERROR_ROOM_UPDATE = "Error occured while updating Class room";
-	final String SUCCESS_ROOM_UPDATE = "Class room updated successfully";
+	final String ERROR_ROOM_EXIST = "A class-room with the given name exist";
+	final String ERROR_ROOM_NAME_INVALID = "Class-room name must have length of 8 characters e.g FORM 1 N (space is a character)";//FORM 1 N   8 char
+	final String ERROR_ROOM_UPDATE = "Error occured while updating class-room";
+	final String SUCCESS_ROOM_UPDATE = "Class-room updated successfully";
 	
 	private static RoomDAO roomDAO;
 	ClassRoom classRoom;
@@ -63,13 +64,16 @@ public class UpdateRoom extends HttpServlet{
        }else if(StringUtils.isBlank(roomname)){
     	   session.setAttribute(SessionConstants.ROOM_REG_ERROR, EMPTY_ROOM); 
     	   
-       }else if(roomDAO.getroomByRoomName(schooluuid, roomname) !=null){
+       }else if(!lengthValid(roomname)){
+	 	   session.setAttribute(SessionConstants.ROOM_REG_ERROR, ERROR_ROOM_NAME_INVALID); 
+		   
+	   }else if(roomDAO.getroomByRoomName(schooluuid, roomname) !=null){
     	   session.setAttribute(SessionConstants.ROOM_REG_ERROR, ERROR_ROOM_EXIST); 
     	   
        }else{
     	   
     	   classRoom = roomDAO.getroom(schooluuid, roomuuid);
-    	   classRoom.setRoomName(roomname); 
+    	   classRoom.setRoomName(roomname.toUpperCase()); 
     	   
     	   if(roomDAO.updateroom(classRoom)){
     		   session.setAttribute(SessionConstants.ROOM_REG_SUCCESS, SUCCESS_ROOM_UPDATE); 
@@ -84,12 +88,29 @@ public class UpdateRoom extends HttpServlet{
        
    }
    
+   /**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean lengthValid(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		if(length<8 ||length>8){
+			isvalid = false;
+		}
+		return isvalid;
+	}
+	
+   
 
 @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
        doPost(request, response);
    }
+
+
 
 /**
  * 

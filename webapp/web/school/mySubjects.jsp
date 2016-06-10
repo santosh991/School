@@ -14,6 +14,7 @@
 <%@page import="com.yahoo.petermwenda83.server.session.SessionConstants"%>
 <%@page import="com.yahoo.petermwenda83.server.session.SessionStatistics"%>
 <%@page import="com.yahoo.petermwenda83.server.cache.CacheVariables"%>
+<%@page import="com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig"%>
 
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
@@ -82,10 +83,15 @@
     response.setHeader("Refresh", SessionConstants.SESSION_TIMEOUT + "; url=../schoolLogout");
    
      String stffID = "";
+     String staffPosition  ="";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+     staffPosition = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_POSITION);
+     String pos_Teacher =(String) PropertiesConfig.getConfigValue("POSITION_TEACHER");
+     String pos_HOD =(String) PropertiesConfig.getConfigValue("POSITION_HOD");
+     String pos_CM =(String) PropertiesConfig.getConfigValue("POSITION_CM");
+      
      stffID = request.getParameter("staffuuid");
-
+   
      
      TeacherSubClassDAO teacherSubClassDAO = TeacherSubClassDAO.getInstance();
      List<TeacherSubClass> teachersubclassList = new ArrayList<TeacherSubClass>(); 

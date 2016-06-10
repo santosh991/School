@@ -268,7 +268,7 @@
                                   <label class="control-label" for="name">Sponsor Name*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorName"
-                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorName")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorName")) %>"  style="text-transform: capitalize;">
                                   </div>
                               </div> 
 
@@ -284,7 +284,7 @@
                                   <label class="control-label" for="name">Sponsor Occupation*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorOccupation"
-                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorOccupation")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorOccupation")) %>" style="text-transform: capitalize;" >
                                   </div>
                               </div> 
 
@@ -293,7 +293,7 @@
                                   <label class="control-label" for="name">Sponsor Country*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorCountry"
-                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorCountry")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorCountry")) %>"  style="text-transform: capitalize;">
                                   </div>
                               </div> 
 
@@ -301,7 +301,7 @@
                                   <label class="control-label" for="name">Sponsor County*:</label>
                                   <div class="controls">
                                       <input class="input-xlarge focused" id="receiver" type="text" name="SponsorCounty"
-                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorCounty")) %>"  >
+                                        value="<%= StringUtils.trimToEmpty(sponsorParamHash.get("SponsorCounty")) %>"  style="text-transform: capitalize;">
                                   </div>
                               </div> 
 

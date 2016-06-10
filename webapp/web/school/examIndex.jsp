@@ -12,9 +12,6 @@
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
 
-<%@page import="com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator"%>
-
-
 <%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
 
@@ -87,15 +84,12 @@
    
      String stffID ="";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      stffID = request.getParameter("staffid");
      String classroomuuid = "";
 
      ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
      ClassTeacher classTeacher = classTeacherDAO.getClassTeacherByteacherId(stffID);
-     if(classTeacher !=null){
-           classroomuuid = classTeacher.getClassRoomUuid();
-         }
+     
        classroomuuid = request.getParameter("classroomuuid");
       
       //languages
@@ -153,7 +147,7 @@
      perfomanceList = perfomanceDAO.getPerfomanceList(accountuuid,classroomuuid,examConfig.getTerm(),examConfig.getYear());
      pDistinctList = perfomanceDAO.getPerfomanceListDistinct(accountuuid, classroomuuid,examConfig.getTerm(),examConfig.getYear());
      
-     Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
+     //Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
      
      
      HashMap<String, String> roomHash = new HashMap<String, String>();
@@ -310,41 +304,45 @@
                 </thead>   
                 <tbody >            
                     <td width="10%" class="center">    
-                    <form  class=""   action="form34List" method="POST" target="_blank">
+                    <form  class=""   action="classListF3_4" method="POST" target="_blank">
                      <fieldset>                     
                      <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" > 
                      <input type="hidden" name="staffid" value="<%=stffID%>" >      
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Performance List</button> 
+                     <input type="hidden" name="classID" value="A4BFC2BD-262F-4207-99C8-057D6ADF80C7" >  <!--F3 -->     
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">(P1,P2,P3) Performance List</button> 
                      </fieldset>
                      </form>                                      
                     </td> 
 
                     <td width="10%" class="center">                              
-                    <form  class=""   action="form34List" method="POST" target="_blank">
+                    <form  class=""   action="classListF3_4" method="POST" target="_blank">
                      <fieldset>
                      <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" > 
                      <input type="hidden" name="staffid" value="<%=stffID%>" >    
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Performance List</button> 
+                     <input type="hidden" name="classID" value="A4BFC2BD-262F-4207-99C8-057D6ADF80C7" >  <!--F3 -->     
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">(C1,C2,ET) Performance List</button> 
                      </fieldset>
                      </form>                                             
                     </td> 
 
                     <td width="10%" class="center">                              
-                     <form  class=""   action="reportForm" method="POST" target="_blank">
+                     <form  class=""   action="reportFormF3_4_p1_p2_p3" method="POST" target="_blank">
                      <fieldset>                     
                      <input type="hidden" name="examID" value="4BE8AD46-EAE8-4151-BD18-CB23CF904DDB" >   
                      <input type="hidden" name="staffid" value="<%=stffID%>" >    
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">Standard Report Form</button> 
+                     <input type="hidden" name="classID" value="A4BFC2BD-262F-4207-99C8-057D6ADF80C7" >  <!--F3 -->     
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">(P1,P2,P3) Report Form</button> 
                      </fieldset>
                      </form>                                            
                     </td> 
 
                     <td width="10%" class="center">                              
-                    <form  class=""   action="reportForm2" method="POST" target="_blank">
+                    <form  class=""   action="reportFormF3_4_c1_c2_et" method="POST" target="_blank">
                      <fieldset>
                      <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >  
                      <input type="hidden" name="staffid" value="<%=stffID%>" >   
-                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">NonStandard Report Form</button> 
+                     <input type="hidden" name="classID" value="A4BFC2BD-262F-4207-99C8-057D6ADF80C7" >  <!--F3 -->     
+                     <button type="submit" name="Report" value="Report"   class="btn btn-primary">(C1,C2,ET) Report Form</button> 
                      </fieldset>
                      </form>                                         
                     </td> 

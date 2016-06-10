@@ -9,8 +9,9 @@ package com.yahoo.petermwenda83.server.session;
  */
 public class SessionConstants {
 	
+	//session management
 	final public static int SESSION_TIMEOUT = 500; 
-	
+	public static final String SIGN_ON_STATUS = "Online";
 	
 	 //SchoolAccount Management
 	public static final String ACCOUNT_SIGN_IN_ERROR_KEY = "Error Login";

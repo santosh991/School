@@ -118,9 +118,7 @@
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
-    if ((element = statisticsCache.get(accountuuid)) != null) {
-        statistics = (SessionStatistics) element.getObjectValue();
-    }
+    
 
    
      StudentDAO studentDAO = StudentDAO.getInstance();
@@ -282,11 +280,10 @@
                     String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
                     if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
                        status = "Active";
-                    }else{
-                      status = "Inactive";
-                    }
-                    %>
-                    <tr class="tabledit">
+                       //active
+                       %>
+                        
+                         <tr class="tabledit" style='color:black;'>
                          <td width="3%"><%=ussdCount%></td>
                          <td class="center"><%=s.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
@@ -299,13 +296,40 @@
                          <td class="center"><%=kcpeindex%></td>
                          <td class="center"><%=kcpemark%></td>
                          <td class="center"><%=kcpeyear%></td>
-                         <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>	
+                         <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>    
                          <td class="center"><%=status%></td>
-                         					
-                        
-                      
-
+                            
                     </tr>
+
+                       <%
+
+                    }else{
+                      status = "Inactive";
+                      //inactive
+                         %>
+
+                         <tr class="tabledit" style='color:#8B4789;'>
+                         <td width="3%"><%=ussdCount%></td>
+                         <td class="center"><%=s.getAdmno()%></td> 
+                         <td class="center"><%=fullname%></td>
+                         <td class="center"><%=gender%></td>
+                         <td class="center"><%=s.getdOB()%></td>
+                         <td class="center"><%=s.getBcertno()%></td>
+                         <td class="center"><%=classroomHash.get(s.getClassRoomUuid())%></td>
+                         <td class="center"><%=s.getCounty()%></td>
+                         <td class="center"><%=primaryschool%></td>
+                         <td class="center"><%=kcpeindex%></td>
+                         <td class="center"><%=kcpemark%></td>
+                         <td class="center"><%=kcpeyear%></td>
+                         <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>    
+                         <td class="center"><%=status%></td>
+                            
+                    </tr>
+
+                        <%
+                    }
+                    %>
+                   
 
                     <%
                           ussdCount++;

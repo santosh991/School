@@ -80,6 +80,9 @@ public class StaffDAO extends GenericDAO implements SchoolStaffDAO {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see com.yahoo.petermwenda83.persistence.staff.SchoolStaffDAO#getStaffUsername(java.lang.String)
+	 */
 	@Override
 	public Staff getStaffUsername(String username) {
 		Staff staff = null;

@@ -135,24 +135,8 @@
                                  <ol>
                                  <li>Submited all the previous Term exams.</li>
                                  <li>Completed everything pertaining <u>Students Fee</u> for the previous Term and you are not intending to make any other fee changes for that Term whatsoever.</li>
-                                 <li>If that is not the case, go back to previous Term and/or Year  <a href="examConfig.jsp"> Back</a> </li>
                                  </ol>
-                                 <!--
-                                  After you are done with "committ" command, confirm that all students account have been updated, updated account have the status "DEDUCTED".However, If you see the status "NOTDEDUCTED", you should do the following.
-                                  <ol>
-                                    <li>Click the control panel</li>
-                                    <li>Locate Term Configurations and click "Update". (Don't make any change to the values)</li>
-                                    <li>Click "Save changes"</li>
-                                    <li>You will be redirected to this page. Scroll to the bottom of the page and click on the button "Committ Fee"</li>
-                                    The button is only invoked when some students account fails to update for reasons like unexpected shutdown.<br>
-                                  </ol>
-                                  </b>
-
-                                <p>
-                                <b style=color:magenta;> If you have comprehended and understood the consequences of the command below, you can now initiate fee committ by clicking on the button <u>"Initiate Fee  Committ"</u> below, then proceed to committing the changes.  <br>
-                                
-                                </b> 
-                                </p> -->
+                                 
 
                                 <p>
                                   <b style=color:red> I don't understand this.</b>  <a href="studentIndex.jsp">Please get me out of here</a> 
@@ -163,7 +147,7 @@
 
                                 <p>
                                 <form name="edit" method="POST" action="prepare" > 
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Initiate Fee  Committ" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Initiate Fee Update" /> 
                                 </form>  
                                 <br>
                                 </p>
@@ -175,7 +159,7 @@
                                 <b style=color:red;>Previous Fee Committ failed??? Don't panic, Just click  the button below:<br>
                                 </b>  
                                 <form name="edit" method="POST" action="committ" > 
-                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Committ Fee" /> 
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Re-Update" /> 
                                 </form>  
                                 </p>
 

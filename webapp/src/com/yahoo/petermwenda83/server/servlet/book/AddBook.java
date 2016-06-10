@@ -32,6 +32,8 @@ public class AddBook extends HttpServlet{
 	final String ERROR_SOMETHING_WENT_WRONG = "Sorry, something went wrong while adding the book";
 	final String SUCCESS_BOOK_ADDED = "The book was successfully added";
 	
+	final String NAME_ERROR = "Data format error/incorrent lenght.";
+	
 	private static BookDAO bookDAO;
 	Book book;
 	
@@ -72,16 +74,28 @@ public class AddBook extends HttpServlet{
        if(StringUtils.isBlank(isbn)){
     	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_ISBN); 
     	  
-       }else if(StringUtils.isBlank(author)){
+       }else if(!Wordlength(isbn)){
+	 	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isBlank(author)){
     	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_AUTHOR); 
     	   
-       }else if(StringUtils.isBlank(publisher)){
+       }else if(!Wordlength(author)){
+	 	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isBlank(publisher)){
     	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_PUBLISHER); 
     	   
-       }else if(StringUtils.isBlank(title)){
+       }else if(!Wordlength(publisher)){
+	 	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isBlank(title)){
     	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_BOOK_TITTLE); 
     	   
-       }else if(StringUtils.isBlank(bookstatus)){
+       }else if(!Wordlength(title)){
+	 	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isBlank(bookstatus)){
     	   session.setAttribute(SessionConstants.BOOK_ADD_ERROR, EMPTY_CATEGORY); 
     	   
        }else if(StringUtils.isBlank(schooluuid)){
@@ -117,6 +131,38 @@ public class AddBook extends HttpServlet{
 	   return;
       
    }
+   
+   /**
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str) {  
+	  try  
+	  {  
+	    double d = Double.parseDouble(str);  
+	    
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+  
+
+	/**
+	 * @param mystring
+	 * @return
+	 */
+	private static boolean Wordlength(String mystring) {
+		boolean isvalid = true;
+		int length = 0;
+		length = mystring.length();
+		if(length<3){
+			isvalid = false;
+		}
+		return isvalid;
+	}
    
 
    @Override

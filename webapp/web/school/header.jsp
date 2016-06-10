@@ -196,24 +196,27 @@
 			  if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){
 
 
-               if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
+                  if(StringUtils.contains(room, FORM1)){ 
                  %>
-                 <!--  <a href="exam.jsp">MY CLASS</a>  -->
+                  <a href="teacherClassF1.jsp">MY CLASS</a>   
 		     
-		        <%
-	            }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
-	            %>
-	            <!-- <a href="examIndex.jsp">MY CLASS</a> -->
+		              <%
+                   } else if(StringUtils.contains(room, FORM2)){
+                    %>
+                    <a href="teacherClassF2.jsp">MY CLASS</a>   
+                    <%
+                  }else if(StringUtils.contains(room, FORM3)){
+	                 %>
+	                 <a href="teacherClassF3.jsp">MY CLASS</a>   
 	           
-		        <%
-	           }else{
-	          
-		      // response.sendRedirect("../index.jsp");
-	           }
+		                <%
+	                 }else if(StringUtils.contains(room, FORM4)){
+	                  %>
+                 <a href="teacherClassF4.jsp">MY CLASS</a>   
+                 <%		     
+	                }
                  
-
-                 
-                 }
+       }
                %>
 
 
@@ -225,6 +228,7 @@
 			    <a href="studentIndex.jsp">STUDENTS</a>
 			    <a href="fee.jsp">FINANCE</a>
 			     <!-- <a href="reports.jsp">REPORTS</a>  -->
+			      <a href="examUpload.jsp">UPLOAD EXAM</a>
 			    <a href="staff.jsp">STAFF</a>
                <a href="examConfig.jsp">CONTROL PANEL</a>
 			    
@@ -236,24 +240,33 @@
 			      <%  if(StringUtils.equals(staffPosition,pos_DeputyPricipal)){ %>
 			    <a href="studentIndex.jsp">STUDENTS</a>
 			     <!-- <a href="reports.jsp">REPORTS</a>  -->
-			    <a href="examConfig.jsp">CONTROL PANEL</a>
-          <a href="mySubjects.jsp">MY SUBJECTS</a>
+			    <!-- <a href="examConfig.jsp">CONTROL PANEL</a>  -->
+			     <a href="examUpload.jsp">UPLOAD EXAM</a>
+                <a href="staff.jsp">STAFF</a>
 			       <% }  %>
+
+
+
+
+
+             
 
 			     <!--CM-CURRICULUM MASTER-->
 
 			      <%  if(StringUtils.equals(staffPosition,pos_CM)){ %>
-			    <a href="studentIndex.jsp">STUDENTS</a>
+			       <a href="studentIndex.jsp">STUDENTS</a>
+              <a href="teacherSubject.jsp">MY SUBJECTS</a>
 			   <!-- <a href="reports.jsp">REPORTS</a>  -->
-			    <a href="examConfig.jsp">CONTROL PANEL</a>
+			  <!--  <a href="examConfig.jsp">CONTROL PANEL</a> -->
 			       <% }  %>
 
 
                    <!--HOD-->
 
 			        <%  if(StringUtils.equals(staffPosition,pos_HOD)){ %>
-			    <a href="studentIndex.jsp">STUDENTS</a>
-			   <!-- <a href="reports.jsp">REPORTS</a>  -->
+			       <a href="studentIndex.jsp">STUDENTS</a>
+              <a href="teacherSubject.jsp">MY SUBJECTS</a>
+			     <!-- <a href="reports.jsp">REPORTS</a>  -->
 		
 			       <% }  %>
 
@@ -268,7 +281,7 @@
 
              <% if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){ %>
                <a href="examUpload.jsp">UPLOAD EXAM</a>
-               <a href="mySubjects.jsp">MY SUBJECTS</a>
+               <a href="teacherSubject.jsp">MY SUBJECTS</a>
        
                <%} 
              }%>
@@ -280,7 +293,7 @@
 
 			   <%  if(StringUtils.equals(staffPosition,pos_Bursar)){ %>
 			     <a href="fee.jsp">FINANCE</a>
-           <a href="studentIndex.jsp">STUDENTS</a>
+                 <a href="studentIndex.jsp">STUDENTS</a>
 			      <% }  %>
 
 

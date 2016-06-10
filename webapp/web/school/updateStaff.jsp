@@ -153,11 +153,11 @@
                  <div class="control-group">
                         <label class="control-label" for="employeeNo">Employee Number</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  name="employeeNo" type="text" value="<%=staffDetail.getEmployeeNo()%>">
+                            <input class="input-xlarge focused"  name="employeeNo" type="text" value="<%=staffDetail.getEmployeeNo()%>" readonly>
                         </div>
                     </div>
 
-                    <div class="control-group">
+                   <!-- <div class="control-group">
                         <label class="control-label" for="Category">Staff*:</label>
                          <div class="controls">
                             <select name="category" >
@@ -177,39 +177,39 @@
                             <select name="position" >
                                 <option value="">Please select one</option> 
                                  <%
-                                    int count = 1;
+                                   /* int count = 1;
                                     if (positionList != null) {
-                                        for (Position p : positionList) {
+                                        for (Position p : positionList) {*/
                                 %>
-                                <option value="<%= p.getUuid()%>"><%=p.getPosition()%></option>
+                               // <option value="<%//= p.getUuid()%>"><%//=p.getPosition()%></option>
                                 <%
-                                            count++;
-                                        }
-                                    }
+                                        //    count++;
+                                       // }
+                                  //  }
                                 %>
                             </select>                           
                           
                         </div>
-                    </div> 
+                    </div> -->
 
                      <div class="control-group">
                         <label class="control-label" for="username">Username</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"  name="username" type="text" value="<%=staff.getUserName()%>">
+                            <input class="input-xlarge focused"  name="username" type="text" value="<%=staff.getUserName()%>" readonly>
                         </div>
                     </div>
                     
                     <div class="control-group">
                         <label class="control-label" for="firstname">FirstName</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"   name="firstname" type="text" value="<%=staffDetail.getFirstName()%>">
+                            <input class="input-xlarge focused"   name="firstname" type="text" value="<%=staffDetail.getFirstName()%>" style="text-transform: capitalize;">
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label" for="lastname">LastName</label>
+                        <label class="control-label" for="lastname">MiddleName</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"   name="lastname" type="text" value="<%=staffDetail.getLastName()%>">
+                            <input class="input-xlarge focused"   name="lastname" type="text" value="<%=staffDetail.getLastName()%>" style="text-transform: capitalize;">
                         </div>
                     </div>
 
@@ -217,7 +217,7 @@
                     <div class="control-group">
                         <label class="control-label" for="surname">SurName</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"   name="surname" type="text" value="<%=staffDetail.getSurname()%>">
+                            <input class="input-xlarge focused"   name="surname" type="text" value="<%=staffDetail.getSurname()%>" style="text-transform: capitalize;">
                         </div>
                     </div>
 
@@ -274,7 +274,7 @@
                     <div class="control-group">
                         <label class="control-label" for="county">County</label>
                         <div class="controls">
-                            <input class="input-xlarge focused"   name="county" type="text" value="<%=staffDetail.getCounty()%>">
+                            <input class="input-xlarge focused"   name="county" type="text" value="<%=staffDetail.getCounty()%>" style="text-transform: capitalize;">
                         </div>
                     </div>
 

@@ -79,7 +79,7 @@ public class PdfUtil extends PdfPageEventHelper {
             break;
         }
         ColumnText.showTextAligned(writer.getDirectContent(),
-                Element.ALIGN_CENTER, new Phrase(String.format("page %d", pagenumber)),
+                Element.ALIGN_CENTER, new Phrase(String.format(" * ", "")),
                 (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 18, 0);
     }
         

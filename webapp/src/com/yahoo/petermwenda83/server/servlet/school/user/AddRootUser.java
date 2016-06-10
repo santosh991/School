@@ -18,6 +18,7 @@ import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
+import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 /**
  * @author peter
@@ -37,6 +38,8 @@ public class AddRootUser extends HttpServlet{
     final String ERROR_MAX_USERNAME = "Username can only have character length of 5.";
     final String ERROR_EMPTY_PASSWORD = "Password cant be empty";
     final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
+    final String NAME_ERROR = "Name format error/incorrent lenght.";
+    final String ERROR_USERNAME_PASSWORD_MATCH = "Usernme and password can't be the same";
     
     final String ERROR_PRINCIPAL_EXIST = "Principal already added";
     
@@ -64,11 +67,8 @@ public class AddRootUser extends HttpServlet{
        HttpSession session = request.getSession(true);
        
        String accountUuid = StringUtils.trimToEmpty(request.getParameter("accountUuid"));
-      // String Category = StringUtils.trimToEmpty(request.getParameter("Category"));
-      // String PositionUuid = StringUtils.trimToEmpty(request.getParameter("PositionUuid"));
        String principalusername = StringUtils.trimToEmpty(request.getParameter("principalusername"));
        String principalpassword = StringUtils.trimToEmpty(request.getParameter("principalpassword"));
-       
        String employeeNo = StringUtils.trimToEmpty(request.getParameter("employeeNo"));
        String firstname = StringUtils.trimToEmpty(request.getParameter("firstname"));
        String lastname = StringUtils.trimToEmpty(request.getParameter("lastname"));
@@ -103,16 +103,28 @@ public class AddRootUser extends HttpServlet{
        }else if(StringUtils.isEmpty(principalusername)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_USERNAME); 
     	   
-       }else if(!Wordlength(principalusername)){
-    	  // session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_MAX_USERNAME); 
+       }else if(StringUtils.equalsIgnoreCase(principalusername, principalpassword)){
+    	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_USERNAME_PASSWORD_MATCH); 
     	   
-       }else if(!isNumeric(phone)){
+       }else if(!Wordlength(principalusername)){
+	 	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(firstname)){
+	 	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(lastname)){
+	 	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(surname)){
+	 	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!isNumeric(phone)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_PHONE_NUMERIC); 
     	   
        }else if(!lengthValid(phone)){
 	 	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_PHONE_INVALID); 
 		   
-	}else if(StringUtils.isEmpty(principalpassword)){
+	  }else if(StringUtils.isEmpty(principalpassword)){
     	   session.setAttribute(AdminSessionConstants.PRINCIPAL_ADD_ERROR, ERROR_EMPTY_PASSWORD); 
     	   
        }else if(staffDAO.getStaffByPosition(accountUuid, PRINCIPAL_POSITION) !=null){
@@ -185,7 +197,6 @@ public class AddRootUser extends HttpServlet{
 		boolean isvalid = true;
 		int length = 0;
 		length = mystring.length();
-		//System.out.println("lenght = " + length);
 		if(length<10 ||length>10){
 			isvalid = false;
 		}
@@ -201,7 +212,7 @@ public class AddRootUser extends HttpServlet{
 		boolean isvalid = true;
 		int length = 0;
 		length = mystring.length();
-		if(length>5){
+		if(length<3){
 			isvalid = false;
 		}
 		return isvalid;

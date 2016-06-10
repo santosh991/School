@@ -151,11 +151,9 @@
                     String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
                     if(StringUtils.equals(st.getStatusUuid(),statusUuid)){
                        status = "Active";
-                    }else{
-                      status = "Inactive";
-                    }
-                    %>
-                    <tr class="tabledit">
+                       %>
+
+                       <tr class="tabledit" style='color:black;'>
                         <td width="3%"><%=count%></td>
                          <td class="center"><%=st.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
@@ -190,6 +188,56 @@
                                </td>   
                                           
                     </tr>
+
+
+
+                       <%
+                    }else{
+                      status = "Inactive";
+                      %>
+
+                      <tr class="tabledit" style='color:#8B4789;'>
+                        <td width="3%"><%=count%></td>
+                         <td class="center"><%=st.getAdmno()%></td> 
+                         <td class="center"><%=fullname%></td>
+                         <td class="center"><%=gender%></td>
+                         <td class="center"><%=st.getdOB()%></td>
+                         <td class="center"><%=st.getBcertno()%></td>
+                         <td class="center"><%=classroomHash.get(st.getClassRoomUuid())%></td>
+                         <td class="center"><%=st.getCounty()%></td>
+                         <td class="center"><%=primaryschool%></td>
+                         <td class="center"><%=kcpeindex%></td>
+                         <td class="center"><%=kcpemark%></td>
+                         <td class="center"><%=kcpeyear%></td>
+                         <td class="center"><%=dateFormatter.format(st.getAdmissionDate())%></td>    
+                        <td class="center">
+                                <form name="view" method="POST" action="updateStudent.jsp"> 
+                                <input type="hidden" name="admNo" value="<%=st.getAdmno()%>">
+                                <input type="hidden" name="firstname" value="<%=formatedFirstname%>">
+                                <input type="hidden" name="lastname" value="<%=formatedLastname%>">
+                                <input type="hidden" name="surname" value="<%=formatedSurname%>">
+                                <input type="hidden" name="gender" value="<%=st.getGender()%>">
+                                <input type="hidden" name="dob" value="<%=st.getdOB()%>">
+                                <input type="hidden" name="BcertNo" value="<%=st.getBcertno()%>">
+                                <input type="hidden" name="county" value="<%=st.getCounty()%>">
+                                <input type="hidden" name="primary" value="<%=primaryschool%>">
+                                <input type="hidden" name="kcpeindex" value="<%=kcpeindex%>">
+                                <input type="hidden" name="kcpemark" value="<%=kcpemark%>">
+                                <input type="hidden" name="kcpeyear" value="<%=kcpeyear%>">
+                                <input type="hidden" name="studentUuid" value="<%=st.getUuid()%>">
+                                <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
+                                </form>                               
+                               </td>   
+                                          
+                    </tr>
+
+
+
+                      <%
+                    }
+                    %>
+                    
 
                     <%       
                            count++;

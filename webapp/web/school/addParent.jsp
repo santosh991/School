@@ -268,7 +268,7 @@
 				                        <label class="control-label" for="FatherName">Parent 1 Full Name*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherName"
-				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherName")) %>"  >
+				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherName")) %>" style="text-transform: capitalize;"/>
 				                        </div>
 				                    </div> 
 
@@ -284,7 +284,7 @@
 				                        <label class="control-label" for="FatherOccupation">Parent 1 Occupation*:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="FatherOccupation"
-				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherOccupation")) %>"  >
+				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("FatherOccupation")) %>" style="text-transform: capitalize;" >
 				                        </div>
 				                    </div> 
 
@@ -312,7 +312,7 @@
 				                        <label class="control-label" for="MotherName">Parent 2 Full Name:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherName"
-				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherName")) %>"  >
+				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherName")) %>" style="text-transform: capitalize;" >
 				                        </div>
 				                    </div> 
 
@@ -328,7 +328,7 @@
 				                        <label class="control-label" for="MotherOccupation">Parent 2 Occupation:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="MotherOccupation"
-				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherOccupation")) %>"  >
+				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("MotherOccupation")) %>" style="text-transform: capitalize;" >
 				                        </div>
 				                    </div> 
 
@@ -354,7 +354,7 @@
 				                        <label class="control-label" for="RelativeName">Full Name:</label>
 				                        <div class="controls">
 				                        <input class="input-xlarge focused" id="receiver" type="text" name="RelativeName"
-				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("RelativeName")) %>"  >
+				                              value="<%= StringUtils.trimToEmpty(fatherMotherParamHash.get("RelativeName")) %>" style="text-transform: capitalize;" >
 				                        </div>
 				                    </div> 
 

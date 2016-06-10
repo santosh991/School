@@ -151,7 +151,7 @@
                     <div class="form-actions">
                         <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
                          <input type="hidden" name="systemuser" value="<%=staffUsername%>">
-                        <button type="submit" class="btn btn-primary">Register</button>
+                        <button type="submit" class="btn btn-primary">Delete</button>
                     </div> 
 
                   </fieldset>

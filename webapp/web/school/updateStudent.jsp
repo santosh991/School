@@ -119,15 +119,15 @@
                                 <label class="control-label" for="firstname">Firstname:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="firstname"
-                                      value="<%=request.getParameter("firstname") %>"  >
+                                      value="<%=request.getParameter("firstname") %>"  style="text-transform: capitalize;">
                                 </div>
                              </div> 
 
                              <div class="control-group">
-                                <label class="control-label" for="lastname">Lastname:</label>
+                                <label class="control-label" for="lastname">MiddleName:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="lastname"
-                                      value="<%=request.getParameter("lastname") %>"  >
+                                      value="<%=request.getParameter("lastname") %>" style="text-transform: capitalize;" >
                                 </div>
                              </div> 
 
@@ -135,7 +135,7 @@
                                 <label class="control-label" for="surname">Surname:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="surname"
-                                      value="<%=request.getParameter("surname")%>"  >
+                                      value="<%=request.getParameter("surname")%>" style="text-transform: capitalize;" >
                                 </div>
                              </div> 
 
@@ -143,7 +143,7 @@
                                 <label class="control-label" for="gender">Gender:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="gender"
-                                      value="<%=request.getParameter("gender")%>"  >
+                                      value="<%=request.getParameter("gender")%>"  style="text-transform: capitalize;">
                                 </div>
                              </div> 
 
@@ -167,28 +167,28 @@
                                 <label class="control-label" for="County">County:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="county"
-                                      value="<%=request.getParameter("county")%>"  >
+                                      value="<%=request.getParameter("county")%>" style="text-transform: capitalize;" >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="Primary">Primary School:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="primary"
-                                      value="<%=request.getParameter("primary")%>"  >
+                                      value="<%=request.getParameter("primary")%>" style="text-transform: capitalize;" >
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="kcpeindex">KCPE Index:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="kcpeindex"
-                                      value="<%=request.getParameter("kcpeindex")%>"  >
+                                      value="<%=request.getParameter("kcpeindex")%>"  style="text-transform: capitalize;">
                                 </div>
                              </div> 
                              <div class="control-group">
                                 <label class="control-label" for="kcpemark">KCPE Marks:</label>
                                 <div class="controls">
                                 <input class="input-xlarge focused" id="receiver" type="text" name="kcpemark"
-                                      value="<%=request.getParameter("kcpemark")%>"  >
+                                      value="<%=request.getParameter("kcpemark")%>"  style="text-transform: capitalize;">
                                 </div>
                              </div> 
 

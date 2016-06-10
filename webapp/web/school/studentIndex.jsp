@@ -98,11 +98,7 @@
     ExamConfigDAO examConfigDAO = ExamConfigDAO.getInstance();
     ExamConfig examConfig = examConfigDAO.getExamConfig(accountuuid);
 
-    if ((element = statisticsCache.get(accountuuid)) != null) {
-        statistics = (SessionStatistics) element.getObjectValue();
-    }
 
-   
      StudentDAO studentDAO = StudentDAO.getInstance();
      List<Student> studentList = new ArrayList(); 
      studentList = studentDAO.getStudentList(school , 0 , 15); 
@@ -326,11 +322,9 @@
 
                     if(StringUtils.equals(s.getStatusUuid(),statusUuid)){
                        status = "Active";
-                    }else{
-                      status = "Inactive";
-                    }
-                    %>
-                    <tr class="tabledit">
+                       %>
+
+                       <tr class="tabledit" style='color:black;'>
                          <td width="3%"><%=ussdCount%></td>
                          <td class="center"><%=s.getAdmno()%></td> 
                          <td class="center"><%=fullname%></td>
@@ -367,6 +361,63 @@
                       
 
                     </tr>
+
+
+
+
+
+                       <%
+                    }else{
+                      status = "Inactive";
+                      %>
+
+
+                      <tr class="tabledit" style='color:#8B4789;'>
+                         <td width="3%"><%=ussdCount%></td>
+                         <td class="center"><%=s.getAdmno()%></td> 
+                         <td class="center"><%=fullname%></td>
+                         <td class="center"><%=gender%></td>
+                         <td class="center"><%=s.getdOB()%></td>
+                         <td class="center"><%=s.getBcertno()%></td>
+                         <td class="center"><%=classroomHash.get(s.getClassRoomUuid())%></td>
+                         <td class="center"><%=s.getCounty()%></td>
+                         <td class="center"><%=primaryschool%></td>
+                         <td class="center"><%=kcpeindex%></td>
+                         <td class="center"><%=kcpemark%></td>
+                         <td class="center"><%=kcpeyear%></td>
+                         <td class="center"><%=dateFormatter.format(s.getAdmissionDate())%></td>  
+                         <td class="center">
+                                <form name="view" method="POST" action="updateStudent.jsp"> 
+                                <input type="hidden" name="admNo" value="<%=s.getAdmno()%>">
+                                <input type="hidden" name="firstname" value="<%=formatedFirstname%>">
+                                <input type="hidden" name="lastname" value="<%=formatedLastname%>">
+                                <input type="hidden" name="surname" value="<%=formatedSurname%>">
+                                <input type="hidden" name="gender" value="<%=s.getGender()%>">
+                                <input type="hidden" name="dob" value="<%=s.getdOB()%>">
+                                <input type="hidden" name="BcertNo" value="<%=s.getBcertno()%>">
+                                <input type="hidden" name="county" value="<%=s.getCounty()%>">
+                                <input type="hidden" name="primary" value="<%=primaryschool%>">
+                                <input type="hidden" name="kcpeindex" value="<%=kcpeindex%>">
+                                <input type="hidden" name="kcpemark" value="<%=kcpemark%>">
+                                <input type="hidden" name="kcpeyear" value="<%=kcpeyear%>">
+                                <input type="hidden" name="studentUuid" value="<%=s.getUuid()%>">
+                                <input type="hidden" name="schoolUuid" value="<%=accountuuid%>">
+                                <input class="btn btn-success" type="submit" name="view" id="submit" value="Edit" /> 
+                                </form>                          
+                               </td>            
+                        
+                      
+
+                    </tr>
+
+
+
+
+
+                      <%
+                    }
+                    %>
+                    
 
                     <%
                           ussdCount++;

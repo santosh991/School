@@ -16,10 +16,8 @@ import java.util.Map;
  
 public class SessionStatistics implements Serializable {
 	
-	private int allIncomingCount;
-	
-	//They are used to keep count against Month
-    private final Map<String, Integer> accountCount;
+	//They are used to keep userId against online status
+    private Map<String, String> userStatus;
 
 	/**
 	 * 
@@ -27,33 +25,58 @@ public class SessionStatistics implements Serializable {
 	private static final long serialVersionUID = -6516924608718437954L;
    
 	 public SessionStatistics() {
-		 allIncomingCount =0;
-		 accountCount = new HashMap<>();
+		 userStatus = new HashMap<>();
 	 }
 
 	/**
-	 * @return the allIncomingCount
+	 * @return the userStatus
 	 */
-	public int getAllIncomingCount() {
-		return allIncomingCount;
+	public Map<String, String> getUserStatus() {
+		return userStatus;
 	}
 
 	/**
-	 * @param allIncomingCount the allIncomingCount to set
+	 * @param userStatus the userStatus to set
 	 */
-	public void setAllIncomingCount(int allIncomingCount) {
-		this.allIncomingCount = allIncomingCount;
+	public void setUserStatus(Map<String, String> userStatus) {
+		this.userStatus = userStatus;
 	}
-
-	/**
-	 * @return the accountCount
-	 */
-	public Map<String, Integer> getAccountCount() {
-		return accountCount;
+	
+	//anonymous class
+	class onlineUser{
+		private String userid;
+		private String onlinestatus;
+		public onlineUser(){
+			userid = "";
+			onlinestatus = "";
+		}
+		/**
+		 * @return the userid
+		 */
+		public String getUserid() {
+			return userid;
+		}
+		/**
+		 * @param userid the userid to set
+		 */
+		public void setUserid(String userid) {
+			this.userid = userid;
+		}
+		/**
+		 * @return the onlinestatus
+		 */
+		public String getOnlinestatus() {
+			return onlinestatus;
+		}
+		/**
+		 * @param onlinestatus the onlinestatus to set
+		 */
+		public void setOnlinestatus(String onlinestatus) {
+			this.onlinestatus = onlinestatus;
+		}
+		
 	}
-   
-    
-
+	 
 }
 
  

@@ -41,6 +41,8 @@ public class AddStudentSponsor extends HttpServlet{
 	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, you can not assign them a sponsor.";
 	final String ERROR_EMPTY_NAME = "Sponsor name can't be empty.";
 	
+	final String NAME_ERROR = "Name format error/incorrent lenght.";
+	
 	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
 	
 	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
@@ -73,7 +75,7 @@ public class AddStudentSponsor extends HttpServlet{
        String SponsorCounty = StringUtils.trimToEmpty(request.getParameter("SponsorCounty"));
        String schooluuid = StringUtils.trimToEmpty(request.getParameter("schooluuid"));
        String studentUuid = StringUtils.trimToEmpty(request.getParameter("studentUuid"));
-       //String systemuser = StringUtils.trimToEmpty(request.getParameter("systemuser"));
+       
        
        Map<String, String> sponsorParamHash = new HashMap<>(); 
        sponsorParamHash.put("SponsorName", SponsorName); 
@@ -180,7 +182,6 @@ public class AddStudentSponsor extends HttpServlet{
 		boolean isvalid = true;
 		int length = 0;
 		length = mystring.length();
-		//System.out.println("lenght = " + length);
 		if(length<10 ||length>10){
 			isvalid = false;
 		}

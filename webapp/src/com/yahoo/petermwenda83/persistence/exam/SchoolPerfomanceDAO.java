@@ -28,9 +28,23 @@ public interface SchoolPerfomanceDAO {
 	 * @param schoolAccountUuid
 	 * @param classRoomUuid
 	 * @param studentUuid
+	 * @param Term
+	 * @param Year
 	 * @return
 	 */
+	 
 	public List<Perfomance> getPerformance(String schoolAccountUuid,String classRoomUuid,String studentUuid,String Term,String Year); 
+	
+	/**
+	 * 
+	 * @param schoolAccountUuid
+	 * @param classRoomUuid
+	 * @param studentUuid
+	 * @param Term
+	 * @param Year
+	 * @return
+	 */
+	public List<Perfomance> getPerformanceGeneral(String schoolAccountUuid,String ClassesUuid,String studentUuid,String Term,String Year); 
 
 	   /**
 	    * 

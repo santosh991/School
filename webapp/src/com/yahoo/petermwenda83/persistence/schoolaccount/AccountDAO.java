@@ -133,7 +133,7 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
 	            pstmt.setString(2, school.getStatusUuid());
 	            pstmt.setString(3, school.getSchoolName());
 	            pstmt.setString(4, school.getUsername());
-	            pstmt.setString(5, SecurityUtil.getMD5Hash(school.getPassword()));
+	            pstmt.setString(5, school.getPassword());
 	            pstmt.setString(6, school.getMobile());
 	            pstmt.setString(7, school.getPostalAddress());
 	            pstmt.setString(8, school.getTown());
@@ -164,7 +164,7 @@ public class AccountDAO extends GenericDAO implements SchoolAccountDAO {
        		){
 	            pstmt.setString(1, school.getSchoolName());
 	            pstmt.setString(2, school.getUsername());
-	            pstmt.setString(3, SecurityUtil.getMD5Hash(school.getPassword()));
+	            pstmt.setString(3, school.getPassword());
 	            pstmt.setString(4, school.getMobile());
 	            pstmt.setString(5, school.getPostalAddress());
 	            pstmt.setString(6, school.getTown());

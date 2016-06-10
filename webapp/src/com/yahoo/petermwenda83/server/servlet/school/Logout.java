@@ -4,9 +4,11 @@
 package com.yahoo.petermwenda83.server.servlet.school;
 
 import java.io.IOException;
-
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServlet;
@@ -36,6 +38,8 @@ public class Logout extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -3607520645710832503L;
 	private Cache accountsCache, statisticsCache;
+	Map<String,String> onlineUsersMap;
+	ServletContext context;
 
     
     /**
@@ -50,6 +54,8 @@ public class Logout extends HttpServlet {
         CacheManager mgr = CacheManager.getInstance();
         accountsCache = mgr.getCache(CacheVariables.CACHE_SCHOOL_ACCOUNTS_BY_USERNAME);
         statisticsCache = mgr.getCache(CacheVariables.CACHE_STATISTICS_BY_SCHOOL_ACCOUNT);
+        onlineUsersMap = new HashMap<String,String>();
+		context = getServletContext();
     }
     
 
@@ -81,6 +87,7 @@ public class Logout extends HttpServlet {
         if (session != null) {
             // Remove the statistics of this user from cache
             String username = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
+            String userId = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
             SchoolAccount school = new SchoolAccount();
             
             
@@ -89,9 +96,13 @@ public class Logout extends HttpServlet {
             	school = (SchoolAccount) element.getObjectValue();
             }
             statisticsCache.remove(school.getUuid());
+            
+            onlineUsersMap =  (HashMap<String,String>)context.getAttribute("onlineUsersMap");
+            onlineUsersMap.remove(userId);
 
             //destroy the session
             session.invalidate();
+            
             
         } // end 'if (session != null) '
         

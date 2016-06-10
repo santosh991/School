@@ -13,9 +13,6 @@
 <%@page import="com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.ClassTeacher"%>
 
-<%@page import="com.yahoo.petermwenda83.util.performance.comparator.PerformanceScoreComparator"%>
-
-
 <%@page import="com.yahoo.petermwenda83.persistence.classroom.RoomDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.classroom.ClassRoom"%>
 
@@ -88,15 +85,11 @@
    
      String stffID ="";
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
-     stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
      stffID = request.getParameter("staffid");
      String classroomuuid = "";
 
      ClassTeacherDAO classTeacherDAO = ClassTeacherDAO.getInstance();
      ClassTeacher classTeacher = classTeacherDAO.getClassTeacherByteacherId(stffID);
-     if(classTeacher !=null){
-           classroomuuid = classTeacher.getClassRoomUuid();
-         }
 
     classroomuuid = request.getParameter("classroomuuid");
     
@@ -158,7 +151,7 @@
      perfomanceList = perfomanceDAO.getPerfomanceList(accountuuid,classroomuuid,examConfig.getTerm(),examConfig.getYear());
      pDistinctList = perfomanceDAO.getPerfomanceListDistinct(accountuuid, classroomuuid,examConfig.getTerm(),examConfig.getYear());
      
-     Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
+     //Collections.sort(perfomanceList, new PerformanceScoreComparator().reversed()); 
      
      
      HashMap<String, String> roomHash = new HashMap<String, String>();
@@ -302,21 +295,6 @@
         <div class="box span12">
         <div class="box-content">
 
-        <%
-                                String err = "";
-                                session = request.getSession(false);
-                                err = (String) session.getAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR);
-                                
-                                if (StringUtils.isNotEmpty(err)) {
-                                    out.println("<p style='color:red;'>");                 
-                                    out.println("error: " + err);
-                                    out.println("</p>");                                 
-                                    session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, null);
-                                  } 
-                                  
-
-        %>
-
 
         <table class="table table-striped  ">
                 <thead>
@@ -326,25 +304,29 @@
                     </tr>
                 </thead>   
                 <tbody >            
-                    <td width="10%" class="center">    
-                    <form  class=""   action="classList" method="POST" target="_blank">
+                    <td width="6%" class="center">    
+                    <form  class=""   action="classListF1" method="POST" target="_blank">
                     <fieldset>                      
                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" > 
-                    <input type="hidden" name="staffid" value="<%=stffID%>" >     
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Performance List</button> 
+                    <input type="hidden" name="staffid" value="<%=stffID%>" >  
+                    <input type="hidden" name="classID" value="C143978A-E021-4015-BC67-5A00D6C910D1" >  <!--F1 -->   
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Performance List F1</button> 
                     </fieldset>
                     </form>                                          
                     </td> 
 
-                    <td width="10%" class="center">                              
-                    <form  class=""   action="reportForm12" method="POST" target="_blank">
+                    <td width="6%" class="center">                              
+                    <form  class=""   action="reportFormF1" method="POST" target="_blank">
                     <fieldset>                    
                     <input type="hidden" name="examID" value="1678664C-D955-4FA7-88C2-9461D3F1E782" >  
-                    <input type="hidden" name="staffid" value="<%=stffID%>" >        
-                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form</button>                
+                    <input type="hidden" name="staffid" value="<%=stffID%>" > 
+                    <input type="hidden" name="classID" value="C143978A-E021-4015-BC67-5A00D6C910D1" >  <!--F1 -->          
+                    <button type="submit" name="Report" value="Report"   class="btn btn-primary">Report Form F1</button>                
                     </fieldset>
                     </form>                                                
                     </td> 
+
+                    
                 </tbody>                  
             </table>  
             

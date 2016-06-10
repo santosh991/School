@@ -10,12 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.yahoo.petermwenda83.bean.staff.TeacherDuties;
-import com.yahoo.petermwenda83.persistence.staff.TeacherDutiesDAO;
 
 /**
  * @author peter
@@ -23,6 +21,10 @@ import com.yahoo.petermwenda83.persistence.staff.TeacherDutiesDAO;
  */
 public class AddHouseMaster extends HttpServlet{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final String EMPTY_FIELDS = "Empty fields not allowed";
 	final String ASSIGN_SUUCESS = "House assigned successfully";
 	final String ASSIGN_ERROR = "Something went wrong while assigning house";
@@ -30,7 +32,7 @@ public class AddHouseMaster extends HttpServlet{
 	final String ERROR_TEACHER_HAS_HOUSE = "The teacher has already been assigned another house";
 	
 	
-	private static TeacherDutiesDAO teacherDutiesDAO;
+	//private static TeacherDutiesDAO teacherDutiesDAO;
 	TeacherDuties teacherDuty;
 
 
@@ -42,14 +44,14 @@ public class AddHouseMaster extends HttpServlet{
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
-       teacherDutiesDAO = TeacherDutiesDAO.getInstance();
+       //teacherDutiesDAO = TeacherDutiesDAO.getInstance();
       
    }
    
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
 
-	   HttpSession session = request.getSession(true);
+	  // HttpSession session = request.getSession(true);
 	   
        String teacheruuid = StringUtils.trimToEmpty(request.getParameter("teacheruuid"));
        String houseuuid = StringUtils.trimToEmpty(request.getParameter("houseuuid"));

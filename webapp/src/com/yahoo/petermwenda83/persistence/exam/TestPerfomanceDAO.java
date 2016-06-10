@@ -43,7 +43,7 @@ public class TestPerfomanceDAO {
 	
 	final String TERM = "1";
 	
-	final String YEAR = "2014";
+	final String YEAR = "2016";
 	
 	private PerfomanceDAO store;
 
@@ -98,9 +98,9 @@ public class TestPerfomanceDAO {
 	
 	@Ignore
 	@Test
-	public void testGetPerfomanceListDistinctGeneral() {
+	public void tesgetClassPerfomanceListGeneral() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
-		List<Perfomance> list = store.getPerfomanceListDistinctGeneral(SCHOOL_UUID,FORM_ONE_N,TERM,YEAR);
+		List<Perfomance> list = store.getClassPerfomanceListGeneral(SCHOOL_UUID,FORM_ONE_N,TERM,YEAR);
 		for(Perfomance p : list){
 			System.out.println(p.getStudentUuid());
 		}
@@ -113,7 +113,7 @@ public class TestPerfomanceDAO {
 	 */
 	//@Ignore
 	@Test  
-	public void testGetClassPerfomanceList() {
+	public void testGetPerfomanceListDistinctGeneral() {
 		store = new PerfomanceDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		
 		final String FORM1 = "C143978A-E021-4015-BC67-5A00D6C910D1";

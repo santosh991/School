@@ -3,7 +3,6 @@
 <%@page import="com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.exam.ExamConfig"%>
 
-
 <%@page import="com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO"%>
 <%@page import="com.yahoo.petermwenda83.bean.staff.StaffDetails"%>
 
@@ -20,6 +19,7 @@
 
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.apache.commons.lang3.math.NumberUtils"%>
+<%@page import="javax.servlet.ServletContext"%>
 
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -71,6 +71,7 @@
         school = (SchoolAccount) element.getObjectValue();
     }
 
+
     accountuuid = school.getUuid();
     String schoolname = school.getSchoolName();
 
@@ -84,7 +85,7 @@
    
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
-     
+
 
      StaffDetails staffdetail = new StaffDetails();
      HashMap<String, StaffDetails> staffHash = new HashMap<String, StaffDetails>();
@@ -117,8 +118,14 @@
     
        //date format
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-dd-MM");
-    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");                                 
+    SimpleDateFormat timezoneFormatter = new SimpleDateFormat("z");  
 
+   
+     ServletContext context = getServletContext();
+     Map<String,String> online =  (HashMap<String,String>)context.getAttribute("onlineUsersMap");
+     String value_sessionId = "";
+     String staff_status = "";
+     
  %>
 
 
@@ -197,7 +204,7 @@
                         <th>UserName </th>
                         <th>Emp No </th>
                         <th>FirstName</th>
-                        <th>LastNmae </th>
+                        <th>MiddleName </th>
                         <th>Surname</th>
                         <th>Gender </th>
                         <th>Phone </th>
@@ -206,6 +213,7 @@
                         <th>Subjects </th>
                         <th>More </th>
                         <th>Update </th>
+                        <th id ="statusCell">Status</th>
 
                         
                         
@@ -221,11 +229,28 @@
                        String formatedFirstname = " ";
                        String formatedLastname = " ";
                        String formatedSurname = " ";
-                       
+
+                     
+                       String staffid = "";
+                          
 
                         if(staffList !=null){
                        for(Staff s : staffList) { 
+                              staff_status = "";
+                              staffid = s.getUuid();
+					    if ((element = statisticsCache.get(accountuuid)) != null) {
+					        statistics = (SessionStatistics) element.getObjectValue();
+					    }
 
+                         if(online.get(s.getUuid()) !=null){
+					        value_sessionId = online.get(s.getUuid());
+					        staff_status = "Online";
+					        }else{
+					        value_sessionId = "";
+					         staff_status = "Offline";
+					       }                               
+  
+                               
                              if(staffHash.get(s.getUuid()) !=null){
                              staffdetail = staffHash.get(s.getUuid());
 
@@ -257,32 +282,57 @@
                              out.println("<td width=\"8%\" class=\"center\">" + formatedLastname + "</td>");
                              out.println("<td width=\"8%\" class=\"center\">" + formatedSurname + "</td>");
                              out.println("<td width=\"5%\" class=\"center\">" + gender + "</td>"); 
-                             out.println("<td width=\"10%\" class=\"center\">" + staffdetail.getPhone() + "</td>"); 
+                             out.println("<td width=\"8%\" class=\"center\">" + staffdetail.getPhone() + "</td>"); 
                              out.println("<td width=\"8%\" class=\"center\">" + staffdetail.getNationalID() + "</td>"); 
-                             out.println("<td width=\"30%\" class=\"center\">" + staffdetail.getCounty() + "</td>");
+                             out.println("<td width=\"8%\" class=\"center\">" + staffdetail.getCounty() + "</td>");
                              
                                             }  %>
 
-                                <td class="center">
+                                <td class="center" width="5%">
                                 <form name="Subject" method="POST" action="mySubjects.jsp"> 
                                 <input type="hidden" name="staffuuid" value="<%=s.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="Subject" id="submit" value="Subjects" /> 
                                 </form>                          
                                 </td>             
 
-                                <td class="center">
+                                <td class="center" width="5%">
                                 <form name="view" method="POST" action="viewStaff.jsp"> 
                                 <input type="hidden" name="staffuuid" value="<%=s.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="view" id="submit" value="View" /> 
                                 </form>                          
                                 </td>   
 
-                                <td class="center">
+                                <td class="center" width="5%">
                                 <form name="update" method="POST" action="updateStaff.jsp"> 
                                 <input type="hidden" name="staffuuid" value="<%=s.getUuid()%>">
                                 <input class="btn btn-success" type="submit" name="update" id="submit" value="Update" /> 
                                 </form>                          
                                 </td>   
+                                  
+                                  <%
+                                    if(StringUtils.equalsIgnoreCase(staff_status,"Online")){
+                                  %>
+
+                                <td class="center" width="5%" >  
+                                <%
+                                    out.println("<p style='color:#FF4500;'>");                                 
+                                    out.println(" " + staff_status);
+                                    out.println("</p>");   
+                                %>            
+                                </td> 
+
+                                <%
+                                  }else{ %>
+
+                                  <td class="center" width="5%" >  
+                                  <%
+                                    out.println("<p style='color:#8B4789;'>");                                 
+                                    out.println(" " + staff_status);
+                                    out.println("</p>");   
+                                  %>            
+                                 </td> 
+ 
+                                <%}%> 
 
 
 
@@ -303,6 +353,11 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+	var statucell = staff_status;
+	alert("statucels = " + statucell);
+</script>
 
 
 <jsp:include page="footer.jsp" />

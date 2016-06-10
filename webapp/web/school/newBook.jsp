@@ -151,7 +151,7 @@
                                         <label class="control-label" for="book isbn">Book ISBN*:</label>
                                         <div class="controls">
                                             <input class="input-xlarge focused" id="receiver" type="text" name="bkISBN"
-                                              value="<%= StringUtils.trimToEmpty(paramHash.get("isbn")) %>"  >
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("isbn")) %>" >
                                         </div>
                                     </div> 
 
@@ -159,7 +159,7 @@
                                         <label class="control-label" for="book author">Book Author*:</label>
                                         <div class="controls">
                                             <input class="input-xlarge focused" id="receiver" type="text" name="bkAUTHOR"
-                                              value="<%= StringUtils.trimToEmpty(paramHash.get("author")) %>"  >
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("author")) %>" style="text-transform: capitalize;" >
                                         </div>
                                     </div> 
 
@@ -167,7 +167,7 @@
                                         <label class="control-label" for="book publisher">Book Publisher*:</label>
                                         <div class="controls">
                                             <input class="input-xlarge focused" id="receiver" type="text" name="bkPUBLISHER"
-                                              value="<%= StringUtils.trimToEmpty(paramHash.get("publisher")) %>"  >
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("publisher")) %>" style="text-transform: capitalize;" >
                                         </div>
                                     </div> 
 
@@ -175,7 +175,7 @@
                                         <label class="control-label" for="book title">Book Title*:</label>
                                         <div class="controls">
                                             <input class="input-xlarge focused" id="receiver" type="text" name="bkTitle"
-                                              value="<%= StringUtils.trimToEmpty(paramHash.get("title")) %>"  >
+                                              value="<%= StringUtils.trimToEmpty(paramHash.get("title")) %>" style="text-transform: capitalize;" >
                                         </div>
                                     </div> 
 

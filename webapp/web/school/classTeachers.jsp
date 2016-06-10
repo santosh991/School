@@ -274,7 +274,7 @@
 
 
                             if(StringUtils.equalsIgnoreCase(examConfig.getExamMode(),"ON")){
-                                if(StringUtils.contains(room, FORM1) || StringUtils.contains(room, FORM2)){ 
+                                if(StringUtils.contains(room, FORM1)){ 
                                             %>
                                     <td class="center" width="5%">
                                     <form name="edit" method="POST" action="exam.jsp"> 
@@ -284,7 +284,20 @@
                                     </form>  
                                     </td>  
                                            <%
-                                 }else if(StringUtils.contains(room, FORM3) || StringUtils.contains(room, FORM4)){
+                                  }else if(StringUtils.contains(room, FORM2)){
+                                   %>
+
+                                <td class="center" width="5%">
+                                <form name="edit" method="POST" action="exam2.jsp"> 
+                                <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input type="hidden" name="staffid" value="<%=ct.getTeacherUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Results" /> 
+                                </form>  
+                                </td>  
+
+                               <%
+
+                                }else if(StringUtils.contains(room, FORM3)){
                                    %>
 
                                 <td class="center" width="5%">
@@ -296,12 +309,27 @@
                                 </td>  
 
                                <%
-                                }else{
+
+                                }else if(StringUtils.contains(room, FORM4)){
               
-                                response.sendRedirect("../index.jsp");
-                                       }
+                                %>
+
+                                <td class="center" width="5%">
+                                <form name="edit" method="POST" action="examIndex4.jsp"> 
+                                <input type="hidden" name="classroomuuid" value="<%=ct.getClassRoomUuid()%>">
+                                <input type="hidden" name="staffid" value="<%=ct.getTeacherUuid()%>">
+                                <input class="btn btn-success" type="submit" name="edit" id="submit" value="Results" /> 
+                                </form>  
+                                </td>  
+
+                                  <%
+                                }
+
+
+
+
                  
-                                     }
+                              }
 
 
 

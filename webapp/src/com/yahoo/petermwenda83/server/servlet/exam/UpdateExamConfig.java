@@ -136,8 +136,8 @@ public class UpdateExamConfig extends HttpServlet{
        examConfig.setExam(exam);
        examConfig.setExamMode(exammode); 
        if(examConfigDAO.updateExamConfig(examConfig)){
-    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS +" Confirm please!! [ new Term is " + examConfig.getTerm() +" and new Year is " + examConfig.getYear() + " ]"); 
-    	   response.sendRedirect("prepareCommitt.jsp");  
+    	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS, SessionConstants.EXAM_CONFIG_UPDATE_SUCCESS); 
+    	   
     	   
        }else{
     	   session.setAttribute(SessionConstants.EXAM_CONFIG_UPDATE_ERROR, SessionConstants.EXAM_CONFIG_UPDATE_ERROR); 

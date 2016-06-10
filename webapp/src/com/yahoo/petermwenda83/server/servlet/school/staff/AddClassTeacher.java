@@ -23,6 +23,10 @@ import com.yahoo.petermwenda83.server.session.SessionConstants;
  */
 public class AddClassTeacher extends HttpServlet{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final String ERROR_ADD_FAILED = "An error occured while assigning the class.";
 	final String ERROR_EMPTY_STAFF = "Seem like you didn't search for any teacher.";
 	final String ERROR_TECAHER_HAS_CLASS = "The teacher is already assigned a class.";

@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,11 +52,12 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.yahoo.petermwenda83.bean.classroom.ClassRoom;
+import com.yahoo.petermwenda83.bean.exam.BarWeight;
+import com.yahoo.petermwenda83.bean.exam.Deviation;
 import com.yahoo.petermwenda83.bean.exam.ExamConfig;
 import com.yahoo.petermwenda83.bean.exam.GradingSystem;
 import com.yahoo.petermwenda83.bean.exam.Perfomance;
 import com.yahoo.petermwenda83.bean.money.ClosingBalance;
-import com.yahoo.petermwenda83.bean.money.StudentAmount;
 import com.yahoo.petermwenda83.bean.money.StudentFee;
 import com.yahoo.petermwenda83.bean.money.TermFee;
 import com.yahoo.petermwenda83.bean.othermoney.StudentOtherMonies;
@@ -65,13 +67,15 @@ import com.yahoo.petermwenda83.bean.staff.ClassTeacher;
 import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.bean.staff.TeacherSubClass;
 import com.yahoo.petermwenda83.bean.student.Student;
+import com.yahoo.petermwenda83.bean.student.StudentPrimary;
 import com.yahoo.petermwenda83.bean.subject.Subject;
 import com.yahoo.petermwenda83.persistence.classroom.RoomDAO;
+import com.yahoo.petermwenda83.persistence.exam.BarWeightDAO;
+import com.yahoo.petermwenda83.persistence.exam.DeviationDAO;
 import com.yahoo.petermwenda83.persistence.exam.ExamConfigDAO;
 import com.yahoo.petermwenda83.persistence.exam.GradingSystemDAO;
 import com.yahoo.petermwenda83.persistence.exam.PerfomanceDAO;
 import com.yahoo.petermwenda83.persistence.money.ClosingBalanceDAO;
-import com.yahoo.petermwenda83.persistence.money.StudentAmountDAO;
 import com.yahoo.petermwenda83.persistence.money.StudentFeeDAO;
 import com.yahoo.petermwenda83.persistence.money.TermFeeDAO;
 import com.yahoo.petermwenda83.persistence.othermoney.StudentOtherMoniesDAO;
@@ -79,10 +83,10 @@ import com.yahoo.petermwenda83.persistence.schoolaccount.MiscellanousDAO;
 import com.yahoo.petermwenda83.persistence.staff.ClassTeacherDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
 import com.yahoo.petermwenda83.persistence.staff.TeacherSubClassDAO;
+import com.yahoo.petermwenda83.persistence.student.PrimaryDAO;
 import com.yahoo.petermwenda83.persistence.student.StudentDAO;
 import com.yahoo.petermwenda83.persistence.subject.SubjectDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
-import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionStatistics;
 import com.yahoo.petermwenda83.server.util.magic.MiddleNumberFor3;
@@ -94,11 +98,14 @@ import net.sf.ehcache.CacheManager;
  * @author peter
  * 
  */
-public class ReportForm2 extends HttpServlet{
+public class ReportFormF3_4_c1_c2_et extends HttpServlet{
 
 
-	private Font normalText = new Font(Font.FontFamily.COURIER, 8,Font.BOLD);
+	private Font normalText = new Font(Font.FontFamily.COURIER, 10,Font.BOLD);
+	private Font normalText2 = new Font(Font.FontFamily.COURIER, 14,Font.BOLD);
+	private Font normalText3 = new Font(Font.FontFamily.COURIER, 14,Font.BOLD);
 	private Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+	private Font boldFont2 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.ITALIC);
 	private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.NORMAL);
 	
 	private Document document;
@@ -109,6 +116,8 @@ public class ReportForm2 extends HttpServlet{
 	ExamConfig examConfig;
 	GradingSystem gradingSystem;
 	private String PDF_SUBTITLE ="";
+	private String schoolname = "";
+	private String title = "";
 	private String  firstnamee = "";
 
 	private static PerfomanceDAO perfomanceDAO;
@@ -118,7 +127,6 @@ public class ReportForm2 extends HttpServlet{
 	private static RoomDAO roomDAO;
 	private static ExamConfigDAO examConfigDAO;
 	private static GradingSystemDAO gradingSystemDAO;
-	private static StudentAmountDAO studentAmountDAO;
 	private static TermFeeDAO termFeeDAO;
 	private static TeacherSubClassDAO teacherSubClassDAO;
 	private static StaffDetailsDAO staffDetailsDAO;
@@ -126,6 +134,9 @@ public class ReportForm2 extends HttpServlet{
 	private static StudentFeeDAO studentFeeDAO;
 	private static ClosingBalanceDAO closingBalanceDAO;
 	private static MiscellanousDAO miscellanousDAO;
+	private static BarWeightDAO barWeightDAO;
+	private static PrimaryDAO primaryDAO;
+	private static DeviationDAO deviationDAO;
 	
 	
 
@@ -134,6 +145,8 @@ public class ReportForm2 extends HttpServlet{
 	HashMap<String, String> studentAdmNoHash = new HashMap<String, String>();
 	HashMap<String, String> firstnameHash = new HashMap<String, String>();
 	HashMap<String, String> studNameHash = new HashMap<String, String>();
+	HashMap<String, String> admYearMap = new HashMap<String, String>();
+	
 	HashMap<String, String> roomHash = new HashMap<String, String>();
 
 	double score = 0;
@@ -202,7 +215,6 @@ public class ReportForm2 extends HttpServlet{
 		roomDAO = RoomDAO.getInstance();
 		examConfigDAO = ExamConfigDAO.getInstance();
 		gradingSystemDAO = GradingSystemDAO.getInstance();
-		studentAmountDAO = StudentAmountDAO.getInstance();
 		termFeeDAO = TermFeeDAO.getInstance();
 		teacherSubClassDAO = TeacherSubClassDAO.getInstance();
 		staffDetailsDAO = StaffDetailsDAO.getInstance();
@@ -210,6 +222,11 @@ public class ReportForm2 extends HttpServlet{
 		studentFeeDAO = StudentFeeDAO.getInstance();
 		closingBalanceDAO = ClosingBalanceDAO.getInstance();
 		miscellanousDAO = MiscellanousDAO.getInstance();
+		barWeightDAO = BarWeightDAO.getInstance();
+		primaryDAO = PrimaryDAO.getInstance();
+		deviationDAO = DeviationDAO.getInstance();
+		
+		
 
 		USER = System.getProperty("user.name");
 		path = "/home/"+USER+"/school/logo/logo.png";
@@ -235,13 +252,16 @@ public class ReportForm2 extends HttpServlet{
 
 		if(session !=null){
 			schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
-			stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+			//stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
 			stffID = StringUtils.trimToEmpty(request.getParameter("staffid"));
 
 		}
 
 		String pdf = schoolusername+"results.pdf";
 		response.setHeader("Content-Disposition", "inline; filename= "+pdf );
+		
+		String classID = "";
+		classID = StringUtils.trimToEmpty(request.getParameter("classID"));
 
 
 		net.sf.ehcache.Element element;
@@ -251,11 +271,14 @@ public class ReportForm2 extends HttpServlet{
 			school = (SchoolAccount) element.getObjectValue();
 		}
 
-		PDF_SUBTITLE = school.getSchoolName()+"\n"
-				+ "P.O BOX "+school.getPostalAddress()+"\n" 
-				+ ""+school.getTown() +"-Kenya\n" 
-				+ "" + school.getMobile()+"\n"
-				+ "" + school.getEmail()+"\n"; 
+		    schoolname = school.getSchoolName().toUpperCase()+"\n";
+			PDF_SUBTITLE =  "P.O BOX "+school.getPostalAddress()+"\n" 
+							+ ""+school.getTown()+" - Kenya\n" 
+							+ "" + school.getMobile()+"\n"
+							+ "" + school.getEmail()+"\n" ;
+			
+			title = "_____________________________________ \n"
+					+ " End of Term Report Card "+"\n\n";
 
 
 		examConfig = examConfigDAO.getExamConfig(school.getUuid());
@@ -270,6 +293,12 @@ public class ReportForm2 extends HttpServlet{
 		if ((element = statisticsCache.get(schoolusername)) != null) {
 			statistics = (SessionStatistics) element.getObjectValue();
 		}
+		
+		List<Perfomance> perfomanceListGeneral = new ArrayList<Perfomance>(); 
+		List<Perfomance> pDistinctListGeneral = new ArrayList<Perfomance>();
+		perfomanceListGeneral = perfomanceDAO.getClassPerfomanceListGeneral(school.getUuid(), classID,examConfig.getTerm(),examConfig.getYear());
+		pDistinctListGeneral = perfomanceDAO.getPerfomanceListDistinctGeneral(school.getUuid(), classID,examConfig.getTerm(),examConfig.getYear());
+		
 
 		List<Perfomance> perfomanceList = new ArrayList<Perfomance>(); 
 		perfomanceList = perfomanceDAO.getPerfomanceList(school.getUuid(), classroomuuid,examConfig.getTerm(),examConfig.getYear());
@@ -279,6 +308,12 @@ public class ReportForm2 extends HttpServlet{
 
 		List<Student> studentList = new ArrayList<Student>(); 
 		studentList = studentDAO.getAllStudents(school.getUuid(),classroomuuid);
+		
+		 String admYear = "";
+         SimpleDateFormat formatter;
+			formatter = new SimpleDateFormat("yyyy");
+         
+         Date admdate = null;
 
 		for(Student stu : studentList){
 			studentAdmNoHash.put(stu.getUuid(),stu.getAdmno()); 
@@ -288,6 +323,10 @@ public class ReportForm2 extends HttpServlet{
 			String formatedFirstname = firstNameLowecase.substring(0,1).toUpperCase()+firstNameLowecase.substring(1);
 			String formatedLastname = lastNameLowecase.substring(0,1).toUpperCase()+lastNameLowecase.substring(1);
 			String formatedsurname = surnameLowecase.substring(0,1).toUpperCase()+surnameLowecase.substring(1);
+			
+			admdate = stu.getAdmissionDate();
+			admYear = formatter.format(admdate);
+			admYearMap.put(stu.getUuid(), admYear); 
 
 			studNameHash.put(stu.getUuid(),formatedFirstname + " " + formatedLastname + " " + formatedsurname +"\n"); 
 			firstnameHash.put(stu.getUuid(), formatedFirstname);
@@ -316,7 +355,14 @@ public class ReportForm2 extends HttpServlet{
 			writer.setBoxSize("art", new Rectangle(46, 64, 559, 788));
 			writer.setPageEvent(event);
 
-			populatePDFDocument(statistics, school,classroomuuid,perfomanceList,pDistinctList, path); 
+			if(perfomanceList!=null || pDistinctList!=null || writer ==null || document ==null){
+				if(pDistinctListGeneral!=null || perfomanceListGeneral!=null){
+				populatePDFDocument(statistics, school,classroomuuid,classID,perfomanceList,pDistinctList,perfomanceListGeneral,pDistinctListGeneral,path);
+				  }
+			}else{
+				 session.setAttribute(SessionConstants.STUDENT_FEE_ADD_ERROR, "No data found !");
+				 response.sendRedirect("exam.jsp");  
+			}
 
 
 		} catch (DocumentException e) {
@@ -333,32 +379,39 @@ public class ReportForm2 extends HttpServlet{
 	 * @param statistics
 	 * @param school
 	 * @param classroomuuid
+	 * @param classID 
 	 * @param perfomanceList
 	 * @param pDistinctList
+	 * @param pDistinctListGeneral 
+	 * @param perfomanceListGeneral 
 	 * @param realPath
 	 */
 	private void populatePDFDocument(SessionStatistics statistics, SchoolAccount school, String classroomuuid, 
-			List<Perfomance> perfomanceList, List<Perfomance> pDistinctList,String realPath) {
+			String classID, List<Perfomance> perfomanceList, List<Perfomance> pDistinctList,List<Perfomance> perfomanceListGeneral, List<Perfomance> pDistinctListGeneral, String realPath) {
 
-		SimpleDateFormat formatter;
+		Map<String,Double> kswscoreMapgn = new LinkedHashMap<String,Double>();
+		Map<String,Double> engscorehashgn = new LinkedHashMap<String,Double>(); 
 
+		Map<String,Double> physcoreMapgn = new LinkedHashMap<String,Double>();
+		Map<String,Double> matscorehashgn = new LinkedHashMap<String,Double>(); 
+		Map<String,Double> bioscoreMapgn = new LinkedHashMap<String,Double>();
+		Map<String,Double> chemscorehashgn = new LinkedHashMap<String,Double>(); 
 
-		Map<String,Double> kswscoreMap = new LinkedHashMap<String,Double>();
-		Map<String,Double> engscorehash = new LinkedHashMap<String,Double>(); 
+		Map<String,Double> bsscoreMapgn = new LinkedHashMap<String,Double>();
+		Map<String,Double> agriscorehashgn = new LinkedHashMap<String,Double>(); 
+		Map<String,Double> hscscoreMapgn = new LinkedHashMap<String,Double>();
+		Map<String,Double> comscoreMapgn = new LinkedHashMap<String,Double>();
 
-		Map<String,Double> physcoreMap = new LinkedHashMap<String,Double>();
-		Map<String,Double> matscorehash = new LinkedHashMap<String,Double>(); 
-		Map<String,Double> bioscoreMap = new LinkedHashMap<String,Double>();
-		Map<String,Double> chemscorehash = new LinkedHashMap<String,Double>(); 
+		Map<String,Double> geoscoreMapgn = new LinkedHashMap<String,Double>();
+		Map<String,Double> crescorehashgn = new LinkedHashMap<String,Double>(); 
+		Map<String,Double> histscoreMapgn = new LinkedHashMap<String,Double>();
+		
+		Map<String,Double> grandscoremapgn = new LinkedHashMap<String,Double>();
+		
+		Map<String,String> POSMapgn = new LinkedHashMap<String,String>();
 
-		Map<String,Double> bsscoreMap = new LinkedHashMap<String,Double>();
-		Map<String,Double> agriscorehash = new LinkedHashMap<String,Double>(); 
-		Map<String,Double> hscscoreMap = new LinkedHashMap<String,Double>();
-		Map<String,Double> comscoreMap = new LinkedHashMap<String,Double>();
-
-		Map<String,Double> geoscoreMap = new LinkedHashMap<String,Double>();
-		Map<String,Double> crescorehash = new LinkedHashMap<String,Double>(); 
-		Map<String,Double> histscoreMap = new LinkedHashMap<String,Double>();
+		
+		
 
 		String totalz = "";
 		try {
@@ -367,13 +420,12 @@ public class ReportForm2 extends HttpServlet{
 			
 			PdfPTable prefaceTable = new PdfPTable(2);  
 			prefaceTable.setWidthPercentage(100); 
-			prefaceTable.setWidths(new int[]{100,100}); 
+			prefaceTable.setWidths(new int[]{70,130});
 
 			Paragraph content = new Paragraph();
-			content.add(new Paragraph((PDF_SUBTITLE +"\n\n\n\n\n\n\n\n\n\n\n") , normalText));
-
-			//Paragraph reporttitle = new Paragraph();
-			//reporttitle.add(new Paragraph(("STUDENT REPORT CARD") , smallBold));
+			content.add(new Paragraph((schoolname +"") , normalText3));
+			content.add(new Paragraph((PDF_SUBTITLE +"") , normalText));
+			content.add(new Paragraph((title +" \n") , normalText2));
 
 			PdfPCell contentcell = new PdfPCell(content);
 			contentcell.setBorder(Rectangle.NO_BORDER); 
@@ -386,7 +438,7 @@ public class ReportForm2 extends HttpServlet{
 			try {
 				imgLogo = Image.getInstance(realPath);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -403,8 +455,8 @@ public class ReportForm2 extends HttpServlet{
 			
 
 			// addEmptyLine(preface, 1);
-
-			formatter = new SimpleDateFormat("dd, MMM yyyy");
+			//SimpleDateFormat formatter;
+			//formatter = new SimpleDateFormat("dd, MMM yyyy");
 
 
 			DecimalFormat df = new DecimalFormat("0.00"); 
@@ -415,6 +467,381 @@ public class ReportForm2 extends HttpServlet{
 
 			DecimalFormat rf2 = new DecimalFormat("0"); 
 			rf2.setRoundingMode(RoundingMode.UP);
+			
+			
+			//perfomanceListGeneral,pDistinctListGeneral
+		    //int Finalposition = 0;
+			
+			 double humanityScoregn =0,techinicalScoregn = 0,subjectSmallgn = 0;
+			 double scienceScoregn = 0,subjectBiggn = 0, bestTechinicalgn =0;
+			 double bestHumanitygn = 0;
+			
+			
+		    double engscoregn = 0;
+			double kswscoregn = 0;
+			double matscoregn = 0;
+			double physcoregn = 0;
+			double bioscoregn = 0;
+			double chemscoregn = 0;
+			double bsscoregn = 0;
+			double comscoregn = 0;
+			double hscscoregn = 0;
+			double agriscoregn = 0;
+			double geoscoregn = 0;
+			double crescoregn = 0;
+			double histscoregn = 0;
+			
+			double  cat1gn  = 0, cat2gn  = 0, endtermgn = 0;
+			double  grandscoregn = 0;
+			
+			double catTotalsgn = 0,catmeangn = 0,examcattotalgn = 0;
+			double languageScoregn = 0; 
+			
+				
+		   double numbergn = 0.0;
+		 //perfomanceListGeneral,pDistinctListGeneral
+			int Finalposition = 0;
+			
+			int mycountgn =1;
+			
+			
+			List<Perfomance> listGeneral = new ArrayList<>();
+			if(pDistinctListGeneral !=null){
+				for(Perfomance pD : pDistinctListGeneral){     
+					listGeneral = perfomanceDAO.getPerformanceGeneral(school.getUuid(), classID, pD.getStudentUuid(),examConfig.getTerm(),examConfig.getYear());
+
+					engscoregn = 0;	kswscoregn = 0;
+					matscoregn = 0;	physcoregn = 0;
+					bioscoregn = 0;	chemscoregn = 0;
+					bsscoregn = 0;comscoregn = 0;
+					hscscoregn = 0;agriscoregn = 0;
+					geoscoregn = 0;crescoregn = 0;
+					histscoregn = 0;
+					cat1gn  = 0; cat2gn  = 0; endtermgn = 0;
+
+					for(Perfomance pp : listGeneral){
+
+						//Languages
+						//Include all the languages
+						if(true){
+							if(StringUtils.equals(pp.getSubjectUuid(), ENG_UUID) ){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								engscoregn = examcattotalgn; 
+								engscorehashgn.put(pD.getStudentUuid(),engscoregn);
+								
+
+							}
+
+							if(StringUtils.equals(pp.getSubjectUuid(), KISWA_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								kswscoregn = examcattotalgn; 								
+								kswscoreMapgn.put(pD.getStudentUuid(),kswscoregn);
+								
+
+							}
+
+
+							languageScoregn = (engscoregn+kswscoregn); 
+
+						}       
+						//Sciences
+						//Pick best two if the student take the three
+						if(true){
+							//double subjectBig = 0;
+							//double subjectSmall = 0;
+
+							if(StringUtils.equals(pp.getSubjectUuid(), PHY_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								physcoregn = examcattotalgn; 
+								
+								physcoreMapgn.put(pD.getStudentUuid(),physcoregn);
+								
+
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), BIO_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								bioscoregn = examcattotalgn; 
+								
+								bioscoreMapgn.put(pD.getStudentUuid(),bioscoregn);
+								
+
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), CHEM_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								chemscoregn = examcattotalgn; 
+								
+								chemscorehashgn.put(pD.getStudentUuid(),chemscoregn);
+								
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), MATH_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								matscoregn = examcattotalgn; 
+								
+								matscorehashgn.put(pD.getStudentUuid(),matscoregn);
+								
+							}
+
+							MiddleNumberFor3 middle = new MiddleNumberFor3();
+							subjectBiggn = Math.max( (Math.max(physcoregn, bioscoregn)), Math.max(Math.max(physcoregn, bioscoregn), chemscoregn));
+							subjectSmallgn = middle.ComputeMiddle(physcoregn, bioscoregn, chemscoregn);
+							scienceScoregn = (subjectBiggn+subjectSmallgn+matscoregn);
+						}
+
+						//Technical 
+						//Here we pick one subject, the one he/she has performed best, but this subject can be replaced by a science,
+						//if the student takes 3 sciences and he/she performed better in the science than in all  the techinicals . 
+						if(true){
+							//double bestTechinical = 0;
+							if(StringUtils.equals(pp.getSubjectUuid(), BS_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								bsscoregn = examcattotalgn; 
+								
+								bsscoreMapgn.put(pD.getStudentUuid(),bsscoregn);
+								
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), AGR_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								agriscoregn = examcattotalgn; 
+								
+								agriscorehashgn.put(pD.getStudentUuid(),agriscoregn);
+								
+							}     
+							if(StringUtils.equals(pp.getSubjectUuid(), H_S)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								hscscoregn = examcattotalgn; 
+								
+								hscscoreMapgn.put(pD.getStudentUuid(),hscscoregn);
+								
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), COMP_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								comscoregn = examcattotalgn; 
+								
+								comscoreMapgn.put(pD.getStudentUuid(),comscoregn);
+								
+							} 
+
+                         
+							bestTechinicalgn = Math.max( (Math.max(bsscoregn, agriscoregn)), Math.max(hscscoregn, comscoregn));
+							techinicalScoregn = bestTechinicalgn; 
+
+						}     
+
+						//Humanities
+						//Here we pick only one subject, the one the student has performed best . 
+						if(true){  
+							//double bestHumanitygn = 0;     
+							if(StringUtils.equals(pp.getSubjectUuid(), GEO_UUID)){
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								geoscoregn = examcattotalgn; 
+								
+								geoscoreMapgn.put(pD.getStudentUuid(),geoscoregn);
+								
+
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), CRE_UUID)){
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								crescoregn = examcattotalgn; 
+								
+								crescorehashgn.put(pD.getStudentUuid(),crescoregn);
+								
+
+							}
+							if(StringUtils.equals(pp.getSubjectUuid(), HIST_UUID)){
+
+
+								cat1gn = pp.getCatOne();
+								cat2gn = pp.getCatTwo();
+								endtermgn = pp.getEndTerm();
+								catTotalsgn = cat1gn + cat2gn;
+								catmeangn = catTotalsgn/2;
+								examcattotalgn = catmeangn + endtermgn;
+								examcattotalgn = Double.parseDouble(rf2.format((double)Math.round(Double.parseDouble(rf.format(examcattotalgn)))));
+								histscoregn = examcattotalgn; 
+								
+								histscoreMapgn.put(pD.getStudentUuid(),histscoregn);
+								
+							}
+
+							bestHumanitygn = Math.max( (Math.max(geoscoregn, crescoregn)), Math.max(Math.max(geoscoregn, crescoregn), histscoregn));
+							humanityScoregn = bestHumanitygn; 
+
+						} 
+
+
+					}
+
+					grandscoregn = languageScoregn+scienceScoregn+humanityScoregn+techinicalScoregn;
+					languageScoregn = 0; scienceScoregn = 0; humanityScoregn = 0;techinicalScoregn = 0;  
+					grandscoremapgn.put(pD.getStudentUuid(), grandscoregn);   
+					grandscoregn = 0;
+					
+					Finalposition = mycountgn++;
+
+				}
+				
+			
+			
+			@SuppressWarnings("unchecked")
+			ArrayList<?> as = new ArrayList(grandscoremapgn.entrySet());
+			Collections.sort(as,new Comparator(){
+				public int compare(Object o1,Object o2){
+					Map.Entry e1 = (Map.Entry)o1;
+					Map.Entry e2 = (Map.Entry)o2;
+					Double f = (Double)e1.getValue();
+					Double s = (Double)e2.getValue();
+					return s.compareTo(f);
+				}
+			});
+			
+			double meangn = 0;
+			int counttwogn = 1;
+			int positiongn = 1;
+			
+			String totalzgn = "";
+			for(Object o : as){
+
+				String items = String.valueOf(o);
+				String [] item = items.split("=");
+				String uuid = item[0];
+				
+				totalzgn = item[1];
+				
+				double the_grandscoregn = 0;
+				the_grandscoregn = Double.parseDouble(totalzgn);
+				meangn = the_grandscoregn/7; 
+				
+				
+
+				String pos = "";
+				if(meangn==numbergn){
+					 pos = (" " +(positiongn-counttwogn++)+ " / " +Finalposition);
+					 POSMapgn.put(uuid,pos);
+				}
+				else{
+					counttwogn=1;
+					pos = (" " +positiongn+ " / " +Finalposition);
+					POSMapgn.put(uuid,pos);
+				}
+
+				positiongn++;
+				numbergn=meangn;
+				
+			
+			}
+			
+		}
+		//System.out.println("pos= "+pos);
+
+        /** end general ###################################################################
+         * ################################################################################################################################# */
+        
+			
+			
+			
+			
+			
+			Map<String,Double> kswscoreMap = new LinkedHashMap<String,Double>();
+			Map<String,Double> engscorehash = new LinkedHashMap<String,Double>(); 
+
+			Map<String,Double> physcoreMap = new LinkedHashMap<String,Double>();
+			Map<String,Double> matscorehash = new LinkedHashMap<String,Double>(); 
+			Map<String,Double> bioscoreMap = new LinkedHashMap<String,Double>();
+			Map<String,Double> chemscorehash = new LinkedHashMap<String,Double>(); 
+
+			Map<String,Double> bsscoreMap = new LinkedHashMap<String,Double>();
+			Map<String,Double> agriscorehash = new LinkedHashMap<String,Double>(); 
+			Map<String,Double> hscscoreMap = new LinkedHashMap<String,Double>();
+			Map<String,Double> comscoreMap = new LinkedHashMap<String,Double>();
+
+			Map<String,Double> geoscoreMap = new LinkedHashMap<String,Double>();
+			Map<String,Double> crescorehash = new LinkedHashMap<String,Double>(); 
+			Map<String,Double> histscoreMap = new LinkedHashMap<String,Double>();
 
 
 
@@ -851,16 +1278,45 @@ public class ReportForm2 extends HttpServlet{
 					String uuid = item[0];
 					totalz = item[1];
 					double mean = 0;
-					mean = Double.parseDouble(totalz)/7;  
+					double the_grandscore = 0;
+	                   
+					the_grandscore = Double.parseDouble(totalz);
+					mean = the_grandscore/7;   
+					
+					// TODO save this mean for future use   
+					Deviation dev;
+					if(deviationDAO.getDev(uuid, examConfig.getYear())==null){
+						dev = new Deviation();
+					}else{
+						dev = deviationDAO.getDev(uuid, examConfig.getYear());
+					}
+					
+					if(StringUtils.equals(examConfig.getTerm(), "1")){
+						dev.setStudentUuid(uuid);
+						dev.setYear(examConfig.getYear());
+						dev.setDevOne(mean);
+						deviationDAO.putDev(dev);
+						
+						
+					}else if(StringUtils.equals(examConfig.getTerm(), "2")){
+						dev.setStudentUuid(uuid);
+						dev.setYear(examConfig.getYear());
+						dev.setDevTwo(mean);
+						deviationDAO.putDev(dev);
+						
+						
+					}else if(StringUtils.equals(examConfig.getTerm(), "3")){
+						dev.setStudentUuid(uuid);
+						dev.setYear(examConfig.getYear());
+						dev.setDevThree(mean); 
+						deviationDAO.putDev(dev);
+						
+					}
 
 					studeadmno = studentAdmNoHash.get(uuid);
 					studename = studNameHash.get(uuid);   
 					firstnamee = firstnameHash.get(uuid);
 
-					StudentAmount studentAmount = new StudentAmount();
-					if(studentAmountDAO.getStudentAmount(school.getUuid(), uuid) !=null){
-						studentAmount = studentAmountDAO.getStudentAmount(school.getUuid(), uuid);
-					}
 
 					TermFee termFee = termFeeDAO.getFee(school.getUuid(),examConfig.getTerm(),examConfig.getYear());
 
@@ -1265,6 +1721,11 @@ public class ReportForm2 extends HttpServlet{
 					PdfPCell scoreHeader = new PdfPCell(new Paragraph("SCORE",boldFont));
 					scoreHeader.setBackgroundColor(baseColor);
 					scoreHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
+					PdfPCell pointsHeader = new PdfPCell(new Paragraph("PNTS",boldFont));
+					pointsHeader.setBackgroundColor(baseColor);
+					pointsHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+
 
 					PdfPCell gradeHeader = new PdfPCell(new Paragraph("GRADE",boldFont));
 					gradeHeader.setBackgroundColor(baseColor);
@@ -1281,18 +1742,19 @@ public class ReportForm2 extends HttpServlet{
 					
 					PdfPTable myTable;
 
-					myTable = new PdfPTable(9); 
+					myTable = new PdfPTable(10); 
 					myTable.addCell(CountHeader);
 					myTable.addCell(subjectHeader);
 					myTable.addCell(cat1Header);
 					myTable.addCell(cat2Header);
 					myTable.addCell(endtermHeader);
 					myTable.addCell(scoreHeader);
+					myTable.addCell(pointsHeader);
 					myTable.addCell(gradeHeader);
 					myTable.addCell(remarkHeader);
 					myTable.addCell(teacherHeader);
 					myTable.setWidthPercentage(100); 
-					myTable.setWidths(new int[]{15,60,20,20,20,25,25,80,20});   
+					myTable.setWidths(new int[]{15,60,20,20,20,25,20,25,60,20}); 
 					myTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					String maxscore = "100";
@@ -1441,6 +1903,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+engc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+engetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+engscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(engscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(engscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(engscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1453,6 +1916,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+kisc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+kisetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+kswscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(kswscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(kswscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(kswscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1465,6 +1929,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+matc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+matetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+matscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(matscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(matscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(matscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1478,6 +1943,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+phyc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+phyetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+physcorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(physcore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(physcore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(physcore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1491,6 +1957,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+bioc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+bioetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+bioscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(bioscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(bioscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(bioscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1504,6 +1971,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+chemc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+chemetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+chemscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(chemscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(chemscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(chemscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1517,6 +1985,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+bsc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+bsetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+bsscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(bsscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(bsscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(bsscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1530,6 +1999,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+comc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+cometstr,smallBold));
 							myTable.addCell(new Paragraph(" "+comscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(comscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(comscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(comscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1543,6 +2013,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+hscc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+hscetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+hscscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(hscscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(hscscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(hscscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1556,6 +2027,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+agrc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+agretstr,smallBold));
 							myTable.addCell(new Paragraph(" "+agriscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(agriscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(agriscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(agriscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1569,6 +2041,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+geoc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+geoc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+geoscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(geoscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(geoscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(geoscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1582,6 +2055,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+crec2str,smallBold));
 							myTable.addCell(new Paragraph(" "+creetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+crescorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(crescore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(crescore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(crescore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1595,6 +2069,7 @@ public class ReportForm2 extends HttpServlet{
 							myTable.addCell(new Paragraph(" "+hisc2str,smallBold));
 							myTable.addCell(new Paragraph(" "+hisetstr,smallBold));
 							myTable.addCell(new Paragraph(" "+histscorestr,smallBold));
+							myTable.addCell(new Paragraph(" "+pointsFinder(histscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeGrade(histscore),smallBold));
 							myTable.addCell(new Paragraph(" "+computeRemarks(histscore),smallBold));
 							myTable.addCell(new Paragraph(" "+findSubTecher(sub.getUuid(),classroomuuid),smallBold)); 
@@ -1605,21 +2080,35 @@ public class ReportForm2 extends HttpServlet{
 						count++;
 					}
 
+				
+					//KCSE
+					double kcse = 0;
+					double newkcse = 0;
+					if(primaryDAO.getPrimary(uuid)!=null){
+						StudentPrimary primary = primaryDAO.getPrimary(uuid);
+						kcse = Integer.parseInt(primary.getKcpemark()); 
+						newkcse = (kcse/500)*12;
+					}
+					
 					Paragraph myposition;
 
 					if(mean==number){
-						myposition = new Paragraph(("POSITION " +(position-counttwo++)+ " OUT OF " +Finalposition),smallBold);
+						myposition = new Paragraph((" Stream PSTN " +(position-counttwo++)+ " / " +Finalposition)   +    "     Class PSTN " +POSMapgn.get(uuid) +    "      K.C.P.E = " + (int)kcse +" ",smallBold);
 					}
 					else{
 						counttwo=1;
-						myposition = new Paragraph(("POSITION " +position+ " OUT OF " +Finalposition),smallBold);
+						myposition = new Paragraph((" Stream PSTN " +position+ " / " +Finalposition)   +    "     Class PSTN " +POSMapgn.get(uuid) +  "      K.C.P.E = " + (int)kcse + " ",smallBold);
 					}
+					
+
 
 					PdfPCell positionheader = new PdfPCell(myposition);
 					positionheader.setBackgroundColor(Colormagenta);
 					positionheader.setHorizontalAlignment(Element.ALIGN_LEFT);  
+					
+					String str = " ";
 
-					PdfPCell meanheader = new PdfPCell(new Paragraph(("MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)) +"\n\n",smallBold));
+					PdfPCell meanheader = new PdfPCell(new Paragraph(("TOTAL MARKS: " + the_grandscore + " "+ str +"MEAN SCORE " + df.format(mean) + " GRADE " +computeGrade(mean)) +"\n\n",smallBold));
 					meanheader.setBackgroundColor(Colormagenta);
 					meanheader.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
@@ -1760,16 +2249,117 @@ public class ReportForm2 extends HttpServlet{
 					feeTable.addCell(DateCell);
 					
 					
+                    //save details
+					
+					String StartYear = "";
+					StartYear = admYearMap.get(uuid);
+					int Year2Int = 0;
+					int Year3Int = 0;
+					int Year4Int = 0;
+					
+					String Year2Str = "";
+					String Year3Str = "";
+					String Year4Str = "";
+					
+					Year2Int = Integer.parseInt(StartYear)+1;
+					Year3Int = Year2Int + 1;
+					Year4Int = Year3Int + 1;
+					
+					Year2Str = Integer.toString(Year2Int);
+					Year3Str = Integer.toString(Year3Int);
+					Year4Str = Integer.toString(Year4Int);
+					
+					
+					GraphWeightGenerator(mean,uuid,school.getUuid()); 
 					// Create a simple Bar chart start
+					BarWeight barWeight1 = new BarWeight();
+					BarWeight barWeight2 = new BarWeight();
+					BarWeight barWeight3 = new BarWeight();
+					BarWeight barWeight4 = new BarWeight();
+                    if(GraphWeightGenerator(mean,uuid,school.getUuid())){
+                    	if(barWeightDAO.getBarWeight(school.getUuid(), uuid, StartYear) !=null){
+                    		barWeight1 = barWeightDAO.getBarWeight(school.getUuid(), uuid, StartYear); 
+                    	}
+                    	
+                    	if(barWeightDAO.getBarWeight(school.getUuid(), uuid, Year2Str) !=null){
+                    		barWeight2 = barWeightDAO.getBarWeight(school.getUuid(), uuid, Year2Str); 
+                    	}
+                    	
+                    	if(barWeightDAO.getBarWeight(school.getUuid(), uuid, Year3Str) !=null){
+                    		barWeight3 = barWeightDAO.getBarWeight(school.getUuid(), uuid, Year3Str); 
+                    	}
+                    	if(barWeightDAO.getBarWeight(school.getUuid(), uuid, Year4Str) !=null){
+                    		barWeight4 = barWeightDAO.getBarWeight(school.getUuid(), uuid, Year4Str); 
+                    	}
+                    	
+                    	
+					}
+					
 					PdfPCell BAFheader = new PdfPCell();
 					
 					DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-					int ChartWeight = GraphWeightGenerator(mean); 
-					dataset.setValue(ChartWeight, "Points", " Term " + examConfig.getTerm());
-					dataset.setValue(0.1, "Points", "Term 2");
-					dataset.setValue(0.1, "Points", "Term 3");
+					double ChartWeight = 0;
+					double ChartWeight2 = 0;
+					double ChartWeight3 = 0;
+					
+				
+					dataset.setValue(newkcse, "Pnts", " K.C.P.E");
+					
+					//YEAR 1
+				    ChartWeight =  barWeight1.getWeightOne(); 
+				    ChartWeight2 =  barWeight1.getWeightTwo(); 	
+					ChartWeight3 =  barWeight1.getWeightThree(); 
+					
+					
+					dataset.setValue(ChartWeight, "Pnts",  StartYear+"-T 1");
+					dataset.setValue(ChartWeight2, "Pnts", StartYear+"-T 2");
+					dataset.setValue(ChartWeight3, "Pnts", StartYear+"-T 3");
+					
+					//YEAR 2
+					ChartWeight = 0;
+					ChartWeight2 = 0;
+					ChartWeight3 = 0;
+					
+					ChartWeight =  barWeight2.getWeightOne(); 
+				    ChartWeight2 =  barWeight2.getWeightTwo(); 	
+					ChartWeight3 =  barWeight2.getWeightThree(); 
+					
+					dataset.setValue(ChartWeight, "Pnts",  Year2Str+"-T 1");
+					dataset.setValue(ChartWeight2, "Pnts", Year2Str+"-T 2");
+					dataset.setValue(ChartWeight3, "Pnts", Year2Str+"-T 3");
+					
+					//YEAR 2
+					ChartWeight = 0;
+					ChartWeight2 = 0;
+					ChartWeight3 = 0;
+					
+					ChartWeight =  barWeight3.getWeightOne(); 
+				    ChartWeight2 =  barWeight3.getWeightTwo(); 	
+					ChartWeight3 =  barWeight3.getWeightThree(); 
+					
+					dataset.setValue(ChartWeight, "Pnts",  Year3Str+"-T 1");
+					dataset.setValue(ChartWeight2, "Pnts", Year3Str+"-T 2");
+					dataset.setValue(ChartWeight3, "Pnts", Year3Str+"-T 3");
+					
+					//YEAR 4
+					ChartWeight = 0;
+					ChartWeight2 = 0;
+					ChartWeight3 = 0;
+					
+					ChartWeight =  barWeight4.getWeightOne(); 
+				    ChartWeight2 =  barWeight4.getWeightTwo(); 	
+					ChartWeight3 =  barWeight4.getWeightThree(); 
+					
+					dataset.setValue(ChartWeight, "Pnts",  Year4Str+"-T 1");
+					dataset.setValue(ChartWeight2, "Pnts", Year4Str+"-T 2");
+					dataset.setValue(ChartWeight3, "Pnts", Year4Str+"-T 3");
+					
+					//CONTROL
 					dataset.setValue(12, "Control ", "Control ");
-					JFreeChart chart = ChartFactory.createBarChart("Year Performance Analysis", // chart title
+					
+					//END 
+					
+					JFreeChart chart = ChartFactory.createBarChart("Yearly Performance Analysis", // chart title
 																	"Term", // domain axis label (Y axis)
 																	"Weight", //  range axis label (X axis)
 																	dataset, // data
@@ -1778,17 +2368,15 @@ public class ReportForm2 extends HttpServlet{
 																	true, // tooltips?
 																	false);// URLs?
 					
-					//chart.getXYPlot().getRangeAxis().setRange(0.0,12.0); 
-					
 					ByteArrayOutputStream byte_out = new ByteArrayOutputStream();
 					
 					try {
 						
-						ChartUtilities.writeChartAsPNG(byte_out, chart, 500, 270);
+						ChartUtilities.writeChartAsPNG(byte_out, chart, 1200, 270);
 						byte [] data = byte_out.toByteArray();
 						byte_out.close();
 						Image chartImage = Image.getInstance(data);
-						chartImage.scaleToFit(300,300); 
+						chartImage.scaleToFit(1000,300); 
 						//chartPragraph.add(chartImage); 
 						BAFheader.addElement(new Chunk(chartImage,15,-90));// margin left  ,  margin top
 						BAFheader.setBorder(Rectangle.NO_BORDER); 
@@ -1801,6 +2389,7 @@ public class ReportForm2 extends HttpServlet{
 					}
 					
 				
+					
 					
 					//chart end
 					
@@ -1818,10 +2407,16 @@ public class ReportForm2 extends HttpServlet{
 					//QR code end
 					
 					//chart table
-					PdfPTable chartTable = new PdfPTable(2);  
+					PdfPTable chartTable = new PdfPTable(1);  
 					chartTable.setWidthPercentage(100); 
-					chartTable.setWidths(new int[]{100,100}); 
+					chartTable.setWidths(new int[]{100}); 
 					chartTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
+					//chart table
+					PdfPTable QrTable = new PdfPTable(1);  
+					QrTable.setWidthPercentage(100); 
+					QrTable.setWidths(new int[]{100}); 
+					QrTable.setHorizontalAlignment(Element.ALIGN_LEFT);
 
 					
 					PdfPCell QRheader = new PdfPCell();
@@ -1830,37 +2425,135 @@ public class ReportForm2 extends HttpServlet{
 					QRheader.setBorder(Rectangle.NO_BORDER); 
 					QRheader.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					chartTable.addCell(QRheader);
+					QrTable.addCell(QRheader);
 					chartTable.addCell(BAFheader);
 					
 					//chart table end
 
 
+					//class teacher comment table start
+					PdfPTable classTeacherCommentTable = new PdfPTable(2);  
+					classTeacherCommentTable.setWidthPercentage(100); 
+					classTeacherCommentTable.setWidths(new int[]{100,100}); 
+					classTeacherCommentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
+					String CTcommentLabel = "CLASS TEACHER'S COMMENT \n\n";
+					Paragraph CTcommentLb = new Paragraph(CTcommentLabel,boldFont);
+					
+					BarWeight barWeight = new BarWeight();
+					if(barWeightDAO.getBarWeight(school.getUuid(), uuid, examConfig.getYear()) !=null){
+                		barWeight = barWeightDAO.getBarWeight(school.getUuid(), uuid, examConfig.getYear()); 
+                	}
+					
+					// TODO get last term mean, and this term mean, find deviation and out the comment
+					//if current term is 1, get deviation for term 3 ,last year
+					double lastTermMean = 0;
+					Deviation means = new Deviation();
+					String lastyr = "";
+					
+					if(StringUtils.equals(examConfig.getTerm(), "1")){
+						//get current year
+						String thisyear = "";
+						int lastyear = 0;
+						
+						if(examConfig !=null){
+							thisyear = examConfig.getYear();
+							lastyear = Integer.parseInt(thisyear) - 1;
+						}
+						
+						lastyr = Integer.toString(lastyear); 
+						
+					}else{
+						lastyr = examConfig.getYear();
+					}
+					
+					if(deviationDAO.getDev(uuid, lastyr)!=null){
+						 means =  deviationDAO.getDev(uuid, lastyr);
+					}
+					
+					//get last term mean 
+					if(StringUtils.equals(examConfig.getTerm(), "1")){
+						lastTermMean = means.getDevThree();
+					}else if(StringUtils.equals(examConfig.getTerm(), "2")){
+						lastTermMean = means.getDevOne();
+					}else if(StringUtils.equals(examConfig.getTerm(), "3")){
+						lastTermMean = means.getDevTwo();
+					}
+					//now we haave our last term deviation in the variable  'lastTermMean'
+					
+					// we get this term mean
+					double thstermMean = 0;
+					Deviation thisterMmeanObj = new Deviation();
+					if(deviationDAO.getDev(uuid, examConfig.getYear()) !=null){
+					  thisterMmeanObj = deviationDAO.getDev(uuid, examConfig.getYear());
+					}
+					if(StringUtils.equals(examConfig.getTerm(), "1")){
+						thstermMean = thisterMmeanObj.getDevOne();
+					}else if(StringUtils.equals(examConfig.getTerm(), "2")){
+						thstermMean = thisterMmeanObj.getDevTwo();
+					}else if(StringUtils.equals(examConfig.getTerm(), "3")){
+						thstermMean = thisterMmeanObj.getDevThree();
+					}
+					
+					//now we haave our last term deviation in the variable  'thstermMean'
+					
+					double deviation_from_lastTerm = 0;
+					deviation_from_lastTerm = deviationFinder(thstermMean,lastTermMean);
+					
+					// now we have our deviation, we generate comment
+					String devComment = "";
+					devComment = deviationComment(deviation_from_lastTerm);
+					//end , we are done!
+					
+					
+					
+					
+					
+					PdfPCell CTcommentCell = new PdfPCell(new Paragraph("Hi " + firstnamee +", "+ classteacherRemarks(school,uuid,barWeight) + devComment +" \n",boldFont2));
+					CTcommentCell.setBackgroundColor(Colormagenta);
+					CTcommentCell.setColspan(2); 
+					CTcommentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPTable commentTable = new PdfPTable(2);  
-					commentTable.setWidthPercentage(100); 
-					commentTable.setWidths(new int[]{100,100}); 
-					commentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+					PdfPCell CTsignature = new PdfPCell(new Paragraph("Class teacher's Signature: _______________("+ classteachername(classroomuuid) +")\n\n",smallBold));
+					CTsignature.setBackgroundColor(Colormagenta);
+					CTsignature.setHorizontalAlignment(Element.ALIGN_LEFT); 
 
-					PdfPCell commentCell = new PdfPCell(new Paragraph("Thank you " + firstnamee +" "+ comment +" "+ classteacherRemarks(mean)+"\n",boldFont));
+					PdfPCell CTsignaturedate2 = new PdfPCell(new Paragraph("Date : _____________________    \n\n",smallBold));
+					CTsignaturedate2.setBackgroundColor(Colormagenta);
+					CTsignaturedate2.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
+					classTeacherCommentTable.addCell(CTcommentCell);
+					classTeacherCommentTable.addCell(CTsignature);
+					classTeacherCommentTable.addCell(CTsignaturedate2);
+					//class teacher comment table end
+
+                  
+					//principal comment table start
+					PdfPTable principalCommentTable = new PdfPTable(2);  
+					principalCommentTable.setWidthPercentage(100); 
+					principalCommentTable.setWidths(new int[]{100,100}); 
+					principalCommentTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+					
+					String commentLabel = "PRINCIPAL'S COMMENT \n\n";
+					Paragraph commentLb = new Paragraph(commentLabel,boldFont);
+					
+					PdfPCell commentCell = new PdfPCell(new Paragraph("Thank you " + firstnamee +" "+ comment +" "+PrincipalRemarks(mean)+"\n",boldFont2));
 					commentCell.setBackgroundColor(Colormagenta);
 					commentCell.setColspan(2); 
 					commentCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
-					PdfPCell Cell1 = new PdfPCell(new Paragraph("Class Teacher's Signature: _____________________\n"
-							+ "Principal's Signature: _____________________\n",smallBold));
-
+					PdfPCell Cell1 = new PdfPCell(new Paragraph("Principal's Signature: _______________   " + "\n\n",smallBold));
 					Cell1.setBackgroundColor(Colormagenta);
-					Cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					Cell1.setHorizontalAlignment(Element.ALIGN_LEFT); 
 
-					PdfPCell Cell2 = new PdfPCell(new Paragraph("Date : _____________________\n"
-							+ "Date : _____________________\n",smallBold));
+					PdfPCell Cell2 = new PdfPCell(new Paragraph("            Rubber Stamp \n\n",smallBold));
 					Cell2.setBackgroundColor(Colormagenta);
 					Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-					commentTable.addCell(commentCell);
-					commentTable.addCell(Cell1);
-					commentTable.addCell(Cell2);
+					
+					principalCommentTable.addCell(commentCell);
+					principalCommentTable.addCell(Cell1);
+					principalCommentTable.addCell(Cell2);
+					//principal comment table end
 
 					document.add(prefaceTable);      	 
 					document.add(containerTable);      	 
@@ -1872,15 +2565,28 @@ public class ReportForm2 extends HttpServlet{
 					document.add(bottomTable); 
 					
                     document.add(chartTable);
+                    document.add(emptyline);
+					document.add(emptyline);
+					document.add(emptyline);
+					document.add(emptyline);
+					document.add(emptyline);
 					
-					document.add(emptyline);
-					document.add(emptyline);
-					document.add(emptyline);
-					document.add(emptyline);
-					document.add(emptyline);
-					document.add(feeTable);
-					document.add(emptyline); 
-					document.add(commentTable);
+                  //document.add(feeTable);
+					
+ 				   //Class teacher start
+ 					document.add(CTcommentLb);
+ 					//document.add(emptyline); 
+ 					document.add(classTeacherCommentTable); 
+ 					
+ 					// principal start
+ 					document.add(commentLb);
+ 					//document.add(emptyline); 
+ 					document.add(principalCommentTable); 
+ 					
+ 					//document.add(emptyline);
+ 					document.add(feeTable);
+ 					
+ 					document.add(QrTable);
 
 					position++;
 					number=mean;
@@ -1905,16 +2611,202 @@ public class ReportForm2 extends HttpServlet{
 
 	}
 	
+	
 
 	/**
-	 * @param mean
-	 * @param examConfig2
-	 * @return 
+	 * @param classroomuuid
+	 * @return
 	 */
-	private int GraphWeightGenerator(double mean) {
-		return (int) ((mean/100)*12);
+	private String classteachername(String classroomuuid) {
+		String classTeacherName = "";
+		//classTeacherDAO
+		String teacherId = "";
+		if(classTeacherDAO.getClassTeacherByclassId(classroomuuid) !=null){
+		    ClassTeacher classTeacher = classTeacherDAO.getClassTeacherByclassId(classroomuuid);
+		    teacherId = classTeacher.getTeacherUuid();
+		    
+		    if(staffDetailsDAO.getStaffDetail(teacherId) !=null){
+				StaffDetails StaffDetail = staffDetailsDAO.getStaffDetail(teacherId); 
+				classTeacherName = StaffDetail.getFirstName();
+			}
+		    
+		  }
+		return classTeacherName.substring(0, Math.min(classTeacherName.length(), 5)).toLowerCase();
 	}
 
+	/**
+	 * @param staffId
+	 * @return
+	 */
+	private String principalname(String staffId) {
+		String principalName = "";
+		//  staffDetailsDAO
+		String staffFname = "";
+		if(staffDetailsDAO.getStaffDetail(staffId) !=null){
+		StaffDetails StaffDetail = staffDetailsDAO.getStaffDetail(staffId);
+		 staffFname = StaffDetail.getFirstName();
+		 principalName = staffFname;
+		 }
+		
+		return principalName;
+	}
+
+	/**
+	 * @param school
+	 * @param uuid
+	 * @param barWeight
+	 * @return
+	 */
+	private String classteacherRemarks(SchoolAccount school, String uuid, BarWeight barWeight) {
+		String classTeacherComent = " ";
+		double T1Weight = 0;
+		double T2Weight = 0;
+		double T3Weight = 0;
+		if(barWeight !=null){
+			T1Weight = barWeight.getWeightOne();
+			T2Weight = barWeight.getWeightTwo();
+			T3Weight = barWeight.getWeightThree();
+		}
+		
+		if(StringUtils.equalsIgnoreCase(examConfig.getTerm(), "1")){
+			
+			BarWeight barweightLastYR = new BarWeight();
+			int lastyear = (Integer.parseInt(examConfig.getYear())-1);
+			
+			if(barWeightDAO.getBarWeight(school.getUuid(), uuid, Integer.toString(lastyear)) !=null){
+				barweightLastYR = barWeightDAO.getBarWeight(school.getUuid(), uuid, Integer.toString(lastyear)); 
+        	}
+			
+			double T3lastYR = barweightLastYR.getWeightThree();
+			
+			if(T1Weight > T3lastYR){
+				//you have improved
+				classTeacherComent = "comparing your last term and this term performance, we noted some improvement, please keep it up.";
+			}else{
+				//you have dropped 
+				classTeacherComent = "it seems you have dropped compared to last term !, put more effort please.";
+			}
+			
+			
+		}else if(StringUtils.equalsIgnoreCase(examConfig.getTerm(), "2")){
+			
+			if(T2Weight > T1Weight){
+				//you have improved
+				classTeacherComent = "comparing your last term and this term performance, we noted some improvement, please keep it up.";
+			}else{
+				//you have dropped 
+				classTeacherComent = "it seems you have dropped compared to last term !, put more effort please.";
+			}
+			
+		}else if(StringUtils.equalsIgnoreCase(examConfig.getTerm(), "3")){
+			
+			if(T3Weight > T2Weight){
+				//you have improved
+				classTeacherComent = "comparing your last term and this term performance, we noted some improvement, please keep it up.";
+			}else{
+				//you have dropped 
+				classTeacherComent = "it seems you have dropped compared to last term !, put more effort please.";
+			}
+			
+		}
+		
+		return classTeacherComent;
+	}
+	
+	/** Find deviation from last term
+	 * pass thisTermMean following lastTermMean
+	 * @param lastTermMean
+	 * @param thisTermMean
+	 * @return the deviation 
+	 */
+	
+	private double deviationFinder(double thisTermMean, double lastTermMean){
+		double deviation = 0;
+		deviation = thisTermMean - lastTermMean;
+		return deviation;
+	}
+	
+	/** put comment as per deviation
+	 * @param deviation
+	 * @return teacher comment
+	 */
+	private String deviationComment(double mean){
+		String comment = "";
+		DecimalFormat df = new DecimalFormat("0.00"); 
+		df.setRoundingMode(RoundingMode.HALF_UP);
+		double dev = 0;
+				dev = mean;
+				if(dev<0){
+					double positiveDev = Math.abs(dev);
+					String newDev = "-"+df.format(positiveDev);
+					comment = " Your deviation is " + newDev;
+					//System.out.println(comment);
+					
+				}else if(dev>0){
+					//positive , student working hard
+					comment = " Your deviation is " + df.format(dev);
+					
+				}
+				
+		return comment;
+	}
+
+
+	
+
+	/**
+	 * 
+	 * @param mean
+	 * @param studentuuid
+	 * @param schooluuid
+	 * @return
+	 */
+	 
+	private boolean GraphWeightGenerator(double mean,String studentuuid,String schooluuid) {
+		boolean saved = false;
+		
+		BarWeight barWeight;
+		if(barWeightDAO.getBarWeight(schooluuid, studentuuid, examConfig.getYear())==null){
+			 barWeight = new BarWeight();
+		}else{
+			 barWeight = barWeightDAO.getBarWeight(schooluuid, studentuuid, examConfig.getYear());
+		}
+	
+		
+		double weight = 0;
+		weight =  ((mean/100)*12);
+		
+		if(StringUtils.equals(examConfig.getTerm(), "1")){
+			barWeight.setWeightOne(weight);
+			barWeight.setSchoolAccountUuid(schooluuid);
+			barWeight.setStudentUuid(studentuuid);
+			barWeight.setTerm(examConfig.getTerm());
+			barWeight.setYear(examConfig.getYear());
+			barWeightDAO.put(barWeight);
+			saved = true;
+			
+		}else if (StringUtils.equals(examConfig.getTerm(), "2")){
+			barWeight.setWeightTwo(weight);
+			barWeight.setSchoolAccountUuid(schooluuid);
+			barWeight.setStudentUuid(studentuuid);
+			barWeight.setTerm(examConfig.getTerm());
+			barWeight.setYear(examConfig.getYear());
+			barWeightDAO.put(barWeight);
+			saved = true;
+			
+		}else if (StringUtils.equals(examConfig.getTerm(), "3")){
+			barWeight.setWeightThree(weight);
+			barWeight.setSchoolAccountUuid(schooluuid);
+			barWeight.setStudentUuid(studentuuid);
+			barWeight.setTerm(examConfig.getTerm());
+			barWeight.setYear(examConfig.getYear());
+			barWeightDAO.put(barWeight);
+			saved = true;
+		}
+		
+		return saved;
+		
+	}
 	/**
 	 * @param subjectid
 	 * @param classroomid
@@ -1942,7 +2834,7 @@ public class ReportForm2 extends HttpServlet{
 	 * @param score
 	 * @return
 	 */
-	private String classteacherRemarks(double score) {
+	private String PrincipalRemarks(double score) {
 		String remarks = "";
 		double mean = score;
 
@@ -2057,6 +2949,48 @@ public class ReportForm2 extends HttpServlet{
 		}
 
 		return grade;
+	}
+
+	
+	/**
+	 * @param score
+	 * @return
+	 */
+	public String pointsFinder(double score){
+		String points = "";
+		// points 1=E, 2=D-, 3=D, 4=D+, 5=C-, 6=C, 7=c+
+		//8=B-, 9=B, 10=B+,11=A-,12=A
+		if(score >= gradingSystem.getGradeAplain()){
+			points = "12";
+		}else if(score >= gradingSystem.getGradeAminus()){
+			points = "11";
+		}else if(score >= gradingSystem.getGradeBplus()){
+			points = "10";
+		}else if(score >= gradingSystem.getGradeBplain()){
+			points = "9";
+		}else if(score >= gradingSystem.getGradeBminus()){
+			points = "8";
+		}else if(score >= gradingSystem.getGradeCplus()){
+			points = "7";
+		}else if(score >= gradingSystem.getGradeCplain()){
+			points = "6";
+		}else if(score >= gradingSystem.getGradeCminus()){
+			points = "5";
+		}else if(score >= gradingSystem.getGradeDplus()){
+			points = "4";
+		}else if(score >= gradingSystem.getGradeDplain()){
+			points = "3";
+		}else if(score >= gradingSystem.getGradeDminus()){
+			points = "2";
+		}else if(score >= gradingSystem.getGradeE()){
+			points = "1";
+		}
+
+		if(score ==0){
+			points = " ";
+		}
+		
+		return points;
 	}
 
 

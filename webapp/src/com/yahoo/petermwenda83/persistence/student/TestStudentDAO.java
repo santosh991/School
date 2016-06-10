@@ -96,7 +96,7 @@ public class TestStudentDAO {
 	
 	
 	 
-		//@Ignore
+		@Ignore
 		@Test
 		public void testGetStudentADmNo() {
 			store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
@@ -128,13 +128,13 @@ public class TestStudentDAO {
 			//assertEquals(s.getAdmissionDate(),ADM_DATE);
 	}
     
-	@Ignore
+	//@Ignore
 	@Test
 	public void testGetStudentByName() {
 		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		 SchoolAccount schoolaccount = new SchoolAccount();
 		 schoolaccount.setUuid(SCHOOL_UUID); 
-		 List<Student> list = store.getStudentByName(schoolaccount, FIRST_NAME);
+		 List<Student> list = store.getStudentByName(schoolaccount, "pe");
 			for (Student l : list) {
 				System.out.println(l);	
 			}
@@ -146,7 +146,7 @@ public class TestStudentDAO {
 		 store = new StudentDAO(databaseName, Host, databaseUsername, databasePassword, databasePort);
 		 SchoolAccount schoolaccount = new SchoolAccount();
 		 schoolaccount.setUuid(SCHOOL_UUID); 
-		 List<Student> list = store.getStudentByAdmNo(SCHOOL_UUID, ADM_NO); 
+		 List<Student> list = store.getStudentByAdmNo(SCHOOL_UUID, "ad"); 
 			for (Student l : list) {
 				System.out.println(l);	
 			}

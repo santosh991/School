@@ -5,7 +5,6 @@ package com.yahoo.petermwenda83.server.servlet.upload;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -51,8 +49,10 @@ public class UploadExam extends HttpServlet {
 	private static final long serialVersionUID = 3828305434810949182L;
 	public final static String UPLOAD_FEEDBACK = "UploadFeedback";
 	public final static String UPLOAD_SUCCESS = "You have successfully uploaded your results.";
-	final String USER = System.getProperty("user.name");
-	private final String UPLOAD_DIR = "/home/"+USER+"/school/exams"; 
+	
+	public String USER = "";
+	public String UPLOAD_DIR = "";
+	
 	private Cache schoolCache;
 	
 	private Logger logger;
@@ -91,6 +91,9 @@ public class UploadExam extends HttpServlet {
        File repository = FileUtils.getTempDirectory();
        factory.setRepository(repository);
        
+       USER = System.getProperty("user.name");
+       UPLOAD_DIR =  "/home/"+USER+"/school/exams"; 
+       
      //  uploadUtil = new UploadUtil();
        excelUtil = new ExcelUtil();
        CacheManager mgr = CacheManager.getInstance();
@@ -113,7 +116,7 @@ public class UploadExam extends HttpServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		File uploadedFile = null;
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		
 
 		String schoolusername = (String) session.getAttribute(SessionConstants.SCHOOL_ACCOUNT_SIGN_IN_KEY);
@@ -130,15 +133,16 @@ public class UploadExam extends HttpServlet {
        DiskFileItemFactory factory = new DiskFileItemFactory();
 
        // Set up where the files will be stored on disk
-       File repository = new File(System.getProperty(UPLOAD_DIR) + File.separator + "user");
+       File repository = new File(UPLOAD_DIR + File.separator + "user");
        FileUtils.forceMkdir(repository); 
        factory.setRepository(repository);
        
        // Create a new file upload handler
        ServletFileUpload upload = new ServletFileUpload(factory);
-
-       // Parse the request              
+       // Parse the request    
+       
        try {
+    	
 		List<FileItem> items = upload.parseRequest(request);
 		Iterator<FileItem> iter = items.iterator();
 		
@@ -146,42 +150,42 @@ public class UploadExam extends HttpServlet {
 		
 		while (iter.hasNext()) {
 		    item = iter.next();
-
+		   // System.out.println("My Item = "+item+"\n");
 		    if (!item.isFormField()) {
-		    	uploadedFile = processUploadedFile(item);
+		    	if(item!=null){
+		    		uploadedFile = processUploadedFile(item);
+		    		 //System.out.println("uploadedFile="+uploadedFile+"\n");
+			    	
+		    	}	
 		    } 
 		}// end 'while (iter.hasNext())'
-				
+    
 	    } catch (FileUploadException e) {
 	    	logger.error("FileUploadException while getting File Items.");
 			logger.error(e);
-	   }
-	       
-       String extension = FilenameUtils.getExtension(uploadedFile.getAbsolutePath()); 
+	   } 
+	 
        String feedback = "";
-       // First we inspect if it is ok   //
-       if(extension.trim().equalsIgnoreCase("xlsx") ||extension.trim().equalsIgnoreCase("xls")){ 
+       
+       if(uploadedFile !=null){
     	   feedback = excelUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
-       }else if(extension.trim().equalsIgnoreCase("txt") || extension.trim().equalsIgnoreCase("csv")){
-    	  // feedback = uploadUtil.inspectResultFile(uploadedFile,schooluuid,stffID,roomDAO, subjectDAO,teacherSubClassDAO,studentDAO);
        }
       
+       //System.out.println("Feedback = "+feedback+"\n");
+       
 	   session.setAttribute(UPLOAD_FEEDBACK,"<p class='error'>"+feedback+"<p>");
-    	
-	   response.sendRedirect("examUpload.jsp");
-	          // Process the file into the database if it is ok
+	   
+	    // Process the file into the database if it is ok
        if(StringUtils.equals(feedback, UPLOAD_SUCCESS)) {
-    	   if(extension.trim().equalsIgnoreCase("txt") || extension.trim().equalsIgnoreCase("csv")){ 
-    		 //  uploadUtil.saveResults(uploadedFile, stffID,school,examEgineDAO,studentDAO,roomDAO, subjectDAO,examConfigDAO);
-    	   }else if(extension.trim().equalsIgnoreCase("xlsx") ||extension.trim().equalsIgnoreCase("xls")){
-    		  excelUtil.saveResults(uploadedFile, stffID, school, examEgineDAO, studentDAO, roomDAO, subjectDAO, examConfigDAO); 
+    	   if(uploadedFile !=null){
+    		excelUtil.saveResults(uploadedFile, stffID, school, examEgineDAO, studentDAO, roomDAO, subjectDAO, examConfigDAO); 
     	   }
-    	  
-    	   
-       }
+         }
+      
+	   response.sendRedirect("examUpload.jsp");
        return;
-	}	
-
+	   
+	}
 	
 
 	
@@ -191,11 +195,10 @@ public class UploadExam extends HttpServlet {
 	 */
 	private File processUploadedFile(FileItem item) {
 		// A specific folder in the system
-		String folder = UPLOAD_DIR + File.separator +staffUsername+ new Date();
+		String folder = UPLOAD_DIR + File.separator +staffUsername;
 		File file = null;
 		
         try {
-        	
 			FileUtils.forceMkdir(new File(folder));
 			file = new File(folder + File.separator + item.getName());
 			item.write(file); 
@@ -208,7 +211,7 @@ public class UploadExam extends HttpServlet {
 			logger.error("Exception while processUploadedFile: " + item.getName());
 			logger.error(e);
 		} 
-        
+        //System.out.println("Saved File = "+file+"\n");
         return file;
 	}
 }

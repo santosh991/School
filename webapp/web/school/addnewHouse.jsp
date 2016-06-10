@@ -137,7 +137,7 @@
                                         <label class="control-label" for="name">House name*:</label>
                                         <div class="controls">
                                             <input class="input-xlarge focused" id="receiver" type="text" name="housename" 
-                                             value=""  >                                    
+                                             value="" style="text-transform: capitalize;" >                                    
                                         </div>
                             </div> 
 

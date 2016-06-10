@@ -126,15 +126,13 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 		boolean success = true;
 		 try(   Connection conn = dbutils.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Subject" 
-			        		+"(Uuid,SubjectCode,SubjectName,SubjectCategory,SysUser,RegDate) VALUES (?,?,?,?,?,?);");
+			        		+"(Uuid,SubjectCode,SubjectName,SubjectCategory) VALUES (?,?,?,?);");
         		){
 			   
 	            pstmt.setString(1, subject.getUuid());
 	            pstmt.setString(2, subject.getSubjectCode());
 	            pstmt.setString(3, subject.getSubjectName());
 	            pstmt.setString(4, subject.getSubjectCategory());
-	            pstmt.setString(5, subject.getSysUser());
-	            pstmt.setTimestamp(6, new Timestamp(subject.getRegDate().getTime()));
 	            pstmt.executeUpdate();
 			 
 		 }catch(SQLException e){
@@ -156,14 +154,12 @@ public class SubjectDAO extends GenericDAO implements SchoolSubjectDAO {
 		boolean success = true;
         try (  Connection conn = dbutils.getConnection();
         	   PreparedStatement pstmt = conn.prepareStatement("UPDATE Subject SET SubjectCode=?,"
-        			+ "SubjectName=?, SubjectCategory=?,SysUser=?,RegDate=? WHERE Uuid = ?;");
+        			+ "SubjectName=?, SubjectCategory=? WHERE Uuid = ?;");
         	) { 
 	            pstmt.setString(1, subject.getSubjectCode());
 	            pstmt.setString(2, subject.getSubjectName());
 	            pstmt.setString(3, subject.getSubjectCategory());
-	            pstmt.setString(4, subject.getSysUser());
-	            pstmt.setTimestamp(5, new Timestamp(subject.getRegDate().getTime()));
-	            pstmt.setString(6, subject.getUuid());
+	            pstmt.setString(4, subject.getUuid());
                 pstmt.executeUpdate(); 
 
         } catch (SQLException e) {

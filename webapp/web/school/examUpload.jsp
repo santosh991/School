@@ -103,9 +103,7 @@
     <ul class="breadcrumb">
 
     <li> <b> <%=schoolname%> :EXAM UPLOAD PANEL TERM <%=examConfig.getTerm()%>:<%=examConfig.getYear()%> <b> </li> <br>
-        <li>
-            <a href="staff.jsp">Back</a> <span class="divider">/</span>
-        </li>
+       
          
     </ul>
 </div>
@@ -157,13 +155,13 @@
 
                 
                 
-                <p>Upload Excel/CSV/txt file with format <code>admission number,score</code></p>
-                <p>The results file must be saved as<code>subjectcode.classcode_examcode.xlsx/xls/csv/txt</code><p> 
+                <p>Upload Excel file with format <code>admission number,score</code></p>
+                <p>The results file must be saved as<code>subjectcode.classcode_examcode.xlsx/xls</code><p> 
                 <form method="POST" action="resultUpload" enctype="multipart/form-data">
                 <fieldset>
                     <div class="control-group" id="javascript" javaScriptCheck="<%=notNull%>">
                          
-                    <input type="file" name="file" required="true" multiple/>
+                    <input type="file" name="file" required="true" multiple accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"/>
 
                    <div class="form-actions">                        
                         <button type="submit" class="btn btn-primary">Upload File</button>           
@@ -197,22 +195,9 @@
 $("document").ready(function() {   
 
         var check1 = $("#javascript").attr("javaScriptCheck");
-        if(check1.length>4){
+        if(check1.length>2){
            $("html, body").animate({ scrollTop: $(document).height() });
         }   
-
-
- $('#performance').dataTable({
-
-    "aoColumnDefs":[
-    {
-     'bSortable':false,
-     'aTargets':[0] 
-     }]
-
-  });
-
-
 
     });
 </script>

@@ -21,7 +21,6 @@ import com.yahoo.petermwenda83.bean.staff.StaffDetails;
 import com.yahoo.petermwenda83.persistence.staff.StaffDAO;
 import com.yahoo.petermwenda83.persistence.staff.StaffDetailsDAO;
 import com.yahoo.petermwenda83.server.servlet.util.PropertiesConfig;
-import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
 /**
@@ -55,13 +54,17 @@ public class AddStaff extends HttpServlet {
 	final String ERROR_DPRINCIPAL_EXIST = "Deputy Principal already added";
 	
 	
-	final String STAFF_ADD_SUCSESS = "Staff added successfully";
+	final String STAFF_ADD_SUCSESS = "Staff added successfully, they can user their username, and National Id number as password to login";
 	final String STAFF_ADD_ERROR = " An error occured while adding staff";
 	
 	final String STAFF_USERNAME_EXIST= "Staff Username already exist";
 	final String STAFF_EMP_NO_EXIST = "Employee Number already exist";
+	final String STAFF_EMP_NO_EMPTY = "Provide Employee Number";
 	
 	 private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
+	 final String ERROR_USERNAME_PASSWORD_MATCH = "Usernme and password can't be the same, national Id number is the default password";
+	 
+	 final String NAME_ERROR = "Name format error/incorrent lenght.";
 	
 	
 	private static StaffDAO staffDAO;
@@ -75,7 +78,6 @@ public class AddStaff extends HttpServlet {
    @Override
    public void init(ServletConfig config) throws ServletException {
        super.init(config);
-      // CacheManager mgr = CacheManager.getInstance();
        staffDAO = StaffDAO.getInstance();
        staffDetailsDAO = StaffDetailsDAO.getInstance();
    }
@@ -112,9 +114,7 @@ public class AddStaff extends HttpServlet {
        }if(StringUtils.equals(PositionUuid, pos_Deputy_Pricipal)){
     	   DeputyprincipalId = pos_Deputy_Pricipal;
        }
-       
-      // System.out.println("[PositionUuid="+PositionUuid +"] \n , [principalId ="+principalId +"] \n and [DeputyprincipalId="+DeputyprincipalId+"] \n");
-       // This is used to store parameter names and values from the form.
+      
 	   	Map<String, String> paramHash = new HashMap<>();    	
 	   	paramHash.put("username", username);
 	   	paramHash.put("employeeNo", employeeNo);
@@ -136,11 +136,11 @@ public class AddStaff extends HttpServlet {
        }else if(StringUtils.isEmpty(username)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_USERNAME); 
     	   
-       }else if(!Wordlength(username)){
-    	  // session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_MAX_USERNAME); 
-    	   
        }else if(StringUtils.isEmpty(firstname)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_FIRSTNAME); 
+    	   
+       }else if(StringUtils.isEmpty(employeeNo)){ 
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, STAFF_EMP_NO_EMPTY);  
     	   
        }else if(StringUtils.isEmpty(lastname)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_LASTNAME); 
@@ -148,7 +148,19 @@ public class AddStaff extends HttpServlet {
        }else if(StringUtils.isEmpty(surname)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_SURNAME); 
     	   
-       }else if(StringUtils.isEmpty(gender)){
+       }else if(!Wordlength(username)){
+	 	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(firstname)){
+	 	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(lastname)){
+	 	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(!Wordlength(surname)){
+	 	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isEmpty(gender)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_GENDER); 
     	   
        }else if(StringUtils.isEmpty(phone)){
@@ -168,6 +180,9 @@ public class AddStaff extends HttpServlet {
     	   
        }else if(StringUtils.isEmpty(dob)){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_EMPTY_DOB); 
+    	   
+       }else if(StringUtils.equalsIgnoreCase(username, idno)){
+    	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_USERNAME_PASSWORD_MATCH); 
     	   
        }else if(staffDAO.getStaffByPosition(schoolAccountUuid, principalId) !=null){
     	   session.setAttribute(SessionConstants.STAFF_ADD_ERROR, ERROR_PRINCIPAL_EXIST); 
@@ -248,7 +263,6 @@ public class AddStaff extends HttpServlet {
 		boolean isvalid = true;
 		int length = 0;
 		length = mystring.length();
-		//System.out.println("lenght = " + length);
 		if(length<10 ||length>10){
 			isvalid = false;
 		}
@@ -264,7 +278,7 @@ public class AddStaff extends HttpServlet {
 		boolean isvalid = true;
 		int length = 0;
 		length = mystring.length();
-		if(length>5){
+		if(length<3){
 			isvalid = false;
 		}
 		return isvalid;

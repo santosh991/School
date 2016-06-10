@@ -209,8 +209,12 @@
                          <td class="center"><%=formatter.format(stbk.getBorrowDate())%></td>
                         
                          <td class="center">
-                                <form name="Subject" method="POST" action="returnBook"> 
-                                 <input type="hidden" name="schooluuid" value="<%=accountuuid%>">
+                                <form name="Subject" method="POST" action="returnBook.jsp"> 
+
+                                 <input type="hidden" name="admNo" value="<%=student.getAdmno()%>">
+                                 <input type="hidden" name="stuName" value="<%=student.getFirstname()+" "+student.getLastname()%>">
+                                 <input type="hidden" name="bookTitle" value="<%=bookHash.get(stbk.getBookUuid())%>">
+                                  
                                  <input type="hidden" name="studentUuid" value="<%=stbk.getStudentUuid()%>">
                                  <input type="hidden" name="bookuuid" value="<%=stbk.getBookUuid()%>">
                                  <input type="hidden" name="bkISBN" value="<%=request.getParameter("bkISBN")%>">

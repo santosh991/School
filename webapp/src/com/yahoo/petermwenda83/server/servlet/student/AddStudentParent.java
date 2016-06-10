@@ -52,6 +52,7 @@ public class AddStudentParent extends HttpServlet{
 	final String ERROR_STUDENT_INACTIVE = "This student is Inactive, you can not assign them a parent.";
 	
 	final String ERROR_PHONE_NUMERIC = "phone can only be numeric";
+	final String NAME_ERROR = "Name format error/incorrent lenght.";
 	
 	final String statusUuid = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
@@ -267,7 +268,6 @@ public class AddStudentParent extends HttpServlet{
 		boolean isvalid = true;
 		int length = 0;
 		length = mystring.length();
-		//System.out.println("lenght = " + length);
 		if(length<10 ||length>10){
 			isvalid = false;
 		}

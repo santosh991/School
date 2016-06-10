@@ -70,7 +70,10 @@ public class ExcelUtil {
 		
 		String feedback = UploadExam.UPLOAD_SUCCESS;
 		// Creating Input Stream 
+		
+		if(file !=null){
 		FileInputStream myInput =  new FileInputStream(file);
+		
 		XSSFWorkbook myWorkBook = new XSSFWorkbook(myInput);
 		XSSFSheet mySheet = myWorkBook.getSheetAt(0);
 		int totalRow = mySheet.getLastRowNum();
@@ -206,13 +209,15 @@ public class ExcelUtil {
 				count++;
 			}
 		}
+		
+	
 		catch (Exception e){
 
 		}finally {
 			myInput.close();
 
 		}
-
+	}
 
 
 		return feedback;
@@ -263,7 +268,10 @@ public class ExcelUtil {
 	 */
 	public void saveResults(File uploadedFile,String stffID, SchoolAccount school, ExamEgineDAO examEgineDAO,
 			StudentDAO studentDAO, RoomDAO roomDAO, SubjectDAO subjectDAO,ExamConfigDAO examConfigDAO) throws IOException{
-		   
+		
+		if(uploadedFile !=null){
+		
+		
 		String subject = "";
    		String classroom = "";
    		String exam = "";
@@ -491,6 +499,6 @@ public class ExcelUtil {
 			}		   
 		}
 		
+	  }
 	}
-
 }

@@ -18,6 +18,8 @@
 <%@page import="java.util.*"%>
 <%@page import="java.util.stream.Collectors"%>
 
+<%@ page import="java.util.Calendar" %>
+
 <%@page import="net.sf.ehcache.Element"%>
 <%@page import="net.sf.ehcache.Cache"%>
 <%@page import="net.sf.ehcache.CacheManager"%>
@@ -72,6 +74,9 @@
 
      String staffUsername = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_USERNAME);
      String stffID = (String) session.getAttribute(SessionConstants.SCHOOL_STAFF_SIGN_IN_ID);
+
+      Calendar calendar = Calendar.getInstance();
+     final int YEAR = calendar.get(Calendar.YEAR);
     
  %>
 
@@ -110,22 +115,7 @@
             <form class="form-horizontal" action="updateExamConfig" method="POST"  >
                 <fieldset>
 
-                    <div class="control-group">
-                        <label class="control-label" for="Term">TERM</label>
-                        <div class="controls">
-                            <input class="input-xlarge"   name="term" type="text" value="<%=request.getParameter("term")%>">
-                        </div>
-                    </div>
-                        
-                    <div class="control-group">
-                        <label class="control-label" for="Year">YEAR</label>
-                        <div class="controls">
-                            <input class="input-xlarge focused"  name="year" type="text" value="<%=request.getParameter("year")%>">
-                        </div>
-                    </div>
-
-                    
-
+              
                      <div class="control-group">
                         <label class="control-label" for="Exam">EXAM</label>
                         <div class="controls">
@@ -142,6 +132,8 @@
 
                 
                     <div class="form-actions">
+                        <input class="input-xlarge focused"  name="year" type="hidden" value="<%=request.getParameter("year")%>" readonly>
+                        <input class="input-xlarge"   name="term" type="hidden" value="<%=request.getParameter("term")%>" readonly>
                         <input type="hidden" name="schoolUuid" value="<%=request.getParameter("schoolUuid")%>">
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>

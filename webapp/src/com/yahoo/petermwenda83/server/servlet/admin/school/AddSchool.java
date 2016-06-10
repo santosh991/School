@@ -34,6 +34,7 @@ import com.yahoo.petermwenda83.persistence.schoolaccount.AccountDAO;
 import com.yahoo.petermwenda83.persistence.schoolaccount.MiscellanousDAO;
 import com.yahoo.petermwenda83.persistence.student.HouseDAO;
 import com.yahoo.petermwenda83.server.cache.CacheVariables;
+import com.yahoo.petermwenda83.server.servlet.util.SecurityUtil;
 import com.yahoo.petermwenda83.server.session.AdminSessionConstants;
 import com.yahoo.petermwenda83.server.session.SessionConstants;
 
@@ -56,6 +57,7 @@ public class AddSchool extends HttpServlet{
 	
 	private final String SCHOOL_ADD_SUCCESS = "School account created successfully";
 	private final String SCHOOL_ADD_ERROR = "School account Not Created";
+	final String NAME_ERROR = "Data format error/incorrent lenght.";
 	
 	private EmailValidator emailValidator;
 	private final String STATUS_ACTIVE_UUID = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
@@ -126,10 +128,16 @@ public class AddSchool extends HttpServlet{
        if(StringUtils.isBlank(schoolname)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_NAME); 
     	   
-       }else if(StringUtils.isBlank(schoolusername)){
+       }else if(!Wordlength(schoolname)){
+	 	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(StringUtils.isBlank(schoolusername)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_SCHOOL_USERNAME); 
     	   
-       }else if(accountDAO.getSchoolByUsername(schoolusername) !=null){
+       }else if(!Wordlength(schoolusername)){
+	 	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else if(accountDAO.getSchoolByUsername(schoolusername) !=null){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_SCHOOL_USERNAME_EXIST); 
     	   
        }else if(StringUtils.isBlank(schoolpassword)){
@@ -156,13 +164,16 @@ public class AddSchool extends HttpServlet{
        }else if(StringUtils.isBlank(schoolhometown)){
     	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, ERROR_EMPTY_TOWN); 
     	   
-       }else{
+       }else if(!Wordlength(schoolhometown)){
+	 	   session.setAttribute(AdminSessionConstants.SCHOOL_ACCOUNT_ADD_ERROR, NAME_ERROR); 
+		   
+	   }else{
 		   SchoolAccount account = new SchoolAccount();
 		   account.setUuid(account.getUuid()); 
 		   account.setStatusUuid(STATUS_ACTIVE_UUID);		   
 		   account.setSchoolName(schoolname); 
 		   account.setUsername(schoolusername);
-		   account.setPassword(schoolpassword);
+		   account.setPassword(SecurityUtil.getMD5Hash(schoolpassword));
 		   account.setMobile(schoolphone); 
 		   account.setEmail(schoolemail); 
 		   account.setPostalAddress(schoolpostaladdress); 
@@ -302,8 +313,22 @@ private static boolean lengthValid(String mystring) {
 	boolean isvalid = true;
 	int length = 0;
 	length = mystring.length();
-	//System.out.println("lenght = " + length);
 	if(length<10 ||length>10){
+		isvalid = false;
+	}
+	return isvalid;
+}
+
+
+/**
+ * @param mystring
+ * @return
+ */
+private static boolean Wordlength(String mystring) {
+	boolean isvalid = true;
+	int length = 0;
+	length = mystring.length();
+	if(length<3){
 		isvalid = false;
 	}
 	return isvalid;

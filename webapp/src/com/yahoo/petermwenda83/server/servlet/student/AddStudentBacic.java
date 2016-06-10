@@ -60,6 +60,8 @@ public class AddStudentBacic extends HttpServlet{
 	final String STUDENT_ADD_SUCCESS = "Student added successfully";
 	final String STATUS_ACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
+	final String NAME_ERROR = "Name format error/incorrent lenght.";
+	
 	private static StudentDAO studentDAO;
 	private static PrimaryDAO primaryDAO;
 	private static StudentSubjectDAO studentSubjectDAO;
@@ -93,7 +95,7 @@ public class AddStudentBacic extends HttpServlet{
        String primary = "not-set";
        String indexno = "not-set";
        String kcpeaddYear =  "not-set";
-       String kcpemark = "not-set";
+       String kcpemark = "200";
        
        String classroomUuid = StringUtils.trimToEmpty(request.getParameter("classroomUuid"));
        String admnumber = StringUtils.trimToEmpty(request.getParameter("admNO"));
@@ -137,11 +139,20 @@ public class AddStudentBacic extends HttpServlet{
 	   }else if(StringUtils.isBlank(firstname)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_FIRSTNAME); 
 		     
+	   }else if(!lengthValid(firstname)){
+	 	   session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, NAME_ERROR); 
+		   
 	   }else if(StringUtils.isBlank(lastname)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_LASTNAME); 
 			   
+	   }else if(!lengthValid(lastname)){
+	 	   session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, NAME_ERROR); 
+		   
 	   }else if(StringUtils.isBlank(surname)){ 
 		   session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_SURNAME); 
+		   
+	   }else if(!lengthValid(surname)){
+	 	   session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, NAME_ERROR); 
 		   
 	   }else if(StringUtils.isBlank(gender)){
 		     session.setAttribute(SessionConstants.STUDENT_ADD_ERROR, ERROR_EMPTY_GENDER); 
@@ -186,7 +197,7 @@ public class AddStudentBacic extends HttpServlet{
 	       primary = "not-set";
 	       indexno = "not-set";
 	       kcpeaddYear =  "not-set";
-	       kcpemark = "not-set";
+	       kcpemark = "200";
 		   
 		   examConfig = new ExamConfig();
 			if(examConfigDAO.getExamConfig(schooluuid) !=null){
@@ -247,6 +258,38 @@ public class AddStudentBacic extends HttpServlet{
        
        
    }
+   
+   
+   /**
+    * @param str
+    * @return
+    */
+   public static boolean isNumeric(String str) {  
+	   try  
+	   {  
+		   double d = Double.parseDouble(str);  
+	   }  
+	   catch(NumberFormatException nfe)  
+	   {  
+		   return false;  
+	   }  
+	   return true;  
+   }
+
+   /**
+    * @param mystring
+    * @return
+    */
+   private static boolean lengthValid(String mystring) {
+	   boolean isvalid = true;
+	   int length = 0;
+	   length = mystring.length();
+	   if(length<3){
+		   isvalid = false;
+	   }
+	   return isvalid;
+   }
+
 
    
    

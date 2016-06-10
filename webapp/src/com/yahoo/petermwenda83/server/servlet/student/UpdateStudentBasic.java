@@ -25,6 +25,9 @@ public class UpdateStudentBasic extends HttpServlet{
 	
 	final String ERROR_EMPTY_ADM_NO = "Admission number can't be empty.";
 	final String ERROR_EMPTY_FIRSTNAME = "Firstname can't be empty.";
+	
+	final String NAME_ERROR = "Name format error/incorrent lenght.";
+	
 	final String ERROR_EMPTY_LASTNAME = "Lastname can't be empty.";
 	final String ERROR_EMPTY_SURNAME = "Surname can't be empty.";
 	final String ERROR_EMPTY_GENDER = "Student gender can't be empty.";
@@ -42,6 +45,8 @@ public class UpdateStudentBasic extends HttpServlet{
 	final String ERROR_ADMNO_EXIST = "Admission number already exist in the system.";
 	final String STUDENT_UPDATE_ERROR = "An error occured while updating student.";
 	final String STUDENT_UPDATE_SUCCESS = "Student updated successfully";
+	
+	final String ERROR_MARKS_INVALID = "The K.C.P.E marks are invalid, a valid mark is numeric  number greater than 100 and less tham 500";
 	
 	final String STATUS_ACTIVE = "85C6F08E-902C-46C2-8746-8C50E7D11E2E";
 	
@@ -93,11 +98,20 @@ public class UpdateStudentBasic extends HttpServlet{
 	   }else if(StringUtils.isBlank(firstname)){
 		     session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_EMPTY_FIRSTNAME); 
 		     
+	   }else if(!lengthValid(firstname)){
+	 	   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, NAME_ERROR); 
+		   
 	   }else if(StringUtils.isBlank(lastname)){
 		     session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_EMPTY_LASTNAME); 
 			   
+	   }else if(!lengthValid(lastname)){
+	 	   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, NAME_ERROR); 
+		   
 	   }else if(StringUtils.isBlank(surname)){ 
 		   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_EMPTY_SURNAME); 
+		   
+	   }else if(!lengthValid(surname)){
+	 	   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, NAME_ERROR); 
 		   
 	   }else if(StringUtils.isBlank(gender)){
 		     session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_EMPTY_GENDER); 
@@ -129,7 +143,16 @@ public class UpdateStudentBasic extends HttpServlet{
 	   }else if(StringUtils.isBlank(kcpemark)){
 		     session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_EMPTY_KCPE_MARK); 
 		     
-	   }else if(StringUtils.isBlank(schooluuid)){
+	   }else if(!isNumeric(kcpemark)){
+	 	   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_MARKS_INVALID); 
+		   
+	   }else if(!lengthValid(kcpemark)){
+		 	   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_MARKS_INVALID); 
+			   
+	   }else if(!kcpeValid(kcpemark)){
+	 	   session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, ERROR_MARKS_INVALID); 
+		   
+      }else if(StringUtils.isBlank(schooluuid)){
 		     session.setAttribute(SessionConstants.STUDENT_UPDATE_ERROR, UNEXPECTED_ERROR); 
 		     
 	   }else if(StringUtils.isBlank(staffUsername)){
@@ -150,15 +173,27 @@ public class UpdateStudentBasic extends HttpServlet{
 		   student.setCounty(County); 
 		   student.setSysUser(staffUsername); 
 		   
-		   StudentPrimary sprimary = primaryDAO.getPrimary(student.getUuid());
-		   sprimary.setStudentUuid(student.getUuid());
-		   sprimary.setSchoolname(primary);
-		   sprimary.setIndex(indexno);
-		   sprimary.setKcpemark(kcpemark);
-		   sprimary.setKcpeyear(kcpeaddYear); 
+		   StudentPrimary sprimary;
+		   if(primaryDAO.getPrimary(student.getUuid()) == null){
+			   sprimary = new StudentPrimary();
+			   sprimary.setStudentUuid(student.getUuid());
+			   sprimary.setSchoolname(primary);
+			   sprimary.setIndex(indexno);
+			   sprimary.setKcpemark(kcpemark);
+			   sprimary.setKcpeyear(kcpeaddYear); 
+			   primaryDAO.putPrimary(sprimary);
+		   }else{
+			   sprimary = primaryDAO.getPrimary(student.getUuid());
+			   sprimary.setSchoolname(primary);
+			   sprimary.setIndex(indexno);
+			   sprimary.setKcpemark(kcpemark);
+			   sprimary.setKcpeyear(kcpeaddYear); 
+			   primaryDAO.updatePrimary(sprimary);
+		   }
+		   
 		  
  		  
-		   if(studentDAO.updateStudents(student) && primaryDAO.updatePrimary(sprimary)){  
+		   if(studentDAO.updateStudents(student)){  
 			 
 			   session.setAttribute(SessionConstants.STUDENT_UPDATE_SUCCESS, STUDENT_UPDATE_SUCCESS);  
 		   }else{
@@ -173,6 +208,48 @@ public class UpdateStudentBasic extends HttpServlet{
        
        
    }
+   
+
+   /**
+    * @param str
+    * @return
+    */
+   public static boolean isNumeric(String str) {  
+	   try  
+	   {  
+		   double d = Double.parseDouble(str);  
+	   }  
+	   catch(NumberFormatException nfe)  
+	   {  
+		   return false;  
+	   }  
+	   return true;  
+   }
+
+   /**
+    * @param mystring
+    * @return
+    */
+   private static boolean lengthValid(String mystring) {
+	   boolean isvalid = true;
+	   int length = 0;
+	   length = mystring.length();
+	   if(length<3){
+		   isvalid = false;
+	   }
+	   return isvalid;
+   }
+   
+   private static boolean kcpeValid(String mystring) {
+	   boolean isvalid = true;
+	   int mark = 0;
+	   mark = Integer.parseInt(mystring);
+	   if(mark>500){
+		   isvalid = false;
+	   }
+	   return isvalid;
+   }
+
 
    
    
